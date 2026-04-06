@@ -226,15 +226,15 @@ Requirements for full product release. Each maps to roadmap phases.
 | QUAL-07 | Phase 4 | Pending |
 | QUAL-08 | Phase 4 | Pending |
 | QUAL-09 | Phase 4 | Pending |
-| PUB-01 | Phase 5 | Pending |
-| PUB-02 | Phase 5 | Pending |
-| PUB-03 | Phase 5 | Pending |
-| PUB-04 | Phase 5 | Pending |
-| PUB-05 | Phase 5 | Pending |
-| PUB-06 | Phase 5 | Pending |
-| PUB-07 | Phase 5 | Pending |
-| PUB-08 | Phase 5 | Pending |
-| PUB-09 | Phase 5 | Pending |
+| PUB-01 | Phase 4 | Pending |
+| PUB-02 | Phase 4 | Pending |
+| PUB-03 | Phase 4 | Pending |
+| PUB-04 | Phase 4 | Pending |
+| PUB-05 | Phase 4 | Pending |
+| PUB-06 | Phase 4 | Pending |
+| PUB-07 | Phase 4 | Pending |
+| PUB-08 | Phase 4 | Pending |
+| PUB-09 | Phase 4 | Pending |
 | EXP-01 | Phase 5 | Pending |
 | EXP-02 | Phase 5 | Pending |
 | EXP-03 | Phase 5 | Pending |
@@ -278,28 +278,28 @@ Requirements for full product release. Each maps to roadmap phases.
 | COLLAB-06 | Phase 8 | Pending |
 | COLLAB-07 | Phase 8 | Pending |
 | COLLAB-08 | Phase 8 | Pending |
-| RUNTIME-01 | Phase 9 | Pending |
-| RUNTIME-02 | Phase 9 | Pending |
-| RUNTIME-03 | Phase 9 | Pending |
-| RUNTIME-04 | Phase 9 | Pending |
-| RUNTIME-05 | Phase 9 | Pending |
-| RUNTIME-06 | Phase 9 | Pending |
-| RUNTIME-07 | Phase 9 | Pending |
-| SACRED-01 | Phase 10 | Pending |
-| SACRED-02 | Phase 10 | Pending |
-| SACRED-03 | Phase 10 | Pending |
-| SACRED-04 | Phase 10 | Pending |
-| SACRED-05 | Phase 10 | Pending |
-| SACRED-06 | Phase 10 | Pending |
-| SACRED-07 | Phase 10 | Pending |
-| SACRED-08 | Phase 10 | Pending |
-| SACRED-09 | Phase 10 | Pending |
+| RUNTIME-01 | Phase 8 | Pending |
+| RUNTIME-02 | Phase 8 | Pending |
+| RUNTIME-03 | Phase 8 | Pending |
+| RUNTIME-04 | Phase 8 | Pending |
+| RUNTIME-05 | Phase 8 | Pending |
+| RUNTIME-06 | Phase 8 | Pending |
+| RUNTIME-07 | Phase 8 | Pending |
+| SACRED-01 | Phase 8 | Pending |
+| SACRED-02 | Phase 8 | Pending |
+| SACRED-03 | Phase 8 | Pending |
+| SACRED-04 | Phase 8 | Pending |
+| SACRED-05 | Phase 8 | Pending |
+| SACRED-06 | Phase 8 | Pending |
+| SACRED-07 | Phase 8 | Pending |
+| SACRED-08 | Phase 8 | Pending |
+| SACRED-09 | Phase 8 | Pending |
 
 **Coverage:**
 - v1 requirements: 100 total
 - Mapped to phases: 100
-- Unmapped: 0 ✓
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-04-06*
-*Last updated: 2026-04-06 after initial definition*
+*Last updated: 2026-04-06 after roadmap creation*
