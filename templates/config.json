@@ -1,0 +1,56 @@
+{
+  "scriven_version": "0.3.0",
+  "work_type": "",
+  "group": "",
+  "command_unit": "",
+  "developer_mode": false,
+  "created_at": "",
+  "updated_at": "",
+
+  "autopilot": {
+    "enabled": false,
+    "profile": "guided"
+  },
+
+  "voice": {
+    "calibrated": false,
+    "last_calibration": null,
+    "drift_threshold": 0.3
+  },
+
+  "export": {
+    "default_format": "docx_manuscript",
+    "include_front_matter": true,
+    "include_back_matter": true,
+    "manuscript_format": {
+      "font": "Times New Roman",
+      "size": 12,
+      "spacing": "double",
+      "margins": "1in"
+    }
+  },
+
+  "translation": {
+    "source_language": "en",
+    "target_languages": [],
+    "name_handling": "keep_original",
+    "measurement_system": "source"
+  },
+
+  "collaboration": {
+    "tracks_enabled": false,
+    "default_track": "canon"
+  },
+
+  "illustration": {
+    "style": null,
+    "cover_enabled": false,
+    "interior_enabled": false
+  },
+
+  "git": {
+    "auto_commit": true,
+    "commit_message_style": "descriptive",
+    "branching_strategy": "none"
+  }
+}
