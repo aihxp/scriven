@@ -91,8 +91,8 @@ Plans:
 - [x] 04-01-PLAN.md -- Core quality commands: line-edit, copy-edit, voice-check
 - [x] 04-02-PLAN.md -- Specialized quality commands: dialogue-audit, pacing-analysis, sensitivity-review
 - [x] 04-03-PLAN.md -- Quality completions: beta-reader/continuity-check enhancement, originality-check, polish meta-command, CONSTRAINTS.json updates
-- [ ] 04-04-PLAN.md -- Front matter and back matter generation commands
-- [ ] 04-05-PLAN.md -- Marketing materials: blurb, synopsis, query-letter, book-proposal, discussion-questions
+- [x] 04-04-PLAN.md -- Front matter and back matter generation commands
+- [x] 04-05-PLAN.md -- Marketing materials: blurb, synopsis, query-letter, book-proposal, discussion-questions
 - [ ] 04-06-PLAN.md -- Phase 4 test suite validating all commands and CONSTRAINTS.json entries
 
 ### Phase 5: Export & Publishing
