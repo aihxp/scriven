@@ -1,3 +1,7 @@
+---
+description: Spawn parallel analysis agents to understand an existing manuscript's voice, structure, characters, and themes.
+---
+
 # /scr:map-manuscript — Analyze Existing Manuscript
 
 Spawn parallel analysis agents to understand an existing draft's voice, structure, characters, and themes.

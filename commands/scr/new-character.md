@@ -1,3 +1,7 @@
+---
+description: Build a complete character profile through guided interactive interview.
+---
+
 # /scr:new-character — Interactive Character Creation
 
 Build a complete character profile through guided interview.

@@ -1,3 +1,7 @@
+---
+description: Walk the writer through their drafted act for manual read-through and quality review.
+---
+
 # /scr:editor-review — Manual Read-Through and Quality Review
 
 Walk the writer through their drafted act for acceptance testing.

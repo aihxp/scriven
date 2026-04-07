@@ -1,0 +1,61 @@
+const { describe, it } = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('fs');
+const path = require('path');
+
+const ROOT = path.join(__dirname, '..');
+const commandsDir = path.join(ROOT, 'commands', 'scr');
+
+const commandFiles = fs.readdirSync(commandsDir)
+  .filter(f => f.endsWith('.md') && fs.statSync(path.join(commandsDir, f)).isFile());
+
+describe('Command file structure', () => {
+  it('command file names use kebab-case', () => {
+    for (const file of commandFiles) {
+      assert.match(
+        file,
+        /^[a-z][a-z0-9-]*\.md$/,
+        `"${file}" does not match kebab-case pattern`
+      );
+    }
+  });
+
+  it('at least 15 command files exist', () => {
+    assert.ok(
+      commandFiles.length >= 15,
+      `Expected at least 15 command files, found ${commandFiles.length}`
+    );
+  });
+
+  for (const file of commandFiles) {
+    describe(file, () => {
+      const content = fs.readFileSync(path.join(commandsDir, file), 'utf8');
+
+      it('has YAML frontmatter', () => {
+        assert.match(
+          content,
+          /^---\n[\s\S]*?\n---/,
+          `"${file}" missing YAML frontmatter`
+        );
+      });
+
+      it('has description in frontmatter', () => {
+        const frontmatterMatch = content.match(/^---\n([\s\S]*?)\n---/);
+        assert.ok(frontmatterMatch, `"${file}" has no frontmatter to check`);
+        assert.ok(
+          frontmatterMatch[1].includes('description:'),
+          `"${file}" frontmatter missing description field`
+        );
+      });
+
+      it('has a heading after frontmatter', () => {
+        const afterFrontmatter = content.replace(/^---\n[\s\S]*?\n---/, '');
+        assert.match(
+          afterFrontmatter,
+          /^#\s+/m,
+          `"${file}" missing heading after frontmatter`
+        );
+      });
+    });
+  }
+});

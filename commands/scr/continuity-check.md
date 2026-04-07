@@ -1,3 +1,7 @@
+---
+description: Automated continuity verification to scan for narrative contradictions across the manuscript.
+---
+
 # /scr:continuity-check — Scan for Narrative Contradictions
 
 Automated continuity verification across the manuscript.

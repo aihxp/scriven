@@ -1,3 +1,7 @@
+---
+description: Write a scene, passage, or chapter outside the full planning workflow.
+---
+
 # /scr:quick-write — Ad-Hoc Writing Without Full Planning
 
 Write a scene, passage, or chapter outside the full planning workflow.

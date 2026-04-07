@@ -1,3 +1,7 @@
+---
+description: Simulate a beta reader's experience of the manuscript with cross-AI peer review.
+---
+
 # /scr:beta-reader — Cross-AI Peer Review
 
 Simulate a beta reader's experience of the manuscript.

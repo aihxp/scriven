@@ -1,3 +1,7 @@
+---
+description: Visualize and manage the narrative arc structure of the story.
+---
+
 # /scr:plot-graph — View and Edit Story Arc
 
 Visualize and manage the narrative arc structure.

@@ -397,6 +397,11 @@
       "available": ["all"],
       "description": "Import existing manuscript into Scriven structure"
     },
+    "map-manuscript": {
+      "category": "navigation",
+      "available": ["all"],
+      "description": "Analyze existing manuscript structure, voice, characters, and themes"
+    },
     "voice-test": {
       "category": "quality",
       "available": ["all"],
