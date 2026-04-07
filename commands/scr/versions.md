@@ -1,0 +1,69 @@
+---
+description: List your draft versions with readable labels.
+argument-hint: "[--all]"
+---
+
+# Versions
+
+You are listing the writer's draft versions. Your job is to show saves as a numbered list with human-readable descriptions.
+
+## What to do
+
+1. **Check for `.manuscript/` directory.** If missing: "No manuscript found. Start with `/scr:new-work`."
+
+2. **Check for `.git/` directory.** If missing: "No versions yet. Save your work first with `/scr:save`."
+
+3. **Read `.manuscript/config.json`** for `developer_mode`.
+
+4. **Retrieve the version list.** Run:
+   ```
+   git log --format="%H|%ai|%s" .manuscript/
+   ```
+   Default: last 10 versions. If the writer specified `--all`, show the complete list.
+
+5. **Parse into a numbered version list**, grouped by date:
+   - Convert commit messages into human-readable descriptions (same parsing as `/scr:history`)
+   - Group consecutive saves from the same calendar day under one date heading
+   - Number versions from 1 (most recent) to N (oldest)
+   - Include word count if available from the commit message
+   - Mark the most recent version as "Current"
+
+6. **Format as a readable list:**
+
+   ```
+   Your draft versions:
+
+   1. Current -- Chapter 5 in progress (2 saves today)
+   2. Yesterday -- Completed chapter 4 (1,890 words)
+   3. Apr 4 -- Drafted chapter 3 (1,247 words)
+   4. Apr 3 -- Initial outline and voice profile
+   ```
+
+   Date format rules:
+   - Today's saves: "Current" for the latest, "Earlier today" for others
+   - Yesterday: "Yesterday"
+   - This week: day name ("Monday", "Tuesday")
+   - Older: "Mon D" format ("Apr 4", "Mar 28")
+   - Different year: "Mon D, YYYY" ("Dec 15, 2025")
+
+7. **Show the list to the writer.**
+
+## Writer mode output
+
+- **Writer mode** (`developer_mode: false`): Show ONLY the numbered list with dates and descriptions. No git hashes, no branch names, no file paths.
+- **Developer mode** (`developer_mode: true`): Include the short hash (first 7 characters) after each version number. Show the current branch name above the list.
+
+## Edge cases
+
+- **No versions:** "No versions yet. Save your work first with `/scr:save`."
+- **Only one version:** Show it as "1. Current -- {description}". No "see more" message.
+- **Many versions:** Default to last 10. If more exist, mention: "Showing your last 10 versions. Use `--all` to see the complete list."
+- **Multiple saves on the same day:** Group them under one date, showing individual descriptions:
+  ```
+  1. Current -- Revised chapter 3 opening
+  2. Earlier today -- Drafted chapter 3 (1,247 words)
+  ```
+
+## Tone
+
+Clean. Minimal. The version list should feel like a simple timeline, not a technical log. Let the descriptions do the talking.
