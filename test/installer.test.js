@@ -49,10 +49,16 @@ describe('Installer copyDir', () => {
 });
 
 describe('Installer RUNTIMES', () => {
-  it('has entries for all three runtimes', () => {
+  it('has entries for all supported runtimes', () => {
     assert.ok('claude-code' in RUNTIMES, 'missing claude-code runtime');
     assert.ok('cursor' in RUNTIMES, 'missing cursor runtime');
     assert.ok('gemini-cli' in RUNTIMES, 'missing gemini-cli runtime');
+    assert.ok('codex' in RUNTIMES, 'missing codex runtime');
+    assert.ok('opencode' in RUNTIMES, 'missing opencode runtime');
+    assert.ok('copilot' in RUNTIMES, 'missing copilot runtime');
+    assert.ok('windsurf' in RUNTIMES, 'missing windsurf runtime');
+    assert.ok('antigravity' in RUNTIMES, 'missing antigravity runtime');
+    assert.ok('manus' in RUNTIMES, 'missing manus runtime');
   });
 
   it('each runtime has required directory properties', () => {

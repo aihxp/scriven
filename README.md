@@ -142,11 +142,12 @@ See [SCRIVEN-PRODUCT-PLAN-v0.3.md](./SCRIVEN-PRODUCT-PLAN-v0.3.md) for the full 
 - **Claude Code** (primary, most complete)
 - **Cursor** (full support)
 - **Gemini CLI** (full support)
-- **Codex CLI** (Phase 9)
-- **OpenCode** (Phase 9)
-- **GitHub Copilot** (Phase 9)
-- **Windsurf** (Phase 9)
-- **Antigravity** (Phase 9)
+- **Codex CLI** (full support)
+- **OpenCode** (full support)
+- **GitHub Copilot** (full support)
+- **Windsurf** (full support)
+- **Antigravity** (full support)
+- **Manus Desktop** (full support)
 
 ---
 

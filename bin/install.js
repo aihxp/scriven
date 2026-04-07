@@ -91,6 +91,14 @@ const RUNTIMES = {
     agents_dir_project: '.gemini/antigravity/agents',
     detect: () => fs.existsSync(path.join(os.homedir(), '.gemini', 'antigravity')),
   },
+  'manus': {
+    label: 'Manus Desktop',
+    commands_dir_global: path.join(os.homedir(), '.manus', 'skills', 'scr'),
+    commands_dir_project: '.manus/skills/scr',
+    agents_dir_global: path.join(os.homedir(), '.manus', 'agents'),
+    agents_dir_project: '.manus/agents',
+    detect: () => fs.existsSync(path.join(os.homedir(), '.manus')) || fs.existsSync('/Applications/Manus.app') || fs.existsSync(path.join(os.homedir(), 'Applications', 'Manus.app')),
+  },
 };
 
 function ask(rl, question) {
