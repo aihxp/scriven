@@ -32,12 +32,12 @@ Decimal phases appear between their surrounding integers in numeric order.
   2. Demo project shows a complete watchmaker story with voice profile, scenes, and editor notes that a new user can explore
   3. Test suite catches broken constraints, invalid command structure, and installer failures before publishing
   4. Package publishes to npm without errors and meets registry standards
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 01-01: TBD
-- [ ] 01-02: TBD
-- [ ] 01-03: TBD
+- [ ] 01-01-PLAN.md -- Create pre-baked demo project (watchmaker story with 4 drafted scenes, context files, editor notes)
+- [ ] 01-02-PLAN.md -- Test suite for CONSTRAINTS.json, command structure, and installer dry-run
+- [ ] 01-03-PLAN.md -- Demo completeness tests, package publishability tests, and human verification
 
 ### Phase 2: Writer Experience
 **Goal**: Non-technical writers can use Scriven without encountering git terminology, and the AI can draft autonomously with appropriate human checkpoints
@@ -169,7 +169,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. MVP Polish | 0/3 | Not started | - |
+| 1. MVP Polish | 0/3 | Planned | - |
 | 2. Writer Experience | 0/4 | Not started | - |
 | 3. Creative Toolkit | 0/3 | Not started | - |
 | 4. Quality & Manuscript Completion | 0/4 | Not started | - |
