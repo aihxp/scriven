@@ -738,6 +738,18 @@
       "available": ["all"],
       "description": "Publishing wizard or preset-driven pipeline (wraps export commands)"
     },
+    "export": {
+      "category": "publishing",
+      "available": ["all"],
+      "description": "Compile and export manuscript to publication-ready formats (markdown, docx, pdf, epub, fountain, fdx, latex, packages)",
+      "requires": ["complete-draft"]
+    },
+    "autopilot-publish": {
+      "category": "publishing",
+      "available": ["all"],
+      "description": "Run full publishing pipeline unattended with quality gate",
+      "requires": ["complete-draft"]
+    },
     "translate": {
       "category": "translation",
       "available": ["all"],
