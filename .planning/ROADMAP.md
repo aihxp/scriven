@@ -110,7 +110,7 @@ Plans:
 Plans:
 - [ ] 05-01-PLAN.md -- Export templates (Typst, EPUB CSS, LaTeX) and export command with primary formats (markdown, docx, pdf, epub)
 - [ ] 05-02-PLAN.md -- Export command extended with secondary formats (fountain, fdx, latex) and platform packages (kdp, ingram, query, submission)
-- [ ] 05-03-PLAN.md -- manuscript-stats command and CONSTRAINTS.json updates for export-phase commands
+- [x] 05-03-PLAN.md -- manuscript-stats command and CONSTRAINTS.json updates for export-phase commands
 - [ ] 05-04-PLAN.md -- Publish wizard rewrite with presets and autopilot-publish command
 - [ ] 05-05-PLAN.md -- Phase 5 test suite validating all commands, templates, and CONSTRAINTS.json entries
 

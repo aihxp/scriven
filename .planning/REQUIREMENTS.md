@@ -95,7 +95,7 @@ Requirements for full product release. Each maps to roadmap phases.
 - [ ] **EXP-14**: `/scr:publish` interactive wizard chains correct export commands based on destination
 - [ ] **EXP-15**: `/scr:publish --preset` supports named presets (kdp-paperback, query-submission, ebook-wide)
 - [ ] **EXP-16**: `/scr:autopilot-publish` runs full publishing pipeline unattended (front/back matter → compile → cover → export → packages)
-- [ ] **EXP-17**: `/scr:manuscript-stats` shows word count, chapter count, estimated page count, reading time
+- [x] **EXP-17**: `/scr:manuscript-stats` shows word count, chapter count, estimated page count, reading time
 
 ### Illustration & Cover Art
 
@@ -253,7 +253,7 @@ Requirements for full product release. Each maps to roadmap phases.
 | EXP-14 | Phase 5 | Pending |
 | EXP-15 | Phase 5 | Pending |
 | EXP-16 | Phase 5 | Pending |
-| EXP-17 | Phase 5 | Pending |
+| EXP-17 | Phase 5 | Complete |
 | ILL-01 | Phase 6 | Pending |
 | ILL-02 | Phase 6 | Pending |
 | ILL-03 | Phase 6 | Pending |
