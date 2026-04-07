@@ -95,6 +95,16 @@ The previous developer established clear patterns for adding commands — each i
 - **Plan authority**: If a command file contradicts the product plan, fix the command — plan is canonical (section 15 for command specs)
 - **Progressive disclosure**: Onboarding asks 3 questions max; depth is optional and additive
 
+## Current Milestone: v1.1 Generic Platform Support
+
+**Goal:** Make Scriven installable on any AI agent platform — including those without dedicated command directories — via a generic SKILL.md-based approach.
+
+**Target features:**
+- Generic SKILL.md installer path for platforms without `.claude/commands/`-style directories
+- Manus Desktop support using this generic approach
+- Platform detection improvements (app bundle detection, SKILL.md directory conventions)
+- Installer refactoring to separate "command-directory platforms" from "skill-file platforms"
+
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
@@ -102,8 +112,9 @@ The previous developer established clear patterns for adding commands — each i
 | Fresh context per atomic unit (drafter) | Prevents voice drift, context bloat; keeps each unit at its best | ✓ Good |
 | Markdown-only architecture (no compiled code) | Maximum portability across AI agents; no build step needed | ✓ Good |
 | CONSTRAINTS.json as single source for command availability | One file controls all work type adaptations; easy to extend | ✓ Good |
-| Ship npm + polish in parallel | Get npx working early for feedback while improving experience | — Pending |
-| GSD-derived phase decomposition | Product plan has 10 phases but GSD may regroup for better execution flow | — Pending |
+| Ship npm + polish in parallel | Get npx working early for feedback while improving experience | ✓ Good |
+| GSD-derived phase decomposition | Product plan has 10 phases but GSD regrouped into 8 for standard granularity | ✓ Good |
+| Generic SKILL.md installer for platforms without command directories | Manus and future platforms can use Scriven without needing a proprietary command system | — Pending |
 
 ## Evolution
 
@@ -123,4 +134,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-06 after initialization*
+*Last updated: 2026-04-07 after milestone v1.1 start*
