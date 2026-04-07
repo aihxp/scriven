@@ -9,7 +9,7 @@
 
 - [x] **DOC-01**: Enhanced README.md with complete feature overview, quick start (3 commands), supported runtimes, philosophy, and links to all guides
 - [x] **DOC-02**: Getting Started guide -- install to first draft in 10 minutes, covering `npx scriven@latest`, `/scr:new-work`, `/scr:discuss`, `/scr:draft`
-- [ ] **DOC-03**: Complete command reference -- all 96+ commands organized by category with usage, flags, examples, prerequisites, and work-type adaptations
+- [x] **DOC-03**: Complete command reference -- all 96+ commands organized by category with usage, flags, examples, prerequisites, and work-type adaptations
 
 ### Feature Guides
 
@@ -42,7 +42,7 @@
 |-------------|-------|--------|
 | DOC-01 | Phase 10 | Complete |
 | DOC-02 | Phase 10 | Complete |
-| DOC-03 | Phase 10 | Pending |
+| DOC-03 | Phase 10 | Complete |
 | DOC-04 | Phase 11 | Pending |
 | DOC-05 | Phase 11 | Pending |
 | DOC-06 | Phase 11 | Pending |

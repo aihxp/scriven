@@ -191,7 +191,7 @@ Plans:
 
 **Milestone Goal:** Create complete documentation suite -- README, guides, command reference, and contributor docs -- verified against the live codebase.
 
-- [ ] **Phase 10: Core Documentation** - README, getting started guide, and complete command reference
+- [x] **Phase 10: Core Documentation** - README, getting started guide, and complete command reference (completed 2026-04-07)
 - [ ] **Phase 11: Feature & Domain Guides** - Work types, Voice DNA, publishing, sacred text, and translation guides
 - [ ] **Phase 12: Developer Docs & Verification** - Contributor guide, architecture overview, and codebase verification pass
 
@@ -210,7 +210,7 @@ Plans:
 Plans:
 - [x] 10-01-PLAN.md — Rewrite README.md as documentation hub
 - [x] 10-02-PLAN.md — Getting Started guide (install to first draft in 10 minutes)
-- [ ] 10-03-PLAN.md — Complete command reference (101 commands across 14 categories)
+- [x] 10-03-PLAN.md — Complete command reference (101 commands across 14 categories)
 
 ### Phase 11: Feature & Domain Guides
 **Goal**: Users working with specific Scriven capabilities have dedicated guides that explain concepts, workflows, and configuration for each feature domain
@@ -249,6 +249,6 @@ Phases execute in numeric order: 10 -> 11 -> 12
 | 7. Translation & Localization | v1.0 | 4/4 | Complete | 2026-04-07 |
 | 8. Collaboration, Platform & Sacred | v1.0 | 5/5 | Complete | 2026-04-07 |
 | 9. Generic Platform Support | v1.1 | 2/2 | Complete | 2026-04-07 |
-| 10. Core Documentation | v1.2 | 2/3 | In Progress|  |
+| 10. Core Documentation | v1.2 | 3/3 | Complete   | 2026-04-07 |
 | 11. Feature & Domain Guides | v1.2 | 0/0 | Not started | - |
 | 12. Developer Docs & Verification | v1.2 | 0/0 | Not started | - |
