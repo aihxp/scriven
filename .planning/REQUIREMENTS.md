@@ -102,13 +102,13 @@ Requirements for full product release. Each maps to roadmap phases.
 - [x] **ILL-01**: `/scr:cover-art` generates detailed cover art prompts (front, spine, back, full wrap) calibrated to genre conventions
 - [x] **ILL-02**: Cover art includes KDP trim size specs with calculated spine width based on page count
 - [x] **ILL-03**: `/scr:art-direction` generates ART-DIRECTION.md with visual style, color palette, typography, mood board
-- [ ] **ILL-04**: `/scr:illustrate-scene` generates scene-specific illustration prompts with character descriptions, setting, mood
+- [x] **ILL-04**: `/scr:illustrate-scene` generates scene-specific illustration prompts with character descriptions, setting, mood
 - [x] **ILL-05**: `/scr:character-ref` generates character reference sheet prompts for visual consistency
 - [x] **ILL-06**: `/scr:chapter-header` generates chapter header/ornament design prompts
 - [x] **ILL-07**: `/scr:map-illustration` generates world map illustration prompts from WORLD.md
-- [ ] **ILL-08**: `/scr:spread-layout` generates children's book/picture book spread layouts (text placement + illustration zones)
-- [ ] **ILL-09**: `/scr:panel-layout` generates comic panel layouts with composition notes
-- [ ] **ILL-10**: `/scr:storyboard` generates storyboard frames for script work types
+- [x] **ILL-08**: `/scr:spread-layout` generates children's book/picture book spread layouts (text placement + illustration zones)
+- [x] **ILL-09**: `/scr:panel-layout` generates comic panel layouts with composition notes
+- [x] **ILL-10**: `/scr:storyboard` generates storyboard frames for script work types
 
 ### Translation & Multi-Language
 
@@ -257,13 +257,13 @@ Requirements for full product release. Each maps to roadmap phases.
 | ILL-01 | Phase 6 | Complete |
 | ILL-02 | Phase 6 | Complete |
 | ILL-03 | Phase 6 | Complete |
-| ILL-04 | Phase 6 | Pending |
+| ILL-04 | Phase 6 | Complete |
 | ILL-05 | Phase 6 | Complete |
 | ILL-06 | Phase 6 | Complete |
 | ILL-07 | Phase 6 | Complete |
-| ILL-08 | Phase 6 | Pending |
-| ILL-09 | Phase 6 | Pending |
-| ILL-10 | Phase 6 | Pending |
+| ILL-08 | Phase 6 | Complete |
+| ILL-09 | Phase 6 | Complete |
+| ILL-10 | Phase 6 | Complete |
 | TRANS-01 | Phase 7 | Pending |
 | TRANS-02 | Phase 7 | Pending |
 | TRANS-03 | Phase 7 | Pending |
