@@ -1,0 +1,59 @@
+{
+  "scriven_version": "0.3.0",
+  "work_type": "short_story",
+  "group": "prose_fiction",
+  "command_unit": "scene",
+  "atomic": "beat",
+  "title": "The Watchmaker's Daughter",
+  "author": "Demo Writer",
+  "developer_mode": false,
+  "created_at": "2026-03-31T10:00:00Z",
+  "updated_at": "2026-04-04T14:22:00Z",
+
+  "autopilot": {
+    "enabled": false,
+    "profile": "guided"
+  },
+
+  "voice": {
+    "calibrated": true,
+    "last_calibration": "2026-03-31T12:00:00Z",
+    "drift_threshold": 0.3
+  },
+
+  "export": {
+    "default_format": "docx_manuscript",
+    "include_front_matter": true,
+    "include_back_matter": true,
+    "manuscript_format": {
+      "font": "Times New Roman",
+      "size": 12,
+      "spacing": "double",
+      "margins": "1in"
+    }
+  },
+
+  "translation": {
+    "source_language": "en",
+    "target_languages": [],
+    "name_handling": "keep_original",
+    "measurement_system": "source"
+  },
+
+  "collaboration": {
+    "tracks_enabled": false,
+    "default_track": "canon"
+  },
+
+  "illustration": {
+    "style": null,
+    "cover_enabled": false,
+    "interior_enabled": false
+  },
+
+  "git": {
+    "auto_commit": true,
+    "commit_message_style": "descriptive",
+    "branching_strategy": "none"
+  }
+}

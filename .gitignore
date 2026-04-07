@@ -11,3 +11,4 @@ coverage/
 *.swp
 *.swo
 .manuscript/
+!data/demo/.manuscript/
