@@ -1,0 +1,383 @@
+# Scriven Architecture
+
+How Scriven works under the hood -- for developers who want to understand the system before extending it.
+
+## Overview
+
+Scriven is a pure skill system. There is no compiled code, no runtime library, no framework. AI coding agents (Claude Code, Cursor, Gemini CLI, and others) read markdown command files and follow their instructions using their built-in tools (Read, Write, Bash).
+
+The entire system is a collection of files:
+
+- **Command files** tell the agent what to do when a writer invokes `/scr:draft` or `/scr:new-work`
+- **Agent files** provide specialized instructions for tasks like drafting and voice-checking
+- **CONSTRAINTS.json** is the central registry that controls which commands are available for which work types
+- **Templates** provide starting content for new projects
+
+Nothing compiles. Nothing bundles. Changes take effect immediately because the agent reads files at runtime.
+
+## Skill System Design
+
+The skill system works like this:
+
+1. The writer types a slash command (e.g., `/scr:draft-chapter 3`)
+2. The AI agent reads `commands/scr/draft.md`
+3. The command file contains step-by-step instructions in plain markdown
+4. The agent follows those instructions, using its tools to read files, write drafts, and run checks
+
+Each command file has YAML frontmatter (metadata) and a markdown body (instructions):
+
+```yaml
+---
+description: Draft the planned unit. Invokes the drafter agent in fresh context.
+argument-hint: "[unit number, optional]"
+---
+
+# Draft {unit}
+
+You are orchestrating the drafter agent to produce the actual prose...
+
+## What to do
+
+1. Find all plan files for the unit...
+2. For each atomic unit, invoke the drafter agent in fresh context...
+3. Save drafted output...
+```
+
+The agent reads this file and executes it. No SDK, no API calls, no imports. The markdown IS the program.
+
+### Why markdown?
+
+- **Portability.** Any AI agent that can read files can run Scriven
+- **No build step.** Contributors edit a `.md` file and the change is live
+- **Inspectable.** The writer can read any command file to understand exactly what Scriven will do
+- **No dependencies.** No node_modules, no pip install, no version conflicts
+
+## CONSTRAINTS.json Schema
+
+`data/CONSTRAINTS.json` is the central registry. Every command checks it at runtime to determine what is available, what adapts, and what is restricted. Here are the top-level sections.
+
+### work_type_groups
+
+Groups related work types together. Commands use these groups for availability:
+
+```json
+"work_type_groups": {
+  "prose": {
+    "label": "Prose",
+    "members": ["novel", "novella", "short_story", "flash_fiction",
+                "memoir", "creative_nonfiction", "biography", "essay",
+                "essay_collection"]
+  },
+  "sacred": {
+    "label": "Sacred & Historical",
+    "members": ["scripture_biblical", "scripture_quranic", "commentary",
+                "devotional", "liturgical", "historical_chronicle", ...]
+  }
+}
+```
+
+There are 8 groups: prose, script, academic, visual, poetry, interactive, speech_song, and sacred. Together they contain 50+ work types.
+
+### work_types
+
+Individual work type definitions. Each entry specifies its structural hierarchy and which hierarchy level commands operate on:
+
+```json
+"novel": {
+  "label": "Novel",
+  "group": "prose",
+  "hierarchy": { "top": "part", "mid": "chapter", "atomic": "scene" },
+  "command_unit": "chapter"
+}
+```
+
+- **`hierarchy`** -- Three structural levels. The `top` is the largest division (part, act, testament), `mid` is the middle (chapter, scene, section), and `atomic` is the smallest unit that gets drafted individually (scene, beat, verse).
+- **`command_unit`** -- Determines how commands adapt their names. A novel's `/scr:draft` becomes `/scr:draft-chapter`. A screenplay's becomes `/scr:draft-act`.
+
+Sacred work types can also specify defaults:
+
+```json
+"scripture_quranic": {
+  "label": "Scripture (Quranic)",
+  "group": "sacred",
+  "hierarchy": { "top": null, "mid": "surah", "atomic": "ayah" },
+  "command_unit": "surah",
+  "config_defaults": {
+    "verse_numbering_system": "quranic_hafs",
+    "calendar_system": "hijri"
+  }
+}
+```
+
+### commands
+
+The command registry. Each entry maps a command name to its category, availability, and behavior:
+
+```json
+"draft": {
+  "category": "core",
+  "available": ["all"],
+  "renames_by_unit": true,
+  "description": "Draft the planned unit"
+},
+"editor-review": {
+  "category": "core",
+  "available": ["all"],
+  "adapted": {
+    "academic": { "rename": "peer-review" },
+    "sacred": { "rename": "scholarly-review" }
+  },
+  "description": "Manual review of drafted unit"
+}
+```
+
+- **`available`** -- `["all"]` means universal. Otherwise, list specific group names like `["prose", "script"]`.
+- **`renames_by_unit`** -- The command name adapts based on the project's `command_unit`.
+- **`adapted`** -- Per-group overrides. The `editor-review` command becomes `peer-review` for academic works and `scholarly-review` for sacred works.
+
+## File Structure
+
+```
+scriven/
+  commands/
+    scr/                   89 command files (one per /scr:* command)
+      draft.md             Core workflow: draft a unit
+      new-work.md          Core workflow: start a new project
+      autopilot.md         Autonomous pipeline orchestrator
+      help.md              Navigation: show available commands
+      ...
+      sacred/              8 sacred-exclusive subcommands
+        concordance.md
+        cross-reference.md
+        ...
+  agents/
+    drafter.md             Drafts one atomic unit in the writer's voice
+    voice-checker.md       Compares drafts against STYLE-GUIDE.md
+    continuity-checker.md  Catches contradictions and timeline errors
+    plan-checker.md        Validates unit plans before drafting
+    researcher.md          Gathers research material
+    translator.md          Translates content with voice preservation
+  data/
+    CONSTRAINTS.json       Central constraint registry (the source of truth)
+    demo/                  Pre-baked demo project (watchmaker story)
+    export-templates/      Output format templates
+      scriven-book.typst     Book interior PDF
+      scriven-epub.css       EPUB styling
+      scriven-academic.latex Academic paper formatting
+  templates/
+    config.json            Per-project configuration template
+    WORK.md                Work overview template
+    OUTLINE.md             Structural outline template
+    CHARACTERS.md          Character profiles template
+    STYLE-GUIDE.md         Voice DNA template
+    THEMES.md              Thematic threads template
+    STATE.md               Progress tracking template
+    BRIEF.md               Project brief template
+    WORLD.md               World-building template
+    sacred/                Sacred-specific templates
+      FIGURES.md             Replaces CHARACTERS.md for sacred works
+      DOCTRINES.md           Theological framework
+      COSMOLOGY.md           World/cosmological structure
+      LINEAGES.md            Genealogies and lineage tracking
+      FRAMEWORK.md           Interpretive framework
+      THEOLOGICAL-ARC.md     Replaces PLOT-GRAPH.md for sacred works
+  bin/
+    install.js             Multi-platform installer (Node.js)
+  docs/
+    getting-started.md     Install to first draft in 10 minutes
+    command-reference.md   Full command listing with usage
+    work-types.md          50+ work types and how they adapt Scriven
+    voice-dna.md           Voice profile system guide
+    publishing.md          Export formats and publishing pipelines
+    sacred-texts.md        Sacred work types and voice registers
+    translation.md         Translation pipeline guide
+    contributing.md        How to extend Scriven (commands, agents, etc.)
+    architecture.md        This file
+  .manuscript/             Per-project working directory (created by commands)
+```
+
+The `.manuscript/` directory is created when a writer runs `/scr:new-work`. It contains their project's context files (STYLE-GUIDE.md, OUTLINE.md, CHARACTERS.md, etc.), plans, drafts, and state. It is not shipped with Scriven -- it is generated per project.
+
+## Agent Orchestration
+
+Commands invoke agents to perform specialized work. Here is how the orchestration flows:
+
+```
+Writer: /scr:draft-chapter 3
+        |
+        v
+  commands/scr/draft.md
+  (orchestration command)
+        |
+        |  For each atomic unit (scene):
+        |
+        v
+  agents/drafter.md          <-- fresh context per unit
+  receives: STYLE-GUIDE.md, 3-1-PLAN.md, CHARACTERS.md excerpt,
+            previous unit tail (200 words), THEMES.md excerpt
+  produces: 3-1-DRAFT.md
+        |
+        v
+  agents/voice-checker.md    <-- fresh context
+  receives: STYLE-GUIDE.md, 3-1-DRAFT.md
+  produces: voice score + issues list
+        |
+        v
+  draft.md updates STATE.md, reports to writer
+```
+
+The autopilot command (`/scr:autopilot`) chains multiple stages:
+
+```
+/scr:autopilot
+    |
+    FOR each unit in OUTLINE.md:
+    |
+    +-> /scr:discuss-chapter N
+    +-> /scr:plan-chapter N
+    +-> /scr:draft-chapter N
+    |     +-> drafter agent (per atomic unit)
+    |     +-> voice-checker agent
+    +-> /scr:editor-review N
+    +-> /scr:submit-chapter N
+    |
+    Pause behavior depends on profile:
+      guided     -> pause after every atomic unit
+      supervised -> pause at structural boundaries
+      full-auto  -> pause only on errors
+```
+
+Key points:
+
+- Commands are orchestrators. They read instructions and coordinate work.
+- Agents are workers. They receive specific files and produce specific output.
+- Each agent invocation is independent. No shared state between invocations.
+- STYLE-GUIDE.md is always the first file loaded into any agent that produces or evaluates prose.
+
+## Fresh Context per Unit
+
+This is the core architectural pattern that makes Scriven work. Every agent invocation starts with a clean context -- no prior conversation, no accumulated state, no cross-contamination.
+
+### Why fresh context?
+
+**Voice drift.** When an AI accumulates context across multiple scenes, its writing style gradually shifts. By scene 10, it no longer sounds like the writer -- it sounds like an average of everything it has read. Fresh context forces the agent to re-read STYLE-GUIDE.md every time, resetting the voice profile.
+
+**Context bloat.** A 100,000-word novel would overwhelm the agent's context window if loaded all at once. Fresh context means each unit works within comfortable limits.
+
+**Focus.** The agent receives only what it needs for this one unit. No distractions from other chapters, no temptation to revise what came before, no interference from unrelated plot threads.
+
+### What the drafter receives
+
+For each atomic unit (scene, subsection, passage, stanza), the drafter agent gets:
+
+1. **STYLE-GUIDE.md** -- Always first. The voice DNA profile with 15+ dimensions: POV, tense, sentence architecture, vocabulary register, figurative density, dialogue style, pacing, and always/never/consider rules.
+2. **{N}-{A}-PLAN.md** -- The specific plan for this unit: what happens, emotional arc, beats to hit, voice notes, continuity anchors.
+3. **CHARACTERS.md excerpt** -- Only characters relevant to this unit, with their voice anchors and speech patterns.
+4. **Previous unit tail** -- The last 200 words of the preceding unit, for rhythm and tone continuity.
+5. **THEMES.md excerpt** -- Only the thematic threads this unit should advance.
+6. **WORK.md excerpt** -- Premise, tone, central question (for orientation, not copying).
+
+### What the drafter does NOT receive
+
+- The full manuscript -- trust the plan file
+- Other units' drafts -- no cross-contamination
+- Revision history -- each draft is fresh
+- The writer's conversation -- the agent is a craft worker, not a chatbot
+
+This constraint is what makes voice fidelity possible. The drafter writes one unit at a time, grounded in the voice profile, without drifting toward a generic AI voice.
+
+## Installer Architecture
+
+The installer (`bin/install.js`) handles getting Scriven's files into the right place for each AI agent runtime.
+
+### Platform detection
+
+The installer detects which AI agents are available by checking for their configuration directories:
+
+| Runtime | Detection | Type |
+|---------|-----------|------|
+| Claude Code | `~/.claude` exists | commands |
+| Cursor | `~/.cursor` exists | commands |
+| Gemini CLI | `~/.gemini` exists | commands |
+| Codex CLI | `~/.codex` exists | commands |
+| OpenCode | `~/.config/opencode` exists | commands |
+| GitHub Copilot | `~/.github` exists | commands |
+| Windsurf | `~/.windsurf` exists | commands |
+| Antigravity | `~/.gemini/antigravity` exists | commands |
+| Manus Desktop | `~/.manus` or Manus.app exists | skills |
+| Generic | Fallback (never auto-detected) | skills |
+
+### Two installation strategies
+
+**Command-directory (type: `commands`).** Copies individual command markdown files into the agent's command directory (e.g., `~/.claude/commands/scr/`). Each file becomes a slash command. Also copies agent files to the agent directory. This is the native approach for agents that support file-based commands.
+
+**Skill-file (type: `skills`).** Generates a single `SKILL.md` manifest file that lists all commands in a table. For platforms that do not support file-based command directories (like Manus), the SKILL.md acts as a command index that the agent reads to discover available commands. The agent then reads individual command files from the package directory.
+
+### Installation modes
+
+The installer supports two scopes:
+
+- **Global** -- Installs to the user's home directory (`~/.claude/commands/scr/`). Commands available in all projects.
+- **Project** -- Installs to the current project directory (`.claude/commands/scr/`). Commands scoped to this project only.
+
+The user chooses during installation.
+
+## Voice DNA Pipeline
+
+The Voice DNA system is what makes Scriven's output sound like the writer, not like AI. Here is how STYLE-GUIDE.md flows through the system.
+
+### Creation
+
+When the writer runs `/scr:new-work`, Scriven asks if they have existing writing samples. If they do, `/scr:profile-writer` analyzes the samples across 15+ dimensions to build the voice profile:
+
+- Point of view (close third, first person, omniscient, etc.)
+- Tense (past, present, mixed)
+- Sentence architecture (length distribution, variation patterns)
+- Vocabulary register (formal, conversational, lyrical, sparse)
+- Word origin preference (Anglo-Saxon vs Latinate)
+- Figurative density (metaphor/simile frequency)
+- Dialogue style (tagged, untagged, dialect handling)
+- Pacing (scene-to-summary ratio, paragraph rhythm)
+- Always/never/consider rules (specific writer preferences)
+
+The result is saved to `.manuscript/STYLE-GUIDE.md`.
+
+### Loading
+
+Every agent that produces or evaluates prose loads STYLE-GUIDE.md **first**, before any other file. This is a hard rule -- the voice profile must be the agent's primary frame of reference.
+
+### Enforcement
+
+The voice-checker agent (`agents/voice-checker.md`) compares drafted prose against STYLE-GUIDE.md and produces:
+
+- A voice consistency score
+- Specific issues organized by category (structural voice, lexical voice, character voice, AI-slop indicators)
+- Severity ratings (drift vs critical violation)
+
+The voice-checker is invoked after every drafted unit. If drift exceeds the configured threshold (default: 0.3 in `config.json`), the writer is offered a re-draft.
+
+### Calibration
+
+Writers can refine their voice profile over time with `/scr:voice-test` (test the profile against new samples) and `/scr:profile-writer` (re-analyze with additional samples). The profile is additive -- new samples refine the dimensions, they do not replace them.
+
+## Design Principles
+
+### Zero dependencies
+
+Scriven's `package.json` has no runtime dependencies. The installer is pure Node.js. Commands are markdown. This means no version conflicts, no supply-chain attacks, no broken builds. External tools (Pandoc, Typst) are optional prerequisites for export features -- the core writing workflow needs nothing beyond the AI agent itself.
+
+### Plan is canonical
+
+The product plan is the source of truth. If a command file contradicts the plan, the command file is wrong. This ensures consistency across 89 commands and prevents drift as multiple contributors work on the system.
+
+### Backward compatibility
+
+Existing commands must keep working as new features are added. The constraint system (CONSTRAINTS.json) makes this manageable -- new work types and commands are additive, and existing `available` arrays are not modified without explicit decision.
+
+### Progressive disclosure
+
+Onboarding asks 3 questions max. Depth is optional and additive. The writer should be drafting within minutes, not configuring options. Advanced features (autopilot profiles, voice calibration, sacred voice registers) are discoverable but not mandatory.
+
+## Next Steps
+
+To extend Scriven, see the [contributor guide](contributing.md). For the full command listing, see the [command reference](command-reference.md).
