@@ -29,6 +29,7 @@ ${c('dim', 'Spec-driven creative writing, publishing, and translation for AI cod
 const RUNTIMES = {
   'claude-code': {
     label: 'Claude Code',
+    type: 'commands',
     commands_dir_global: path.join(os.homedir(), '.claude', 'commands', 'scr'),
     commands_dir_project: '.claude/commands/scr',
     agents_dir_global: path.join(os.homedir(), '.claude', 'agents'),
@@ -37,6 +38,7 @@ const RUNTIMES = {
   },
   'cursor': {
     label: 'Cursor',
+    type: 'commands',
     commands_dir_global: path.join(os.homedir(), '.cursor', 'commands', 'scr'),
     commands_dir_project: '.cursor/commands/scr',
     agents_dir_global: path.join(os.homedir(), '.cursor', 'agents'),
@@ -45,6 +47,7 @@ const RUNTIMES = {
   },
   'gemini-cli': {
     label: 'Gemini CLI',
+    type: 'commands',
     commands_dir_global: path.join(os.homedir(), '.gemini', 'commands', 'scr'),
     commands_dir_project: '.gemini/commands/scr',
     agents_dir_global: path.join(os.homedir(), '.gemini', 'agents'),
@@ -53,6 +56,7 @@ const RUNTIMES = {
   },
   'codex': {
     label: 'Codex CLI',
+    type: 'commands',
     commands_dir_global: path.join(os.homedir(), '.codex', 'commands', 'scr'),
     commands_dir_project: '.codex/commands/scr',
     agents_dir_global: path.join(os.homedir(), '.codex', 'agents'),
@@ -61,6 +65,7 @@ const RUNTIMES = {
   },
   'opencode': {
     label: 'OpenCode',
+    type: 'commands',
     commands_dir_global: path.join(os.homedir(), '.config', 'opencode', 'commands', 'scr'),
     commands_dir_project: '.config/opencode/commands/scr',
     agents_dir_global: path.join(os.homedir(), '.config', 'opencode', 'agents'),
@@ -69,6 +74,7 @@ const RUNTIMES = {
   },
   'copilot': {
     label: 'GitHub Copilot',
+    type: 'commands',
     commands_dir_global: path.join(os.homedir(), '.github', 'commands', 'scr'),
     commands_dir_project: '.github/commands/scr',
     agents_dir_global: path.join(os.homedir(), '.github', 'agents'),
@@ -77,6 +83,7 @@ const RUNTIMES = {
   },
   'windsurf': {
     label: 'Windsurf',
+    type: 'commands',
     commands_dir_global: path.join(os.homedir(), '.windsurf', 'commands', 'scr'),
     commands_dir_project: '.windsurf/commands/scr',
     agents_dir_global: path.join(os.homedir(), '.windsurf', 'agents'),
@@ -85,6 +92,7 @@ const RUNTIMES = {
   },
   'antigravity': {
     label: 'Antigravity',
+    type: 'commands',
     commands_dir_global: path.join(os.homedir(), '.gemini', 'antigravity', 'commands', 'scr'),
     commands_dir_project: '.gemini/antigravity/commands/scr',
     agents_dir_global: path.join(os.homedir(), '.gemini', 'antigravity', 'agents'),
@@ -93,13 +101,95 @@ const RUNTIMES = {
   },
   'manus': {
     label: 'Manus Desktop',
-    commands_dir_global: path.join(os.homedir(), '.manus', 'skills', 'scr'),
-    commands_dir_project: '.manus/skills/scr',
-    agents_dir_global: path.join(os.homedir(), '.manus', 'agents'),
-    agents_dir_project: '.manus/agents',
+    type: 'skills',
+    skills_dir_global: path.join(os.homedir(), '.manus', 'skills', 'scriven'),
+    skills_dir_project: '.manus/skills/scriven',
     detect: () => fs.existsSync(path.join(os.homedir(), '.manus')) || fs.existsSync('/Applications/Manus.app') || fs.existsSync(path.join(os.homedir(), 'Applications', 'Manus.app')),
   },
+  'generic': {
+    label: 'Generic (SKILL.md)',
+    type: 'skills',
+    skills_dir_global: path.join(os.homedir(), '.scriven', 'skills'),
+    skills_dir_project: '.scriven/skills',
+    detect: () => false,
+  },
 };
+
+function generateSkillManifest(constraintsPath) {
+  const constraints = JSON.parse(fs.readFileSync(constraintsPath, 'utf8'));
+  const commands = constraints.commands;
+
+  // Read sacred subcommand files to include them
+  const sacredDir = path.join(PKG_ROOT, 'commands', 'scr', 'sacred');
+  const sacredCommands = [];
+  if (fs.existsSync(sacredDir)) {
+    for (const file of fs.readdirSync(sacredDir)) {
+      if (file.endsWith('.md')) {
+        const name = file.replace(/\.md$/, '');
+        // Look up in commands object for category/description, fall back to sacred_exclusive
+        const cmdData = commands[name] || {};
+        sacredCommands.push({
+          name: `/scr:sacred:${name}`,
+          category: cmdData.category || 'sacred_exclusive',
+          description: cmdData.description || name.replace(/-/g, ' '),
+        });
+      }
+    }
+  }
+
+  // Build entries from commands object
+  const entries = [];
+  for (const [name, cmd] of Object.entries(commands)) {
+    entries.push({
+      name: `/scr:${name}`,
+      category: cmd.category || 'uncategorized',
+      description: cmd.description || name.replace(/-/g, ' '),
+    });
+  }
+
+  // Add sacred subcommands that aren't already represented
+  for (const sc of sacredCommands) {
+    const baseName = sc.name.replace('/scr:sacred:', '');
+    // Only add if not already in commands as a top-level entry
+    if (!commands[baseName] || commands[baseName].category !== 'sacred_exclusive') {
+      entries.push(sc);
+    }
+  }
+
+  // Sort by category, then alphabetically by name within category
+  entries.sort((a, b) => {
+    if (a.category < b.category) return -1;
+    if (a.category > b.category) return 1;
+    return a.name.localeCompare(b.name);
+  });
+
+  // Build markdown table
+  const tableRows = entries.map(e => `| ${e.name} | ${e.category} | ${e.description} |`);
+
+  return `# Scriven — AI Creative Writing Skills
+
+Version: ${VERSION}
+
+Scriven is a spec-driven creative writing, publishing, and translation pipeline.
+
+## Available Commands
+
+| Command | Category | Description |
+|---------|----------|-------------|
+${tableRows.join('\n')}
+
+## Usage
+
+Each command above has a detailed instruction file in the \`commands/scr/\` subdirectory.
+To use a command, read the corresponding \`.md\` file and follow its instructions.
+
+## Quick Start
+
+1. Run \`/scr:help\` to see commands grouped by stage
+2. Run \`/scr:new-work\` to start a new project
+3. Run \`/scr:demo\` to explore a sample project
+`;
+}
 
 function ask(rl, question) {
   return new Promise((resolve) => rl.question(question, resolve));
@@ -155,18 +245,40 @@ async function main() {
 
   rl.close();
 
-  const commandsDir = isGlobal ? runtime.commands_dir_global : path.resolve(runtime.commands_dir_project);
-  const agentsDir = isGlobal ? runtime.agents_dir_global : path.resolve(runtime.agents_dir_project);
   const dataDir = isGlobal ? path.join(os.homedir(), '.scriven') : path.resolve('.scriven');
 
   console.log('\n' + c('bold', 'Installing...'));
 
-  const commandCount = copyDir(path.join(PKG_ROOT, 'commands', 'scr'), commandsDir);
-  console.log(`  ${c('green', '✓')} ${commandCount} command files → ${c('dim', commandsDir)}`);
+  if (runtime.type === 'skills') {
+    // Skill-file install path: SKILL.md manifest + command files in skills subdirectory
+    const skillsDir = isGlobal ? runtime.skills_dir_global : path.resolve(runtime.skills_dir_project);
 
-  const agentCount = copyDir(path.join(PKG_ROOT, 'agents'), agentsDir);
-  console.log(`  ${c('green', '✓')} ${agentCount} agent prompts → ${c('dim', agentsDir)}`);
+    // Generate and write SKILL.md manifest
+    const manifest = generateSkillManifest(path.join(PKG_ROOT, 'data', 'CONSTRAINTS.json'));
+    fs.mkdirSync(skillsDir, { recursive: true });
+    fs.writeFileSync(path.join(skillsDir, 'SKILL.md'), manifest);
+    console.log(`  ${c('green', '✓')} SKILL.md manifest → ${c('dim', path.join(skillsDir, 'SKILL.md'))}`);
 
+    // Copy command files alongside the manifest
+    const commandCount = copyDir(path.join(PKG_ROOT, 'commands', 'scr'), path.join(skillsDir, 'commands', 'scr'));
+    console.log(`  ${c('green', '✓')} ${commandCount} command files → ${c('dim', path.join(skillsDir, 'commands', 'scr'))}`);
+
+    // Copy agent prompts
+    const agentCount = copyDir(path.join(PKG_ROOT, 'agents'), path.join(skillsDir, 'agents'));
+    console.log(`  ${c('green', '✓')} ${agentCount} agent prompts → ${c('dim', path.join(skillsDir, 'agents'))}`);
+  } else {
+    // Command-directory install path (existing behavior for type === 'commands' or undefined)
+    const commandsDir = isGlobal ? runtime.commands_dir_global : path.resolve(runtime.commands_dir_project);
+    const agentsDir = isGlobal ? runtime.agents_dir_global : path.resolve(runtime.agents_dir_project);
+
+    const commandCount = copyDir(path.join(PKG_ROOT, 'commands', 'scr'), commandsDir);
+    console.log(`  ${c('green', '✓')} ${commandCount} command files → ${c('dim', commandsDir)}`);
+
+    const agentCount = copyDir(path.join(PKG_ROOT, 'agents'), agentsDir);
+    console.log(`  ${c('green', '✓')} ${agentCount} agent prompts → ${c('dim', agentsDir)}`);
+  }
+
+  // Templates and data — shared by both install paths
   fs.mkdirSync(path.join(dataDir, 'templates'), { recursive: true });
   fs.mkdirSync(path.join(dataDir, 'data'), { recursive: true });
   const templateCount = copyDir(path.join(PKG_ROOT, 'templates'), path.join(dataDir, 'templates'));
@@ -186,10 +298,18 @@ async function main() {
 
   console.log('\n' + c('bold', c('green', 'Installation complete!')));
   console.log('\n' + c('bold', 'Next steps:'));
-  console.log(`  ${c('cyan', '1.')} Open ${runtime.label} in any directory`);
-  console.log(`  ${c('cyan', '2.')} Run ${c('bold', '/scr:help')} to see available commands`);
-  console.log(`  ${c('cyan', '3.')} Run ${c('bold', '/scr:new-work')} to start a new project`);
-  console.log(`     or ${c('bold', '/scr:demo')} to explore a sample project first`);
+  if (runtime.type === 'skills') {
+    const skillsDir = isGlobal ? runtime.skills_dir_global : path.resolve(runtime.skills_dir_project);
+    console.log(`  ${c('cyan', '1.')} Point ${runtime.label} at ${c('dim', path.join(skillsDir, 'SKILL.md'))}`);
+    console.log(`  ${c('cyan', '2.')} Read the SKILL.md to discover available /scr:* commands`);
+    console.log(`  ${c('cyan', '3.')} Run ${c('bold', '/scr:new-work')} to start a new project`);
+    console.log(`     or ${c('bold', '/scr:demo')} to explore a sample project first`);
+  } else {
+    console.log(`  ${c('cyan', '1.')} Open ${runtime.label} in any directory`);
+    console.log(`  ${c('cyan', '2.')} Run ${c('bold', '/scr:help')} to see available commands`);
+    console.log(`  ${c('cyan', '3.')} Run ${c('bold', '/scr:new-work')} to start a new project`);
+    console.log(`     or ${c('bold', '/scr:demo')} to explore a sample project first`);
+  }
   console.log('\n' + c('dim', 'Docs: https://github.com/scriven/scriven\n'));
 }
 
@@ -201,4 +321,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { copyDir, RUNTIMES };
+module.exports = { copyDir, RUNTIMES, generateSkillManifest };
