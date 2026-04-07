@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 04-05-PLAN.md
-last_updated: "2026-04-07T06:50:32.880Z"
+stopped_at: Completed 04-04-PLAN.md
+last_updated: "2026-04-07T06:50:47.593Z"
 progress:
   total_phases: 8
   completed_phases: 3
@@ -61,6 +61,7 @@ Plan: 6 of 6
 | Phase 04 P03 | 2min | 2 tasks | 5 files |
 | Phase 04 P01 | 2min | 2 tasks | 3 files |
 | Phase 04 P05 | 3min | 2 tasks | 5 files |
+| Phase 04 P04 | 3min | 2 tasks | 2 files |
 
 ## Accumulated Context
 
@@ -91,6 +92,8 @@ Recent decisions affecting current work:
 - [Phase 04]: D-01 inline annotation format (original -> suggested) implemented in line-edit with 4 categories
 - [Phase 04]: Blurb variations use distinct marketing strategies (hook+stakes vs classic back-cover vs retailer positioning) not just length differences
 - [Phase 04]: Query letter adapts to 5 genre conventions plus fallback; book proposal checks nonfiction constraint before prerequisites
+- [Phase 04]: Front matter uses numbered prefixes (01-19) for Chicago Manual ordering; back matter uses descriptive names
+- [Phase 04]: Foreword is scaffold-only to prevent AI impersonation; About the Author defaults to third person
 
 ### Pending Todos
 
@@ -104,6 +107,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-07T06:50:23.581Z
-Stopped at: Completed 04-05-PLAN.md
+Last session: 2026-04-07T06:50:47.591Z
+Stopped at: Completed 04-04-PLAN.md
 Resume file: None

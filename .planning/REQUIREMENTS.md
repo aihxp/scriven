@@ -67,15 +67,15 @@ Requirements for full product release. Each maps to roadmap phases.
 
 ### Front & Back Matter
 
-- [ ] **PUB-01**: `/scr:front-matter` generates all 19 front matter elements (title page, copyright, dedication, epigraph, TOC, etc.)
-- [ ] **PUB-02**: `/scr:back-matter` generates all 12+ back matter elements (about author, also-by, acknowledgments, etc.)
-- [ ] **PUB-03**: Front/back matter elements individually addressable via `--element` flag
+- [x] **PUB-01**: `/scr:front-matter` generates all 19 front matter elements (title page, copyright, dedication, epigraph, TOC, etc.)
+- [x] **PUB-02**: `/scr:back-matter` generates all 12+ back matter elements (about author, also-by, acknowledgments, etc.)
+- [x] **PUB-03**: Front/back matter elements individually addressable via `--element` flag
 - [x] **PUB-04**: `/scr:blurb` generates marketing blurb from complete draft
 - [x] **PUB-05**: `/scr:synopsis` generates synopsis at specified length (1-page, 2-page, 5-page)
 - [x] **PUB-06**: `/scr:query-letter` generates agent query letter (requires blurb + synopsis)
 - [x] **PUB-07**: `/scr:book-proposal` generates nonfiction book proposal (requires synopsis)
 - [x] **PUB-08**: `/scr:discussion-questions` generates reading group discussion questions
-- [ ] **PUB-09**: Front/back matter adapts for academic (abstract, bibliography) and sacred (imprimatur, concordance, maps)
+- [x] **PUB-09**: Front/back matter adapts for academic (abstract, bibliography) and sacred (imprimatur, concordance, maps)
 
 ### Export & Publishing
 
@@ -228,15 +228,15 @@ Requirements for full product release. Each maps to roadmap phases.
 | QUAL-08 | Phase 4 | Complete |
 | QUAL-09 | Phase 4 | Complete |
 | QUAL-10 | Phase 4 | Complete |
-| PUB-01 | Phase 4 | Pending |
-| PUB-02 | Phase 4 | Pending |
-| PUB-03 | Phase 4 | Pending |
+| PUB-01 | Phase 4 | Complete |
+| PUB-02 | Phase 4 | Complete |
+| PUB-03 | Phase 4 | Complete |
 | PUB-04 | Phase 4 | Complete |
 | PUB-05 | Phase 4 | Complete |
 | PUB-06 | Phase 4 | Complete |
 | PUB-07 | Phase 4 | Complete |
 | PUB-08 | Phase 4 | Complete |
-| PUB-09 | Phase 4 | Pending |
+| PUB-09 | Phase 4 | Complete |
 | EXP-01 | Phase 5 | Pending |
 | EXP-02 | Phase 5 | Pending |
 | EXP-03 | Phase 5 | Pending |
