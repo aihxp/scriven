@@ -346,7 +346,7 @@ Analyze a manuscript you imported. Scriven reads the whole thing and extracts vo
 
 ### `/scr:manuscript-stats`
 
-**Description:** Show manuscript word count, chapter count, estimated page count, and reading time.
+**Description:** Show manuscript word count, page count, unit count, and reading time -- with progress against your work type's industry-standard ranges.
 
 **Usage:** `/scr:manuscript-stats [--detail]`
 
@@ -355,11 +355,19 @@ Analyze a manuscript you imported. Scriven reads the whole thing and extracts vo
 **Flags:**
 - `--detail` -- Show per-unit breakdown
 
+**Output includes:**
+- Total words and pages vs. work type target range (e.g., 14,200 / 70,000–100,000 words)
+- Units drafted vs. expected count (e.g., 4 / 20–35 chapters)
+- Per-unit pacing check against unit word/page range
+- Estimated reading time
+
+Word and page ranges are sourced from `word_count_range`, `page_range`, `unit_count_range`, `unit_word_range`, and `unit_page_range` in CONSTRAINTS.json. Page counts use ~250 words/page (standard manuscript format).
+
 **Example:**
 ```
 /scr:manuscript-stats --detail
 ```
-See word counts per chapter, total pages, and estimated reading time.
+See word counts per chapter, total pages, progress against targets, and estimated reading time.
 
 ---
 

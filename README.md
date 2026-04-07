@@ -7,7 +7,7 @@
 Inspired by [GSD (get-shit-done)](https://github.com/gsd-build/get-shit-done), Scriven brings spec-driven workflows to creative writing. It runs inside your AI coding agent (Claude Code, Cursor, Gemini CLI, and more) and handles everything from blank page to publication-ready package.
 
 ```bash
-npx scriven@latest
+npx scriven-cli@latest
 ```
 
 ---
@@ -33,7 +33,7 @@ Everything adapts to your work type. A novel uses `/scr:draft` for chapters. A s
 
 ```bash
 # Install
-npx scriven@latest
+npx scriven-cli@latest
 
 # In any project directory, open Claude Code (or your preferred agent) and:
 /scr:new-work        # Start a fresh project
@@ -79,7 +79,7 @@ For sacred and historical texts, Voice DNA is supplemented by 10 sacred voice re
 
 **Sacred & historical:** scripture (Biblical, Quranic, Torah, Vedic, Buddhist, generic), commentary/exegesis, devotional, liturgical text, historical chronicle, historical account, mythological collection, religious epic, sermon, homiletic collection
 
-Each work type has its own structural hierarchy. Commands rename automatically -- a Torah commentary uses `/scr:plan-parashah`, not `/scr:plan-chapter`.
+Each work type has its own structural hierarchy and **industry-standard word count and page range guidance** -- a novel targets 70,000–100,000 words across 20–35 chapters, a screenplay targets 90–120 pages across 3–5 acts. These ranges guide outlining, progress tracking, and drafter pacing. Commands rename automatically -- a Torah commentary uses `/scr:plan-parashah`, not `/scr:plan-chapter`.
 
 ---
 
