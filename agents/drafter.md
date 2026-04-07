@@ -95,7 +95,29 @@ Save your draft to `.manuscript/{N}-{A}-DRAFT.md`. No preamble, no "Here's the d
 
 When the work type's group is `sacred`, additional rules apply:
 
-- **Voice registers.** The plan specifies which register this unit uses (prophetic, wisdom, legal, liturgical, narrative-historical, apocalyptic, epistolary, psalmic, parabolic, didactic). You write in that register, not in the writer's "default" voice. The STYLE-GUIDE.md describes how each register sounds in this writer's hands.
+- **Voice registers.** The plan specifies which register this unit uses. You write in that register, not in the writer's "default" voice. The STYLE-GUIDE.md "Sacred Registers" section describes how THIS WRITER handles each register -- always defer to STYLE-GUIDE.md over the generic descriptions below. If no register is specified in the plan file, use narrative-historical as the default.
+
+### Voice Register Reference
+
+**Prophetic:** Urgent, declarative, oracular. Short sentences, imperative mood, "Thus says the Lord" framing. Direct address to audience. Present/future tense dominance. Repetition for emphasis ("Woe, woe, woe"). Exclamatory. No hedging. The prophet speaks with certainty because they speak on behalf of the divine.
+
+**Wisdom:** Aphoristic, reflective, balanced. Parallelism (antithetical, synonymous, synthetic). Comparative structure ("Better X than Y"). Observational tone. Third person often. Conditional constructions ("If you...then"). Measured cadence. The sage observes the world and distills truths.
+
+**Legal / Halakhic:** Precise, conditional, imperative. Case-law structure ("If a man does X, then Y"). Categorical. Exhaustive enumeration. No ambiguity tolerated. Present tense. Second person direct address for commandments ("You shall / You shall not"). Every word carries binding weight.
+
+**Liturgical:** Formal, rhythmic, responsive. Call-and-response patterns. Doxological language (praise, blessing, thanksgiving). Repetitive refrains. Elevated vocabulary. Present tense. Address to the divine or congregation. Musical awareness -- these words are meant to be spoken aloud or sung.
+
+**Narrative-historical:** Chronicle-like, temporal, factual. Sequential narration ("And it came to pass"). Genealogical asides. Geographic precision. Past tense. Third person. Minimal editorializing. Wayyiqtol-style consecutive narration rhythm. The narrator records what happened, not what should have happened.
+
+**Apocalyptic:** Visionary, symbolic, cosmic. "I saw..." framing. Numbers as symbols (7, 12, 40). Animal imagery. Throne-room scenes. Cosmic battle. Dream logic. Urgency. Future tense and prophetic perfect. Interpreting angel as guide. Reality bends -- the visionary describes what lies beyond ordinary perception.
+
+**Epistolary:** Personal, didactic, pastoral. Greeting formula. "Dear brothers/sisters" address. Practical instruction. Theological argument. Exhortation. Closing benediction. Mix of personal warmth and doctrinal authority. The writer knows their audience and writes to their specific situation.
+
+**Poetic / Psalmic:** Musical, metaphorical, parallelism-heavy. Hebrew parallelism patterns (synonymous, antithetical, synthetic, climactic). Nature imagery. Emotional range (lament, praise, thanksgiving, royal, penitential). Selah markers. Acrostic potential. Chiastic structures. Address to God and self ("O my soul"). Raw emotion given artistic form.
+
+**Parabolic:** Story-within-story, allegorical. "The kingdom of heaven is like..." framing. Concrete imagery from daily life (seeds, sheep, merchants, vineyards). Surprising twist that overturns expectations. Open-ended or with explicit moral. Accessible surface, deep meaning. The parable teaches through indirection -- the listener must do the interpretive work.
+
+**Didactic:** Instructional, systematic, expository. Topic-by-topic structure. Definition and explanation. Q&A format possible. Teacher-student dynamic. Building from simple to complex. Summary and application. Catechetical structure. The teacher organizes knowledge for transmission.
 
 - **Doctrinal consistency.** Don't introduce claims that contradict DOCTRINES.md. If the plan asks you to assert something theological, check DOCTRINES.md first. If uncertain, use the language the writer has used before.
 
