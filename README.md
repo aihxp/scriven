@@ -2,7 +2,7 @@
 
 **Spec-driven creative writing, publishing, and translation for AI coding agents.**
 
-*I don't outline — Claude does. I don't edit — Claude does. I don't format — Claude does. I just write.*
+*I don't outline -- Claude does. I don't edit -- Claude does. I don't format -- Claude does. I just write.*
 
 Inspired by [GSD (get-shit-done)](https://github.com/gsd-build/get-shit-done), Scriven brings spec-driven workflows to creative writing. It runs inside your AI coding agent (Claude Code, Cursor, Gemini CLI, and more) and handles everything from blank page to publication-ready package.
 
@@ -14,16 +14,16 @@ npx scriven@latest
 
 ## What is this
 
-Scriven is a command system that turns your AI coding agent into a full creative writing studio. It supports 50+ work types — novels, screenplays, research papers, poetry collections, scripture commentaries, comics, memoirs — each with its own adaptive vocabulary and toolset.
+Scriven is a command system that turns your AI coding agent into a full creative writing studio. It supports 50+ work types -- novels, screenplays, research papers, poetry collections, scripture commentaries, comics, memoirs -- each with its own adaptive vocabulary and toolset.
 
-You get 170+ slash commands covering every stage of the writing pipeline:
+You get 101 slash commands covering every stage of the writing pipeline:
 
-- **Create** — Set up a project with tailored context files. Progressive onboarding, never overwhelming.
-- **Write** — Discuss, plan, draft, and revise one unit at a time. The drafter agent loads your Voice DNA and writes in *your* voice, not generic AI prose.
-- **Polish** — Editor review, line edit, copy edit, continuity check, voice check, beta reader simulation, sensitivity review.
-- **Publish** — Front/back matter, cover art, blurbs, query letters, KDP packages, IngramSpark packages, EPUB, PDF, Fountain, Final Draft, LaTeX.
-- **Translate** — Deep translation with glossary management, cultural adaptation, back-translation verification, multi-language simultaneous publishing.
-- **Collaborate** — Parallel revision tracks, co-writing workflows, continuity merge checking.
+- **Create** -- Set up a project with tailored context files. Progressive onboarding, never overwhelming.
+- **Write** -- Discuss, plan, draft, and revise one unit at a time. The drafter agent loads your Voice DNA and writes in *your* voice, not generic AI prose.
+- **Polish** -- Editor review, line edit, copy edit, continuity check, voice check, beta reader simulation, sensitivity review.
+- **Publish** -- Front/back matter, cover art, blurbs, query letters, KDP packages, IngramSpark packages, EPUB, PDF, Fountain, Final Draft, LaTeX.
+- **Translate** -- Deep translation with glossary management, cultural adaptation, back-translation verification, multi-language simultaneous publishing.
+- **Collaborate** -- Parallel revision tracks, co-writing workflows, continuity merge checking.
 
 Everything adapts to your work type. A novel uses `/scr:draft-chapter 3`. A screenplay uses `/scr:draft-act 1`. A Quran commentary uses `/scr:draft-surah 2`. Same system, tradition-native vocabulary.
 
@@ -57,7 +57,7 @@ Scriven's core insight: drafted prose should sound like *you*, not like an AI. B
 - Pacing, transitions, emotional range
 - Do/don't/consider rules specific to the writer
 
-This profile is saved as `STYLE-GUIDE.md` and loaded into every drafter agent invocation. The drafter writes one atomic unit per fresh context — a scene, a subsection, a passage — with the style guide as its primary reference. Voice stays consistent across hundreds of scenes.
+This profile is saved as `STYLE-GUIDE.md` and loaded into every drafter agent invocation. The drafter writes one atomic unit per fresh context -- a scene, a subsection, a passage -- with the style guide as its primary reference. Voice stays consistent across hundreds of scenes.
 
 For sacred and historical texts, Voice DNA is supplemented by 10 sacred voice registers (prophetic, wisdom, legal, liturgical, narrative-historical, apocalyptic, epistolary, psalmic, parabolic, didactic).
 
@@ -79,7 +79,7 @@ For sacred and historical texts, Voice DNA is supplemented by 10 sacred voice re
 
 **Sacred & historical:** scripture (Biblical, Quranic, Torah, Vedic, Buddhist, generic), commentary/exegesis, devotional, liturgical text, historical chronicle, historical account, mythological collection, religious epic, sermon, homiletic collection
 
-Each work type has its own structural hierarchy. Commands rename automatically — a Torah commentary uses `/scr:plan-parashah`, not `/scr:plan-chapter`.
+Each work type has its own structural hierarchy. Commands rename automatically -- a Torah commentary uses `/scr:plan-parashah`, not `/scr:plan-chapter`.
 
 ---
 
@@ -87,23 +87,23 @@ Each work type has its own structural hierarchy. Commands rename automatically �
 
 Run the full pipeline autonomously. Three profiles:
 
-- **Guided** — Pause after each unit for review
-- **Supervised** — Batch through several units, pause for review
-- **Full-auto** — Run until complete; only pause on critical failures
+- **Guided** -- Pause after each unit for review
+- **Supervised** -- Batch through several units, pause for review
+- **Full-auto** -- Run until complete; only pause on critical failures
 
 ```bash
 /scr:autopilot --profile supervised
 ```
 
 Plus:
-- `/scr:autopilot-publish` — One command generates front matter, back matter, cover, and full export package
-- `/scr:autopilot-translate french german spanish` — Simultaneous multi-language editions
+- `/scr:autopilot-publish` -- One command generates front matter, back matter, cover, and full export package
+- `/scr:autopilot-translate french german spanish` -- Simultaneous multi-language editions
 
 ---
 
 ## Writer mode vs. developer mode
 
-Scriven detects non-technical writers and hides git terminology. Instead of `commit`, `branch`, `merge`, `diff` — you see `save`, `version`, `compare`, `accept changes`. All the power, none of the coding jargon.
+Scriven detects non-technical writers and hides git terminology. Instead of `commit`, `branch`, `merge`, `diff` -- you see `save`, `version`, `compare`, `accept changes`. All the power, none of the coding jargon.
 
 Technical writers can enable developer mode in settings for full git access and verbose output.
 
@@ -119,21 +119,21 @@ Scriven is built on five principles:
 
 3. **Progressive disclosure.** Onboarding asks 3 questions, not 30. Depth is optional and always additive.
 
-4. **Tradition-native vocabulary.** A Quran commentary uses surahs and ayahs. A Bible study uses books and verses. A screenplay uses acts and scenes. The tool adapts to the tradition — the writer never adapts to the tool.
+4. **Tradition-native vocabulary.** A Quran commentary uses surahs and ayahs. A Bible study uses books and verses. A screenplay uses acts and scenes. The tool adapts to the tradition -- the writer never adapts to the tool.
 
 5. **`/scr:next` always works.** The universal interface. A writer who only ever types `/scr:next` can complete an entire novel, from blank page to KDP package.
 
 ---
 
-## Status
+## Documentation
 
-**Version:** 0.3.0 (Phase 1 — MVP)
-
-**What's working:** Core workflow (new-work → discuss → plan → draft → editor-review → submit), Voice DNA system, adaptive command naming across all 50+ work types, constraint-based command availability, writer mode / developer mode toggle.
-
-**What's next:** Autopilot mode (Phase 2), full publishing pipeline (Phase 5), illustration & cover art (Phase 6), translation (Phase 7), collaboration (Phase 8), sacred/historical features (Phase 10).
-
-See [SCRIVEN-PRODUCT-PLAN-v0.3.md](./SCRIVEN-PRODUCT-PLAN-v0.3.md) for the full design document.
+- [Getting Started](docs/getting-started.md) -- Install to first draft in 10 minutes
+- [Command Reference](docs/command-reference.md) -- All 101 commands with usage, flags, and examples
+- [Work Types Guide](docs/work-types.md) -- How 50+ work types adapt Scriven's vocabulary
+- [Voice DNA Guide](docs/voice-dna.md) -- The 15+ dimension voice profiling system
+- [Publishing Guide](docs/publishing.md) -- 13 export formats, KDP, IngramSpark, submission packages
+- [Sacred Text Guide](docs/sacred-texts.md) -- 13 sacred work types, voice registers, tradition-native features
+- [Translation Guide](docs/translation.md) -- Multi-language pipeline with glossary and cultural adaptation
 
 ---
 
@@ -151,10 +151,18 @@ See [SCRIVEN-PRODUCT-PLAN-v0.3.md](./SCRIVEN-PRODUCT-PLAN-v0.3.md) for the full 
 
 ---
 
+## Status
+
+**Version:** 1.0.0
+
+All features shipped -- 101 commands across 50+ work types, with voice profiling, autopilot drafting, full publishing pipeline, illustration generation, translation, collaboration tools, and sacred text support. Runs on 9 AI coding agent runtimes.
+
+---
+
 ## License
 
 MIT. See [LICENSE](./LICENSE).
 
 ## Contributing
 
-Scriven is an open project. Contributions welcome — especially new work types, additional runtime adapters, and voice register definitions for languages and traditions we haven't covered yet.
+Scriven is an open project. Contributions welcome -- especially new work types, additional runtime adapters, and voice register definitions for languages and traditions we haven't covered yet.
