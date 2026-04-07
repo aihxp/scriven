@@ -129,7 +129,7 @@ Plans:
 - [x] 06-01-PLAN.md -- Art direction visual style bible and cover art prompt generator with KDP specs
 - [x] 06-02-PLAN.md -- Character reference sheets, chapter header ornaments, and world map illustration prompts
 - [x] 06-03-PLAN.md -- Scene illustration prompts, spread layouts, panel layouts, and storyboard frames
-- [ ] 06-04-PLAN.md -- Phase 6 test suite validating all commands, CONSTRAINTS.json entries, and decisions D-01 through D-05
+- [x] 06-04-PLAN.md -- Phase 6 test suite validating all commands, CONSTRAINTS.json entries, and decisions D-01 through D-05
 
 ### Phase 7: Translation & Localization
 **Goal**: Writers can translate their manuscript into other languages with quality controls, glossary management, and proper text direction support
