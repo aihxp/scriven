@@ -146,7 +146,7 @@ Plans:
 - [x] 07-01-PLAN.md -- Translator agent and core translation commands (translate, translation-glossary, translation-memory)
 - [x] 07-02-PLAN.md -- Translation quality and publishing commands (cultural-adaptation, back-translate, multi-publish)
 - [x] 07-03-PLAN.md -- Autopilot-translate, RTL/CJK template support, and CONSTRAINTS.json updates
-- [ ] 07-04-PLAN.md -- Phase 7 test suite validating all commands, CONSTRAINTS.json entries, and decisions D-01 through D-05
+- [x] 07-04-PLAN.md -- Phase 7 test suite validating all commands, CONSTRAINTS.json entries, and decisions D-01 through D-05
 
 ### Phase 8: Collaboration, Platform & Sacred
 **Goal**: Scriven supports team workflows, runs on all major AI coding agents, and provides deep sacred/historical text capabilities
