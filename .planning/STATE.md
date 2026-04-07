@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 02-03-PLAN.md
-last_updated: "2026-04-07T05:29:21.655Z"
+stopped_at: Completed 02-02-PLAN.md
+last_updated: "2026-04-07T05:29:55.672Z"
 progress:
   total_phases: 8
   completed_phases: 1
   total_plans: 7
-  completed_plans: 5
+  completed_plans: 6
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-04-06)
 ## Current Position
 
 Phase: 02 (Writer Experience) — EXECUTING
-Plan: 3 of 4
+Plan: 4 of 4
 
 ## Performance Metrics
 
@@ -51,6 +51,7 @@ Plan: 3 of 4
 | Phase 01 P03 | 2min | 2 tasks | 2 files |
 | Phase 02 P01 | 2min | 2 tasks | 2 files |
 | Phase 02 P03 | 2min | 2 tasks | 5 files |
+| Phase 02 P02 | 2min | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -67,6 +68,7 @@ Recent decisions affecting current work:
 - [Phase 01]: Demo prose quality approved by human reviewer -- watchmaker story meets the bar for a compelling first impression
 - [Phase 02]: Autopilot command uses single file with --profile flag for all three profiles; supervised mode uses CONSTRAINTS.json hierarchy.mid for boundary detection
 - [Phase 02]: Resume context stored in STATE.md Session handoff section (single source of truth per D-12)
+- [Phase 02]: undo uses git revert instead of git reset to preserve full history
 
 ### Pending Todos
 
@@ -80,6 +82,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-07T05:29:21.653Z
-Stopped at: Completed 02-03-PLAN.md
+Last session: 2026-04-07T05:29:55.670Z
+Stopped at: Completed 02-02-PLAN.md
 Resume file: None
