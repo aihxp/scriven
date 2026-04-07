@@ -9,7 +9,8 @@
 
   "autopilot": {
     "enabled": false,
-    "profile": "guided"
+    "profile": "guided",
+    "custom_checkpoints": []
   },
 
   "voice": {
