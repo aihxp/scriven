@@ -18,19 +18,19 @@ Requirements for full product release. Each maps to roadmap phases.
 
 ### Autopilot & Writer Mode
 
-- [ ] **AUTO-01**: Autopilot guided profile pauses after each atomic unit for writer review
-- [ ] **AUTO-02**: Autopilot supervised profile batches through several units, pauses for review
-- [ ] **AUTO-03**: Autopilot full-auto runs until complete, only pausing on quality gate failures (voice drift, continuity contradiction)
-- [ ] **AUTO-04**: Autopilot resume picks up from last completed unit after interruption
-- [ ] **AUTO-05**: Writer mode toggle hides git terminology — commit→save, branch→version, diff→compare, merge→accept changes
+- [x] **AUTO-01**: Autopilot guided profile pauses after each atomic unit for writer review
+- [x] **AUTO-02**: Autopilot supervised profile batches through several units, pauses for review
+- [x] **AUTO-03**: Autopilot full-auto runs until complete, only pausing on quality gate failures (voice drift, continuity contradiction)
+- [x] **AUTO-04**: Autopilot resume picks up from last completed unit after interruption
+- [x] **AUTO-05**: Writer mode toggle hides git terminology — commit→save, branch→version, diff→compare, merge→accept changes
 - [ ] **AUTO-06**: `/scr:save` creates git commit with writer-friendly message
 - [ ] **AUTO-07**: `/scr:history` shows visual timeline of saves without git jargon
 - [ ] **AUTO-08**: `/scr:compare` shows side-by-side diff in writer-friendly format
 - [ ] **AUTO-09**: `/scr:versions` lists draft versions with human-readable labels
 - [ ] **AUTO-10**: `/scr:undo` reverts to last checkpoint with confirmation
-- [ ] **AUTO-11**: `/scr:pause-work` captures full context (current unit, what writer was thinking, next steps) to STATE.md
-- [ ] **AUTO-12**: `/scr:resume-work` restores context and explains where writer left off
-- [ ] **AUTO-13**: `/scr:session-report` shows work completed in current session (units drafted, words written, time)
+- [x] **AUTO-11**: `/scr:pause-work` captures full context (current unit, what writer was thinking, next steps) to STATE.md
+- [x] **AUTO-12**: `/scr:resume-work` restores context and explains where writer left off
+- [x] **AUTO-13**: `/scr:session-report` shows work completed in current session (units drafted, words written, time)
 
 ### Character & World
 
@@ -191,19 +191,19 @@ Requirements for full product release. Each maps to roadmap phases.
 | MVP-04 | Phase 1 | Complete |
 | MVP-05 | Phase 1 | Complete |
 | MVP-06 | Phase 1 | Complete |
-| AUTO-01 | Phase 2 | Pending |
-| AUTO-02 | Phase 2 | Pending |
-| AUTO-03 | Phase 2 | Pending |
-| AUTO-04 | Phase 2 | Pending |
-| AUTO-05 | Phase 2 | Pending |
+| AUTO-01 | Phase 2 | Complete |
+| AUTO-02 | Phase 2 | Complete |
+| AUTO-03 | Phase 2 | Complete |
+| AUTO-04 | Phase 2 | Complete |
+| AUTO-05 | Phase 2 | Complete |
 | AUTO-06 | Phase 2 | Pending |
 | AUTO-07 | Phase 2 | Pending |
 | AUTO-08 | Phase 2 | Pending |
 | AUTO-09 | Phase 2 | Pending |
 | AUTO-10 | Phase 2 | Pending |
-| AUTO-11 | Phase 2 | Pending |
-| AUTO-12 | Phase 2 | Pending |
-| AUTO-13 | Phase 2 | Pending |
+| AUTO-11 | Phase 2 | Complete |
+| AUTO-12 | Phase 2 | Complete |
+| AUTO-13 | Phase 2 | Complete |
 | CHAR-01 | Phase 3 | Pending |
 | CHAR-02 | Phase 3 | Pending |
 | CHAR-03 | Phase 3 | Pending |

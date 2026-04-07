@@ -52,9 +52,9 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 02-01-PLAN.md -- Autopilot command with guided/supervised/full-auto profiles and config template update
-- [ ] 02-02-PLAN.md -- Writer-friendly git commands (save, history, compare, versions, undo)
-- [ ] 02-03-PLAN.md -- Session management commands (pause-work, resume-work, session-report) and template updates
+- [x] 02-01-PLAN.md -- Autopilot command with guided/supervised/full-auto profiles and config template update
+- [x] 02-02-PLAN.md -- Writer-friendly git commands (save, history, compare, versions, undo)
+- [x] 02-03-PLAN.md -- Session management commands (pause-work, resume-work, session-report) and template updates
 - [ ] 02-04-PLAN.md -- Phase 2 test suite validating all commands, config schema, and template updates
 
 ### Phase 3: Creative Toolkit
