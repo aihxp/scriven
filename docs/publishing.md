@@ -1,0 +1,275 @@
+# Publishing Guide
+
+Scriven takes your manuscript from drafted prose to publication-ready files. Whether you're uploading to Amazon KDP, submitting to IngramSpark, or querying agents, the export pipeline handles format conversion, metadata generation, and platform-specific packaging.
+
+This guide covers all 13 export formats, platform-specific packages, the publish wizard, and autopilot publishing.
+
+## Prerequisites
+
+Scriven's export pipeline uses external tools for format conversion. You only need the tools required by your chosen formats.
+
+| Tool | Install | Required For |
+|------|---------|-------------|
+| **Pandoc** | `brew install pandoc` | DOCX, PDF, EPUB, LaTeX |
+| **Typst** | `brew install typst` | PDF generation |
+| **Ghostscript** | `brew install ghostscript` | IngramSpark CMYK conversion |
+| **Afterwriting** | `npm i -g afterwriting` | Screenplay PDF |
+| **Screenplain** | `pip install screenplain` | Final Draft (FDX) export |
+
+Run `/scr:health` to check which tools are installed on your system. Scriven will also warn you at export time if a required tool is missing and show the install command.
+
+**No tools needed for:** Markdown export and Fountain export -- these are pure text conversions handled by Scriven directly.
+
+## Export Formats
+
+Export your manuscript with `/scr:export --format <format>`. Scriven assembles the full manuscript from your outline, front matter, body drafts, and back matter, then converts to the target format.
+
+### Core Formats
+
+These cover the most common publishing and review needs.
+
+**Markdown** -- Plain assembled manuscript with no external dependencies.
+
+```
+/scr:export --format markdown
+```
+
+Output: `.manuscript/output/manuscript.md`
+
+**DOCX (Manuscript Format)** -- Standard manuscript format: 12pt Times New Roman, double-spaced, 1-inch margins. This is what agents and editors expect for submissions.
+
+```
+/scr:export --format docx
+```
+
+Output: `.manuscript/output/manuscript.docx`. Uses the `scriven-manuscript.docx` reference template for styling.
+
+**DOCX (Formatted)** -- Designed and typeset DOCX for review copies and ARCs (advance reader copies). Custom fonts, styled headers, polished layout.
+
+```
+/scr:export --format docx --formatted
+```
+
+Output: `.manuscript/output/manuscript-formatted.docx`. Uses the `scriven-formatted.docx` reference template.
+
+**PDF (Manuscript)** -- Standard manuscript-format PDF via the Typst engine.
+
+```
+/scr:export --format pdf
+```
+
+Output: `.manuscript/output/manuscript.pdf`. Requires Pandoc and Typst.
+
+**PDF (Print-Ready)** -- Book interior PDF with proper trim sizes, margins, gutters, and page numbers. Ready for print-on-demand services.
+
+```
+/scr:export --format pdf --print-ready
+```
+
+Output: `.manuscript/output/manuscript-print.pdf`. Uses the `scriven-book.typst` template. Default trim size is 6" x 9" -- override via `trim_width` and `trim_height` in `.manuscript/config.json`.
+
+### Ebook
+
+**EPUB 3.0** -- Industry-standard ebook format accepted by all major retailers (Amazon, Apple Books, Kobo, Barnes & Noble, Google Play).
+
+```
+/scr:export --format epub
+```
+
+Output: `.manuscript/output/manuscript.epub`. Includes table of contents, metadata, and custom CSS styling via `scriven-epub.css`. If a cover image exists at `.manuscript/output/cover.jpg`, it's embedded automatically.
+
+After export, consider validating with EPUBCheck if you have Java installed -- most retailers run their own validation and will reject non-compliant files.
+
+### Screenplay Formats
+
+Available for screenplay, stage play, TV pilot, TV series bible, audio drama, and libretto work types.
+
+**Fountain** -- Plain-text screenplay format. No external tools needed -- Scriven converts your manuscript directly.
+
+```
+/scr:export --format fountain
+```
+
+Output: `.manuscript/output/screenplay.fountain`. If Afterwriting is installed, Scriven can also generate a formatted screenplay PDF (`screenplay.pdf`).
+
+**FDX (Final Draft XML)** -- The industry-standard format for screenplay submission. Chains through Fountain as an intermediate step.
+
+```
+/scr:export --format fdx
+```
+
+Output: `.manuscript/output/screenplay.fdx`. Requires Screenplain.
+
+### Academic
+
+Available for academic and sacred text work types.
+
+**LaTeX** -- LaTeX source file for journal submissions, thesis formatting, or further editing in Overleaf.
+
+```
+/scr:export --format latex
+```
+
+Output: `.manuscript/output/manuscript.tex`. Uses the `scriven-academic.latex` template. If a bibliography file exists at `.manuscript/bibliography.bib`, citations are processed automatically with `--citeproc`.
+
+## Platform Packages
+
+Platform packages bundle everything a specific publishing platform needs into a single directory -- interior files, cover specifications, metadata, and checklists.
+
+### KDP (Kindle Direct Publishing)
+
+**KDP Ebook** -- EPUB package optimized for Kindle with KDP-specific CSS, alt text on all images, and embedded fonts.
+
+```
+/scr:export --format epub
+```
+
+Use the standard EPUB export for KDP ebook submissions. The `scriven-epub.css` template is already KDP-compatible.
+
+**KDP Print** -- Complete paperback submission package with interior PDF, calculated cover dimensions, and metadata.
+
+```
+/scr:export --format kdp-package
+```
+
+Output: `.manuscript/output/kdp-package/` containing:
+
+- `interior.pdf` -- Print-ready interior with your chosen trim size
+- `cover-specs.md` -- Exact cover dimensions including spine width (calculated from page count and paper type), bleed allowances, and safe zones
+- `kdp-metadata.md` -- Title, author, language, suggested categories and keywords
+
+**Spine width calculation:** Scriven calculates spine width from your page count and paper type (white: 0.002252"/page, cream: 0.0025"/page, color: 0.0032"/page) plus 0.06" for cover thickness. Books under 79 pages get no spine text -- the spine is too narrow.
+
+**Supported trim sizes:** 5" x 8", 5.25" x 8", 5.5" x 8.5", 6" x 9", and others. Set `trim_width` and `trim_height` in `.manuscript/config.json`.
+
+### IngramSpark
+
+Complete submission package with CMYK PDF/X-1a interior for offset printing.
+
+```
+/scr:export --format ingram-package
+```
+
+Output: `.manuscript/output/ingram-package/` containing:
+
+- `manuscript-cmyk.pdf` -- Interior converted to CMYK color space via Ghostscript
+- `cover-specs.md` -- Full-wrap cover dimensions (front + spine + back in a single PDF)
+- `ingram-metadata.md` -- Publishing metadata for IngramSpark
+
+**IngramSpark-specific requirements:** PDF/X-1a compliance, CMYK color space, 300 DPI minimum, all fonts embedded, no transparency. Scriven handles the CMYK conversion automatically -- review the output for color accuracy, especially blues and greens which can shift during RGB-to-CMYK conversion.
+
+### Submission and Query Packages
+
+**Query Package** -- Everything you need to query literary agents: query letter, synopsis, and sample chapters bundled into a single DOCX.
+
+```
+/scr:export --format query-package
+```
+
+Output: `.manuscript/output/query-package/` containing `query-letter.md`, `synopsis.md`, `sample-chapters.md` (first 3 chapters), and a combined `query-package.docx`. If the query letter or synopsis don't exist yet, Scriven tells you which commands to run (`/scr:query-letter`, `/scr:synopsis`).
+
+**Submission Package** -- Full manuscript submission for agents or publishers who request the complete work.
+
+```
+/scr:export --format submission-package
+```
+
+Output: `.manuscript/output/submission-package/` containing `manuscript.docx` (full manuscript in standard format), `synopsis.md`, `cover-letter.md`, `about-the-author.md`, and a `submission-checklist.md` with formatting reminders and common submission requirements.
+
+## Publish Wizard
+
+The publish wizard chains multiple export commands into a single workflow based on your publishing destination.
+
+```
+/scr:publish
+```
+
+Without arguments, the wizard runs interactively. It checks your publishing readiness (complete draft, front/back matter, blurb, synopsis, cover art), offers to generate anything missing, then asks where you're publishing and runs the right pipeline.
+
+### Presets
+
+Skip the interactive flow by specifying a preset:
+
+```
+/scr:publish --preset kdp-paperback
+```
+
+Available presets:
+
+| Preset | What It Does |
+|--------|-------------|
+| `kdp-paperback` | Print-ready PDF + KDP package with cover specs |
+| `kdp-ebook` | EPUB with KDP-compatible CSS and metadata |
+| `query-submission` | Query letter + synopsis + sample chapters as DOCX |
+| `ebook-wide` | EPUB for all retailers (Apple, Kobo, B&N, Google) |
+| `ingram-paperback` | CMYK PDF/X-1a + IngramSpark package |
+| `academic-submission` | LaTeX or DOCX for journal/conference submission |
+| `thesis-defense` | Formatted PDF + DOCX for committee review |
+| `screenplay-query` | Fountain + PDF + FDX for screenplay submission |
+
+Run all available presets at once:
+
+```
+/scr:publish --all
+```
+
+## Autopilot Publishing
+
+For hands-off publishing, autopilot runs quality checks, generates missing prerequisites, executes the export pipeline, and produces a full report -- all without asking questions.
+
+```
+/scr:autopilot-publish --preset kdp-paperback
+```
+
+The autopilot pipeline:
+
+1. **Quality gate** -- Runs voice check and continuity check. Results are advisory -- the pipeline proceeds regardless, but you get a report.
+2. **Prerequisites** -- Auto-generates any missing front matter, back matter, blurb, synopsis, or query letter needed by your preset.
+3. **Export** -- Runs the preset pipeline and reports progress.
+4. **Report** -- Shows everything that happened: quality scores, generated prerequisites, exported files, and any errors with fix instructions.
+
+Autopilot requires the `--preset` flag -- there's no interactive mode. Valid presets are the same as the publish wizard.
+
+## Pre-Publish Checklist
+
+Before exporting, run these commands to make sure your manuscript is ready:
+
+**Manuscript statistics** -- Check your word count, page estimate, and draft completion:
+
+```
+/scr:manuscript-stats
+```
+
+Use `--detail` for a per-chapter breakdown. Estimated page count uses the standard 250 words per page.
+
+**Polish** -- Final quality pass over the manuscript:
+
+```
+/scr:polish
+```
+
+**Voice check** -- Verify voice consistency across the manuscript:
+
+```
+/scr:voice-check
+```
+
+## Template Customization
+
+Scriven ships with templates that control the look of your exported files. You can customize them to match your preferences or publisher requirements.
+
+| Template | Location | Controls |
+|----------|----------|----------|
+| `scriven-book.typst` | `data/export-templates/` | Book interior PDF layout: trim size, margins, headers, page numbers |
+| `scriven-manuscript.docx` | `data/export-templates/` | Standard manuscript format DOCX styling |
+| `scriven-formatted.docx` | `data/export-templates/` | Designed/formatted DOCX styling |
+| `scriven-epub.css` | `data/export-templates/` | EPUB ebook styling and KDP compatibility |
+| `scriven-academic.latex` | `data/export-templates/` | Academic paper and thesis formatting |
+
+To customize a template, edit the file in `data/export-templates/`. Changes apply to all future exports. The Typst template supports variable overrides for trim size and margins through the export command's flags.
+
+## See Also
+
+- [Getting Started](getting-started.md) -- Installation and first project
+- [Command Reference](command-reference.md) -- Full list of export and publish commands
+- [Translation Guide](translation.md) -- Translating your manuscript for international publication
