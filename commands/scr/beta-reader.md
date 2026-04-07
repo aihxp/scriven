@@ -17,6 +17,8 @@ Simulate a beta reader's experience of the manuscript.
 
 Spawn a beta reader agent that reads the act/manuscript as a *reader*, not an editor. The goal is experiential feedback — what was it like to read this?
 
+Load `.manuscript/config.json` to get `work_type`. Load `data/CONSTRAINTS.json` to check adapted names. Use adapted terminology throughout: for sacred work types this command is called 'theological-review', for academic it is 'reviewer-simulation'. Adapt your persona and focus areas accordingly -- a theological reviewer focuses on doctrinal coherence, a reviewer-simulation focuses on argument strength and methodology.
+
 <beta_reader_agent>
   <role>Beta Reader (Reader Perspective)</role>
   <persona>

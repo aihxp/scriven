@@ -15,6 +15,8 @@ If `N` is provided, checks only Act N against previous acts. Otherwise checks en
 
 ## Instruction
 
+Load `.manuscript/config.json` to get `work_type`. Load `data/CONSTRAINTS.json` to check command adaptations. For sacred work types, this command is called 'doctrinal-check' and should additionally verify doctrinal consistency and canonical alignment. For academic work types, this command is called 'citation-check' and should additionally verify citation consistency and reference accuracy. Use adapted terminology throughout all output.
+
 Spawn a continuity analysis agent that reads all drafted scenes and checks:
 
 <continuity_checks>
