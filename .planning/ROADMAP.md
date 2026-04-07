@@ -67,12 +67,13 @@ Plans:
   3. Writer can visualize their plot structure (three-act, hero's journey, etc.) and track themes and subplots across the work
   4. Writer can build a world document with geographic, cultural, and rule systems that downstream commands reference
   5. Writer can restructure their outline by adding, splitting, merging, and reordering units
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 03-01: TBD
-- [ ] 03-02: TBD
-- [ ] 03-03: TBD
+- [ ] 03-01-PLAN.md -- Character profile and world-building commands (character-sheet, voice-sample, cast-list, character-arc, relationship-map, build-world + WORLD.md template)
+- [ ] 03-02-PLAN.md -- Structure visualization commands (plot-graph enhancement, timeline, theme-tracker, subplot-map, outline)
+- [ ] 03-03-PLAN.md -- Structure management commands (add/insert/remove/split/merge/reorder-unit) + CONSTRAINTS.json updates
+- [ ] 03-04-PLAN.md -- Phase 3 test suite validating all commands, templates, and CONSTRAINTS.json entries
 
 ### Phase 4: Quality & Manuscript Completion
 **Goal**: Writers can polish their manuscript to professional quality and generate all publication-ready front and back matter
@@ -171,7 +172,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 |-------|----------------|--------|-----------|
 | 1. MVP Polish | 3/3 | Complete | - |
 | 2. Writer Experience | 0/4 | Planned | - |
-| 3. Creative Toolkit | 0/3 | Not started | - |
+| 3. Creative Toolkit | 0/4 | Planned | - |
 | 4. Quality & Manuscript Completion | 0/4 | Not started | - |
 | 5. Export & Publishing | 0/4 | Not started | - |
 | 6. Illustration | 0/3 | Not started | - |
