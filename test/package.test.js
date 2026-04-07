@@ -9,7 +9,7 @@ const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
 
 describe('package.json fields', () => {
   it('has correct name', () => {
-    assert.equal(pkg.name, 'scriven');
+    assert.equal(pkg.name, 'scriven-cli');
   });
 
   it('has bin entry pointing to install.js', () => {

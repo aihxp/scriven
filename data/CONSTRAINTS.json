@@ -49,282 +49,518 @@
       "label": "Novel",
       "group": "prose",
       "hierarchy": { "top": "part", "mid": "chapter", "atomic": "scene" },
-      "command_unit": "chapter"
+      "command_unit": "chapter",
+      "word_count_range": [70000, 100000],
+      "page_range": [280, 400],
+      "unit_count_range": [20, 35],
+      "unit_word_range": [2500, 5000],
+      "unit_page_range": [10, 20]
     },
     "novella": {
       "label": "Novella",
       "group": "prose",
       "hierarchy": { "top": null, "mid": "chapter", "atomic": "scene" },
-      "command_unit": "chapter"
+      "command_unit": "chapter",
+      "word_count_range": [17500, 40000],
+      "page_range": [70, 160],
+      "unit_count_range": [5, 15],
+      "unit_word_range": [2000, 4000],
+      "unit_page_range": [8, 16]
     },
     "short_story": {
       "label": "Short Story",
       "group": "prose",
       "hierarchy": { "top": null, "mid": "section", "atomic": "beat" },
-      "command_unit": "section"
+      "command_unit": "section",
+      "word_count_range": [1000, 7500],
+      "page_range": [4, 30],
+      "unit_count_range": [1, 5],
+      "unit_word_range": [500, 2500],
+      "unit_page_range": [2, 10]
     },
     "flash_fiction": {
       "label": "Flash Fiction",
       "group": "prose",
       "hierarchy": { "top": null, "mid": null, "atomic": "beat" },
-      "command_unit": "beat"
+      "command_unit": "beat",
+      "word_count_range": [100, 1000],
+      "page_range": [1, 4],
+      "unit_count_range": [1, 3],
+      "unit_word_range": [100, 500],
+      "unit_page_range": [1, 2]
     },
     "memoir": {
       "label": "Memoir",
       "group": "prose",
       "hierarchy": { "top": "part", "mid": "chapter", "atomic": "vignette" },
-      "command_unit": "chapter"
+      "command_unit": "chapter",
+      "word_count_range": [60000, 90000],
+      "page_range": [240, 360],
+      "unit_count_range": [15, 30],
+      "unit_word_range": [2500, 5000],
+      "unit_page_range": [10, 20]
     },
     "creative_nonfiction": {
       "label": "Creative Nonfiction",
       "group": "prose",
       "hierarchy": { "top": "part", "mid": "chapter", "atomic": "scene" },
-      "command_unit": "chapter"
+      "command_unit": "chapter",
+      "word_count_range": [50000, 90000],
+      "page_range": [200, 360],
+      "unit_count_range": [12, 25],
+      "unit_word_range": [2500, 5000],
+      "unit_page_range": [10, 20]
     },
     "biography": {
       "label": "Biography",
       "group": "prose",
       "hierarchy": { "top": "part", "mid": "chapter", "atomic": "scene" },
-      "command_unit": "chapter"
+      "command_unit": "chapter",
+      "word_count_range": [70000, 120000],
+      "page_range": [280, 480],
+      "unit_count_range": [15, 35],
+      "unit_word_range": [3000, 5000],
+      "unit_page_range": [12, 20]
     },
     "essay": {
       "label": "Essay",
       "group": "prose",
       "hierarchy": { "top": null, "mid": "section", "atomic": "paragraph_block" },
-      "command_unit": "section"
+      "command_unit": "section",
+      "word_count_range": [1500, 10000],
+      "page_range": [6, 40],
+      "unit_count_range": [3, 8],
+      "unit_word_range": [500, 2000],
+      "unit_page_range": [2, 8]
     },
     "essay_collection": {
       "label": "Essay Collection",
       "group": "prose",
       "hierarchy": { "top": "part", "mid": null, "atomic": "essay" },
-      "command_unit": "essay"
+      "command_unit": "essay",
+      "word_count_range": [40000, 80000],
+      "page_range": [160, 320],
+      "unit_count_range": [10, 25],
+      "unit_word_range": [2000, 6000],
+      "unit_page_range": [8, 24]
     },
     "screenplay": {
       "label": "Screenplay",
       "group": "script",
       "hierarchy": { "top": "act", "mid": "sequence", "atomic": "scene" },
-      "command_unit": "act"
+      "command_unit": "act",
+      "word_count_range": [7500, 12500],
+      "page_range": [90, 120],
+      "unit_count_range": [3, 5],
+      "unit_word_range": [2000, 4000],
+      "unit_page_range": [25, 35]
     },
     "stage_play": {
       "label": "Stage Play",
       "group": "script",
       "hierarchy": { "top": "act", "mid": "scene", "atomic": "beat" },
-      "command_unit": "act"
+      "command_unit": "act",
+      "word_count_range": [10000, 15000],
+      "page_range": [60, 120],
+      "unit_count_range": [1, 5],
+      "unit_word_range": [3000, 7000],
+      "unit_page_range": [15, 40]
     },
     "tv_pilot": {
       "label": "TV Pilot",
       "group": "script",
       "hierarchy": { "top": "act", "mid": "scene", "atomic": "beat" },
-      "command_unit": "act"
+      "command_unit": "act",
+      "word_count_range": [5000, 10000],
+      "page_range": [30, 60],
+      "unit_count_range": [4, 6],
+      "unit_word_range": [1000, 2500],
+      "unit_page_range": [6, 12]
     },
     "tv_series_bible": {
       "label": "TV Series Bible",
       "group": "script",
       "hierarchy": { "top": "season", "mid": "episode", "atomic": "scene" },
-      "command_unit": "episode"
+      "command_unit": "episode",
+      "word_count_range": [15000, 40000],
+      "page_range": [60, 160],
+      "unit_count_range": [6, 13],
+      "unit_word_range": [1500, 3000],
+      "unit_page_range": [6, 12]
     },
     "audio_drama": {
       "label": "Audio Drama / Podcast Script",
       "group": "script",
       "hierarchy": { "top": "season", "mid": "episode", "atomic": "scene" },
-      "command_unit": "episode"
+      "command_unit": "episode",
+      "word_count_range": [3000, 8000],
+      "page_range": [12, 32],
+      "unit_count_range": [1, 10],
+      "unit_word_range": [2000, 5000],
+      "unit_page_range": [8, 20]
     },
     "libretto": {
       "label": "Libretto / Musical",
       "group": "script",
       "hierarchy": { "top": "act", "mid": "scene", "atomic": "number" },
-      "command_unit": "act"
+      "command_unit": "act",
+      "word_count_range": [5000, 12000],
+      "page_range": [20, 48],
+      "unit_count_range": [2, 3],
+      "unit_word_range": [2000, 5000],
+      "unit_page_range": [8, 20]
     },
     "research_paper": {
       "label": "Research Paper",
       "group": "academic",
       "hierarchy": { "top": null, "mid": "section", "atomic": "subsection" },
-      "command_unit": "section"
+      "command_unit": "section",
+      "word_count_range": [5000, 15000],
+      "page_range": [20, 60],
+      "unit_count_range": [4, 8],
+      "unit_word_range": [1000, 3000],
+      "unit_page_range": [4, 12]
     },
     "thesis": {
       "label": "Thesis / Dissertation",
       "group": "academic",
       "hierarchy": { "top": "part", "mid": "chapter", "atomic": "section" },
-      "command_unit": "chapter"
+      "command_unit": "chapter",
+      "word_count_range": [40000, 100000],
+      "page_range": [160, 400],
+      "unit_count_range": [5, 10],
+      "unit_word_range": [5000, 15000],
+      "unit_page_range": [20, 60]
     },
     "journal_article": {
       "label": "Journal Article",
       "group": "academic",
       "hierarchy": { "top": null, "mid": "section", "atomic": "subsection" },
-      "command_unit": "section"
+      "command_unit": "section",
+      "word_count_range": [3000, 8000],
+      "page_range": [12, 32],
+      "unit_count_range": [4, 7],
+      "unit_word_range": [500, 2000],
+      "unit_page_range": [2, 8]
     },
     "white_paper": {
       "label": "White Paper",
       "group": "academic",
       "hierarchy": { "top": null, "mid": "section", "atomic": "subsection" },
-      "command_unit": "section"
+      "command_unit": "section",
+      "word_count_range": [3000, 10000],
+      "page_range": [12, 40],
+      "unit_count_range": [4, 8],
+      "unit_word_range": [500, 2000],
+      "unit_page_range": [2, 8]
     },
     "literature_review": {
       "label": "Literature Review",
       "group": "academic",
       "hierarchy": { "top": null, "mid": "section", "atomic": "subsection" },
-      "command_unit": "section"
+      "command_unit": "section",
+      "word_count_range": [5000, 15000],
+      "page_range": [20, 60],
+      "unit_count_range": [4, 8],
+      "unit_word_range": [1000, 3000],
+      "unit_page_range": [4, 12]
     },
     "monograph": {
       "label": "Monograph",
       "group": "academic",
       "hierarchy": { "top": "part", "mid": "chapter", "atomic": "section" },
-      "command_unit": "chapter"
+      "command_unit": "chapter",
+      "word_count_range": [50000, 100000],
+      "page_range": [200, 400],
+      "unit_count_range": [8, 15],
+      "unit_word_range": [4000, 8000],
+      "unit_page_range": [16, 32]
     },
     "poetry_collection": {
       "label": "Poetry Collection",
       "group": "poetry",
       "hierarchy": { "top": "section", "mid": null, "atomic": "poem" },
-      "command_unit": "section"
+      "command_unit": "section",
+      "word_count_range": [5000, 15000],
+      "page_range": [48, 120],
+      "unit_count_range": [3, 8],
+      "unit_word_range": [1000, 3000],
+      "unit_page_range": [8, 20]
     },
     "single_poem": {
       "label": "Single Poem",
       "group": "poetry",
       "hierarchy": { "top": null, "mid": "stanza", "atomic": "line" },
-      "command_unit": "stanza"
+      "command_unit": "stanza",
+      "word_count_range": [20, 2000],
+      "page_range": [1, 8],
+      "unit_count_range": [1, 20],
+      "unit_word_range": [10, 200],
+      "unit_page_range": [1, 1]
     },
     "song_lyric": {
       "label": "Lyric / Song",
       "group": "poetry",
       "hierarchy": { "top": null, "mid": "section", "atomic": "line" },
-      "command_unit": "section"
+      "command_unit": "section",
+      "word_count_range": [100, 600],
+      "page_range": [1, 3],
+      "unit_count_range": [3, 6],
+      "unit_word_range": [20, 150],
+      "unit_page_range": [1, 1]
     },
     "comic": {
       "label": "Comic / Graphic Novel",
       "group": "visual",
       "hierarchy": { "top": "volume", "mid": "issue", "atomic": "panel" },
-      "command_unit": "issue"
+      "command_unit": "issue",
+      "word_count_range": [2000, 5000],
+      "page_range": [22, 32],
+      "unit_count_range": [1, 6],
+      "unit_word_range": [500, 1500],
+      "unit_page_range": [22, 32]
     },
     "graphic_novel": {
       "label": "Graphic Novel",
       "group": "visual",
       "hierarchy": { "top": "volume", "mid": "chapter", "atomic": "panel" },
-      "command_unit": "chapter"
+      "command_unit": "chapter",
+      "word_count_range": [5000, 20000],
+      "page_range": [80, 200],
+      "unit_count_range": [5, 12],
+      "unit_word_range": [500, 2500],
+      "unit_page_range": [10, 25]
     },
     "childrens_book": {
       "label": "Children's Book",
       "group": "visual",
       "hierarchy": { "top": null, "mid": "spread", "atomic": "page" },
-      "command_unit": "spread"
+      "command_unit": "spread",
+      "word_count_range": [500, 5000],
+      "page_range": [24, 48],
+      "unit_count_range": [12, 24],
+      "unit_word_range": [20, 200],
+      "unit_page_range": [2, 2]
     },
     "picture_book": {
       "label": "Picture Book",
       "group": "visual",
       "hierarchy": { "top": null, "mid": "spread", "atomic": "illustration_text" },
-      "command_unit": "spread"
+      "command_unit": "spread",
+      "word_count_range": [200, 1000],
+      "page_range": [24, 40],
+      "unit_count_range": [12, 20],
+      "unit_word_range": [10, 60],
+      "unit_page_range": [2, 2]
     },
     "interactive_fiction": {
       "label": "Interactive Fiction",
       "group": "interactive",
       "hierarchy": { "top": null, "mid": "node", "atomic": "choice_branch" },
-      "command_unit": "node"
+      "command_unit": "node",
+      "word_count_range": [20000, 100000],
+      "page_range": [80, 400],
+      "unit_count_range": [20, 100],
+      "unit_word_range": [500, 2000],
+      "unit_page_range": [2, 8]
     },
     "game_narrative": {
       "label": "Game Narrative",
       "group": "interactive",
       "hierarchy": { "top": "act", "mid": "quest", "atomic": "dialogue_tree" },
-      "command_unit": "quest"
+      "command_unit": "quest",
+      "word_count_range": [30000, 150000],
+      "page_range": [120, 600],
+      "unit_count_range": [10, 40],
+      "unit_word_range": [2000, 5000],
+      "unit_page_range": [8, 20]
     },
     "speech": {
       "label": "Speech",
       "group": "speech_song",
       "hierarchy": { "top": null, "mid": "section", "atomic": "beat" },
-      "command_unit": "section"
+      "command_unit": "section",
+      "word_count_range": [500, 5000],
+      "page_range": [2, 20],
+      "unit_count_range": [3, 6],
+      "unit_word_range": [150, 1000],
+      "unit_page_range": [1, 4]
     },
     "scripture_biblical": {
       "label": "Scripture (Biblical)",
       "group": "sacred",
       "hierarchy": { "top": "testament", "mid": "book", "atomic": "verse" },
       "command_unit": "book",
-      "config_defaults": { "verse_numbering_system": "masoretic", "calendar_system": "gregorian" }
+      "config_defaults": { "verse_numbering_system": "masoretic", "calendar_system": "gregorian" },
+      "word_count_range": null,
+      "page_range": null,
+      "unit_count_range": [39, 66],
+      "unit_word_range": [1000, 50000],
+      "unit_page_range": [4, 200],
+      "_note": "Varies by scope — full Bible vs single book. No meaningful total range."
     },
     "scripture_quranic": {
       "label": "Scripture (Quranic)",
       "group": "sacred",
       "hierarchy": { "top": null, "mid": "surah", "atomic": "ayah" },
       "command_unit": "surah",
-      "config_defaults": { "verse_numbering_system": "quranic_hafs", "calendar_system": "hijri" }
+      "config_defaults": { "verse_numbering_system": "quranic_hafs", "calendar_system": "hijri" },
+      "word_count_range": null,
+      "page_range": null,
+      "unit_count_range": [1, 114],
+      "unit_word_range": [50, 12000],
+      "unit_page_range": [1, 48],
+      "_note": "Varies by scope — full Quran vs single surah. No meaningful total range."
     },
     "scripture_torah": {
       "label": "Scripture (Torah)",
       "group": "sacred",
       "hierarchy": { "top": "chumash", "mid": "parashah", "atomic": "pasuk" },
       "command_unit": "parashah",
-      "config_defaults": { "verse_numbering_system": "masoretic", "calendar_system": "hebrew" }
+      "config_defaults": { "verse_numbering_system": "masoretic", "calendar_system": "hebrew" },
+      "word_count_range": null,
+      "page_range": null,
+      "unit_count_range": [1, 54],
+      "unit_word_range": [1000, 8000],
+      "unit_page_range": [4, 32],
+      "_note": "Varies by scope — full Torah vs single parashah."
     },
     "scripture_vedic": {
       "label": "Scripture (Vedic)",
       "group": "sacred",
       "hierarchy": { "top": "veda", "mid": "mandala", "atomic": "sukta" },
       "command_unit": "mandala",
-      "config_defaults": { "calendar_system": "vikram_samvat" }
+      "config_defaults": { "calendar_system": "vikram_samvat" },
+      "word_count_range": null,
+      "page_range": null,
+      "unit_count_range": [1, 10],
+      "unit_word_range": [2000, 20000],
+      "unit_page_range": [8, 80],
+      "_note": "Varies by scope — single Veda vs collection."
     },
     "scripture_buddhist": {
       "label": "Scripture (Buddhist)",
       "group": "sacred",
       "hierarchy": { "top": "pitaka", "mid": "nikaya", "atomic": "sutta" },
       "command_unit": "sutta",
-      "config_defaults": { "calendar_system": "buddhist_era" }
+      "config_defaults": { "calendar_system": "buddhist_era" },
+      "word_count_range": null,
+      "page_range": null,
+      "unit_count_range": [1, 50],
+      "unit_word_range": [500, 10000],
+      "unit_page_range": [2, 40],
+      "_note": "Varies by scope — single sutta vs full nikaya."
     },
     "scripture_generic": {
       "label": "Scripture (Generic)",
       "group": "sacred",
       "hierarchy": { "top": "testament", "mid": "book", "atomic": "verse" },
-      "command_unit": "book"
+      "command_unit": "book",
+      "word_count_range": null,
+      "page_range": null,
+      "unit_count_range": [1, 100],
+      "unit_word_range": [500, 30000],
+      "unit_page_range": [2, 120],
+      "_note": "Varies by tradition and scope."
     },
     "commentary": {
       "label": "Commentary / Exegesis",
       "group": "sacred",
       "hierarchy": { "top": null, "mid": "section", "atomic": "annotation_block" },
-      "command_unit": "section"
+      "command_unit": "section",
+      "word_count_range": [20000, 150000],
+      "page_range": [80, 600],
+      "unit_count_range": [5, 30],
+      "unit_word_range": [2000, 8000],
+      "unit_page_range": [8, 32]
     },
     "devotional": {
       "label": "Devotional",
       "group": "sacred",
       "hierarchy": { "top": null, "mid": "theme", "atomic": "entry" },
-      "command_unit": "entry"
+      "command_unit": "entry",
+      "word_count_range": [15000, 50000],
+      "page_range": [60, 200],
+      "unit_count_range": [30, 366],
+      "unit_word_range": [200, 800],
+      "unit_page_range": [1, 3]
     },
     "liturgical": {
       "label": "Liturgical Text",
       "group": "sacred",
       "hierarchy": { "top": "rite", "mid": "section", "atomic": "rubric" },
-      "command_unit": "section"
+      "command_unit": "section",
+      "word_count_range": [5000, 30000],
+      "page_range": [20, 120],
+      "unit_count_range": [5, 20],
+      "unit_word_range": [500, 3000],
+      "unit_page_range": [2, 12]
     },
     "historical_chronicle": {
       "label": "Historical Chronicle",
       "group": "sacred",
       "hierarchy": { "top": "era", "mid": "chapter", "atomic": "event" },
-      "command_unit": "chapter"
+      "command_unit": "chapter",
+      "word_count_range": [50000, 150000],
+      "page_range": [200, 600],
+      "unit_count_range": [10, 40],
+      "unit_word_range": [3000, 6000],
+      "unit_page_range": [12, 24]
     },
     "historical_account": {
       "label": "Historical Account",
       "group": "sacred",
       "hierarchy": { "top": "part", "mid": "chapter", "atomic": "scene" },
-      "command_unit": "chapter"
+      "command_unit": "chapter",
+      "word_count_range": [40000, 100000],
+      "page_range": [160, 400],
+      "unit_count_range": [10, 30],
+      "unit_word_range": [3000, 5000],
+      "unit_page_range": [12, 20]
     },
     "mythological_collection": {
       "label": "Mythological Collection",
       "group": "sacred",
       "hierarchy": { "top": "cycle", "mid": null, "atomic": "tale" },
-      "command_unit": "tale"
+      "command_unit": "tale",
+      "word_count_range": [30000, 100000],
+      "page_range": [120, 400],
+      "unit_count_range": [10, 50],
+      "unit_word_range": [1500, 5000],
+      "unit_page_range": [6, 20]
     },
     "religious_epic": {
       "label": "Religious Epic",
       "group": "sacred",
       "hierarchy": { "top": "book", "mid": "canto", "atomic": "verse" },
-      "command_unit": "canto"
+      "command_unit": "canto",
+      "word_count_range": [50000, 300000],
+      "page_range": [200, 1200],
+      "unit_count_range": [10, 100],
+      "unit_word_range": [2000, 8000],
+      "unit_page_range": [8, 32]
     },
     "sermon": {
       "label": "Sermon / Homily",
       "group": "sacred",
       "hierarchy": { "top": null, "mid": "movement", "atomic": "beat" },
-      "command_unit": "sermon"
+      "command_unit": "sermon",
+      "word_count_range": [1500, 4000],
+      "page_range": [6, 16],
+      "unit_count_range": [3, 5],
+      "unit_word_range": [400, 1000],
+      "unit_page_range": [2, 4]
     },
     "homiletic_collection": {
       "label": "Homiletic Collection",
       "group": "sacred",
       "hierarchy": { "top": "liturgical_year", "mid": null, "atomic": "sermon" },
-      "command_unit": "sermon"
+      "command_unit": "sermon",
+      "word_count_range": [50000, 150000],
+      "page_range": [200, 600],
+      "unit_count_range": [30, 60],
+      "unit_word_range": [1500, 4000],
+      "unit_page_range": [6, 16]
     }
   },
 
