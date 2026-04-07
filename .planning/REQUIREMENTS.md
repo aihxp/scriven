@@ -112,9 +112,9 @@ Requirements for full product release. Each maps to roadmap phases.
 
 ### Translation & Multi-Language
 
-- [ ] **TRANS-01**: `/scr:translate <language>` translates manuscript per-unit using fresh-context-per-unit pattern
-- [ ] **TRANS-02**: `/scr:translation-glossary` creates/manages term glossary for consistent translation
-- [ ] **TRANS-03**: `/scr:translation-memory` builds and references translation memory from prior translations
+- [x] **TRANS-01**: `/scr:translate <language>` translates manuscript per-unit using fresh-context-per-unit pattern
+- [x] **TRANS-02**: `/scr:translation-glossary` creates/manages term glossary for consistent translation
+- [x] **TRANS-03**: `/scr:translation-memory` builds and references translation memory from prior translations
 - [x] **TRANS-04**: `/scr:cultural-adaptation` flags idioms, humor, customs that need localization
 - [x] **TRANS-05**: `/scr:back-translate` translates the translation back to source language for verification
 - [x] **TRANS-06**: `/scr:multi-publish` exports translated editions in all target formats
@@ -264,9 +264,9 @@ Requirements for full product release. Each maps to roadmap phases.
 | ILL-08 | Phase 6 | Complete |
 | ILL-09 | Phase 6 | Complete |
 | ILL-10 | Phase 6 | Complete |
-| TRANS-01 | Phase 7 | Pending |
-| TRANS-02 | Phase 7 | Pending |
-| TRANS-03 | Phase 7 | Pending |
+| TRANS-01 | Phase 7 | Complete |
+| TRANS-02 | Phase 7 | Complete |
+| TRANS-03 | Phase 7 | Complete |
 | TRANS-04 | Phase 7 | Complete |
 | TRANS-05 | Phase 7 | Complete |
 | TRANS-06 | Phase 7 | Complete |

@@ -143,7 +143,7 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 07-01-PLAN.md -- Translator agent and core translation commands (translate, translation-glossary, translation-memory)
+- [x] 07-01-PLAN.md -- Translator agent and core translation commands (translate, translation-glossary, translation-memory)
 - [x] 07-02-PLAN.md -- Translation quality and publishing commands (cultural-adaptation, back-translate, multi-publish)
 - [ ] 07-03-PLAN.md -- Autopilot-translate, RTL/CJK template support, and CONSTRAINTS.json updates
 - [ ] 07-04-PLAN.md -- Phase 7 test suite validating all commands, CONSTRAINTS.json entries, and decisions D-01 through D-05
