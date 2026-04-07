@@ -753,6 +753,41 @@
     "translate": {
       "category": "translation",
       "available": ["all"],
+      "description": "Translate manuscript per-unit using fresh-context-per-unit pattern with glossary and translation memory",
+      "requires": ["complete-draft"]
+    },
+    "translation-glossary": {
+      "category": "translation",
+      "available": ["all"],
+      "description": "Create and manage bilingual term glossary for consistent translation"
+    },
+    "translation-memory": {
+      "category": "translation",
+      "available": ["all"],
+      "description": "Build and manage translation memory from completed translations"
+    },
+    "cultural-adaptation": {
+      "category": "translation",
+      "available": ["all"],
+      "description": "Flag idioms, humor, customs, and cultural references that need localization",
+      "requires": ["translate"]
+    },
+    "back-translate": {
+      "category": "translation",
+      "available": ["all"],
+      "description": "Translate translation back to source language for side-by-side verification",
+      "requires": ["translate"]
+    },
+    "multi-publish": {
+      "category": "translation",
+      "available": ["all"],
+      "description": "Export translated editions in all target formats with localized front/back matter",
+      "requires": ["translate"]
+    },
+    "autopilot-translate": {
+      "category": "translation",
+      "available": ["all"],
+      "description": "Run multi-language translation pipeline unattended with glossary, translation, and publishing",
       "requires": ["complete-draft"]
     },
     "concordance": {
@@ -897,15 +932,22 @@
       "export": ["complete-draft"],
       "kdp-package": ["front-matter", "back-matter", "export"],
       "translate": ["complete-draft"],
+      "translation-glossary": [],
+      "translation-memory": ["translate"],
       "cultural-adaptation": ["translate"],
       "back-translate": ["translate"],
-      "multi-publish": ["translate", "kdp-package"]
+      "multi-publish": ["translate", "kdp-package"],
+      "autopilot-translate": ["complete-draft"]
     },
     "soft_prerequisites": {
       "draft": { "recommended": ["discuss"], "without_it": "Uses defaults from STYLE-GUIDE.md" },
       "plan": { "recommended": ["research_enabled"], "without_it": "Plans without genre research" },
       "cover-art": { "recommended": ["CHARACTERS.md", "ART-DIRECTION.md"], "without_it": "Generates from WORK.md alone" },
       "translate": { "recommended": ["translation-glossary"], "without_it": "Translates without term consistency" },
+      "cultural-adaptation": { "recommended": ["translation-glossary"], "without_it": "Flags issues without glossary context" },
+      "back-translate": { "recommended": ["cultural-adaptation"], "without_it": "Verifies without cultural adaptation context" },
+      "multi-publish": { "recommended": ["back-translate", "cultural-adaptation"], "without_it": "Publishes without quality verification" },
+      "autopilot-translate": { "recommended": ["translation-glossary"], "without_it": "Creates glossary automatically during pipeline" },
       "autopilot": { "recommended": ["profile-writer"], "without_it": "Uses config defaults" }
     }
   },
