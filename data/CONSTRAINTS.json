@@ -503,6 +503,55 @@
       },
       "hidden": ["academic", "visual", "poetry", "speech_song"]
     },
+    "outline": {
+      "category": "structure",
+      "available": ["prose", "script", "academic", "visual", "interactive", "sacred"],
+      "adapted": {},
+      "hidden": ["poetry", "speech_song"],
+      "requires": ["OUTLINE.md"]
+    },
+    "add-unit": {
+      "category": "structure_management",
+      "available": ["prose", "script", "academic", "visual", "interactive", "sacred"],
+      "adapted": {},
+      "hidden": ["poetry", "speech_song"],
+      "requires": ["OUTLINE.md"]
+    },
+    "insert-unit": {
+      "category": "structure_management",
+      "available": ["prose", "script", "academic", "visual", "interactive", "sacred"],
+      "adapted": {},
+      "hidden": ["poetry", "speech_song"],
+      "requires": ["OUTLINE.md"]
+    },
+    "remove-unit": {
+      "category": "structure_management",
+      "available": ["prose", "script", "academic", "visual", "interactive", "sacred"],
+      "adapted": {},
+      "hidden": ["poetry", "speech_song"],
+      "requires": ["OUTLINE.md"]
+    },
+    "split-unit": {
+      "category": "structure_management",
+      "available": ["prose", "script", "academic", "visual", "interactive", "sacred"],
+      "adapted": {},
+      "hidden": ["poetry", "speech_song"],
+      "requires": ["OUTLINE.md"]
+    },
+    "merge-units": {
+      "category": "structure_management",
+      "available": ["prose", "script", "academic", "visual", "interactive", "sacred"],
+      "adapted": {},
+      "hidden": ["poetry", "speech_song"],
+      "requires": ["OUTLINE.md"]
+    },
+    "reorder-units": {
+      "category": "structure_management",
+      "available": ["prose", "script", "academic", "visual", "interactive", "sacred"],
+      "adapted": {},
+      "hidden": ["poetry", "speech_song"],
+      "requires": ["OUTLINE.md"]
+    },
     "continuity-check": {
       "category": "review",
       "available": ["prose", "script", "visual", "interactive"],
@@ -804,7 +853,14 @@
       "annotation-layer": ["draft_exists"],
       "verse-numbering": ["draft_exists"],
       "source-tracking": ["WORK.md"],
-      "doctrinal-check": ["draft_exists", "DOCTRINES.md"]
+      "doctrinal-check": ["draft_exists", "DOCTRINES.md"],
+      "outline": ["OUTLINE.md"],
+      "add-unit": ["OUTLINE.md"],
+      "insert-unit": ["OUTLINE.md"],
+      "remove-unit": ["OUTLINE.md"],
+      "split-unit": ["OUTLINE.md"],
+      "merge-units": ["OUTLINE.md"],
+      "reorder-units": ["OUTLINE.md"]
     },
     "publishing_prerequisites": {
       "front-matter": ["complete-draft"],
