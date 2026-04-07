@@ -118,8 +118,8 @@ Requirements for full product release. Each maps to roadmap phases.
 - [x] **TRANS-04**: `/scr:cultural-adaptation` flags idioms, humor, customs that need localization
 - [x] **TRANS-05**: `/scr:back-translate` translates the translation back to source language for verification
 - [x] **TRANS-06**: `/scr:multi-publish` exports translated editions in all target formats
-- [ ] **TRANS-07**: RTL (Arabic, Hebrew) and CJK (Chinese, Japanese, Korean) text direction support in all exports
-- [ ] **TRANS-08**: `/scr:autopilot-translate` runs multi-language translation pipeline unattended
+- [x] **TRANS-07**: RTL (Arabic, Hebrew) and CJK (Chinese, Japanese, Korean) text direction support in all exports
+- [x] **TRANS-08**: `/scr:autopilot-translate` runs multi-language translation pipeline unattended
 
 ### Collaboration
 
@@ -270,8 +270,8 @@ Requirements for full product release. Each maps to roadmap phases.
 | TRANS-04 | Phase 7 | Complete |
 | TRANS-05 | Phase 7 | Complete |
 | TRANS-06 | Phase 7 | Complete |
-| TRANS-07 | Phase 7 | Pending |
-| TRANS-08 | Phase 7 | Pending |
+| TRANS-07 | Phase 7 | Complete |
+| TRANS-08 | Phase 7 | Complete |
 | COLLAB-01 | Phase 8 | Pending |
 | COLLAB-02 | Phase 8 | Pending |
 | COLLAB-03 | Phase 8 | Pending |
