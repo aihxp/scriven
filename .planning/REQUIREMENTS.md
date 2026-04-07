@@ -134,13 +134,13 @@ Requirements for full product release. Each maps to roadmap phases.
 
 ### Multi-Runtime & Polish
 
-- [ ] **RUNTIME-01**: Installer supports Codex CLI, OpenCode, GitHub Copilot, Windsurf, Antigravity
-- [ ] **RUNTIME-02**: Writer profile system persists across sessions and projects
-- [ ] **RUNTIME-03**: `/scr:manager` interactive command center for multi-work management
-- [ ] **RUNTIME-04**: Academic-specific features: citation-check, peer-review simulation, journal submission templates
-- [ ] **RUNTIME-05**: `/scr:health` diagnoses and repairs project state issues
-- [ ] **RUNTIME-06**: Utility commands: add-note, check-notes, plant-seed, troubleshoot, thread
-- [ ] **RUNTIME-07**: `/scr:fast` inline trivial edits without full planning overhead
+- [x] **RUNTIME-01**: Installer supports Codex CLI, OpenCode, GitHub Copilot, Windsurf, Antigravity
+- [x] **RUNTIME-02**: Writer profile system persists across sessions and projects
+- [x] **RUNTIME-03**: `/scr:manager` interactive command center for multi-work management
+- [x] **RUNTIME-04**: Academic-specific features: citation-check, peer-review simulation, journal submission templates
+- [x] **RUNTIME-05**: `/scr:health` diagnoses and repairs project state issues
+- [x] **RUNTIME-06**: Utility commands: add-note, check-notes, plant-seed, troubleshoot, thread
+- [x] **RUNTIME-07**: `/scr:fast` inline trivial edits without full planning overhead
 
 ### Sacred & Historical
 
@@ -280,13 +280,13 @@ Requirements for full product release. Each maps to roadmap phases.
 | COLLAB-06 | Phase 8 | Complete |
 | COLLAB-07 | Phase 8 | Pending |
 | COLLAB-08 | Phase 8 | Pending |
-| RUNTIME-01 | Phase 8 | Pending |
-| RUNTIME-02 | Phase 8 | Pending |
-| RUNTIME-03 | Phase 8 | Pending |
-| RUNTIME-04 | Phase 8 | Pending |
-| RUNTIME-05 | Phase 8 | Pending |
-| RUNTIME-06 | Phase 8 | Pending |
-| RUNTIME-07 | Phase 8 | Pending |
+| RUNTIME-01 | Phase 8 | Complete |
+| RUNTIME-02 | Phase 8 | Complete |
+| RUNTIME-03 | Phase 8 | Complete |
+| RUNTIME-04 | Phase 8 | Complete |
+| RUNTIME-05 | Phase 8 | Complete |
+| RUNTIME-06 | Phase 8 | Complete |
+| RUNTIME-07 | Phase 8 | Complete |
 | SACRED-01 | Phase 8 | Complete |
 | SACRED-02 | Phase 8 | Complete |
 | SACRED-03 | Phase 8 | Complete |

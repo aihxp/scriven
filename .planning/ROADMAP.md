@@ -163,7 +163,7 @@ Plans:
 Plans:
 - [x] 08-01-PLAN.md -- Revision track command with 6 subcommands (create, list, switch, compare, merge, propose)
 - [ ] 08-02-PLAN.md -- Editor-writer workflow and co-writing parallel track support
-- [ ] 08-03-PLAN.md -- Multi-runtime installer, writer profile persistence, manager, health, and utility commands
+- [x] 08-03-PLAN.md -- Multi-runtime installer, writer profile persistence, manager, health, and utility commands
 - [x] 08-04-PLAN.md -- Sacred-exclusive commands, voice registers, discuss categories, and command adaptations
 - [ ] 08-05-PLAN.md -- Sacred translation pipeline, tradition-aware front/back matter, sacred config schema, and test suite
 
