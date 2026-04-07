@@ -1055,6 +1055,57 @@
     }
   },
 
+  "sacred_config_schema": {
+    "tradition": {
+      "values": ["christian", "jewish", "islamic", "buddhist", "hindu", "interfaith", "historical_secular", "custom"],
+      "required_when": "work_type.group == sacred",
+      "description": "The religious or historical tradition of the work"
+    },
+    "verse_numbering_system": {
+      "values": ["masoretic", "septuagint", "quranic_hafs", "quranic_warsh", "pali_canon", "custom"],
+      "default": null,
+      "description": "Verse/passage numbering convention for the tradition"
+    },
+    "calendar_system": {
+      "values": ["gregorian", "hebrew", "hijri", "vikram_samvat", "buddhist_era", "regnal", "multiple"],
+      "default": "gregorian",
+      "description": "Calendar system used for dates and chronology"
+    },
+    "translation_philosophy": {
+      "values": ["formal_equivalence", "dynamic_equivalence", "paraphrase", "interlinear"],
+      "default": "formal_equivalence",
+      "description": "Approach to sacred text translation"
+    },
+    "canonical_alignment": {
+      "type": "string",
+      "examples": ["kjv", "nrsv", "niv", "sahih_international", "yusuf_ali"],
+      "default": null,
+      "description": "Canonical translation to align vocabulary and phrasing with"
+    },
+    "annotation_traditions": {
+      "type": "array",
+      "examples": ["catholic", "reformed", "orthodox", "sunni", "shia", "theravada", "mahayana"],
+      "default": [],
+      "description": "Annotation traditions to apply or reference"
+    },
+    "doctrinal_framework": {
+      "type": "string",
+      "examples": ["nicene_creed", "westminster_confession", "augsburg_confession", "aqidah_tahawiyya"],
+      "default": null,
+      "description": "Doctrinal framework guiding interpretation"
+    },
+    "preserve_source_terms": {
+      "type": "array",
+      "default": [],
+      "description": "Terms that should never be translated, kept in source language with transliteration"
+    },
+    "transliteration_style": {
+      "values": ["academic", "popular", "tradition_standard"],
+      "default": "popular",
+      "description": "Style of transliteration for non-Latin script terms"
+    }
+  },
+
   "messages": {
     "command_hidden": "The `{command}` command is designed for {available_groups}. Your {work_type} uses `{alternative}` instead.",
     "prerequisite_missing": "You need to run `{prerequisite}` before `{command}`. Want me to run it now?",

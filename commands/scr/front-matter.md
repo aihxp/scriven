@@ -455,7 +455,9 @@ Save the abstract to `.manuscript/front-matter/05-abstract.md`
 
 ### SACRED ADAPTATION (behavior: sacred_front_matter)
 
-When the work type group is `sacred`, apply these modifications:
+When the work type group is `sacred`, apply these modifications to the standard 19 elements AND add the following tradition-specific elements. Read `config.json` `sacred.tradition` to determine which elements to include.
+
+**Standard sacred modifications:**
 
 1. **Add Imprimatur / Nihil Obstat scaffold**: For traditions that require ecclesiastical approval, provide a scaffold with the required format and submission guidance
 2. **Add Tradition-Specific Greeting**: Generate an appropriate opening (e.g., "In the Name of God, the Compassionate, the Merciful" for Islamic texts; "Ad Majorem Dei Gloriam" for Jesuit works) based on the specific work type
@@ -464,6 +466,38 @@ When the work type group is `sacred`, apply these modifications:
 5. **Dedication may include consecration language**: Scaffold includes tradition-appropriate consecration or offering templates
 
 Save the imprimatur scaffold to `.manuscript/front-matter/05a-imprimatur.md`
+
+## Sacred/Historical Front Matter
+
+When the work type group is `sacred`, the `--element` flag accepts these additional elements beyond the standard 19:
+
+| Element | Flag Name | Tradition | Type | Description |
+|---------|-----------|-----------|------|-------------|
+| Imprimatur | `imprimatur` | Christian (Catholic) | SCAFFOLD | Bishop's declaration of doctrinal safety. Scaffold only -- requires actual ecclesiastical authority. |
+| Nihil Obstat | `nihil-obstat` | Christian (Catholic) | SCAFFOLD | Censor's declaration of no doctrinal error. Scaffold only -- requires actual ecclesiastical authority. |
+| Haskamah | `haskamah` | Jewish | SCAFFOLD | Rabbinic approbation (letter of endorsement from a recognized rabbi or posek). Scaffold with tradition-specific structure including the rabbi's name, title, and community. |
+| Bismillah | `bismillah` | Islamic | GENERATE | "In the name of God, the Most Gracious, the Most Merciful" opening invocation. Generated in Arabic script with transliteration and translation. |
+| Ijazah | `ijazah` | Islamic | SCAFFOLD | Authorization and chain of transmission (isnad). Scaffold only -- requires actual authorization from a recognized teacher or institution. |
+| Scriptural Dedication | `scriptural-dedication` | All sacred | SCAFFOLD | Dedication to the divine or sacred purpose. Template includes tradition-appropriate consecration or offering language. |
+| Theological Preface | `theological-preface` | All sacred | SCAFFOLD | Preface stating theological positioning, interpretive approach (e.g., allegorical vs literal), intended audience, and relationship to existing scholarship. |
+
+**For elements marked "scaffold only":** Generate the structure and placeholder text, but add a clear note:
+
+> **Authorization Required:** This element requires authorization from a recognized authority in your tradition. The text below is a template -- do not publish without proper authorization.
+
+**Tradition-specific element selection:**
+
+| Tradition | Elements Included |
+|-----------|-------------------|
+| `christian` | imprimatur, nihil-obstat, scriptural-dedication, theological-preface |
+| `jewish` | haskamah, scriptural-dedication, theological-preface |
+| `islamic` | bismillah, ijazah, scriptural-dedication, theological-preface |
+| `buddhist` | scriptural-dedication, theological-preface |
+| `hindu` | scriptural-dedication, theological-preface |
+| `interfaith` | scriptural-dedication, theological-preface |
+| All others | scriptural-dedication, theological-preface |
+
+When `--all` is used for sacred works, include these tradition-specific elements in addition to the standard 19 front matter elements. Save each to `.manuscript/front-matter/20-{element-name}.md` (numbering continues from the standard elements).
 
 ---
 

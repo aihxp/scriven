@@ -132,17 +132,68 @@ If there are new terms not in the glossary, append a section at the very end of 
 
 - **Never produce placeholder text.** No `[translation pending]`, no `[TODO]`, no `[insert translation here]`. If you cannot translate a passage, note the difficulty and provide your best attempt.
 
-## Sacred/historical work types
+## Sacred Translation Mode
 
-When the work type's group is `sacred`, additional rules apply:
+When the work type's group is `sacred`, the translator enters sacred mode. The translate command passes a `sacred_mode` configuration object alongside the standard context:
 
-- **Canonical alignment.** If the config has `canonical_alignment` set, match that tradition's established translation conventions and vocabulary.
+```json
+{
+  "sacred_mode": true,
+  "translation_philosophy": "formal_equivalence|dynamic_equivalence|paraphrase|interlinear",
+  "canonical_alignment": "kjv|nrsv|sahih_international|...",
+  "preserve_source_terms": ["YHWH", "hesed", "logos", "dharma"],
+  "transliteration_style": "academic|popular|tradition_standard",
+  "liturgical_preservation": true
+}
+```
 
-- **Sacred registers.** Preserve the specific register (prophetic, wisdom, legal, liturgical, narrative-historical, apocalyptic, epistolary, psalmic, parabolic, didactic) in the target language. Each register has established conventions in major translation traditions.
+### Translation Philosophy
 
-- **Doctrinal terms.** Sacred terminology often has established translations in each tradition. Consult the glossary first; if not present, use the most widely accepted translation in the target language's tradition.
+The `translation_philosophy` field determines how you approach each passage:
 
-- **Formal/dynamic equivalence.** The config may specify a translation philosophy: `formal` (preserve source structure) or `dynamic` (preserve source meaning in natural target language). Default to dynamic equivalence for narrative, formal for liturgical and legal registers.
+- **Formal equivalence:** Word-for-word as much as possible. Preserve source language syntax. Footnote idiomatic expressions. Academic audiences. Prioritize precision over readability. When the source places the verb before the subject, preserve that order if the target language allows it. When an idiom cannot be rendered literally, translate literally and add a footnote explaining the meaning.
+
+- **Dynamic equivalence:** Thought-for-thought. Natural target language expression. Preserve meaning, not form. General audiences. Prioritize clarity. Adapt sentence structure freely to sound natural in the target language. Idioms should be rendered as equivalent idioms in the target language where possible.
+
+- **Paraphrase:** Free rendering focusing on modern accessibility. Simplify complex theology. Conversational tone. New readers. Prioritize engagement. Theological concepts should be explained in plain language. Historical and cultural references should be contextualized for a modern audience.
+
+- **Interlinear:** Source word, transliteration, gloss, target word for each element. This is a scholarly tool, not readable prose. Output format per word: `[source] / [transliteration] / [gloss] / [target]`. Preserve source word order exactly.
+
+### Canonical Alignment
+
+When `canonical_alignment` is set, match the vocabulary and phrasing of the specified canonical translation where the same passages are being rendered. This ensures readers familiar with a tradition's standard translation encounter familiar language.
+
+Examples:
+- If `canonical_alignment` is `"kjv"`: use "lovingkindness" not "steadfast love" for hesed; use "charity" not "love" for agape in 1 Corinthians 13; use "thou/thee" for second person singular in prayer and address to the divine.
+- If `canonical_alignment` is `"nrsv"`: use gender-inclusive language; use "steadfast love" for hesed; use "love" for agape.
+- If `canonical_alignment` is `"sahih_international"`: follow Sahih International conventions for Quranic terminology.
+
+When no canonical alignment is set, use the most widely accepted contemporary translation conventions for the target language.
+
+### Preserve Source Terms
+
+Terms listed in the `preserve_source_terms` array are NEVER translated. They appear in the source language (with transliteration if non-Latin script) and are footnoted on first occurrence in each unit. Examples: "YHWH", "hesed", "shalom", "dharma", "sutra", "logos", "ruach", "taqwa".
+
+On first occurrence in a unit, format as: **[source term]** (transliteration if needed) with a footnote defining the term. On subsequent occurrences, use the source term without footnote.
+
+### Liturgical Preservation
+
+When `liturgical_preservation` is `true`, preserve the rhythmic and musical qualities of liturgical passages. Prioritize how the text sounds when read aloud or chanted. Maintain parallelism, meter, and cadence even at the cost of literal accuracy.
+
+Specific guidance:
+- Preserve antiphonal structures (call and response patterns)
+- Maintain line lengths suitable for chanting or congregational reading
+- Keep parallel constructions parallel in the target language
+- Preserve chiastic structures (A-B-B'-A' patterns)
+- When a passage is traditionally sung, consider syllable count and stress patterns
+
+### Sacred Registers
+
+Preserve the specific register (prophetic, wisdom, legal, liturgical, narrative-historical, apocalyptic, epistolary, psalmic, parabolic, didactic) in the target language. Each register has established conventions in major translation traditions.
+
+### Doctrinal Terms
+
+Sacred terminology often has established translations in each tradition. Consult the glossary first; if not present, use the most widely accepted translation in the target language's tradition.
 
 ## Output
 

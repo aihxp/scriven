@@ -146,13 +146,32 @@ For each unit in OUTLINE.md (or from `--from` position):
 6. **Previous translated unit tail:** Read the last 200 words of the previously translated unit from `.manuscript/translation/{lang}/drafts/` (if any prior unit exists)
 7. **Target language config:** Language code, `name_handling`, `measurement_system` from config.json
 
-**5b. Invoke translator agent:**
+**5b. Sacred mode detection:**
 
-Invoke the translator agent (`agents/translator.md`) with fresh context, providing all gathered files. The agent translates the unit and writes to `.manuscript/translation/{lang}/drafts/{unit}-DRAFT.md`.
+If `.manuscript/config.json` has a `work_type` whose group is `sacred` (check against `CONSTRAINTS.json` work_types), read the `sacred` section from config.json and construct a `sacred_mode` object to pass to the translator agent:
+
+```json
+{
+  "sacred_mode": true,
+  "translation_philosophy": "[from config.json sacred.translation_philosophy]",
+  "canonical_alignment": "[from config.json sacred.canonical_alignment]",
+  "preserve_source_terms": "[from config.json sacred.preserve_source_terms]",
+  "transliteration_style": "[from config.json sacred.transliteration_style]",
+  "liturgical_preservation": "[from config.json sacred.liturgical_preservation]"
+}
+```
+
+For sacred works, the translation philosophy from config.json determines how the translator approaches each passage. Use `/scr:settings` to change `sacred.translation_philosophy`.
+
+If the work type group is not `sacred`, skip this step -- the translator operates in standard mode.
+
+**5c. Invoke translator agent:**
+
+Invoke the translator agent (`agents/translator.md`) with fresh context, providing all gathered files. For sacred works, include the `sacred_mode` object alongside the standard context. The agent translates the unit and writes to `.manuscript/translation/{lang}/drafts/{unit}-DRAFT.md`.
 
 **Fresh context per unit is mandatory.** Each translator invocation is independent -- this prevents translation drift, glossary inconsistency, and register collapse across a long manuscript.
 
-**5c. Post-unit processing:**
+**5d. Post-unit processing:**
 
 After each unit translation:
 
