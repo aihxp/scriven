@@ -85,13 +85,15 @@ Plans:
   3. Writer can verify voice fidelity against their style guide and check continuity across all drafted units
   4. Writer can generate complete front matter (19 elements) and back matter (12+ elements), individually or all at once
   5. Writer can generate marketing materials (blurb, synopsis, query letter, book proposal) from their completed manuscript
-**Plans**: TBD
+**Plans**: 6 plans
 
 Plans:
-- [ ] 04-01: TBD
-- [ ] 04-02: TBD
-- [ ] 04-03: TBD
-- [ ] 04-04: TBD
+- [ ] 04-01-PLAN.md -- Core quality commands: line-edit, copy-edit, voice-check
+- [ ] 04-02-PLAN.md -- Specialized quality commands: dialogue-audit, pacing-analysis, sensitivity-review
+- [ ] 04-03-PLAN.md -- Quality completions: beta-reader/continuity-check enhancement, originality-check, polish meta-command, CONSTRAINTS.json updates
+- [ ] 04-04-PLAN.md -- Front matter and back matter generation commands
+- [ ] 04-05-PLAN.md -- Marketing materials: blurb, synopsis, query-letter, book-proposal, discussion-questions
+- [ ] 04-06-PLAN.md -- Phase 4 test suite validating all commands and CONSTRAINTS.json entries
 
 ### Phase 5: Export & Publishing
 **Goal**: Writers can export their manuscript to any standard publishing format and package it for major platforms
@@ -173,7 +175,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 1. MVP Polish | 3/3 | Complete | - |
 | 2. Writer Experience | 0/4 | Planned | - |
 | 3. Creative Toolkit | 0/4 | Planned | - |
-| 4. Quality & Manuscript Completion | 0/4 | Not started | - |
+| 4. Quality & Manuscript Completion | 0/6 | Planned | - |
 | 5. Export & Publishing | 0/4 | Not started | - |
 | 6. Illustration | 0/3 | Not started | - |
 | 7. Translation & Localization | 0/3 | Not started | - |
