@@ -147,13 +147,10 @@ function generateSkillManifest(constraintsPath) {
     });
   }
 
-  // Add sacred subcommands that aren't already represented
+  // Add sacred subcommands as /scr:sacred:name entries
+  // These represent the sacred/ subdirectory path for discovery
   for (const sc of sacredCommands) {
-    const baseName = sc.name.replace('/scr:sacred:', '');
-    // Only add if not already in commands as a top-level entry
-    if (!commands[baseName] || commands[baseName].category !== 'sacred_exclusive') {
-      entries.push(sc);
-    }
+    entries.push(sc);
   }
 
   // Sort by category, then alphabetically by name within category
