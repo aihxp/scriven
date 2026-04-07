@@ -115,9 +115,9 @@ Requirements for full product release. Each maps to roadmap phases.
 - [ ] **TRANS-01**: `/scr:translate <language>` translates manuscript per-unit using fresh-context-per-unit pattern
 - [ ] **TRANS-02**: `/scr:translation-glossary` creates/manages term glossary for consistent translation
 - [ ] **TRANS-03**: `/scr:translation-memory` builds and references translation memory from prior translations
-- [ ] **TRANS-04**: `/scr:cultural-adaptation` flags idioms, humor, customs that need localization
-- [ ] **TRANS-05**: `/scr:back-translate` translates the translation back to source language for verification
-- [ ] **TRANS-06**: `/scr:multi-publish` exports translated editions in all target formats
+- [x] **TRANS-04**: `/scr:cultural-adaptation` flags idioms, humor, customs that need localization
+- [x] **TRANS-05**: `/scr:back-translate` translates the translation back to source language for verification
+- [x] **TRANS-06**: `/scr:multi-publish` exports translated editions in all target formats
 - [ ] **TRANS-07**: RTL (Arabic, Hebrew) and CJK (Chinese, Japanese, Korean) text direction support in all exports
 - [ ] **TRANS-08**: `/scr:autopilot-translate` runs multi-language translation pipeline unattended
 
@@ -267,9 +267,9 @@ Requirements for full product release. Each maps to roadmap phases.
 | TRANS-01 | Phase 7 | Pending |
 | TRANS-02 | Phase 7 | Pending |
 | TRANS-03 | Phase 7 | Pending |
-| TRANS-04 | Phase 7 | Pending |
-| TRANS-05 | Phase 7 | Pending |
-| TRANS-06 | Phase 7 | Pending |
+| TRANS-04 | Phase 7 | Complete |
+| TRANS-05 | Phase 7 | Complete |
+| TRANS-06 | Phase 7 | Complete |
 | TRANS-07 | Phase 7 | Pending |
 | TRANS-08 | Phase 7 | Pending |
 | COLLAB-01 | Phase 8 | Pending |
