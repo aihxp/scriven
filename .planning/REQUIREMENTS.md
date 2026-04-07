@@ -10,9 +10,9 @@ Requirements for full product release. Each maps to roadmap phases.
 ### MVP Polish
 
 - [ ] **MVP-01**: Demo sample project ships with pre-baked watchmaker story (5 scenes, full context files, voice profile, plot graph, editor notes)
-- [ ] **MVP-02**: CONSTRAINTS.json validator test ensures schema integrity and all referenced commands exist
-- [ ] **MVP-03**: Installer dry-run test verifies file copying across Claude Code, Cursor, Gemini CLI
-- [ ] **MVP-04**: Command structure tests verify frontmatter, required sections, and naming conventions
+- [x] **MVP-02**: CONSTRAINTS.json validator test ensures schema integrity and all referenced commands exist
+- [x] **MVP-03**: Installer dry-run test verifies file copying across Claude Code, Cursor, Gemini CLI
+- [x] **MVP-04**: Command structure tests verify frontmatter, required sections, and naming conventions
 - [ ] **MVP-05**: npm package is publishable — correct bin entry, shebang, publishConfig, engines field
 - [ ] **MVP-06**: `npx scriven@latest` installs and runs successfully on a clean machine
 
@@ -186,9 +186,9 @@ Requirements for full product release. Each maps to roadmap phases.
 | Requirement | Phase | Status |
 |-------------|-------|--------|
 | MVP-01 | Phase 1 | Pending |
-| MVP-02 | Phase 1 | Pending |
-| MVP-03 | Phase 1 | Pending |
-| MVP-04 | Phase 1 | Pending |
+| MVP-02 | Phase 1 | Complete |
+| MVP-03 | Phase 1 | Complete |
+| MVP-04 | Phase 1 | Complete |
 | MVP-05 | Phase 1 | Pending |
 | MVP-06 | Phase 1 | Pending |
 | AUTO-01 | Phase 2 | Pending |
