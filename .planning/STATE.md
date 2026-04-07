@@ -2,9 +2,9 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Documentation
-status: executing
-stopped_at: Completed 11-03-PLAN.md
-last_updated: "2026-04-07T20:09:42.342Z"
+status: verifying
+stopped_at: Completed 11-01-PLAN.md
+last_updated: "2026-04-07T20:09:58.667Z"
 last_activity: 2026-04-07
 progress:
   total_phases: 3
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-07)
 
 Phase: 11 (Feature & Domain Guides) — EXECUTING
 Plan: 3 of 3
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-04-07
 
 Progress: [##########░░] 75% (phases 1-9 complete, 10-12 remaining)
@@ -61,6 +61,8 @@ Recent decisions affecting current work:
 - [Phase 10]: Forward-reference doc links to docs/ files not yet created
 - [Phase 10]: Command reference organized in writer-workflow order with adaptation quick reference table
 - [Phase 11-03]: Sacred text guide: 16 command adaptations sourced from CONSTRAINTS.json (5 more than plan enumerated)
+- [Phase 11]: Feature guides organized with logical groupings and step-by-step workflows matching Phase 10 tone
+- [Phase 11-feature-domain-guides]: Feature guides use concrete prose examples showing how different voice/type settings produce different output
 
 ### Pending Todos
 
@@ -72,6 +74,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-07T20:09:37.954Z
-Stopped at: Completed 11-03-PLAN.md
+Last session: 2026-04-07T20:09:58.665Z
+Stopped at: Completed 11-01-PLAN.md
 Resume file: None

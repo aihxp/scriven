@@ -15,9 +15,9 @@
 
 - [ ] **DOC-04**: Work type guide -- how each of 50+ work types adapts Scriven's vocabulary, hierarchy, commands, and context files
 - [ ] **DOC-05**: Voice DNA guide -- how STYLE-GUIDE.md works, 15+ dimensions, how to tune voice, voice-test calibration, sacred registers
-- [ ] **DOC-06**: Publishing pipeline guide -- export formats (13), publish wizard, presets, KDP/IngramSpark packages, submission packages
+- [x] **DOC-06**: Publishing pipeline guide -- export formats (13), publish wizard, presets, KDP/IngramSpark packages, submission packages
 - [x] **DOC-07**: Sacred text guide -- 13 work types, 10 voice registers, 8 exclusive commands, sacred translation, tradition-aware front/back matter
-- [ ] **DOC-08**: Translation guide -- translation pipeline, glossary management, translation memory, cultural adaptation, back-translation, RTL/CJK
+- [x] **DOC-08**: Translation guide -- translation pipeline, glossary management, translation memory, cultural adaptation, back-translation, RTL/CJK
 
 ### Developer Documentation
 
@@ -45,9 +45,9 @@
 | DOC-03 | Phase 10 | Complete |
 | DOC-04 | Phase 11 | Pending |
 | DOC-05 | Phase 11 | Pending |
-| DOC-06 | Phase 11 | Pending |
+| DOC-06 | Phase 11 | Complete |
 | DOC-07 | Phase 11 | Complete |
-| DOC-08 | Phase 11 | Pending |
+| DOC-08 | Phase 11 | Complete |
 | DOC-09 | Phase 12 | Pending |
 | DOC-10 | Phase 12 | Pending |
 | DOC-11 | Phase 12 | Pending |
