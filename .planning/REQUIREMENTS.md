@@ -99,9 +99,9 @@ Requirements for full product release. Each maps to roadmap phases.
 
 ### Illustration & Cover Art
 
-- [ ] **ILL-01**: `/scr:cover-art` generates detailed cover art prompts (front, spine, back, full wrap) calibrated to genre conventions
-- [ ] **ILL-02**: Cover art includes KDP trim size specs with calculated spine width based on page count
-- [ ] **ILL-03**: `/scr:art-direction` generates ART-DIRECTION.md with visual style, color palette, typography, mood board
+- [x] **ILL-01**: `/scr:cover-art` generates detailed cover art prompts (front, spine, back, full wrap) calibrated to genre conventions
+- [x] **ILL-02**: Cover art includes KDP trim size specs with calculated spine width based on page count
+- [x] **ILL-03**: `/scr:art-direction` generates ART-DIRECTION.md with visual style, color palette, typography, mood board
 - [ ] **ILL-04**: `/scr:illustrate-scene` generates scene-specific illustration prompts with character descriptions, setting, mood
 - [x] **ILL-05**: `/scr:character-ref` generates character reference sheet prompts for visual consistency
 - [x] **ILL-06**: `/scr:chapter-header` generates chapter header/ornament design prompts
@@ -254,9 +254,9 @@ Requirements for full product release. Each maps to roadmap phases.
 | EXP-15 | Phase 5 | Complete |
 | EXP-16 | Phase 5 | Complete |
 | EXP-17 | Phase 5 | Complete |
-| ILL-01 | Phase 6 | Pending |
-| ILL-02 | Phase 6 | Pending |
-| ILL-03 | Phase 6 | Pending |
+| ILL-01 | Phase 6 | Complete |
+| ILL-02 | Phase 6 | Complete |
+| ILL-03 | Phase 6 | Complete |
 | ILL-04 | Phase 6 | Pending |
 | ILL-05 | Phase 6 | Complete |
 | ILL-06 | Phase 6 | Complete |
