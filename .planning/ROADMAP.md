@@ -205,7 +205,12 @@ Plans:
   1. README.md explains what Scriven is, lists supported runtimes and key features, and links to every guide -- a visitor understands the project in under 60 seconds
   2. Getting Started guide walks a user from zero to a drafted scene in 10 minutes using `npx scriven@latest`, `/scr:new-work`, `/scr:discuss`, and `/scr:draft`
   3. Command reference documents all 96+ commands organized by category with usage, flags, examples, prerequisites, and work-type adaptations
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 10-01-PLAN.md — Rewrite README.md as documentation hub
+- [ ] 10-02-PLAN.md — Getting Started guide (install to first draft in 10 minutes)
+- [ ] 10-03-PLAN.md — Complete command reference (101 commands across 14 categories)
 
 ### Phase 11: Feature & Domain Guides
 **Goal**: Users working with specific Scriven capabilities have dedicated guides that explain concepts, workflows, and configuration for each feature domain
@@ -244,6 +249,6 @@ Phases execute in numeric order: 10 -> 11 -> 12
 | 7. Translation & Localization | v1.0 | 4/4 | Complete | 2026-04-07 |
 | 8. Collaboration, Platform & Sacred | v1.0 | 5/5 | Complete | 2026-04-07 |
 | 9. Generic Platform Support | v1.1 | 2/2 | Complete | 2026-04-07 |
-| 10. Core Documentation | v1.2 | 0/0 | Not started | - |
+| 10. Core Documentation | v1.2 | 0/3 | Planned | - |
 | 11. Feature & Domain Guides | v1.2 | 0/0 | Not started | - |
 | 12. Developer Docs & Verification | v1.2 | 0/0 | Not started | - |
