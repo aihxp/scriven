@@ -21,8 +21,8 @@
 
 ### Developer Documentation
 
-- [ ] **DOC-09**: Contributor guide -- how to add commands (pattern), agents (pattern), work types (CONSTRAINTS.json), templates, and export formats
-- [ ] **DOC-10**: Architecture overview -- skill system design, CONSTRAINTS.json schema, file structure, agent orchestration, fresh-context-per-unit pattern
+- [x] **DOC-09**: Contributor guide -- how to add commands (pattern), agents (pattern), work types (CONSTRAINTS.json), templates, and export formats
+- [x] **DOC-10**: Architecture overview -- skill system design, CONSTRAINTS.json schema, file structure, agent orchestration, fresh-context-per-unit pattern
 
 ### Quality
 
@@ -48,8 +48,8 @@
 | DOC-06 | Phase 11 | Complete |
 | DOC-07 | Phase 11 | Complete |
 | DOC-08 | Phase 11 | Complete |
-| DOC-09 | Phase 12 | Pending |
-| DOC-10 | Phase 12 | Pending |
+| DOC-09 | Phase 12 | Complete |
+| DOC-10 | Phase 12 | Complete |
 | DOC-11 | Phase 12 | Pending |
 
 **Coverage:**

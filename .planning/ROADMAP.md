@@ -239,7 +239,7 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 12-01-PLAN.md -- Contributor guide and architecture overview (DOC-09, DOC-10)
+- [x] 12-01-PLAN.md -- Contributor guide and architecture overview (DOC-09, DOC-10)
 - [ ] 12-02-PLAN.md -- Codebase verification pass for all documentation (DOC-11)
 
 ## Progress
@@ -260,4 +260,4 @@ Phases execute in numeric order: 10 -> 11 -> 12
 | 9. Generic Platform Support | v1.1 | 2/2 | Complete | 2026-04-07 |
 | 10. Core Documentation | v1.2 | 3/3 | Complete    | 2026-04-07 |
 | 11. Feature & Domain Guides | v1.2 | 3/3 | Complete    | 2026-04-07 |
-| 12. Developer Docs & Verification | v1.2 | 0/2 | Not started | - |
+| 12. Developer Docs & Verification | v1.2 | 1/2 | In Progress|  |
