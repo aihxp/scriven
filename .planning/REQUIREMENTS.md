@@ -92,9 +92,9 @@ Requirements for full product release. Each maps to roadmap phases.
 - [ ] **EXP-11**: `/scr:export ingram-package` bundles IngramSpark-ready files (PDF/X-1a, cover, metadata)
 - [ ] **EXP-12**: `/scr:export query-package` bundles query letter + synopsis + sample chapters
 - [ ] **EXP-13**: `/scr:export submission-package` bundles full submission materials
-- [ ] **EXP-14**: `/scr:publish` interactive wizard chains correct export commands based on destination
-- [ ] **EXP-15**: `/scr:publish --preset` supports named presets (kdp-paperback, query-submission, ebook-wide)
-- [ ] **EXP-16**: `/scr:autopilot-publish` runs full publishing pipeline unattended (front/back matter → compile → cover → export → packages)
+- [x] **EXP-14**: `/scr:publish` interactive wizard chains correct export commands based on destination
+- [x] **EXP-15**: `/scr:publish --preset` supports named presets (kdp-paperback, query-submission, ebook-wide)
+- [x] **EXP-16**: `/scr:autopilot-publish` runs full publishing pipeline unattended (front/back matter → compile → cover → export → packages)
 - [x] **EXP-17**: `/scr:manuscript-stats` shows word count, chapter count, estimated page count, reading time
 
 ### Illustration & Cover Art
@@ -250,9 +250,9 @@ Requirements for full product release. Each maps to roadmap phases.
 | EXP-11 | Phase 5 | Pending |
 | EXP-12 | Phase 5 | Pending |
 | EXP-13 | Phase 5 | Pending |
-| EXP-14 | Phase 5 | Pending |
-| EXP-15 | Phase 5 | Pending |
-| EXP-16 | Phase 5 | Pending |
+| EXP-14 | Phase 5 | Complete |
+| EXP-15 | Phase 5 | Complete |
+| EXP-16 | Phase 5 | Complete |
 | EXP-17 | Phase 5 | Complete |
 | ILL-01 | Phase 6 | Pending |
 | ILL-02 | Phase 6 | Pending |

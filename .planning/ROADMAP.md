@@ -109,9 +109,9 @@ Plans:
 
 Plans:
 - [x] 05-01-PLAN.md -- Export templates (Typst, EPUB CSS, LaTeX) and export command with primary formats (markdown, docx, pdf, epub)
-- [ ] 05-02-PLAN.md -- Export command extended with secondary formats (fountain, fdx, latex) and platform packages (kdp, ingram, query, submission)
+- [x] 05-02-PLAN.md -- Export command extended with secondary formats (fountain, fdx, latex) and platform packages (kdp, ingram, query, submission)
 - [x] 05-03-PLAN.md -- manuscript-stats command and CONSTRAINTS.json updates for export-phase commands
-- [ ] 05-04-PLAN.md -- Publish wizard rewrite with presets and autopilot-publish command
+- [x] 05-04-PLAN.md -- Publish wizard rewrite with presets and autopilot-publish command
 - [ ] 05-05-PLAN.md -- Phase 5 test suite validating all commands, templates, and CONSTRAINTS.json entries
 
 ### Phase 6: Illustration
@@ -177,7 +177,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 2. Writer Experience | 0/4 | Planned | - |
 | 3. Creative Toolkit | 0/4 | Planned | - |
 | 4. Quality & Manuscript Completion | 0/6 | Planned | - |
-| 5. Export & Publishing | 0/5 | Planned | - |
+| 5. Export & Publishing | 4/5 | In Progress|  |
 | 6. Illustration | 0/3 | Not started | - |
 | 7. Translation & Localization | 0/3 | Not started | - |
 | 8. Collaboration, Platform & Sacred | 0/5 | Not started | - |
