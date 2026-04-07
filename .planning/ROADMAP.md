@@ -93,7 +93,7 @@ Plans:
 - [x] 04-03-PLAN.md -- Quality completions: beta-reader/continuity-check enhancement, originality-check, polish meta-command, CONSTRAINTS.json updates
 - [x] 04-04-PLAN.md -- Front matter and back matter generation commands
 - [x] 04-05-PLAN.md -- Marketing materials: blurb, synopsis, query-letter, book-proposal, discussion-questions
-- [ ] 04-06-PLAN.md -- Phase 4 test suite validating all commands and CONSTRAINTS.json entries
+- [x] 04-06-PLAN.md -- Phase 4 test suite validating all commands and CONSTRAINTS.json entries
 
 ### Phase 5: Export & Publishing
 **Goal**: Writers can export their manuscript to any standard publishing format and package it for major platforms
