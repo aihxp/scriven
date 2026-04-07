@@ -37,7 +37,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 Plans:
 - [x] 01-01-PLAN.md -- Create pre-baked demo project (watchmaker story with 4 drafted scenes, context files, editor notes)
 - [x] 01-02-PLAN.md -- Test suite for CONSTRAINTS.json, command structure, and installer dry-run
-- [ ] 01-03-PLAN.md -- Demo completeness tests, package publishability tests, and human verification
+- [x] 01-03-PLAN.md -- Demo completeness tests, package publishability tests, and human verification
 
 ### Phase 2: Writer Experience
 **Goal**: Non-technical writers can use Scriven without encountering git terminology, and the AI can draft autonomously with appropriate human checkpoints

@@ -13,8 +13,8 @@ Requirements for full product release. Each maps to roadmap phases.
 - [x] **MVP-02**: CONSTRAINTS.json validator test ensures schema integrity and all referenced commands exist
 - [x] **MVP-03**: Installer dry-run test verifies file copying across Claude Code, Cursor, Gemini CLI
 - [x] **MVP-04**: Command structure tests verify frontmatter, required sections, and naming conventions
-- [ ] **MVP-05**: npm package is publishable — correct bin entry, shebang, publishConfig, engines field
-- [ ] **MVP-06**: `npx scriven@latest` installs and runs successfully on a clean machine
+- [x] **MVP-05**: npm package is publishable — correct bin entry, shebang, publishConfig, engines field
+- [x] **MVP-06**: `npx scriven@latest` installs and runs successfully on a clean machine
 
 ### Autopilot & Writer Mode
 
@@ -189,8 +189,8 @@ Requirements for full product release. Each maps to roadmap phases.
 | MVP-02 | Phase 1 | Complete |
 | MVP-03 | Phase 1 | Complete |
 | MVP-04 | Phase 1 | Complete |
-| MVP-05 | Phase 1 | Pending |
-| MVP-06 | Phase 1 | Pending |
+| MVP-05 | Phase 1 | Complete |
+| MVP-06 | Phase 1 | Complete |
 | AUTO-01 | Phase 2 | Pending |
 | AUTO-02 | Phase 2 | Pending |
 | AUTO-03 | Phase 2 | Pending |
