@@ -221,7 +221,12 @@ Plans:
   2. A user tuning their voice profile can follow the Voice DNA guide to understand the 15+ dimensions, run voice-test calibration, and configure sacred voice registers
   3. A user ready to publish can follow the publishing guide through all 13 export formats, platform-specific packages (KDP, IngramSpark), and the publish wizard presets
   4. A user working with sacred texts or translations can find dedicated guides covering sacred work types, voice registers, translation pipeline, glossary management, and RTL/CJK support
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 11-01-PLAN.md — Work Types Guide and Voice DNA Guide
+- [ ] 11-02-PLAN.md — Publishing Pipeline Guide and Translation Guide
+- [ ] 11-03-PLAN.md — Sacred Text Guide
 
 ### Phase 12: Developer Docs & Verification
 **Goal**: Contributors know how to extend Scriven, understand its architecture, and all documentation is verified accurate against the live codebase
@@ -250,5 +255,5 @@ Phases execute in numeric order: 10 -> 11 -> 12
 | 8. Collaboration, Platform & Sacred | v1.0 | 5/5 | Complete | 2026-04-07 |
 | 9. Generic Platform Support | v1.1 | 2/2 | Complete | 2026-04-07 |
 | 10. Core Documentation | v1.2 | 3/3 | Complete    | 2026-04-07 |
-| 11. Feature & Domain Guides | v1.2 | 0/0 | Not started | - |
+| 11. Feature & Domain Guides | v1.2 | 0/3 | Not started | - |
 | 12. Developer Docs & Verification | v1.2 | 0/0 | Not started | - |
