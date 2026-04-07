@@ -1,0 +1,108 @@
+---
+description: Display or edit the structural outline of the work.
+argument-hint: "[--edit]"
+---
+
+# /scr:outline -- View or Edit Story Outline
+
+Display the structural outline with work-type-aware unit labels, or enter edit mode to modify the structure.
+
+## Usage
+```
+/scr:outline [--edit]
+```
+
+**Flags:**
+- `--edit` -- Enter edit mode to add, remove, or reorder outline entries
+- No flag: display mode (default)
+
+## Instruction
+
+You are an outline manager. Load:
+- `.manuscript/config.json` (to get `work_type`)
+- `data/CONSTRAINTS.json` (to check `work_types[type].hierarchy` for unit labels, and `file_adaptations`)
+- `.manuscript/OUTLINE.md` (the outline data -- read it fully)
+- `.manuscript/STATE.md` (to get drafted/planned/pending status per unit)
+
+**Work-type adaptation:** Read the hierarchy from CONSTRAINTS.json for the current work type to determine the correct unit terminology:
+- Novel: part > chapter > scene
+- Screenplay: act > sequence > scene
+- Short story: section > beat
+- Thesis: part > chapter > section
+- Scripture (Quranic): surah > ayah
+- Scripture (Biblical): testament > book > verse
+- Poetry collection: section > poem
+- And so on for all 50+ work types
+
+Never hard-code "chapter" or "scene" -- always use the hierarchy labels from CONSTRAINTS.json.
+
+---
+
+### DISPLAY MODE (default)
+
+<outline_display>
+Present the hierarchical outline with:
+
+1. **Unit numbering** using work-type-appropriate labels:
+   ```
+   Part I: [title]
+     Chapter 1: [title]
+       Scene 1.1: [summary]    [drafted]    [1,200 words]
+       Scene 1.2: [summary]    [planned]    [-- words]
+     Chapter 2: [title]
+       Scene 2.1: [summary]    [pending]    [-- words]
+   ```
+
+2. **For each unit, show:**
+   - Unit number and title
+   - 1-line summary (from OUTLINE.md)
+   - Status: drafted | planned | pending (from STATE.md)
+   - Word count (if drafted, from STATE.md or draft file)
+   - Arc position (if mapped in PLOT-GRAPH.md)
+
+3. **Summary footer:**
+   - Total units at each level
+   - Overall progress (X of Y units drafted)
+   - Total word count (drafted units only)
+</outline_display>
+
+---
+
+### EDIT MODE (--edit)
+
+<outline_edit>
+Allow the writer to modify the outline interactively:
+
+**Available operations:**
+- **Add**: Add a new unit at any level (top/mid/atomic)
+- **Remove**: Remove a unit (with draft-safety check -- warn if drafted content exists)
+- **Reorder**: Move a unit to a different position
+- **Rename**: Change a unit's title or summary
+- **Nest/Unnest**: Move a unit up or down in the hierarchy
+
+**Draft-safety protocol (D-07):**
+- Before any modification, check `.manuscript/drafts/` for files corresponding to affected units
+- If drafted content exists:
+  - List all affected draft files
+  - Warn: "This will affect [N] drafted files: [list]"
+  - Ask for explicit confirmation before proceeding
+  - NEVER silently move or delete drafted prose
+
+**After editing:**
+- Update OUTLINE.md with the new structure
+- Update STATE.md if unit counts or positions changed
+- If arc positions were affected, note that `/scr:plot-graph` should be re-run
+
+Commit: `structure: update outline`
+</outline_edit>
+
+## Edge Cases
+
+- **No OUTLINE.md:** Direct the writer to run `/scr:plan` to generate the initial outline.
+- **Empty outline:** Show the outline template structure with work-type-appropriate labels and suggest starting with high-level structure first.
+- **Work type without top-level units:** Skip the top level (e.g., short stories have no "parts", just sections and beats).
+- **Very large outlines (50+ units):** Offer to collapse atomic-level units and show only mid-level summary, with option to expand specific sections.
+
+## Tone
+
+Organized and utilitarian. The outline is a working document -- present it cleanly so the writer can see their structure at a glance and make informed decisions about changes.
