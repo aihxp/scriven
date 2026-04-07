@@ -26,7 +26,7 @@
 
 ### Quality
 
-- [ ] **DOC-11**: All documentation verified against live codebase -- no references to nonexistent commands, flags, or files
+- [x] **DOC-11**: All documentation verified against live codebase -- no references to nonexistent commands, flags, or files
 
 ## Out of Scope
 
@@ -50,7 +50,7 @@
 | DOC-08 | Phase 11 | Complete |
 | DOC-09 | Phase 12 | Complete |
 | DOC-10 | Phase 12 | Complete |
-| DOC-11 | Phase 12 | Pending |
+| DOC-11 | Phase 12 | Complete |
 
 **Coverage:**
 - v1.2 requirements: 11 total
