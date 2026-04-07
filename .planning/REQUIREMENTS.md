@@ -144,12 +144,12 @@ Requirements for full product release. Each maps to roadmap phases.
 
 ### Sacred & Historical
 
-- [ ] **SACRED-01**: 13 sacred/historical work types fully functional with tradition-native vocabulary
-- [ ] **SACRED-02**: Sacred voice registers (prophetic, wisdom, legal, liturgical, narrative-historical, apocalyptic, epistolary, psalmic, parabolic, didactic) loaded into drafter
-- [ ] **SACRED-03**: Adapted context files (FIGURES.md, LINEAGES.md, COSMOLOGY.md, THEOLOGICAL-ARC.md, DOCTRINES.md, FRAMEWORK.md) fully functional
-- [ ] **SACRED-04**: Sacred-exclusive commands (concordance, cross-reference, genealogy, chronology, annotation-layer, verse-numbering, source-tracking, doctrinal-check) fully implemented
-- [ ] **SACRED-05**: Sacred-adapted commands (new-figure, lineage-map, build-cosmology, theological-arc, doctrine-tracker, etc.) auto-route correctly
-- [ ] **SACRED-06**: Sacred discuss-phase with 10 tradition-specific categories
+- [x] **SACRED-01**: 13 sacred/historical work types fully functional with tradition-native vocabulary
+- [x] **SACRED-02**: Sacred voice registers (prophetic, wisdom, legal, liturgical, narrative-historical, apocalyptic, epistolary, psalmic, parabolic, didactic) loaded into drafter
+- [x] **SACRED-03**: Adapted context files (FIGURES.md, LINEAGES.md, COSMOLOGY.md, THEOLOGICAL-ARC.md, DOCTRINES.md, FRAMEWORK.md) fully functional
+- [x] **SACRED-04**: Sacred-exclusive commands (concordance, cross-reference, genealogy, chronology, annotation-layer, verse-numbering, source-tracking, doctrinal-check) fully implemented
+- [x] **SACRED-05**: Sacred-adapted commands (new-figure, lineage-map, build-cosmology, theological-arc, doctrine-tracker, etc.) auto-route correctly
+- [x] **SACRED-06**: Sacred discuss-phase with 10 tradition-specific categories
 - [ ] **SACRED-07**: Sacred translation pipeline: formal vs. dynamic equivalence, canonical alignment, liturgical preservation
 - [ ] **SACRED-08**: Tradition-aware front/back matter (imprimatur, nihil obstat, hekhsher, concordance, maps)
 - [ ] **SACRED-09**: Sacred config schema (tradition, verse numbering, calendar system, translation philosophy, canonical alignment)
@@ -287,12 +287,12 @@ Requirements for full product release. Each maps to roadmap phases.
 | RUNTIME-05 | Phase 8 | Pending |
 | RUNTIME-06 | Phase 8 | Pending |
 | RUNTIME-07 | Phase 8 | Pending |
-| SACRED-01 | Phase 8 | Pending |
-| SACRED-02 | Phase 8 | Pending |
-| SACRED-03 | Phase 8 | Pending |
-| SACRED-04 | Phase 8 | Pending |
-| SACRED-05 | Phase 8 | Pending |
-| SACRED-06 | Phase 8 | Pending |
+| SACRED-01 | Phase 8 | Complete |
+| SACRED-02 | Phase 8 | Complete |
+| SACRED-03 | Phase 8 | Complete |
+| SACRED-04 | Phase 8 | Complete |
+| SACRED-05 | Phase 8 | Complete |
+| SACRED-06 | Phase 8 | Complete |
 | SACRED-07 | Phase 8 | Pending |
 | SACRED-08 | Phase 8 | Pending |
 | SACRED-09 | Phase 8 | Pending |
