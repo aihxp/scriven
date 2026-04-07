@@ -79,12 +79,12 @@ Requirements for full product release. Each maps to roadmap phases.
 
 ### Export & Publishing
 
-- [ ] **EXP-01**: `/scr:export markdown` compiles manuscript to single markdown file with correct document order
-- [ ] **EXP-02**: `/scr:export docx` exports manuscript format (12pt TNR, double-spaced, standard margins)
-- [ ] **EXP-03**: `/scr:export docx --formatted` exports formatted/typeset version
-- [ ] **EXP-04**: `/scr:export pdf` exports manuscript-format PDF
-- [ ] **EXP-05**: `/scr:export pdf --print-ready` exports print-ready PDF with trim, margins, bleed
-- [ ] **EXP-06**: `/scr:export epub` exports EPUB 3.0 with metadata, TOC, cover
+- [x] **EXP-01**: `/scr:export markdown` compiles manuscript to single markdown file with correct document order
+- [x] **EXP-02**: `/scr:export docx` exports manuscript format (12pt TNR, double-spaced, standard margins)
+- [x] **EXP-03**: `/scr:export docx --formatted` exports formatted/typeset version
+- [x] **EXP-04**: `/scr:export pdf` exports manuscript-format PDF
+- [x] **EXP-05**: `/scr:export pdf --print-ready` exports print-ready PDF with trim, margins, bleed
+- [x] **EXP-06**: `/scr:export epub` exports EPUB 3.0 with metadata, TOC, cover
 - [ ] **EXP-07**: `/scr:export fountain` exports screenplay in Fountain format
 - [ ] **EXP-08**: `/scr:export fdx` exports Final Draft XML format
 - [ ] **EXP-09**: `/scr:export latex` exports LaTeX for academic/sacred critical editions
@@ -237,12 +237,12 @@ Requirements for full product release. Each maps to roadmap phases.
 | PUB-07 | Phase 4 | Complete |
 | PUB-08 | Phase 4 | Complete |
 | PUB-09 | Phase 4 | Complete |
-| EXP-01 | Phase 5 | Pending |
-| EXP-02 | Phase 5 | Pending |
-| EXP-03 | Phase 5 | Pending |
-| EXP-04 | Phase 5 | Pending |
-| EXP-05 | Phase 5 | Pending |
-| EXP-06 | Phase 5 | Pending |
+| EXP-01 | Phase 5 | Complete |
+| EXP-02 | Phase 5 | Complete |
+| EXP-03 | Phase 5 | Complete |
+| EXP-04 | Phase 5 | Complete |
+| EXP-05 | Phase 5 | Complete |
+| EXP-06 | Phase 5 | Complete |
 | EXP-07 | Phase 5 | Pending |
 | EXP-08 | Phase 5 | Pending |
 | EXP-09 | Phase 5 | Pending |
