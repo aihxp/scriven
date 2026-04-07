@@ -20,6 +20,13 @@
 |-----------|---------|------|---------|
 | | | | |
 
+## Session metrics
+
+**Current session started:** {{SESSION_START}}
+**Units this session:** {{SESSION_UNITS}}
+**Words this session:** {{SESSION_WORDS}}
+**Quality passes:** {{SESSION_QUALITY_PASSES}}
+
 ## Pending
 
 - **Next step:** {{NEXT_STEP}}

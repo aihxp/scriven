@@ -739,6 +739,7 @@
     "undo": { "category": "session", "available": ["all"] },
     "pause-work": { "category": "session", "available": ["all"] },
     "resume-work": { "category": "session", "available": ["all"] },
+    "session-report": { "category": "session", "available": ["all"] },
     "manuscript-stats": { "category": "navigation", "available": ["all"] },
     "complete-draft": { "category": "core", "available": ["all"] },
     "new-revision": { "category": "core", "available": ["all"] },
