@@ -9,7 +9,7 @@ Requirements for full product release. Each maps to roadmap phases.
 
 ### MVP Polish
 
-- [ ] **MVP-01**: Demo sample project ships with pre-baked watchmaker story (5 scenes, full context files, voice profile, plot graph, editor notes)
+- [x] **MVP-01**: Demo sample project ships with pre-baked watchmaker story (5 scenes, full context files, voice profile, plot graph, editor notes)
 - [x] **MVP-02**: CONSTRAINTS.json validator test ensures schema integrity and all referenced commands exist
 - [x] **MVP-03**: Installer dry-run test verifies file copying across Claude Code, Cursor, Gemini CLI
 - [x] **MVP-04**: Command structure tests verify frontmatter, required sections, and naming conventions
@@ -185,7 +185,7 @@ Requirements for full product release. Each maps to roadmap phases.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| MVP-01 | Phase 1 | Pending |
+| MVP-01 | Phase 1 | Complete |
 | MVP-02 | Phase 1 | Complete |
 | MVP-03 | Phase 1 | Complete |
 | MVP-04 | Phase 1 | Complete |

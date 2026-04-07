@@ -3,13 +3,13 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 01-02-PLAN.md
-last_updated: "2026-04-07T04:48:11.797Z"
+stopped_at: Completed 01-01-PLAN.md
+last_updated: "2026-04-07T04:53:27.321Z"
 progress:
   total_phases: 8
   completed_phases: 0
   total_plans: 3
-  completed_plans: 1
+  completed_plans: 2
 ---
 
 # Project State
@@ -24,7 +24,7 @@ See: .planning/PROJECT.md (updated 2026-04-06)
 ## Current Position
 
 Phase: 01 (MVP Polish) — EXECUTING
-Plan: 2 of 3
+Plan: 3 of 3
 
 ## Performance Metrics
 
@@ -47,6 +47,7 @@ Plan: 2 of 3
 
 *Updated after each plan completion*
 | Phase 01 P02 | 3min | 2 tasks | 13 files |
+| Phase 01-mvp-polish P01 | 8 | 2 tasks | 16 files |
 
 ## Accumulated Context
 
@@ -59,6 +60,7 @@ Recent decisions affecting current work:
 - [Roadmap]: Export before Illustration (research recommendation) -- illustration needs KDP dimensions from export pipeline
 - [Roadmap]: Quality before Export -- voice-check and continuity-check must exist before export-adjacent text generation
 - [Phase 01]: Reversed command-file-exists test direction: verify files on disk are in CONSTRAINTS.json (not vice versa) since 73 commands defined but only 28 built
+- [Phase 01-mvp-polish]: Added .gitignore negation for data/demo/.manuscript/ to allow demo content tracking
 
 ### Pending Todos
 
@@ -72,6 +74,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-07T04:48:11.795Z
-Stopped at: Completed 01-02-PLAN.md
+Last session: 2026-04-07T04:53:27.319Z
+Stopped at: Completed 01-01-PLAN.md
 Resume file: None
