@@ -457,9 +457,290 @@ Output: `.manuscript/output/manuscript.tex`
 
 ---
 
-<!-- PACKAGES: Platform package formats follow -->
+#### FORMAT: kdp-package (EXP-10)
 
-<!-- EXTENSION POINT: Package formats (kdp-package, ingram-package, query-package, submission-package) will be added below -->
+Bundle a complete KDP (Kindle Direct Publishing) paperback submission package with interior PDF, calculated cover dimensions, and metadata.
+
+**Work type check:** Look up `kdp_package` in `CONSTRAINTS.json` under `exports`. Available for `prose`, `visual`, `poetry`, and `sacred` group work types. If the current work type's group is not in the `available` list, inform the writer and **stop**.
+
+**Step 1: Ensure print-ready PDF exists**
+
+Check if `.manuscript/output/manuscript-print.pdf` exists. If not, run the `pdf --print-ready` export first (see FORMAT: pdf --print-ready above).
+
+**Step 2: Calculate page count and spine width**
+
+```
+# Get word count from assembled manuscript
+word_count = count words in .manuscript/output/assembled-manuscript.md
+page_count = ceil(word_count / 250)
+```
+
+Read `paper_type` from `.manuscript/config.json` (default: `"white"`).
+
+**Paper thickness factors:**
+
+| Paper Type | Factor (inches/page) |
+|------------|---------------------|
+| white      | 0.002252            |
+| cream      | 0.0025              |
+| color      | 0.0032              |
+
+**Spine width formula (per D-05):**
+
+```
+spine_width = (page_count * paper_factor) + 0.06
+```
+
+Where `0.06` is the cover thickness for paperback.
+
+**Spine text rule:** Only add text to the spine if `page_count >= 79`. Books under 79 pages have spines too narrow for readable text.
+
+**Step 3: Calculate cover dimensions**
+
+Read `trim_width` and `trim_height` from `.manuscript/config.json` (defaults: `6` inches width, `9` inches height).
+
+```
+bleed = 0.125  # inches, on each side
+
+cover_width  = (trim_width * 2) + spine_width + (bleed * 2)
+cover_height = trim_height + (bleed * 2)
+```
+
+**Step 4: Create KDP package directory and files**
+
+```bash
+mkdir -p .manuscript/output/kdp-package
+cp .manuscript/output/manuscript-print.pdf .manuscript/output/kdp-package/interior.pdf
+```
+
+**Generate `cover-specs.md`** with exact calculated dimensions:
+
+```markdown
+# KDP Cover Specifications
+
+## Interior
+- Page count: [page_count]
+- Trim size: [trim_width]" x [trim_height]"
+- Paper type: [paper_type]
+
+## Spine
+- Spine width: [spine_width]" (calculated: [page_count] pages x [paper_factor] + 0.06")
+- Spine text: [Yes/No] (minimum 79 pages required, this book has [page_count])
+
+## Full Cover Dimensions
+- Cover width: [cover_width]" (trim x 2 + spine + bleed x 2)
+- Cover height: [cover_height]" (trim height + bleed x 2)
+- Bleed: 0.125" on all sides
+
+## Notes
+- Cover file must be a single PDF at 300 DPI minimum
+- Use RGB color space for KDP covers
+- Safe zone: keep critical content 0.25" from trim edges
+```
+
+**Generate `kdp-metadata.md`** with publishing metadata:
+
+```markdown
+# KDP Metadata
+
+- **Title:** [title from config.json]
+- **Author:** [author from config.json]
+- **Language:** [language from config.json]
+- **Description:** [from WORK.md if available]
+- **Categories:** [suggest based on work_type and genre]
+- **Keywords:** [suggest 7 keywords based on themes and genre]
+- **Page count:** [page_count] (estimated from word count)
+```
+
+Output: `.manuscript/output/kdp-package/` containing `interior.pdf`, `cover-specs.md`, `kdp-metadata.md`
+
+---
+
+#### FORMAT: ingram-package (EXP-11)
+
+Bundle an IngramSpark submission package with CMYK PDF/X-1a interior, cover specifications, and metadata.
+
+**Work type check:** Look up `ingram_package` in `CONSTRAINTS.json` under `exports`. Available for `prose`, `visual`, `poetry`, and `sacred` group work types. If the current work type's group is not in the `available` list, inform the writer and **stop**.
+
+**Step 1: Ensure print-ready PDF exists**
+
+Check if `.manuscript/output/manuscript-print.pdf` exists. If not, run the `pdf --print-ready` export first.
+
+**Step 2: Check for Ghostscript**
+
+```bash
+command -v gs >/dev/null 2>&1
+```
+
+If Ghostscript is not found:
+
+> **Ghostscript is required for IngramSpark PDF/X-1a conversion but is not installed.**
+>
+> **Install Ghostscript:**
+> - macOS: `brew install ghostscript`
+> - Linux: `sudo apt install ghostscript`
+> - Windows: Download from https://ghostscript.com/releases/gsdnld.html
+>
+> After installing, run this export command again.
+
+Then **stop**.
+
+**Step 3: Convert to CMYK PDF/X-1a**
+
+```bash
+mkdir -p .manuscript/output/ingram-package
+
+gs -dPDFX -dBATCH -dNOPAUSE \
+  -dPDFXCompatibilityPolicy=1 \
+  -sColorConversionStrategy=CMYK \
+  -sDEVICE=pdfwrite \
+  -sOutputFile=.manuscript/output/ingram-package/manuscript-cmyk.pdf \
+  .manuscript/output/manuscript-print.pdf
+```
+
+> **ICC Color Profile Warning:** CMYK conversion quality depends on ICC color profiles installed on your system. The converted PDF should be reviewed for color accuracy before submission to IngramSpark. Colors may shift during RGB-to-CMYK conversion, especially blues and greens.
+
+**Step 4: Calculate cover specs and metadata**
+
+Use the same spine width formula as KDP (see FORMAT: kdp-package, Steps 2-3). IngramSpark uses the same paper thickness values and bleed requirements.
+
+**Generate `cover-specs.md`** and **`ingram-metadata.md`** in the package directory with the same dimension calculations as KDP, noting IngramSpark-specific requirements:
+
+```markdown
+# IngramSpark Cover Specifications
+
+[Same dimensions as KDP cover-specs.md]
+
+## IngramSpark-Specific Requirements
+- Cover file must be PDF/X-1a compliant (CMYK color space)
+- Full-wrap cover: front + spine + back in a single PDF
+- Resolution: 300 DPI minimum
+- All fonts must be embedded
+- No transparency (flatten before submission)
+```
+
+Output: `.manuscript/output/ingram-package/` containing `manuscript-cmyk.pdf`, `cover-specs.md`, `ingram-metadata.md`
+
+---
+
+#### FORMAT: query-package (EXP-12)
+
+Bundle a query submission package with query letter, synopsis, and sample chapters for agent/editor queries.
+
+**Work type check:** Look up `query_package` in `CONSTRAINTS.json` under `exports`. Available for `prose`, `script`, and `sacred` group work types. If the current work type's group is not in the `available` list, inform the writer and **stop**.
+
+**Step 1: Check prerequisites**
+
+Check for the following files:
+
+| File | Source | If Missing |
+|------|--------|------------|
+| Query letter | `.manuscript/output/query-letter.md` | Suggest running `/scr:query-letter` to generate one |
+| Synopsis | `.manuscript/output/synopsis.md` | Suggest running `/scr:synopsis` to generate one |
+| Sample chapters | First 3 body units from OUTLINE.md | Assembled from `.manuscript/drafts/body/` |
+
+If query letter or synopsis are missing:
+> **Missing prerequisites for query package:**
+> - [List missing items]
+>
+> **Generate missing pieces:**
+> - Query letter: `/scr:query-letter`
+> - Synopsis: `/scr:synopsis`
+>
+> Or continue with available materials only? The package will be incomplete.
+
+If the writer chooses to continue, assemble what is available. Otherwise, **stop** and let them generate the missing pieces first.
+
+**Step 2: Extract sample chapters**
+
+Read OUTLINE.md and extract the first 3 body units (chapters/scenes). Read their draft files from `.manuscript/drafts/body/` and concatenate into `sample-chapters.md`.
+
+**Step 3: Assemble query package**
+
+```bash
+mkdir -p .manuscript/output/query-package
+```
+
+Copy the individual files into the package directory. Then create a combined DOCX:
+
+```bash
+pandoc .manuscript/output/query-package/query-letter.md \
+  .manuscript/output/query-package/synopsis.md \
+  .manuscript/output/query-package/sample-chapters.md \
+  -o .manuscript/output/query-package/query-package.docx \
+  --reference-doc=data/export-templates/scriven-manuscript.docx
+```
+
+If the reference doc does not exist, run Pandoc without `--reference-doc` (Pandoc uses default styles).
+
+Output: `.manuscript/output/query-package/` containing `query-letter.md`, `synopsis.md`, `sample-chapters.md`, `query-package.docx`
+
+---
+
+#### FORMAT: submission-package (EXP-13)
+
+Bundle a full manuscript submission package with complete DOCX, synopsis, cover letter, and author bio for publisher/agent submission.
+
+**Work type check:** Look up `submission_package` in `CONSTRAINTS.json` under `exports`. Available for `prose`, `script`, and `sacred` group work types. If the current work type's group is not in the `available` list, inform the writer and **stop**.
+
+**Step 1: Check prerequisites**
+
+Check for the following files:
+
+| File | Source | If Missing |
+|------|--------|------------|
+| Full manuscript DOCX | `.manuscript/output/manuscript.docx` | Run `/scr:export --format docx` first |
+| Synopsis | `.manuscript/output/synopsis.md` | Suggest running `/scr:synopsis` |
+| Cover letter | `.manuscript/output/query-letter.md` | Suggest running `/scr:query-letter` (adapted as cover letter) |
+| Author bio | `.manuscript/back-matter/about-the-author.md` | Suggest running `/scr:back-matter --element about-the-author` |
+
+If prerequisites are missing:
+> **Missing prerequisites for submission package:**
+> - [List missing items]
+>
+> **Generate missing pieces:**
+> - Full manuscript: `/scr:export --format docx`
+> - Synopsis: `/scr:synopsis`
+> - Cover letter: `/scr:query-letter`
+> - Author bio: `/scr:back-matter --element about-the-author`
+>
+> Or continue with available materials only?
+
+**Step 2: Assemble submission package**
+
+```bash
+mkdir -p .manuscript/output/submission-package
+```
+
+Copy available files into the package directory:
+
+- `manuscript.docx` -- full manuscript in standard format
+- `synopsis.md` -- 1-2 page synopsis
+- `cover-letter.md` -- adapted from query letter for this specific submission
+- `about-the-author.md` -- author bio from back matter
+
+**Step 3: Generate submission checklist**
+
+Create `submission-checklist.md` in the package directory:
+
+```markdown
+# Submission Checklist
+
+- [ ] Manuscript DOCX reviewed for formatting (12pt, double-spaced, 1" margins)
+- [ ] Synopsis is [1-2 pages / per agent guidelines]
+- [ ] Cover letter personalized for target agent/editor
+- [ ] Author bio is current and appropriate length
+- [ ] All files named per submission guidelines
+- [ ] Word count noted: [word_count] words
+- [ ] Genre/category confirmed: [genre from WORK.md]
+
+## Common Submission Requirements
+- Most agents want: query letter + synopsis + first [10/25/50] pages
+- Some want: full manuscript attached
+- Always follow the specific agent's submission guidelines
+```
+
+Output: `.manuscript/output/submission-package/` containing `manuscript.docx`, `synopsis.md`, `cover-letter.md`, `about-the-author.md`, `submission-checklist.md`
 
 ---
 
