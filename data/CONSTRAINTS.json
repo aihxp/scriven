@@ -603,6 +603,11 @@
       },
       "requires": ["draft_exists"]
     },
+    "originality-check": {
+      "category": "review",
+      "available": ["all"],
+      "requires": ["draft_exists"]
+    },
     "line-edit": {
       "category": "quality",
       "available": ["all"],
@@ -612,6 +617,11 @@
       "category": "quality",
       "available": ["all"],
       "requires": ["draft_exists"]
+    },
+    "polish": {
+      "category": "quality",
+      "available": ["all"],
+      "requires": ["draft_exists", "STYLE-GUIDE.md"]
     },
     "quick-write": {
       "category": "quality",
@@ -842,6 +852,8 @@
       "line-edit": ["draft_exists"],
       "copy-edit": ["draft_exists"],
       "sensitivity-review": ["draft_exists"],
+      "originality-check": ["draft_exists"],
+      "polish": ["draft_exists", "STYLE-GUIDE.md"],
       "illustrate-scene": ["ART-DIRECTION.md", "scene_drafted"],
       "character-ref": ["CHARACTERS.md"],
       "cover-art": ["WORK.md"],
