@@ -3,8 +3,8 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: Ready to execute
-stopped_at: Completed 05-04-PLAN.md
-last_updated: "2026-04-07T08:32:26.696Z"
+stopped_at: Completed 05-02-PLAN.md
+last_updated: "2026-04-07T08:32:37.430Z"
 progress:
   total_phases: 8
   completed_phases: 4
@@ -66,6 +66,7 @@ Plan: 5 of 5
 | Phase 05 P03 | 2min | 2 tasks | 2 files |
 | Phase 05 P01 | 2min | 2 tasks | 4 files |
 | Phase 05 P04 | 2min | 2 tasks | 2 files |
+| Phase 05 P02 | 2min | 2 tasks | 1 files |
 
 ## Accumulated Context
 
@@ -103,6 +104,8 @@ Recent decisions affecting current work:
 - [Phase 05]: Typst template uses parameterized text-dir for Phase 7 RTL; EPUB CSS uses em/rem only for KDP; single-file format-dispatching pattern for export command
 - [Phase 05]: Quality gate warns but does not block per D-09 -- even FAIL scores proceed to export
 - [Phase 05]: 8 presets total: 4 locked (D-08) plus 4 additional (ingram, academic, thesis, screenplay)
+- [Phase 05]: FDX chains through Fountain intermediate (markdown -> fountain -> fdx via screenplain)
+- [Phase 05]: KDP spine width uses exact paper factors: white=0.002252, cream=0.0025, color=0.0032 with 0.06 cover thickness
 
 ### Pending Todos
 
@@ -116,6 +119,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-04-07T08:32:17.972Z
-Stopped at: Completed 05-04-PLAN.md
+Last session: 2026-04-07T08:32:37.427Z
+Stopped at: Completed 05-02-PLAN.md
 Resume file: None

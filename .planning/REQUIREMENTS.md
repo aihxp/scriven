@@ -85,13 +85,13 @@ Requirements for full product release. Each maps to roadmap phases.
 - [x] **EXP-04**: `/scr:export pdf` exports manuscript-format PDF
 - [x] **EXP-05**: `/scr:export pdf --print-ready` exports print-ready PDF with trim, margins, bleed
 - [x] **EXP-06**: `/scr:export epub` exports EPUB 3.0 with metadata, TOC, cover
-- [ ] **EXP-07**: `/scr:export fountain` exports screenplay in Fountain format
-- [ ] **EXP-08**: `/scr:export fdx` exports Final Draft XML format
-- [ ] **EXP-09**: `/scr:export latex` exports LaTeX for academic/sacred critical editions
-- [ ] **EXP-10**: `/scr:export kdp-package` bundles interior PDF + cover template (calculated spine width) + metadata
-- [ ] **EXP-11**: `/scr:export ingram-package` bundles IngramSpark-ready files (PDF/X-1a, cover, metadata)
-- [ ] **EXP-12**: `/scr:export query-package` bundles query letter + synopsis + sample chapters
-- [ ] **EXP-13**: `/scr:export submission-package` bundles full submission materials
+- [x] **EXP-07**: `/scr:export fountain` exports screenplay in Fountain format
+- [x] **EXP-08**: `/scr:export fdx` exports Final Draft XML format
+- [x] **EXP-09**: `/scr:export latex` exports LaTeX for academic/sacred critical editions
+- [x] **EXP-10**: `/scr:export kdp-package` bundles interior PDF + cover template (calculated spine width) + metadata
+- [x] **EXP-11**: `/scr:export ingram-package` bundles IngramSpark-ready files (PDF/X-1a, cover, metadata)
+- [x] **EXP-12**: `/scr:export query-package` bundles query letter + synopsis + sample chapters
+- [x] **EXP-13**: `/scr:export submission-package` bundles full submission materials
 - [x] **EXP-14**: `/scr:publish` interactive wizard chains correct export commands based on destination
 - [x] **EXP-15**: `/scr:publish --preset` supports named presets (kdp-paperback, query-submission, ebook-wide)
 - [x] **EXP-16**: `/scr:autopilot-publish` runs full publishing pipeline unattended (front/back matter → compile → cover → export → packages)
@@ -243,13 +243,13 @@ Requirements for full product release. Each maps to roadmap phases.
 | EXP-04 | Phase 5 | Complete |
 | EXP-05 | Phase 5 | Complete |
 | EXP-06 | Phase 5 | Complete |
-| EXP-07 | Phase 5 | Pending |
-| EXP-08 | Phase 5 | Pending |
-| EXP-09 | Phase 5 | Pending |
-| EXP-10 | Phase 5 | Pending |
-| EXP-11 | Phase 5 | Pending |
-| EXP-12 | Phase 5 | Pending |
-| EXP-13 | Phase 5 | Pending |
+| EXP-07 | Phase 5 | Complete |
+| EXP-08 | Phase 5 | Complete |
+| EXP-09 | Phase 5 | Complete |
+| EXP-10 | Phase 5 | Complete |
+| EXP-11 | Phase 5 | Complete |
+| EXP-12 | Phase 5 | Complete |
+| EXP-13 | Phase 5 | Complete |
 | EXP-14 | Phase 5 | Complete |
 | EXP-15 | Phase 5 | Complete |
 | EXP-16 | Phase 5 | Complete |
