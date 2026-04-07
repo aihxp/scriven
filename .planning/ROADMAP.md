@@ -192,7 +192,7 @@ Plans:
 **Milestone Goal:** Create complete documentation suite -- README, guides, command reference, and contributor docs -- verified against the live codebase.
 
 - [x] **Phase 10: Core Documentation** - README, getting started guide, and complete command reference (completed 2026-04-07)
-- [ ] **Phase 11: Feature & Domain Guides** - Work types, Voice DNA, publishing, sacred text, and translation guides
+- [x] **Phase 11: Feature & Domain Guides** - Work types, Voice DNA, publishing, sacred text, and translation guides (completed 2026-04-07)
 - [ ] **Phase 12: Developer Docs & Verification** - Contributor guide, architecture overview, and codebase verification pass
 
 ## Phase Details
@@ -224,9 +224,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 11-01-PLAN.md — Work Types Guide and Voice DNA Guide
-- [ ] 11-02-PLAN.md — Publishing Pipeline Guide and Translation Guide
-- [ ] 11-03-PLAN.md — Sacred Text Guide
+- [x] 11-01-PLAN.md — Work Types Guide and Voice DNA Guide
+- [x] 11-02-PLAN.md — Publishing Pipeline Guide and Translation Guide
+- [x] 11-03-PLAN.md — Sacred Text Guide
 
 ### Phase 12: Developer Docs & Verification
 **Goal**: Contributors know how to extend Scriven, understand its architecture, and all documentation is verified accurate against the live codebase
@@ -255,5 +255,5 @@ Phases execute in numeric order: 10 -> 11 -> 12
 | 8. Collaboration, Platform & Sacred | v1.0 | 5/5 | Complete | 2026-04-07 |
 | 9. Generic Platform Support | v1.1 | 2/2 | Complete | 2026-04-07 |
 | 10. Core Documentation | v1.2 | 3/3 | Complete    | 2026-04-07 |
-| 11. Feature & Domain Guides | v1.2 | 0/3 | Not started | - |
+| 11. Feature & Domain Guides | v1.2 | 3/3 | Complete   | 2026-04-07 |
 | 12. Developer Docs & Verification | v1.2 | 0/0 | Not started | - |
