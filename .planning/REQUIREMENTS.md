@@ -41,7 +41,7 @@ Requirements for full product release. Each maps to roadmap phases.
 - [x] **CHAR-05**: `/scr:relationship-map` generates markdown relationship graph (requires 2+ characters)
 - [x] **CHAR-06**: `/scr:cast-list` displays roster of all characters with brief descriptions
 - [x] **CHAR-07**: `/scr:build-world` generates WORLD.md with geographic, cultural, technological, magical/scientific rules
-- [ ] **CHAR-08**: Character commands adapt names for sacred (new-figure, figures-list) and academic (new-concept) work types
+- [x] **CHAR-08**: Character commands adapt names for sacred (new-figure, figures-list) and academic (new-concept) work types
 
 ### Narrative Structure
 
@@ -50,7 +50,7 @@ Requirements for full product release. Each maps to roadmap phases.
 - [x] **STRUCT-03**: `/scr:theme-tracker` tracks thematic threads across the work
 - [x] **STRUCT-04**: `/scr:subplot-map` visualizes subplot threads and their intersections (requires 2+ threads)
 - [x] **STRUCT-05**: `/scr:outline` displays/edits the structural outline
-- [ ] **STRUCT-06**: Structure management commands: add-unit, insert-unit, remove-unit, split-unit, merge-units, reorder-units
+- [x] **STRUCT-06**: Structure management commands: add-unit, insert-unit, remove-unit, split-unit, merge-units, reorder-units
 
 ### Quality & Review
 
@@ -211,13 +211,13 @@ Requirements for full product release. Each maps to roadmap phases.
 | CHAR-05 | Phase 3 | Complete |
 | CHAR-06 | Phase 3 | Complete |
 | CHAR-07 | Phase 3 | Complete |
-| CHAR-08 | Phase 3 | Pending |
+| CHAR-08 | Phase 3 | Complete |
 | STRUCT-01 | Phase 3 | Complete |
 | STRUCT-02 | Phase 3 | Complete |
 | STRUCT-03 | Phase 3 | Complete |
 | STRUCT-04 | Phase 3 | Complete |
 | STRUCT-05 | Phase 3 | Complete |
-| STRUCT-06 | Phase 3 | Pending |
+| STRUCT-06 | Phase 3 | Complete |
 | QUAL-01 | Phase 4 | Pending |
 | QUAL-02 | Phase 4 | Pending |
 | QUAL-03 | Phase 4 | Pending |
