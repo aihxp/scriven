@@ -185,7 +185,7 @@ Plans:
 
 Plans:
 - [x] 09-01-PLAN.md -- Installer refactor: type classification, SKILL.md generator, Manus skill-file path, Generic option
-- [ ] 09-02-PLAN.md -- Test suite for generic SKILL.md installer path
+- [x] 09-02-PLAN.md -- Test suite for generic SKILL.md installer path
 
 ## Progress
 

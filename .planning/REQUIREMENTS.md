@@ -12,7 +12,7 @@
 - [x] **PLAT-03**: Manus Desktop runtime uses the generic SKILL.md path — detects via `~/.manus/` directory or `Manus.app` application bundle
 - [x] **PLAT-04**: Installer offers "Generic (SKILL.md)" option for unrecognized platforms alongside the 9 named runtimes
 - [x] **PLAT-05**: Generic install creates a root SKILL.md manifest listing all available `/scr:*` commands with descriptions and trigger patterns
-- [ ] **PLAT-06**: Tests validate generic SKILL.md installer path alongside existing command-directory tests
+- [x] **PLAT-06**: Tests validate generic SKILL.md installer path alongside existing command-directory tests
 
 ## Out of Scope
 
@@ -30,7 +30,7 @@
 | PLAT-03 | Phase 9 | Complete |
 | PLAT-04 | Phase 9 | Complete |
 | PLAT-05 | Phase 9 | Complete |
-| PLAT-06 | Phase 9 | Pending |
+| PLAT-06 | Phase 9 | Complete |
 
 **Coverage:**
 - v1.1 requirements: 6 total
