@@ -846,6 +846,14 @@
     "pause-work": { "category": "session", "available": ["all"] },
     "resume-work": { "category": "session", "available": ["all"] },
     "session-report": { "category": "session", "available": ["all"] },
+    "track": {
+      "category": "collaboration",
+      "description": "Manage revision tracks -- create, switch, compare, merge, and propose changes",
+      "subcommands": ["create", "list", "switch", "compare", "merge", "propose"],
+      "available": ["prose", "script", "academic", "visual", "sacred", "poetry", "interactive", "speech_song"],
+      "hidden": [],
+      "requires": []
+    },
     "manuscript-stats": { "category": "navigation", "available": ["all"] },
     "complete-draft": { "category": "core", "available": ["all"] },
     "new-revision": { "category": "core", "available": ["all"] },
@@ -949,6 +957,27 @@
       "multi-publish": { "recommended": ["back-translate", "cultural-adaptation"], "without_it": "Publishes without quality verification" },
       "autopilot-translate": { "recommended": ["translation-glossary"], "without_it": "Creates glossary automatically during pipeline" },
       "autopilot": { "recommended": ["profile-writer"], "without_it": "Uses config defaults" }
+    }
+  },
+
+  "command_adaptations": {
+    "sacred": {
+      "new-character": { "adapted_name": "new-figure", "description": "Create figure profile" },
+      "character-sheet": { "adapted_name": "figure-sheet", "description": "View/edit figure profile" },
+      "character-arc": { "adapted_name": "figure-arc", "description": "Spiritual/historical arc" },
+      "cast-list": { "adapted_name": "figures-list", "description": "Roster of all figures" },
+      "relationship-map": { "adapted_name": "lineage-map", "description": "Genealogical/covenantal relationships" },
+      "build-world": { "adapted_name": "build-cosmology", "description": "Sacred geography, cosmological framework" },
+      "character-voice-sample": { "adapted_name": "register-sample", "description": "Voice register sample" },
+      "voice-check": { "adapted_name": "register-check", "description": "Voice register consistency" },
+      "plot-graph": { "adapted_name": "theological-arc", "description": "Salvation history or dharmic cycle" },
+      "theme-tracker": { "adapted_name": "doctrine-tracker", "description": "Doctrinal threads" },
+      "subplot-map": { "adapted_name": "narrative-threads", "description": "Narrative threads across text" },
+      "character-ref": { "adapted_name": "figure-ref", "description": "Visual figure reference for sacred art" },
+      "discussion-questions": { "adapted_name": "study-questions", "description": "Study/reflection questions" },
+      "editor-review": { "adapted_name": "scholarly-review", "description": "Academic review" },
+      "beta-reader": { "adapted_name": "theological-review", "description": "Doctrinal/pastoral review" },
+      "sensitivity-review": { "adapted_name": "interfaith-review", "description": "Sensitivity across traditions" }
     }
   },
 
