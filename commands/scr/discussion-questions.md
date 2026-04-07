@@ -1,0 +1,139 @@
+---
+description: Generate reading group discussion questions exploring themes, characters, and craft.
+---
+
+# /scr:discussion-questions -- Reading Group Discussion Questions
+
+Generate discussion questions for reading groups, book clubs, and study groups.
+
+## Usage
+```
+/scr:discussion-questions [--count <N>]
+```
+
+**Flags:**
+- `--count` -- Number of questions to generate. Defaults to 10-15 if not specified.
+
+## Instruction
+
+You are a **book club facilitator** who crafts discussion questions that spark genuine conversation -- not quiz questions with right answers, but open-ended prompts that help readers engage more deeply with the work.
+
+---
+
+### STEP 1: LOAD CONTEXT
+
+Read the following files:
+
+1. `.manuscript/config.json` -- work type, genre
+2. `data/CONSTRAINTS.json` -- verify availability. Available: prose. Adapted: sacred (renamed to `study-questions`). Hidden: script, academic, visual, poetry, interactive, speech_song. If hidden, tell the writer this command is not available for their work type and stop.
+3. `.manuscript/WORK.md` -- genre, themes, central conflict
+4. `.manuscript/STYLE-GUIDE.md` -- tone and voice for matching question register
+5. The complete draft (all drafted units)
+
+Check if the work type belongs to the `sacred` group. If so, switch to **study-questions mode** (see Step 3b).
+
+---
+
+### STEP 2: DETERMINE QUESTION COUNT
+
+Use the `--count` flag if provided. Otherwise, generate 10-15 questions -- enough for a robust discussion without overwhelming the group.
+
+---
+
+### STEP 3a: GENERATE DISCUSSION QUESTIONS (Standard)
+
+For prose works, create questions across these categories. Mix categories throughout -- do not group them rigidly.
+
+**Thematic Questions** (what does the book say about...?)
+- Explore the work's central themes and what it argues or implies about them
+- Ask readers to identify where themes emerge and how they develop
+- Connect themes to broader cultural or universal human concerns
+
+**Character Questions** (motivations, growth, moral choices)
+- Explore character motivations -- why did they make the choices they did?
+- Examine character growth or refusal to grow
+- Present moral dilemmas characters faced and ask readers to weigh in
+- Compare characters' worldviews or values
+
+**Craft Questions** (narrative structure, POV choices, symbolism)
+- Ask about the author's structural choices (why start here? why this POV?)
+- Explore symbolism, motifs, and recurring imagery
+- Discuss pacing decisions -- what effect does the timeline create?
+- Examine the author's use of voice, tone, or language
+
+**Personal Connection Questions** (how does this relate to the reader's experience?)
+- Ask readers to connect the work to their own lives or observations
+- Explore whether the work changed their perspective on anything
+- Invite readers to imagine themselves in a character's situation
+
+**Debate Questions** (questions with no single right answer)
+- Present the work's most contentious moments and ask readers to take sides
+- Pose "what if" scenarios -- how would the story change if X were different?
+- Ask whether the ending was earned, satisfying, or inevitable
+
+Ensure questions:
+- Are open-ended (no yes/no answers)
+- Reference specific moments, scenes, or passages when possible
+- Build from accessible to more challenging as the list progresses
+- Avoid spoiler assumptions -- frame questions so they work whether or not all members finished
+
+---
+
+### STEP 3b: GENERATE STUDY QUESTIONS (Sacred Adaptation)
+
+For sacred work types, reframe as **study questions** with a different focus:
+
+**Theological Theme Questions**
+- Explore the work's theological claims and their implications
+- Ask how central doctrines or teachings are presented and developed
+- Examine tensions between different theological perspectives within the text
+
+**Scriptural Interpretation Questions**
+- Ask about interpretive choices -- why does the author read this passage this way?
+- Compare the work's interpretation with traditional or alternative readings
+- Explore hermeneutical methods used (literal, allegorical, historical-critical)
+
+**Practical Application Questions**
+- Connect the work's teachings to daily life and spiritual practice
+- Ask how the text's message applies to contemporary challenges
+- Explore what the work calls the reader to do or become
+
+**Historical Context Questions**
+- Place the work within its historical and cultural moment
+- Ask how knowing the original context changes the reader's understanding
+- Explore the work's relationship to its tradition's broader history
+
+**Interfaith Dialogue Questions**
+- Invite comparison with other traditions' approaches to similar questions
+- Ask what readers from different backgrounds might learn from this perspective
+- Explore points of convergence and respectful divergence across traditions
+
+---
+
+### STEP 4: PRESENT AND REFINE
+
+Present the questions to the writer in numbered order. Ask:
+
+- Are any questions too basic or too obscure for the intended audience?
+- Should any questions be reframed or replaced?
+- Is there a specific theme, character, or moment they want explored more deeply?
+
+---
+
+### STEP 5: SAVE
+
+Save to `.manuscript/back-matter/discussion-questions.md`:
+
+```markdown
+# Discussion Questions
+
+[numbered questions]
+
+---
+*Generated by /scr:discussion-questions*
+*Question count: [N]*
+```
+
+For sacred works, use the header `# Study Questions` instead.
+
+Create the `.manuscript/back-matter/` directory if it does not exist.
