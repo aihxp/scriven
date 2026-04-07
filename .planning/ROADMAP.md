@@ -3,7 +3,8 @@
 ## Milestones
 
 - [x] **v1.0 MVP** - Phases 1-8 (shipped 2026-04-07)
-- [ ] **v1.1 Generic Platform Support** - Phase 9 (in progress)
+- [x] **v1.1 Generic Platform Support** - Phase 9 (shipped 2026-04-07)
+- [ ] **v1.2 Documentation** - Phases 10-12 (in progress)
 
 ## Phases
 
@@ -165,13 +166,10 @@ Plans:
 
 </details>
 
-### v1.1 Generic Platform Support (In Progress)
+<details>
+<summary>v1.1 Generic Platform Support (Phase 9) - SHIPPED 2026-04-07</summary>
 
-**Milestone Goal:** Make Scriven installable on any AI agent platform -- including those without dedicated command directories -- via a generic SKILL.md-based approach.
-
-- [ ] **Phase 9: Generic Platform Support** - SKILL.md installer path for platforms without command directories
-
-## Phase Details
+- [x] **Phase 9: Generic Platform Support** - SKILL.md installer path for platforms without command directories
 
 ### Phase 9: Generic Platform Support
 **Goal**: Scriven installs and runs on any AI agent platform, including those without dedicated command directories, via a consolidated SKILL.md manifest
@@ -187,10 +185,53 @@ Plans:
 - [x] 09-01-PLAN.md -- Installer refactor: type classification, SKILL.md generator, Manus skill-file path, Generic option
 - [x] 09-02-PLAN.md -- Test suite for generic SKILL.md installer path
 
+</details>
+
+### v1.2 Documentation (In Progress)
+
+**Milestone Goal:** Create complete documentation suite -- README, guides, command reference, and contributor docs -- verified against the live codebase.
+
+- [ ] **Phase 10: Core Documentation** - README, getting started guide, and complete command reference
+- [ ] **Phase 11: Feature & Domain Guides** - Work types, Voice DNA, publishing, sacred text, and translation guides
+- [ ] **Phase 12: Developer Docs & Verification** - Contributor guide, architecture overview, and codebase verification pass
+
+## Phase Details
+
+### Phase 10: Core Documentation
+**Goal**: A new user can find Scriven, understand what it does, install it, and look up any command without leaving the docs
+**Depends on**: Phase 9 (all features must be built before documenting them)
+**Requirements**: DOC-01, DOC-02, DOC-03
+**Success Criteria** (what must be TRUE):
+  1. README.md explains what Scriven is, lists supported runtimes and key features, and links to every guide -- a visitor understands the project in under 60 seconds
+  2. Getting Started guide walks a user from zero to a drafted scene in 10 minutes using `npx scriven@latest`, `/scr:new-work`, `/scr:discuss`, and `/scr:draft`
+  3. Command reference documents all 96+ commands organized by category with usage, flags, examples, prerequisites, and work-type adaptations
+**Plans**: TBD
+
+### Phase 11: Feature & Domain Guides
+**Goal**: Users working with specific Scriven capabilities have dedicated guides that explain concepts, workflows, and configuration for each feature domain
+**Depends on**: Phase 10 (README and command reference provide the foundation that guides link back to)
+**Requirements**: DOC-04, DOC-05, DOC-06, DOC-07, DOC-08
+**Success Criteria** (what must be TRUE):
+  1. A user choosing a work type can look up how it adapts Scriven's vocabulary, hierarchy, available commands, and context files across all 50+ work types
+  2. A user tuning their voice profile can follow the Voice DNA guide to understand the 15+ dimensions, run voice-test calibration, and configure sacred voice registers
+  3. A user ready to publish can follow the publishing guide through all 13 export formats, platform-specific packages (KDP, IngramSpark), and the publish wizard presets
+  4. A user working with sacred texts or translations can find dedicated guides covering sacred work types, voice registers, translation pipeline, glossary management, and RTL/CJK support
+**Plans**: TBD
+
+### Phase 12: Developer Docs & Verification
+**Goal**: Contributors know how to extend Scriven, understand its architecture, and all documentation is verified accurate against the live codebase
+**Depends on**: Phase 11 (all user-facing docs must exist before the verification pass can check them)
+**Requirements**: DOC-09, DOC-10, DOC-11
+**Success Criteria** (what must be TRUE):
+  1. A contributor can follow the contributor guide to add a new command, agent, work type, or export format by following documented patterns with examples
+  2. A developer can read the architecture overview and understand the skill system design, CONSTRAINTS.json schema, file structure, agent orchestration, and fresh-context-per-unit pattern
+  3. Every documentation file has been verified against the live codebase -- no references to nonexistent commands, flags, files, or stale information
+**Plans**: TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
+Phases execute in numeric order: 10 -> 11 -> 12
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -202,4 +243,7 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 6. Illustration | v1.0 | 4/4 | Complete | 2026-04-07 |
 | 7. Translation & Localization | v1.0 | 4/4 | Complete | 2026-04-07 |
 | 8. Collaboration, Platform & Sacred | v1.0 | 5/5 | Complete | 2026-04-07 |
-| 9. Generic Platform Support | v1.1 | 0/2 | In progress | - |
+| 9. Generic Platform Support | v1.1 | 2/2 | Complete | 2026-04-07 |
+| 10. Core Documentation | v1.2 | 0/0 | Not started | - |
+| 11. Feature & Domain Guides | v1.2 | 0/0 | Not started | - |
+| 12. Developer Docs & Verification | v1.2 | 0/0 | Not started | - |
