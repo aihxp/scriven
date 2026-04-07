@@ -77,7 +77,7 @@ Plans:
 ### Phase 4: Quality & Manuscript Completion
 **Goal**: Writers can polish their manuscript to professional quality and generate all publication-ready front and back matter
 **Depends on**: Phase 3 (character data needed for dialogue audit, world data for continuity)
-**Requirements**: QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, QUAL-06, QUAL-07, QUAL-08, QUAL-09, PUB-01, PUB-02, PUB-03, PUB-04, PUB-05, PUB-06, PUB-07, PUB-08, PUB-09
+**Requirements**: QUAL-01, QUAL-02, QUAL-03, QUAL-04, QUAL-05, QUAL-06, QUAL-07, QUAL-08, QUAL-09, QUAL-10, PUB-01, PUB-02, PUB-03, PUB-04, PUB-05, PUB-06, PUB-07, PUB-08, PUB-09
 **Success Criteria** (what must be TRUE):
   1. Writer can run line edit and copy edit passes that catch prose quality issues, grammar errors, and inconsistencies
   2. Writer can audit dialogue for character voice differentiation and detect talking-head scenes

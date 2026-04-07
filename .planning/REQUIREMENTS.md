@@ -63,6 +63,7 @@ Requirements for full product release. Each maps to roadmap phases.
 - [ ] **QUAL-07**: `/scr:beta-reader` simulates first-reader feedback — confusion points, pacing issues, emotional beats
 - [ ] **QUAL-08**: `/scr:continuity-check` verifies facts, timelines, character details across all drafted units
 - [ ] **QUAL-09**: Quality commands use adapted names for sacred (register-check, interfaith-review, doctrinal-check) and academic (citation-check, ethics-review)
+- [ ] **QUAL-10**: `/scr:originality-check` scans drafted prose for unintentional similarity to published works, flags AI-generated patterns, and verifies copyright compliance
 
 ### Front & Back Matter
 
@@ -226,6 +227,7 @@ Requirements for full product release. Each maps to roadmap phases.
 | QUAL-07 | Phase 4 | Pending |
 | QUAL-08 | Phase 4 | Pending |
 | QUAL-09 | Phase 4 | Pending |
+| QUAL-10 | Phase 4 | Pending |
 | PUB-01 | Phase 4 | Pending |
 | PUB-02 | Phase 4 | Pending |
 | PUB-03 | Phase 4 | Pending |
@@ -296,8 +298,8 @@ Requirements for full product release. Each maps to roadmap phases.
 | SACRED-09 | Phase 8 | Pending |
 
 **Coverage:**
-- v1 requirements: 100 total
-- Mapped to phases: 100
+- v1 requirements: 101 total
+- Mapped to phases: 101
 - Unmapped: 0
 
 ---
