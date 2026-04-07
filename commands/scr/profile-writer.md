@@ -1,6 +1,6 @@
 ---
 description: Build or refine the writer's Voice DNA profile through questionnaire, sample analysis, or reference authors.
-argument-hint: "[--questionnaire] [--analyze <file>] [--reference] [--all] [--refine] [--refresh]"
+argument-hint: "[--questionnaire] [--analyze <file>] [--reference] [--all] [--refine] [--refresh] [--export] [--import]"
 ---
 
 # Profile writer
@@ -77,6 +77,48 @@ For existing profiles. Ask 2-3 new questions that dig into dimensions the curren
 ### --refresh
 
 Rebuild the profile from scratch. Ask: "This will replace your current voice profile. Are you sure?" On yes, clear STYLE-GUIDE.md and run the questionnaire. Use when the writer's style has evolved significantly.
+
+### --export
+
+Save the current project's voice profile to `~/.scriven/profile.json` for use in other projects.
+
+1. Read the current STYLE-GUIDE.md
+2. Extract all voice dimensions (sentence architecture, vocabulary, POV, figurative language, dialogue, description, pacing, do/don't rules)
+3. Save to `~/.scriven/profile.json`:
+   ```json
+   {
+     "voice_dimensions": { "...all 15+ dimensions..." },
+     "reference_authors": ["..."],
+     "updated": "ISO date",
+     "projects": ["project-name-1", "project-name-2"]
+   }
+   ```
+4. If profile.json already exists, merge the current project name into the `projects` array (don't duplicate)
+5. Confirm: "Voice profile exported to ~/.scriven/profile.json"
+
+### --import
+
+Load a previously exported voice profile into the current project.
+
+1. Check if `~/.scriven/profile.json` exists. If not: "No saved voice profile found. Run `--export` in a project with a STYLE-GUIDE.md first."
+2. Read the profile and show a summary of the voice dimensions
+3. Pre-populate STYLE-GUIDE.md with the imported dimensions
+4. Offer: "Want to refine this profile for your current project? (yes/no)" — if yes, run `--refine` flow
+
+## Profile Persistence
+
+Voice profiles persist across sessions and projects via `~/.scriven/profile.json`.
+
+**Auto-detection on new projects:**
+When running `--all` or `--questionnaire` in a project with no existing STYLE-GUIDE.md, check for `~/.scriven/profile.json` first. If found, ask:
+
+> "I found your voice profile from a previous project. Use it as a starting point? (yes/no)"
+
+- **If yes:** Pre-populate STYLE-GUIDE.md with the persisted dimensions, then offer `--refine` to adjust for this specific work
+- **If no:** Continue with fresh profiling from scratch
+
+**Profile format:**
+The profile stores all voice dimensions, reference authors, the ISO date of last update, and a list of projects that have used or contributed to the profile. This ensures the writer's voice travels with them across works.
 
 ## After any mode
 

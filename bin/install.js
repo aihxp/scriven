@@ -51,6 +51,46 @@ const RUNTIMES = {
     agents_dir_project: '.gemini/agents',
     detect: () => fs.existsSync(path.join(os.homedir(), '.gemini')),
   },
+  'codex': {
+    label: 'Codex CLI',
+    commands_dir_global: path.join(os.homedir(), '.codex', 'commands', 'scr'),
+    commands_dir_project: '.codex/commands/scr',
+    agents_dir_global: path.join(os.homedir(), '.codex', 'agents'),
+    agents_dir_project: '.codex/agents',
+    detect: () => fs.existsSync(path.join(os.homedir(), '.codex')),
+  },
+  'opencode': {
+    label: 'OpenCode',
+    commands_dir_global: path.join(os.homedir(), '.config', 'opencode', 'commands', 'scr'),
+    commands_dir_project: '.config/opencode/commands/scr',
+    agents_dir_global: path.join(os.homedir(), '.config', 'opencode', 'agents'),
+    agents_dir_project: '.config/opencode/agents',
+    detect: () => fs.existsSync(path.join(os.homedir(), '.config', 'opencode')),
+  },
+  'copilot': {
+    label: 'GitHub Copilot',
+    commands_dir_global: path.join(os.homedir(), '.github', 'commands', 'scr'),
+    commands_dir_project: '.github/commands/scr',
+    agents_dir_global: path.join(os.homedir(), '.github', 'agents'),
+    agents_dir_project: '.github/agents',
+    detect: () => fs.existsSync(path.join(os.homedir(), '.github')),
+  },
+  'windsurf': {
+    label: 'Windsurf',
+    commands_dir_global: path.join(os.homedir(), '.windsurf', 'commands', 'scr'),
+    commands_dir_project: '.windsurf/commands/scr',
+    agents_dir_global: path.join(os.homedir(), '.windsurf', 'agents'),
+    agents_dir_project: '.windsurf/agents',
+    detect: () => fs.existsSync(path.join(os.homedir(), '.windsurf')),
+  },
+  'antigravity': {
+    label: 'Antigravity',
+    commands_dir_global: path.join(os.homedir(), '.gemini', 'antigravity', 'commands', 'scr'),
+    commands_dir_project: '.gemini/antigravity/commands/scr',
+    agents_dir_global: path.join(os.homedir(), '.gemini', 'antigravity', 'agents'),
+    agents_dir_project: '.gemini/antigravity/agents',
+    detect: () => fs.existsSync(path.join(os.homedir(), '.gemini', 'antigravity')),
+  },
 };
 
 function ask(rl, question) {
