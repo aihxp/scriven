@@ -359,7 +359,9 @@
         "academic": { "rename": "peer-review" },
         "sacred": { "rename": "scholarly-review" }
       },
-      "description": "Manual review of drafted unit"
+      "description": "Manual review of drafted unit and editor-writer collaboration workflow",
+      "collaboration_flags": ["--proposal", "--notes", "--respond"],
+      "collaboration_artifacts": ["proposals/", "editor-notes/", "decisions.json"]
     },
     "submit": {
       "category": "core",
@@ -892,7 +894,8 @@
       "subcommands": ["create", "list", "switch", "compare", "merge", "propose"],
       "available": ["prose", "script", "academic", "visual", "sacred", "poetry", "interactive", "speech_song"],
       "hidden": [],
-      "requires": []
+      "requires": [],
+      "co_writing": true
     },
     "manuscript-stats": { "category": "navigation", "available": ["all"] },
     "complete-draft": { "category": "core", "available": ["all"] },

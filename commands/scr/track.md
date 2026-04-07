@@ -324,6 +324,134 @@ When your editor is ready to accept the changes, run `/scr:track merge <name>`.
 
 ---
 
+## Co-Writing Parallel Tracks
+
+When multiple writers work on the same manuscript simultaneously -- one handling the A-plot, another the B-plot, or one taking dialogue while another handles description -- co-writing tracks provide continuity-aware merging to catch contradictions before they become problems.
+
+### Creating a Co-Writing Track
+
+Use the `--co-writing` flag when creating a track intended for parallel work:
+
+```
+/scr:track create "B-plot development" --co-writing
+```
+
+This marks the track in `tracks.json` with `"type": "co-writing"` (default tracks have `"type": "revision"`):
+
+```json
+{
+  "label": "B-plot development",
+  "branch": "track/b-plot-development",
+  "created": "2026-04-07T10:30:00Z",
+  "author": "writer-b",
+  "status": "active",
+  "type": "co-writing",
+  "merged_at": null,
+  "proposed_at": null
+}
+```
+
+Co-writing tracks behave identically to revision tracks for all subcommands except `merge`, where they trigger enhanced continuity checking.
+
+### Co-Writing Merge with Continuity Checking
+
+When `track merge` detects that the merging track and canon have BOTH been modified (i.e., parallel work happened on both sides), the merge automatically includes continuity verification:
+
+1. **Pre-merge continuity scan.** Before finalizing the merge, run the equivalent of `/scr:continuity-check` on the combined content from both tracks. This checks for:
+
+   - **Character state conflicts:** A character alive in one track but dead or incapacitated in another. A character in Location A in one track but Location B at the same narrative time in another.
+   - **Timeline conflicts:** Events happening simultaneously in different locations involving the same character. Contradictory time references ("three days later" in one track conflicting with "the next morning" in another).
+   - **World-state conflicts:** World-building facts that contradict (a city destroyed in one track but intact in another, a magic system rule applied differently, a political situation described inconsistently).
+
+2. **Surface contradictions.** For each contradiction found, present both versions with context from each track:
+
+   ```
+   ## Continuity Contradiction 1 of 3
+
+   ### Character State Conflict: Marcus
+
+   **In canon (A-plot):**
+   > Marcus left the city at dawn, heading north toward the mountains.
+   > (Chapter 7, passage 3)
+
+   **In 'B-plot development':**
+   > Marcus met Elena at the harbor that same morning, agreeing to sail south.
+   > (Chapter 7, passage 5)
+
+   **Issue:** Marcus cannot be heading north and meeting someone at the harbor simultaneously.
+
+   How would you like to resolve this?
+
+   1. **Pick canon** -- Keep the A-plot version (Marcus heads north)
+   2. **Pick track** -- Keep the B-plot version (Marcus at the harbor)
+   3. **Reconcile** -- Write a new version that resolves the contradiction
+   4. **Flag for later** -- Merge as-is and mark for revision
+   ```
+
+3. **Writer resolves each contradiction.** For each:
+   - **Pick canon / Pick track:** Apply the chosen version, discard the other from the merged result.
+   - **Reconcile:** The writer provides a new passage that resolves the contradiction. Apply it.
+   - **Flag for later:** Include both versions with a visible marker in the manuscript: `<!-- CONTINUITY FLAG: [description] -->`. These can be found later with a search.
+
+4. **Log all resolutions** in `.manuscript/merge-log.json`:
+
+   ```json
+   {
+     "merge_date": "ISO 8601 timestamp",
+     "track": "B-plot development",
+     "track_type": "co-writing",
+     "contradictions_found": 3,
+     "resolutions": [
+       {
+         "type": "character_state",
+         "description": "Marcus location conflict in Chapter 7",
+         "canon_passage": "passage reference",
+         "track_passage": "passage reference",
+         "resolution": "pick_canon",
+         "reconciled_text": null
+       },
+       {
+         "type": "timeline",
+         "description": "Conflicting time references in Chapter 8",
+         "canon_passage": "passage reference",
+         "track_passage": "passage reference",
+         "resolution": "reconcile",
+         "reconciled_text": "The reconciled passage text"
+       },
+       {
+         "type": "world_state",
+         "description": "City status contradiction",
+         "canon_passage": "passage reference",
+         "track_passage": "passage reference",
+         "resolution": "flag_for_later",
+         "reconciled_text": null
+       }
+     ]
+   }
+   ```
+
+5. **Co-writing merge warning.** When merging a co-writing track, show a warning before proceeding:
+
+   ```
+   This is a co-writing track. Continuity checking will be thorough -- this may take a moment.
+
+   Scanning for character state, timeline, and world-state contradictions across both tracks...
+   ```
+
+### When Continuity Checking Triggers
+
+Continuity checking during merge triggers automatically when:
+- The track being merged has `"type": "co-writing"` in `tracks.json`, OR
+- Both the track and canon have been modified since the track was created (detected via `git rev-list --left-right --count main...{branch}` showing changes on both sides)
+
+For standard revision tracks where only the track has changes (canon is unmodified), the regular merge flow applies without continuity scanning.
+
+### Merge Log
+
+The `.manuscript/merge-log.json` file accumulates entries from every co-writing merge. Each entry preserves both versions of contradictory passages, the resolution chosen, and any reconciled text. This provides a history of how parallel work was integrated and supports future continuity auditing.
+
+---
+
 ## Writer-Friendly Language Guide
 
 This command MUST use writer-friendly terminology throughout. Never expose git internals.
