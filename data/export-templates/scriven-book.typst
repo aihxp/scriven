@@ -1,0 +1,147 @@
+// Scriven Book Interior Template for Pandoc --template flag
+// Usage: pandoc ... --pdf-engine=typst --template=data/export-templates/scriven-book.typst
+//
+// Accepts Pandoc variables for page dimensions, margins, and text direction.
+// Designed for print-ready PDF output compatible with KDP and IngramSpark.
+
+// Page dimensions (Pandoc -V variables with defaults)
+#let page-width = $if(paperwidth)$$paperwidth$$else$6in$endif$
+#let page-height = $if(paperheight)$$paperheight$$else$9in$endif$
+#let margin-inside = $if(margin-inside)$$margin-inside$$else$0.75in$endif$
+#let margin-outside = $if(margin-outside)$$margin-outside$$else$0.5in$endif$
+#let margin-top = $if(margin-top)$$margin-top$$else$0.75in$endif$
+#let margin-bottom = $if(margin-bottom)$$margin-bottom$$else$0.75in$endif$
+
+// Text direction: parameterized for RTL compatibility (Phase 7)
+#let text-dir = $if(text-direction)$$text-direction$$else$ltr$endif$
+
+// Font configuration
+#let body-font = $if(mainfont)$"$mainfont$"$else$"Libertinus Serif"$endif$
+#let body-font-size = $if(fontsize)$$fontsize$$else$11pt$endif$
+#let body-line-spacing = $if(linestretch)$$linestretch$$else$1.4$endif$
+
+// Metadata
+#let book-title = $if(title)$"$title$"$else$"Untitled"$endif$
+#let book-author = $if(author)$"$for(author)$$it.name$$sep$, $endfor$"$else$""$endif$
+
+#set document(
+  title: book-title,
+  author: book-author,
+)
+
+#set page(
+  width: page-width,
+  height: page-height,
+  margin: (
+    inside: margin-inside,
+    outside: margin-outside,
+    top: margin-top,
+    bottom: margin-bottom,
+  ),
+  // Running headers: book title left (verso), chapter title right (recto)
+  header: context {
+    let page-num = counter(page).get().first()
+    if page-num > 1 {
+      if calc.odd(page-num) {
+        // Recto (right-hand page): chapter title, right-aligned
+        align(right, emph(text(size: 9pt, fill: rgb("#555555"))[]))
+      } else {
+        // Verso (left-hand page): book title, left-aligned
+        align(left, emph(text(size: 9pt, fill: rgb("#555555"), book-title)))
+      }
+    }
+  },
+  // Page numbering: centered bottom
+  footer: context {
+    let page-num = counter(page).get().first()
+    if page-num > 1 {
+      align(center, text(size: 9pt, str(page-num)))
+    }
+  },
+)
+
+// Text settings
+#set text(
+  font: body-font,
+  size: body-font-size,
+  dir: text-dir,
+  lang: $if(language)$"$language$"$else$"en"$endif$,
+  // Fallback fonts for systems without Libertinus
+  fallback: true,
+)
+
+#set par(
+  leading: body-line-spacing * 0.65em,
+  first-line-indent: 1.5em,
+  justify: true,
+)
+
+// Widow/orphan control: minimum 2 lines
+#set block(
+  breakable: true,
+)
+
+// Chapter headings: new page, centered, large font, extra spacing
+#show heading.where(level: 1): it => {
+  pagebreak(weak: true)
+  v(2em)
+  align(center)[
+    #text(size: 20pt, weight: "bold")[#it.body]
+  ]
+  v(1.5em)
+}
+
+#show heading.where(level: 2): it => {
+  v(1.2em)
+  text(size: 14pt, weight: "bold")[#it.body]
+  v(0.8em)
+}
+
+#show heading.where(level: 3): it => {
+  v(0.8em)
+  text(size: 12pt, weight: "bold")[#it.body]
+  v(0.5em)
+}
+
+// Blockquotes: indented
+#set quote(block: true)
+#show quote: it => {
+  pad(left: 2em, right: 1em)[
+    #set text(style: "italic")
+    #it.body
+  ]
+}
+
+// Links: no color change in print
+#show link: it => it
+
+// Title page
+$if(title)$
+#align(center + horizon)[
+  #text(size: 24pt, weight: "bold")[#book-title]
+  $if(subtitle)$
+  #v(0.5em)
+  #text(size: 16pt, style: "italic")[$subtitle$]
+  $endif$
+  #v(2em)
+  #text(size: 14pt)[#book-author]
+  $if(publisher)$
+  #v(3em)
+  #text(size: 11pt)[$publisher$]
+  $endif$
+]
+#pagebreak()
+$endif$
+
+// Table of Contents
+$if(toc)$
+#outline(
+  title: "Contents",
+  depth: $if(toc-depth)$$toc-depth$$else$2$endif$,
+  indent: 1.5em,
+)
+#pagebreak()
+$endif$
+
+// Body content
+$body$

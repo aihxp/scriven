@@ -1,0 +1,259 @@
+/*
+ * Scriven EPUB Stylesheet
+ * Usage: pandoc ... --css=data/export-templates/scriven-epub.css
+ *
+ * KDP-compatible: uses em/rem units only (no px for font sizes).
+ * No fixed widths or absolute positioning (EPUB reflow requirement).
+ * Accessibility: ensure all <img> tags have alt text in the source markdown.
+ */
+
+/* === Body === */
+
+body {
+  font-family: Georgia, "Times New Roman", serif;
+  line-height: 1.5;
+  margin: 0;
+  padding: 0;
+  text-align: justify;
+  orphans: 2;
+  widows: 2;
+}
+
+/* === Paragraphs === */
+
+p {
+  margin-top: 0;
+  margin-bottom: 0;
+  text-indent: 1em;
+}
+
+/* First paragraph after a heading: no indent */
+h1 + p,
+h2 + p,
+h3 + p,
+h4 + p,
+h5 + p,
+h6 + p,
+hr + p,
+blockquote + p {
+  text-indent: 0;
+}
+
+/* === Headings === */
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+  font-weight: bold;
+  text-indent: 0;
+  text-align: left;
+  margin-bottom: 0.5em;
+}
+
+h1 {
+  font-size: 1.8em;
+  margin-top: 2em;
+  margin-bottom: 0.8em;
+  text-align: center;
+  page-break-before: always;
+}
+
+h2 {
+  font-size: 1.4em;
+  margin-top: 1.5em;
+}
+
+h3 {
+  font-size: 1.2em;
+  margin-top: 1.2em;
+}
+
+h4 {
+  font-size: 1.1em;
+  margin-top: 1em;
+}
+
+h5 {
+  font-size: 1em;
+  margin-top: 0.8em;
+  font-style: italic;
+}
+
+h6 {
+  font-size: 0.9em;
+  margin-top: 0.8em;
+  font-style: italic;
+  font-weight: normal;
+}
+
+/* === Chapter breaks === */
+
+h1 {
+  page-break-before: always;
+}
+
+/* Prevent orphaned headings */
+h1, h2, h3, h4, h5, h6 {
+  page-break-after: avoid;
+}
+
+/* === Images === */
+/* ACCESSIBILITY REMINDER: Every <img> must have meaningful alt text.
+   In markdown source, use: ![Description of image](path/to/image.jpg) */
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+  margin: 1em auto;
+}
+
+figure {
+  margin: 1.5em 0;
+  text-align: center;
+  page-break-inside: avoid;
+}
+
+figcaption {
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 0.5em;
+  text-align: center;
+}
+
+/* === Blockquotes === */
+
+blockquote {
+  margin: 1em 0;
+  padding-left: 1.5em;
+  border-left: none;
+  font-style: italic;
+}
+
+blockquote p {
+  text-indent: 0;
+}
+
+/* === Lists === */
+
+ul, ol {
+  margin: 0.8em 0;
+  padding-left: 2em;
+}
+
+li {
+  margin-bottom: 0.3em;
+  text-indent: 0;
+}
+
+/* === Horizontal rules (scene breaks) === */
+
+hr {
+  border: none;
+  text-align: center;
+  margin: 1.5em 0;
+}
+
+hr::after {
+  content: "* * *";
+  font-size: 1em;
+  letter-spacing: 0.5em;
+}
+
+/* === Links === */
+
+a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+/* === Code === */
+
+code {
+  font-family: "Courier New", Courier, monospace;
+  font-size: 0.9em;
+}
+
+pre {
+  margin: 1em 0;
+  padding: 0.5em;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  font-size: 0.85em;
+}
+
+/* === Tables === */
+
+table {
+  border-collapse: collapse;
+  margin: 1em auto;
+  max-width: 100%;
+}
+
+th, td {
+  padding: 0.4em 0.8em;
+  border-bottom: 0.0625em solid #ccc;
+  text-align: left;
+  text-indent: 0;
+}
+
+th {
+  font-weight: bold;
+  border-bottom-width: 0.125em;
+}
+
+/* === Footnotes === */
+
+.footnotes {
+  margin-top: 2em;
+  font-size: 0.85em;
+  border-top: 0.0625em solid #ccc;
+  padding-top: 0.5em;
+}
+
+/* === Title page === */
+
+.title-page {
+  text-align: center;
+  margin-top: 30%;
+  page-break-after: always;
+}
+
+/* === Table of contents === */
+
+nav#toc ol {
+  list-style-type: none;
+  padding-left: 0;
+}
+
+nav#toc li {
+  margin-bottom: 0.3em;
+}
+
+nav#toc a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* === Emphasis and strong === */
+
+em {
+  font-style: italic;
+}
+
+strong {
+  font-weight: bold;
+}
+
+/* === Superscript and subscript === */
+
+sup {
+  font-size: 0.75em;
+  vertical-align: super;
+  line-height: 0;
+}
+
+sub {
+  font-size: 0.75em;
+  vertical-align: sub;
+  line-height: 0;
+}
