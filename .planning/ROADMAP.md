@@ -140,12 +140,13 @@ Plans:
   2. Writer can flag cultural adaptation needs and verify translation quality through back-translation
   3. Writer can export translated editions in all target formats including RTL (Arabic, Hebrew) and CJK (Chinese, Japanese, Korean)
   4. Writer can run the full translation pipeline unattended via autopilot-translate
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 07-01: TBD
-- [ ] 07-02: TBD
-- [ ] 07-03: TBD
+- [ ] 07-01-PLAN.md -- Translator agent and core translation commands (translate, translation-glossary, translation-memory)
+- [ ] 07-02-PLAN.md -- Translation quality and publishing commands (cultural-adaptation, back-translate, multi-publish)
+- [ ] 07-03-PLAN.md -- Autopilot-translate, RTL/CJK template support, and CONSTRAINTS.json updates
+- [ ] 07-04-PLAN.md -- Phase 7 test suite validating all commands, CONSTRAINTS.json entries, and decisions D-01 through D-05
 
 ### Phase 8: Collaboration, Platform & Sacred
 **Goal**: Scriven supports team workflows, runs on all major AI coding agents, and provides deep sacred/historical text capabilities
@@ -179,5 +180,5 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 4. Quality & Manuscript Completion | 0/6 | Planned | - |
 | 5. Export & Publishing | 4/5 | In Progress|  |
 | 6. Illustration | 0/4 | Planned | - |
-| 7. Translation & Localization | 0/3 | Not started | - |
+| 7. Translation & Localization | 0/4 | Planned | - |
 | 8. Collaboration, Platform & Sacred | 0/5 | Not started | - |
