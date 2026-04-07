@@ -158,14 +158,14 @@ Plans:
   3. Scriven installs and runs on Codex CLI, OpenCode, GitHub Copilot, Windsurf, and Antigravity in addition to existing runtimes
   4. Writer profile persists across sessions, manager command center handles multi-work management, and utility commands (health, fast, notes) work
   5. Sacred work types (13 types) function with tradition-native vocabulary, 10 voice registers, sacred-exclusive commands, and sacred translation pipeline
-**Plans**: TBD
+**Plans**: 5 plans
 
 Plans:
-- [ ] 08-01: TBD
-- [ ] 08-02: TBD
-- [ ] 08-03: TBD
-- [ ] 08-04: TBD
-- [ ] 08-05: TBD
+- [ ] 08-01-PLAN.md -- Revision track command with 6 subcommands (create, list, switch, compare, merge, propose)
+- [ ] 08-02-PLAN.md -- Editor-writer workflow and co-writing parallel track support
+- [ ] 08-03-PLAN.md -- Multi-runtime installer, writer profile persistence, manager, health, and utility commands
+- [ ] 08-04-PLAN.md -- Sacred-exclusive commands, voice registers, discuss categories, and command adaptations
+- [ ] 08-05-PLAN.md -- Sacred translation pipeline, tradition-aware front/back matter, sacred config schema, and test suite
 
 ## Progress
 
@@ -181,4 +181,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 5. Export & Publishing | 4/5 | In Progress|  |
 | 6. Illustration | 0/4 | Planned | - |
 | 7. Translation & Localization | 0/4 | Planned | - |
-| 8. Collaboration, Platform & Sacred | 0/5 | Not started | - |
+| 8. Collaboration, Platform & Sacred | 0/5 | Planned | - |
