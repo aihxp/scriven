@@ -45,11 +45,11 @@ Requirements for full product release. Each maps to roadmap phases.
 
 ### Narrative Structure
 
-- [ ] **STRUCT-01**: `/scr:plot-graph` generates story arc visualization supporting three-act, five-act, hero's journey, save the cat, kishotenketsu
-- [ ] **STRUCT-02**: `/scr:timeline` generates chronological event timeline from OUTLINE.md
-- [ ] **STRUCT-03**: `/scr:theme-tracker` tracks thematic threads across the work
-- [ ] **STRUCT-04**: `/scr:subplot-map` visualizes subplot threads and their intersections (requires 2+ threads)
-- [ ] **STRUCT-05**: `/scr:outline` displays/edits the structural outline
+- [x] **STRUCT-01**: `/scr:plot-graph` generates story arc visualization supporting three-act, five-act, hero's journey, save the cat, kishotenketsu
+- [x] **STRUCT-02**: `/scr:timeline` generates chronological event timeline from OUTLINE.md
+- [x] **STRUCT-03**: `/scr:theme-tracker` tracks thematic threads across the work
+- [x] **STRUCT-04**: `/scr:subplot-map` visualizes subplot threads and their intersections (requires 2+ threads)
+- [x] **STRUCT-05**: `/scr:outline` displays/edits the structural outline
 - [ ] **STRUCT-06**: Structure management commands: add-unit, insert-unit, remove-unit, split-unit, merge-units, reorder-units
 
 ### Quality & Review
@@ -212,11 +212,11 @@ Requirements for full product release. Each maps to roadmap phases.
 | CHAR-06 | Phase 3 | Complete |
 | CHAR-07 | Phase 3 | Complete |
 | CHAR-08 | Phase 3 | Pending |
-| STRUCT-01 | Phase 3 | Pending |
-| STRUCT-02 | Phase 3 | Pending |
-| STRUCT-03 | Phase 3 | Pending |
-| STRUCT-04 | Phase 3 | Pending |
-| STRUCT-05 | Phase 3 | Pending |
+| STRUCT-01 | Phase 3 | Complete |
+| STRUCT-02 | Phase 3 | Complete |
+| STRUCT-03 | Phase 3 | Complete |
+| STRUCT-04 | Phase 3 | Complete |
+| STRUCT-05 | Phase 3 | Complete |
 | STRUCT-06 | Phase 3 | Pending |
 | QUAL-01 | Phase 4 | Pending |
 | QUAL-02 | Phase 4 | Pending |
