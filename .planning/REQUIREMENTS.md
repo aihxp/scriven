@@ -54,16 +54,16 @@ Requirements for full product release. Each maps to roadmap phases.
 
 ### Quality & Review
 
-- [ ] **QUAL-01**: `/scr:line-edit` performs prose quality pass (sentence rhythm, word choice, redundancy, cliches)
-- [ ] **QUAL-02**: `/scr:copy-edit` performs correctness pass (grammar, spelling, punctuation, consistency)
-- [ ] **QUAL-03**: `/scr:dialogue-audit` checks character voice differentiation, attribution, dialect consistency, talking-head detection
-- [ ] **QUAL-04**: `/scr:pacing-analysis` provides structure-aware pacing report (climax vs breather, scene length patterns)
-- [ ] **QUAL-05**: `/scr:voice-check` compares drafted prose against STYLE-GUIDE.md for drift
-- [ ] **QUAL-06**: `/scr:sensitivity-review` flags potential issues with context, suggests alternatives, notes intentional craft
-- [ ] **QUAL-07**: `/scr:beta-reader` simulates first-reader feedback — confusion points, pacing issues, emotional beats
-- [ ] **QUAL-08**: `/scr:continuity-check` verifies facts, timelines, character details across all drafted units
-- [ ] **QUAL-09**: Quality commands use adapted names for sacred (register-check, interfaith-review, doctrinal-check) and academic (citation-check, ethics-review)
-- [ ] **QUAL-10**: `/scr:originality-check` scans drafted prose for unintentional similarity to published works, flags AI-generated patterns, and verifies copyright compliance
+- [x] **QUAL-01**: `/scr:line-edit` performs prose quality pass (sentence rhythm, word choice, redundancy, cliches)
+- [x] **QUAL-02**: `/scr:copy-edit` performs correctness pass (grammar, spelling, punctuation, consistency)
+- [x] **QUAL-03**: `/scr:dialogue-audit` checks character voice differentiation, attribution, dialect consistency, talking-head detection
+- [x] **QUAL-04**: `/scr:pacing-analysis` provides structure-aware pacing report (climax vs breather, scene length patterns)
+- [x] **QUAL-05**: `/scr:voice-check` compares drafted prose against STYLE-GUIDE.md for drift
+- [x] **QUAL-06**: `/scr:sensitivity-review` flags potential issues with context, suggests alternatives, notes intentional craft
+- [x] **QUAL-07**: `/scr:beta-reader` simulates first-reader feedback — confusion points, pacing issues, emotional beats
+- [x] **QUAL-08**: `/scr:continuity-check` verifies facts, timelines, character details across all drafted units
+- [x] **QUAL-09**: Quality commands use adapted names for sacred (register-check, interfaith-review, doctrinal-check) and academic (citation-check, ethics-review)
+- [x] **QUAL-10**: `/scr:originality-check` scans drafted prose for unintentional similarity to published works, flags AI-generated patterns, and verifies copyright compliance
 
 ### Front & Back Matter
 
@@ -218,16 +218,16 @@ Requirements for full product release. Each maps to roadmap phases.
 | STRUCT-04 | Phase 3 | Complete |
 | STRUCT-05 | Phase 3 | Complete |
 | STRUCT-06 | Phase 3 | Complete |
-| QUAL-01 | Phase 4 | Pending |
-| QUAL-02 | Phase 4 | Pending |
-| QUAL-03 | Phase 4 | Pending |
-| QUAL-04 | Phase 4 | Pending |
-| QUAL-05 | Phase 4 | Pending |
-| QUAL-06 | Phase 4 | Pending |
-| QUAL-07 | Phase 4 | Pending |
-| QUAL-08 | Phase 4 | Pending |
-| QUAL-09 | Phase 4 | Pending |
-| QUAL-10 | Phase 4 | Pending |
+| QUAL-01 | Phase 4 | Complete |
+| QUAL-02 | Phase 4 | Complete |
+| QUAL-03 | Phase 4 | Complete |
+| QUAL-04 | Phase 4 | Complete |
+| QUAL-05 | Phase 4 | Complete |
+| QUAL-06 | Phase 4 | Complete |
+| QUAL-07 | Phase 4 | Complete |
+| QUAL-08 | Phase 4 | Complete |
+| QUAL-09 | Phase 4 | Complete |
+| QUAL-10 | Phase 4 | Complete |
 | PUB-01 | Phase 4 | Pending |
 | PUB-02 | Phase 4 | Pending |
 | PUB-03 | Phase 4 | Pending |
