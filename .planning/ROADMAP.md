@@ -123,13 +123,13 @@ Plans:
   2. Writer can create an art direction document and character reference sheets that ensure visual consistency across all illustrations
   3. Writer can generate scene-specific illustration prompts and chapter header/ornament designs
   4. Writer working on children's books, comics, or scripts can generate spread layouts, panel layouts, and storyboard frames
-**Plans**: TBD
-**UI hint**: yes
+**Plans**: 4 plans
 
 Plans:
-- [ ] 06-01: TBD
-- [ ] 06-02: TBD
-- [ ] 06-03: TBD
+- [ ] 06-01-PLAN.md -- Art direction visual style bible and cover art prompt generator with KDP specs
+- [ ] 06-02-PLAN.md -- Character reference sheets, chapter header ornaments, and world map illustration prompts
+- [ ] 06-03-PLAN.md -- Scene illustration prompts, spread layouts, panel layouts, and storyboard frames
+- [ ] 06-04-PLAN.md -- Phase 6 test suite validating all commands, CONSTRAINTS.json entries, and decisions D-01 through D-05
 
 ### Phase 7: Translation & Localization
 **Goal**: Writers can translate their manuscript into other languages with quality controls, glossary management, and proper text direction support
@@ -178,6 +178,6 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 | 3. Creative Toolkit | 0/4 | Planned | - |
 | 4. Quality & Manuscript Completion | 0/6 | Planned | - |
 | 5. Export & Publishing | 4/5 | In Progress|  |
-| 6. Illustration | 0/3 | Not started | - |
+| 6. Illustration | 0/4 | Planned | - |
 | 7. Translation & Localization | 0/3 | Not started | - |
 | 8. Collaboration, Platform & Sacred | 0/5 | Not started | - |
