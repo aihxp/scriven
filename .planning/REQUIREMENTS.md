@@ -123,12 +123,12 @@ Requirements for full product release. Each maps to roadmap phases.
 
 ### Collaboration
 
-- [ ] **COLLAB-01**: `/scr:track create` creates named revision track (git branch with writer-friendly abstraction)
-- [ ] **COLLAB-02**: `/scr:track list` shows all revision tracks
-- [ ] **COLLAB-03**: `/scr:track switch` switches between revision tracks
-- [ ] **COLLAB-04**: `/scr:track compare` shows side-by-side comparison between tracks
-- [ ] **COLLAB-05**: `/scr:track merge` merges revision track with continuity conflict resolution
-- [ ] **COLLAB-06**: `/scr:track propose` creates revision proposal for editor review
+- [x] **COLLAB-01**: `/scr:track create` creates named revision track (git branch with writer-friendly abstraction)
+- [x] **COLLAB-02**: `/scr:track list` shows all revision tracks
+- [x] **COLLAB-03**: `/scr:track switch` switches between revision tracks
+- [x] **COLLAB-04**: `/scr:track compare` shows side-by-side comparison between tracks
+- [x] **COLLAB-05**: `/scr:track merge` merges revision track with continuity conflict resolution
+- [x] **COLLAB-06**: `/scr:track propose` creates revision proposal for editor review
 - [ ] **COLLAB-07**: Editor-writer workflow: editor adds notes, writer reviews and accepts/rejects changes
 - [ ] **COLLAB-08**: Co-writing parallel tracks with continuity merge checking
 
@@ -272,12 +272,12 @@ Requirements for full product release. Each maps to roadmap phases.
 | TRANS-06 | Phase 7 | Complete |
 | TRANS-07 | Phase 7 | Complete |
 | TRANS-08 | Phase 7 | Complete |
-| COLLAB-01 | Phase 8 | Pending |
-| COLLAB-02 | Phase 8 | Pending |
-| COLLAB-03 | Phase 8 | Pending |
-| COLLAB-04 | Phase 8 | Pending |
-| COLLAB-05 | Phase 8 | Pending |
-| COLLAB-06 | Phase 8 | Pending |
+| COLLAB-01 | Phase 8 | Complete |
+| COLLAB-02 | Phase 8 | Complete |
+| COLLAB-03 | Phase 8 | Complete |
+| COLLAB-04 | Phase 8 | Complete |
+| COLLAB-05 | Phase 8 | Complete |
+| COLLAB-06 | Phase 8 | Complete |
 | COLLAB-07 | Phase 8 | Pending |
 | COLLAB-08 | Phase 8 | Pending |
 | RUNTIME-01 | Phase 8 | Pending |
