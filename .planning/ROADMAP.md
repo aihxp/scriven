@@ -181,10 +181,11 @@ Plans:
   1. User on a skill-file platform (Manus or unknown agent) can install Scriven and receive a working SKILL.md manifest that lists all available `/scr:*` commands with descriptions and trigger patterns
   2. Installer automatically detects the user's platform type and routes to the correct strategy (command-directory or skill-file) without requiring manual configuration beyond selecting "Generic" for unrecognized platforms
   3. Tests validate the generic SKILL.md installer path produces correct output alongside existing command-directory tests
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-(to be created by plan-phase)
+- [ ] 09-01-PLAN.md -- Installer refactor: type classification, SKILL.md generator, Manus skill-file path, Generic option
+- [ ] 09-02-PLAN.md -- Test suite for generic SKILL.md installer path
 
 ## Progress
 
@@ -201,4 +202,4 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 | 6. Illustration | v1.0 | 4/4 | Complete | 2026-04-07 |
 | 7. Translation & Localization | v1.0 | 4/4 | Complete | 2026-04-07 |
 | 8. Collaboration, Platform & Sacred | v1.0 | 5/5 | Complete | 2026-04-07 |
-| 9. Generic Platform Support | v1.1 | 0/0 | Not started | - |
+| 9. Generic Platform Support | v1.1 | 0/2 | In progress | - |
