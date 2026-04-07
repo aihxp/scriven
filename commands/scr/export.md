@@ -327,9 +327,139 @@ Run the command without the `--epub-cover-image` flag.
 
 ---
 
-<!-- EXTENSION POINT: Secondary formats (fountain, fdx, latex) will be added in Plan 02 -->
+#### FORMAT: fountain (EXP-07)
 
-<!-- EXTENSION POINT: Package formats (kdp-package, ingram-package, query-package, submission-package) will be added in Plan 02 -->
+Fountain is a plain-text screenplay format. The agent converts the assembled manuscript markdown directly to Fountain-formatted text -- no external tool needed.
+
+**Work type check:** Look up `fountain` in `CONSTRAINTS.json` under `exports`. It is available only for `script` group work types (screenplay, stage_play, tv_pilot, tv_series_bible, audio_drama, libretto). If the current work type's group is not in the `available` list, inform the writer and **stop**.
+
+**Conversion rules (Markdown to Fountain):**
+
+1. **Scene headings:** Lines starting with `## ` or `### ` that contain location context become Fountain sluglines. Prefix with `INT.` or `EXT.` based on content. If ambiguous, use the heading text as-is prefixed with `.` (forced scene heading in Fountain).
+2. **Character names:** Any line that is ALL CAPS followed by dialogue on the next line stays as-is (Fountain format).
+3. **Dialogue:** Lines immediately following a CHARACTER NAME are dialogue. Wrap parenthetical directions in `()`.
+4. **Action:** Regular prose paragraphs become action blocks (plain text with blank line separators).
+5. **Transitions:** Lines ending with `TO:` (e.g., `CUT TO:`, `FADE TO:`) are transitions. Alternatively, prefix with `>`.
+6. **Title page:** Generate from metadata:
+   ```
+   Title: [title from config.json]
+   Credit: Written by
+   Author: [author from config.json]
+   Draft date: [current date]
+   ```
+
+Write the converted Fountain text to:
+
+```bash
+mkdir -p .manuscript/output
+# Write Fountain-formatted content to:
+# .manuscript/output/screenplay.fountain
+```
+
+**Optional screenplay PDF:** After generating the Fountain file, check if Afterwriting is available:
+
+```bash
+command -v afterwriting >/dev/null 2>&1
+```
+
+If Afterwriting is installed, offer to generate a screenplay PDF:
+
+```bash
+afterwriting \
+  --source .manuscript/output/screenplay.fountain \
+  --pdf .manuscript/output/screenplay.pdf \
+  --overwrite
+```
+
+If Afterwriting is not installed:
+> **Optional:** To generate a formatted screenplay PDF, install Afterwriting: `npm i -g afterwriting`
+> Then run: `afterwriting --source .manuscript/output/screenplay.fountain --pdf .manuscript/output/screenplay.pdf --overwrite`
+
+---
+
+#### FORMAT: fdx (EXP-08)
+
+Final Draft XML format via Screenplain, using Fountain as an intermediate.
+
+**Work type check:** Look up `fdx` in `CONSTRAINTS.json` under `exports`. It is available only for `script` group work types with a `screenplay_or_tv_only` constraint. If the current work type is not eligible, inform the writer and **stop**.
+
+**Step 1: Ensure Fountain export exists**
+
+Check if `.manuscript/output/screenplay.fountain` exists. If not, run the Fountain export first (see FORMAT: fountain above). FDX export chains through Fountain as an intermediate format: markdown -> fountain -> fdx.
+
+**Step 2: Check for Screenplain**
+
+```bash
+command -v screenplain >/dev/null 2>&1
+```
+
+If Screenplain is not found:
+
+> **Screenplain is required for FDX export but is not installed.**
+>
+> **Install Screenplain:**
+> ```
+> pip install screenplain
+> ```
+>
+> After installing, run this export command again.
+
+Then **stop** -- do not attempt FDX export without Screenplain.
+
+**Step 3: Convert Fountain to FDX**
+
+```bash
+screenplain --format fdx .manuscript/output/screenplay.fountain \
+  .manuscript/output/screenplay.fdx
+```
+
+Output: `.manuscript/output/screenplay.fdx`
+
+---
+
+#### FORMAT: latex (EXP-09)
+
+LaTeX source file for academic and sacred text work types, via Pandoc with the academic template.
+
+**Work type check:** Look up `latex` in `CONSTRAINTS.json` under `exports`. It is available only for `academic` and `sacred` group work types. For sacred work types, LaTeX export is intended for critical editions. If the current work type's group is not in the `available` list, inform the writer and **stop**.
+
+**Check for Pandoc** (same as other Pandoc-dependent formats -- see Step 2 above).
+
+**Check for bibliography file:**
+
+If `.manuscript/bibliography.bib` exists, include bibliography flags. If it does not exist:
+
+> **Note:** No bibliography file found at `.manuscript/bibliography.bib`. LaTeX export will proceed without bibliography support. To add citations, create a BibTeX file at `.manuscript/bibliography.bib` and re-run the export.
+
+**Export command (with bibliography):**
+
+```bash
+pandoc .manuscript/output/assembled-manuscript.md \
+  -o .manuscript/output/manuscript.tex \
+  --template=data/export-templates/scriven-academic.latex \
+  --metadata-file=.manuscript/output/metadata.yaml \
+  --toc \
+  --bibliography=.manuscript/bibliography.bib \
+  --citeproc
+```
+
+**Export command (without bibliography):**
+
+```bash
+pandoc .manuscript/output/assembled-manuscript.md \
+  -o .manuscript/output/manuscript.tex \
+  --template=data/export-templates/scriven-academic.latex \
+  --metadata-file=.manuscript/output/metadata.yaml \
+  --toc
+```
+
+Output: `.manuscript/output/manuscript.tex`
+
+---
+
+<!-- PACKAGES: Platform package formats follow -->
+
+<!-- EXTENSION POINT: Package formats (kdp-package, ingram-package, query-package, submission-package) will be added below -->
 
 ---
 
