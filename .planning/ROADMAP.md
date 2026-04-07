@@ -70,7 +70,7 @@ Plans:
 **Plans**: 4 plans
 
 Plans:
-- [ ] 03-01-PLAN.md -- Character profile and world-building commands (character-sheet, voice-sample, cast-list, character-arc, relationship-map, build-world + WORLD.md template)
+- [x] 03-01-PLAN.md -- Character profile and world-building commands (character-sheet, voice-sample, cast-list, character-arc, relationship-map, build-world + WORLD.md template)
 - [ ] 03-02-PLAN.md -- Structure visualization commands (plot-graph enhancement, timeline, theme-tracker, subplot-map, outline)
 - [ ] 03-03-PLAN.md -- Structure management commands (add/insert/remove/split/merge/reorder-unit) + CONSTRAINTS.json updates
 - [ ] 03-04-PLAN.md -- Phase 3 test suite validating all commands, templates, and CONSTRAINTS.json entries

@@ -34,13 +34,13 @@ Requirements for full product release. Each maps to roadmap phases.
 
 ### Character & World
 
-- [ ] **CHAR-01**: `/scr:new-character` creates structured character profile with voice anchor, speech patterns, emotional state
-- [ ] **CHAR-02**: `/scr:character-sheet` displays/edits a specific character's full profile
-- [ ] **CHAR-03**: `/scr:character-arc` visualizes character's emotional/growth arc across the work
-- [ ] **CHAR-04**: `/scr:character-voice-sample` generates 5-line dialogue sample per character for approval
-- [ ] **CHAR-05**: `/scr:relationship-map` generates markdown relationship graph (requires 2+ characters)
-- [ ] **CHAR-06**: `/scr:cast-list` displays roster of all characters with brief descriptions
-- [ ] **CHAR-07**: `/scr:build-world` generates WORLD.md with geographic, cultural, technological, magical/scientific rules
+- [x] **CHAR-01**: `/scr:new-character` creates structured character profile with voice anchor, speech patterns, emotional state
+- [x] **CHAR-02**: `/scr:character-sheet` displays/edits a specific character's full profile
+- [x] **CHAR-03**: `/scr:character-arc` visualizes character's emotional/growth arc across the work
+- [x] **CHAR-04**: `/scr:character-voice-sample` generates 5-line dialogue sample per character for approval
+- [x] **CHAR-05**: `/scr:relationship-map` generates markdown relationship graph (requires 2+ characters)
+- [x] **CHAR-06**: `/scr:cast-list` displays roster of all characters with brief descriptions
+- [x] **CHAR-07**: `/scr:build-world` generates WORLD.md with geographic, cultural, technological, magical/scientific rules
 - [ ] **CHAR-08**: Character commands adapt names for sacred (new-figure, figures-list) and academic (new-concept) work types
 
 ### Narrative Structure
@@ -204,13 +204,13 @@ Requirements for full product release. Each maps to roadmap phases.
 | AUTO-11 | Phase 2 | Complete |
 | AUTO-12 | Phase 2 | Complete |
 | AUTO-13 | Phase 2 | Complete |
-| CHAR-01 | Phase 3 | Pending |
-| CHAR-02 | Phase 3 | Pending |
-| CHAR-03 | Phase 3 | Pending |
-| CHAR-04 | Phase 3 | Pending |
-| CHAR-05 | Phase 3 | Pending |
-| CHAR-06 | Phase 3 | Pending |
-| CHAR-07 | Phase 3 | Pending |
+| CHAR-01 | Phase 3 | Complete |
+| CHAR-02 | Phase 3 | Complete |
+| CHAR-03 | Phase 3 | Complete |
+| CHAR-04 | Phase 3 | Complete |
+| CHAR-05 | Phase 3 | Complete |
+| CHAR-06 | Phase 3 | Complete |
+| CHAR-07 | Phase 3 | Complete |
 | CHAR-08 | Phase 3 | Pending |
 | STRUCT-01 | Phase 3 | Pending |
 | STRUCT-02 | Phase 3 | Pending |
