@@ -40,7 +40,7 @@ All notable changes to Scriven are documented here.
 ## [0.1.0] — Initial
 
 - Initial project structure
-- GSD-inspired command system
+- Spec-driven command system
 - Core workflow (new-work, discuss, plan, draft, editor-review, submit)
 - 35 initial work types
 - Writer mode / developer mode toggle

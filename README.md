@@ -4,7 +4,7 @@
 
 *I don't outline -- Claude does. I don't edit -- Claude does. I don't format -- Claude does. I just write.*
 
-Inspired by [GSD (get-shit-done)](https://github.com/gsd-build/get-shit-done), Scriven brings spec-driven workflows to creative writing. It runs inside your AI coding agent (Claude Code, Cursor, Gemini CLI, and more) and handles everything from blank page to publication-ready package.
+Scriven brings spec-driven workflows to creative writing. It runs inside your AI coding agent (Claude Code, Cursor, Gemini CLI, and more) and handles everything from blank page to publication-ready package.
 
 ```bash
 npx scriven-cli@latest
