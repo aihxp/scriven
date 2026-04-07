@@ -129,8 +129,8 @@ Requirements for full product release. Each maps to roadmap phases.
 - [x] **COLLAB-04**: `/scr:track compare` shows side-by-side comparison between tracks
 - [x] **COLLAB-05**: `/scr:track merge` merges revision track with continuity conflict resolution
 - [x] **COLLAB-06**: `/scr:track propose` creates revision proposal for editor review
-- [ ] **COLLAB-07**: Editor-writer workflow: editor adds notes, writer reviews and accepts/rejects changes
-- [ ] **COLLAB-08**: Co-writing parallel tracks with continuity merge checking
+- [x] **COLLAB-07**: Editor-writer workflow: editor adds notes, writer reviews and accepts/rejects changes
+- [x] **COLLAB-08**: Co-writing parallel tracks with continuity merge checking
 
 ### Multi-Runtime & Polish
 
@@ -278,8 +278,8 @@ Requirements for full product release. Each maps to roadmap phases.
 | COLLAB-04 | Phase 8 | Complete |
 | COLLAB-05 | Phase 8 | Complete |
 | COLLAB-06 | Phase 8 | Complete |
-| COLLAB-07 | Phase 8 | Pending |
-| COLLAB-08 | Phase 8 | Pending |
+| COLLAB-07 | Phase 8 | Complete |
+| COLLAB-08 | Phase 8 | Complete |
 | RUNTIME-01 | Phase 8 | Complete |
 | RUNTIME-02 | Phase 8 | Complete |
 | RUNTIME-03 | Phase 8 | Complete |
