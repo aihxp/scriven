@@ -1,0 +1,369 @@
+---
+description: Manage revision tracks -- create, switch, compare, merge, and propose changes for review.
+argument-hint: "<create|list|switch|compare|merge|propose> [name] [options]"
+---
+
+# /scr:track -- Revision Track Management
+
+Revision tracks let writers explore alternate versions of their manuscript without risking the canon. Each track is a named workspace -- "Second draft attempt", "Editor's suggestions", "Experimental ending" -- that can be compared, merged back into canon, or proposed for review.
+
+## Usage
+
+```
+/scr:track create <name>
+/scr:track list
+/scr:track switch <name>
+/scr:track compare [track-a] [track-b]
+/scr:track merge <name>
+/scr:track propose <name>
+```
+
+## Prerequisites
+
+1. **Check for `.manuscript/` directory.** If missing: "No manuscript found. Start with `/scr:new-work`."
+2. **Check for `.git/` directory.** If missing, silently run `git init` (writer mode) or inform and init (developer mode), following the same pattern as `/scr:save`.
+3. **Read `.manuscript/config.json`** for `developer_mode` and `work_type`.
+4. **Parse the subcommand** from the first argument. If none provided or unrecognized, show the usage table above and a brief description of each subcommand.
+
+## tracks.json Format
+
+Track metadata lives in `.manuscript/tracks.json`. Create this file on first `track create` if it does not exist.
+
+```json
+{
+  "tracks": [
+    {
+      "label": "Editor's suggestions",
+      "branch": "track/editors-suggestions",
+      "created": "2026-04-07T10:30:00Z",
+      "author": "writer",
+      "status": "active",
+      "merged_at": null,
+      "proposed_at": null
+    }
+  ]
+}
+```
+
+**Label-to-branch mapping (D-01):** Writer-friendly labels are stored as-is. The git branch name is derived by slugifying the label: lowercase, replace spaces with hyphens, strip special characters (keep alphanumeric and hyphens only), prefix with `track/`. Example: "Second Draft Attempt" becomes `track/second-draft-attempt`.
+
+---
+
+## Subcommand: track create
+
+**Purpose:** Create a new revision track with a writer-friendly name.
+
+**What to do:**
+
+1. Take the `<name>` argument as the writer-friendly label (e.g., "Second draft attempt", "Editor's suggestions").
+2. Generate the slugified branch name: lowercase, spaces to hyphens, strip special chars, prefix `track/`.
+3. Check if a track with this label already exists in `tracks.json`. If so: "A revision track called '[name]' already exists. Use `/scr:track switch [name]` to work on it."
+4. Check for unsaved changes (`git status --porcelain .manuscript/`). If changes exist: "You have unsaved changes. Save them first with `/scr:save` before creating a new track."
+5. Run `git checkout -b track/{slug}` to create and switch to the new branch.
+6. If `.manuscript/tracks.json` does not exist, create it with an empty `tracks` array.
+7. Add the new track entry to `tracks.json`:
+   ```json
+   {
+     "label": "<name>",
+     "branch": "track/<slug>",
+     "created": "<ISO 8601 timestamp>",
+     "author": "writer",
+     "status": "active",
+     "merged_at": null,
+     "proposed_at": null
+   }
+   ```
+8. Commit the `tracks.json` change: `git add .manuscript/tracks.json && git commit -m "Created revision track: <name>"`
+9. Read `.manuscript/config.json`. If `collaboration.tracks_enabled` is `false` or missing, set it to `true` and include the config update in the commit.
+10. Confirm to the writer:
+
+**Output:**
+```
+Created revision track '<name>'. You're now working on it.
+
+Everything you write and save here stays on this track until you switch back to the canon manuscript or another track.
+```
+
+---
+
+## Subcommand: track list
+
+**Purpose:** Show all revision tracks with their status and last activity.
+
+**What to do:**
+
+1. Read `.manuscript/tracks.json`. If missing or empty: "No revision tracks yet. Create one with `/scr:track create <name>`."
+2. Determine the current branch: `git branch --show-current`.
+3. For each track in `tracks.json`:
+   - Determine if it is the currently active track (current branch matches `track.branch`).
+   - Get commit count ahead/behind canon: `git rev-list --left-right --count main...{branch} 2>/dev/null` (or `master` if `main` does not exist).
+   - Get the date of the last checkpoint on the track: `git log -1 --format="%ai" {branch} -- .manuscript/ 2>/dev/null`.
+4. Always show "Canon manuscript" as the base track, marked as active if the current branch is `main` or `master`.
+
+**Output format:**
+
+```
+Your revision tracks:
+
+  * Canon manuscript (active)
+    The base manuscript. All accepted revisions live here.
+
+    Editor's suggestions
+    3 checkpoints ahead of canon -- Last activity: Apr 6
+
+    Second draft attempt (merged Apr 5)
+    This track has been merged into canon.
+
+    Experimental ending
+    1 checkpoint ahead, 2 behind canon -- Last activity: Apr 4
+```
+
+- Mark the active track with `*` and "(active)".
+- For merged tracks, show "(merged [date])" and skip ahead/behind counts.
+- Use relative dates: "today", "yesterday", "Apr 6", "Mar 28".
+- "Ahead" means the track has checkpoints not in canon. "Behind" means canon has checkpoints not in the track.
+
+---
+
+## Subcommand: track switch
+
+**Purpose:** Switch between revision tracks or back to the canon manuscript.
+
+**What to do:**
+
+1. If `<name>` is "canon", "main", or "master": switch to the main branch (`git checkout main` or `git checkout master`).
+2. Otherwise, look up `<name>` in `tracks.json` by matching the `label` field (case-insensitive).
+3. If not found: "No revision track called '[name]' found. Use `/scr:track list` to see available tracks."
+4. Check for unsaved changes (`git status --porcelain .manuscript/`). If changes exist: "You have unsaved changes. Save them first with `/scr:save` before switching tracks."
+5. Run `git checkout {branch}` using the branch name from the track entry.
+6. Confirm to the writer.
+
+**Output:**
+```
+Switched to revision track '<name>'.
+
+Your work is now on this track. Any saves you make will stay here until you switch again.
+```
+
+Or if switching to canon:
+```
+Switched to the canon manuscript.
+
+You're now working on the main version of your manuscript.
+```
+
+---
+
+## Subcommand: track compare
+
+**Purpose:** Show a side-by-side comparison between two tracks (or a track and canon) in writer-friendly language.
+
+**What to do:**
+
+1. **Determine what to compare:**
+   - No arguments: compare current track vs canon. If already on canon: "You're on the canon manuscript. Specify a track to compare: `/scr:track compare <name>`."
+   - One name: compare that track vs canon.
+   - Two names: compare track A vs track B.
+2. Resolve writer-friendly labels to branch names via `tracks.json`. "Canon" resolves to `main` (or `master`).
+3. Run `git diff {branch-a}...{branch-b} -- .manuscript/` to get the differences.
+4. If no differences: "No differences found between '[track A]' and '[track B]'. The manuscripts are identical."
+
+**Display format (reuses pattern from `/scr:compare`):**
+
+Show passage-by-passage tracked changes in writer-friendly format:
+
+```
+## Tracked Changes: '<Track A>' vs '<Track B>'
+
+### Chapter 3 -- The Arrival
+
+**In '<Track A>':**
+> Marcus walked through the empty corridor, his footsteps echoing against the marble walls.
+
+**In '<Track B>':**
+> Marcus moved through the silent corridor, each footstep a small detonation against the marble.
+
+---
+
+**New in '<Track A>':**
+> The clockmaker paused, turning the gear over in her weathered hands. Something was different about this one.
+
+---
+
+### Summary
+
+4 passages changed, 2 passages added, 1 passage removed across 3 sections.
+```
+
+**Formatting rules:**
+- NEVER show raw diff markers (`+`, `-`, `@@`, line numbers, file paths, commit hashes).
+- Use blockquotes (`>`) for prose passages.
+- Group changes by unit (chapter/scene/section) with `###` headings.
+- Label each version with "In '[track name]':" -- never "branch" or "HEAD".
+- Show 1 sentence of unchanged context for readability.
+- New passages use "**New in '[track name]':**".
+- Removed passages use "**Removed from '[track name]':**".
+- End with a summary line: "X passages changed, Y passages added, Z passages removed".
+
+---
+
+## Subcommand: track merge
+
+**Purpose:** Merge a revision track into the canon manuscript, with writer-friendly continuity conflict resolution.
+
+**What to do:**
+
+1. Resolve `<name>` to a branch via `tracks.json`. If not found: "No revision track called '[name]' found."
+2. Check if the track has any changes ahead of canon. If not: "Nothing to merge. '[name]' has no changes that differ from canon."
+3. If not currently on canon, switch to canon first: `git checkout main` (or `master`). Inform the writer: "Switching to the canon manuscript to accept the revisions."
+4. Attempt the merge: `git merge {branch} --no-edit`.
+
+**If clean merge (no conflicts):**
+
+```
+Revision track '<name>' merged into the canon manuscript. All changes accepted.
+
+Tip: Run `/scr:continuity-check` to verify everything reads smoothly after merging.
+```
+
+Update `tracks.json`: set the track's `status` to `"merged"` and `merged_at` to the current ISO timestamp.
+
+**If continuity conflicts arise (D-02):**
+
+Walk through each conflicting passage one at a time. For each conflict, show both versions side by side and offer three resolution options:
+
+```
+## Continuity Conflict 1 of 3
+
+### Chapter 5 -- The Revelation
+
+**Canon version:**
+> The old woman smiled, her eyes crinkling at the corners. "I've been expecting you," she said, gesturing toward the empty chair.
+
+**'<Track name>' version:**
+> The old woman frowned, her lips pressed into a thin line. "You're late," she snapped, not moving from her seat.
+
+How would you like to resolve this?
+
+1. **Keep mine** -- Use the canon version
+2. **Keep theirs** -- Use the version from '<track name>'
+3. **Keep both** -- Include both versions with a scene break between them
+```
+
+After the writer chooses for each conflict:
+- Apply the resolution by editing the conflicted file (remove conflict markers, keep the chosen content).
+- For "Keep both": concatenate both versions separated by `---` (scene break / horizontal rule).
+- Stage the resolved file: `git add <file>`.
+- After all conflicts are resolved: `git commit -m "Merged revision track: <name> (conflicts resolved)"`.
+- Update `tracks.json`: set `status` to `"merged"`, `merged_at` to current timestamp.
+
+```
+All continuity conflicts resolved. Revision track '<name>' is now merged into canon.
+
+Tip: Run `/scr:continuity-check` to verify everything reads smoothly after merging.
+```
+
+**Language note:** Never say "merge conflict" -- always "continuity conflict". Never say "ours/theirs" in git terms -- use "canon version" and "[track name] version", or "Keep mine / Keep theirs" for the resolution options.
+
+---
+
+## Subcommand: track propose
+
+**Purpose:** Create a revision proposal from a track for editor review (the writer-friendly equivalent of a pull request).
+
+**What to do:**
+
+1. Resolve `<name>` to a branch via `tracks.json`. If not found: "No revision track called '[name]' found."
+2. Check if the track has any changes ahead of canon. If not: "Nothing to propose. '[name]' has no changes that differ from canon."
+3. Generate a diff summary: `git diff main...{branch} -- .manuscript/` (or `master`).
+4. Parse the diff to count: passages changed, passages added, passages removed, sections affected.
+5. Create the proposal directory if needed: `.manuscript/proposals/`.
+6. Generate `.manuscript/proposals/{track-slug}-proposal.md` with the following structure:
+
+```markdown
+# Revision Proposal: <Track Label>
+
+**Author:** <from tracks.json author field>
+**Date:** <current date>
+**Track:** <track label>
+
+## Summary of Changes
+
+<Auto-generated from diff analysis>
+
+- X passages changed across Y sections
+- Z new passages added
+- W passages removed
+
+## Detailed Changes
+
+<Full diff formatted in the same writer-friendly style as track compare:
+passage-by-passage with Before/After blocks, grouped by section>
+
+## Editor Notes
+
+_Space for the editor to write feedback, approve, or request changes._
+
+---
+
+_This proposal was generated from revision track '<name>'. To accept these changes, run `/scr:track merge <name>`. To see the full comparison, run `/scr:track compare <name>`._
+```
+
+7. Commit the proposal file: `git add .manuscript/proposals/{track-slug}-proposal.md && git commit -m "Created revision proposal for: <name>"`.
+8. Update `tracks.json`: set `proposed_at` to the current ISO timestamp.
+
+**Output:**
+```
+Revision proposal created for '<name>'.
+
+The proposal is saved at .manuscript/proposals/<slug>-proposal.md
+Share this file with your editor for review.
+
+When your editor is ready to accept the changes, run `/scr:track merge <name>`.
+```
+
+---
+
+## Writer-Friendly Language Guide
+
+This command MUST use writer-friendly terminology throughout. Never expose git internals.
+
+| Git Term | Writer Term |
+|----------|------------|
+| branch | revision track |
+| main/master | canon manuscript (or just "canon") |
+| checkout | switch to |
+| commit | checkpoint / save |
+| merge | accept revisions / merge (the word "merge" is acceptable in creative context) |
+| merge conflict | continuity conflict |
+| pull request | revision proposal |
+| diff | tracked changes |
+| ahead/behind | checkpoints ahead/behind |
+| ours/theirs | canon version / track version |
+| HEAD | current position |
+| tag | draft version |
+
+## Error Messages
+
+All error messages use plain English:
+
+- "You have unsaved changes. Save them first with `/scr:save` before switching tracks."
+- "No revision track called '[name]' found. Use `/scr:track list` to see available tracks."
+- "A revision track called '[name]' already exists. Use `/scr:track switch [name]` to work on it."
+- "You're already on the canon manuscript. Specify a track to compare."
+- "No revision tracks yet. Create one with `/scr:track create <name>`."
+- "Nothing to merge. '[name]' has no changes that differ from canon."
+- "Nothing to propose. '[name]' has no changes that differ from canon."
+
+## Edge Cases
+
+- **No git repo:** Initialize silently in writer mode (same as `/scr:save`).
+- **No tracks.json:** Create on first `track create`.
+- **Branch deleted externally:** If a track's branch no longer exists in git, mark it as "(unavailable)" in the list and suggest removing it.
+- **Canon branch name:** Check for both `main` and `master`. Use whichever exists. If neither exists (fresh repo), default to `main`.
+- **Track name collision:** If the slugified branch name would collide with an existing branch, append a number: `track/editors-suggestions-2`.
+- **Empty track:** If a track has no changes vs canon, `merge` and `propose` should inform the writer rather than creating empty merges/proposals.
+
+## Tone
+
+Supportive and clear. The writer should feel empowered to experiment freely with tracks, knowing they can always return to canon. Tracks are for creative exploration -- frame them that way, never as technical version control.
