@@ -145,7 +145,12 @@ async function main() {
   console.log('\n' + c('dim', 'Docs: https://github.com/scriven/scriven\n'));
 }
 
-main().catch((err) => {
-  console.error(c('red', '\nInstallation failed:'), err.message);
-  process.exit(1);
-});
+// Only run interactive installer when executed directly
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(c('red', '\nInstallation failed:'), err.message);
+    process.exit(1);
+  });
+}
+
+module.exports = { copyDir, RUNTIMES };
