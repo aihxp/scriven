@@ -1,0 +1,2147 @@
+# Command Reference
+
+Scriven has **101 commands** organized into **14 categories**. Commands adapt automatically to your work type -- for example, `/scr:draft-chapter` becomes `/scr:draft-surah` for Quranic commentary, `/scr:draft-act` for screenplays, and `/scr:draft-section` for research papers.
+
+Commands marked with **adaptive naming** rename themselves based on your work type's `command_unit` in `.manuscript/config.json`. Commands marked with **group adaptation** have different names for specific work type groups (academic, sacred, etc.).
+
+## Table of Contents
+
+1. [Core](#core) -- The main workflow: create, discuss, plan, draft, review, submit
+2. [Navigation](#navigation) -- Find your way: next step, help, progress, import
+3. [Session](#session) -- Save, compare, undo, pause and resume your work
+4. [Structure](#structure) -- Plot graphs, timelines, themes, outlines
+5. [Structure Management](#structure-management) -- Add, insert, remove, split, merge, reorder units
+6. [Character & World](#character--world) -- Characters, relationships, world-building
+7. [Quality](#quality) -- Voice calibration, line editing, copy editing, polish
+8. [Review](#review) -- Continuity, voice, sensitivity, pacing, dialogue, beta readers
+9. [Publishing](#publishing) -- Front/back matter, blurbs, synopses, export, publish
+10. [Illustration](#illustration) -- Cover art, scene illustrations, character refs, maps
+11. [Translation](#translation) -- Translate, glossary, memory, cultural adaptation
+12. [Collaboration](#collaboration) -- Revision tracks, compare, merge, propose
+13. [Utility](#utility) -- Manager, health checks, quick edits, notes, settings
+14. [Sacred Exclusive](#sacred-exclusive) -- Concordance, cross-reference, genealogy, and more
+
+---
+
+## Core
+
+The main workflow commands. Every writing project follows this chain: new-work, discuss, plan, draft, editor-review, submit, complete-draft.
+
+### `/scr:new-work`
+
+**Description:** Start a new creative work. Adaptive onboarding detects work type and generates tailored context files.
+
+**Usage:** `/scr:new-work [--quick] [--type <work_type>]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--quick` -- Skip questions 2-3, use defaults
+- `--type <work_type>` -- Skip the "what are you writing?" question
+
+**Example:**
+```
+/scr:new-work --type novel
+```
+Start a novel project. Scriven asks your premise and whether you have existing material, then generates all context files.
+
+---
+
+### `/scr:discuss`
+
+**Description:** Shape the next unit before planning. Discuss the approach, voice, themes, open questions.
+
+**Usage:** `/scr:discuss-{unit} [unit number]`
+
+**Prerequisites:** OUTLINE.md must exist
+
+**Adaptive naming:** Command name changes by work type -- `/scr:discuss-chapter` (novel), `/scr:discuss-act` (screenplay), `/scr:discuss-surah` (Quranic), `/scr:discuss-section` (research paper)
+
+**Example:**
+```
+/scr:discuss-chapter 3
+```
+Talk through Chapter 3 before planning it -- themes to explore, character arcs to advance, tone shifts to consider.
+
+---
+
+### `/scr:plan`
+
+**Description:** Research and plan the next unit. Produces a structured plan file the drafter agent uses.
+
+**Usage:** `/scr:plan-{unit} [unit number]`
+
+**Prerequisites:** Discussed unit context (`{N}-CONTEXT.md`)
+
+**Adaptive naming:** Same pattern as discuss -- `/scr:plan-chapter`, `/scr:plan-act`, `/scr:plan-surah`, etc.
+
+**Example:**
+```
+/scr:plan-chapter 5
+```
+Research and plan Chapter 5, producing plan files for each scene the drafter agent will use.
+
+---
+
+### `/scr:draft`
+
+**Description:** Draft the planned unit. Invokes the drafter agent in fresh context per atomic unit.
+
+**Usage:** `/scr:draft-{unit} [unit number]`
+
+**Prerequisites:** Plan files must exist (`{N}-*-PLAN.md`)
+
+**Adaptive naming:** `/scr:draft-chapter`, `/scr:draft-act`, `/scr:draft-surah`, `/scr:draft-section`, etc.
+
+**Example:**
+```
+/scr:draft-chapter 5
+```
+Draft all scenes in Chapter 5. Each scene gets fresh context with STYLE-GUIDE.md loaded first to maintain your voice.
+
+---
+
+### `/scr:editor-review`
+
+**Description:** Walk the writer through editorial review, manage editor-writer collaboration workflow with proposal reviews, notes, and decision tracking.
+
+**Usage:** `/scr:editor-review [N] [--proposal <name> | --notes | --respond <name>]`
+
+**Prerequisites:** Draft files must exist (`{N}-*-DRAFT.md`)
+
+**Flags:**
+- `--proposal <name>` -- Review a specific editorial proposal
+- `--notes` -- View editor notes
+- `--respond <name>` -- Respond to an editor proposal
+
+**Group adaptation:**
+- Academic: becomes `/scr:peer-review`
+- Sacred: becomes `/scr:scholarly-review`
+
+**Example:**
+```
+/scr:editor-review 3
+```
+Review the draft of unit 3 with your editor hat on. Scriven highlights issues, suggests improvements, and tracks your decisions.
+
+---
+
+### `/scr:submit`
+
+**Description:** Package and finalize unit.
+
+**Usage:** `/scr:submit-{unit} [unit number]`
+
+**Prerequisites:** Editor notes must exist (`{N}-EDITOR-NOTES.md`)
+
+**Adaptive naming:** `/scr:submit-chapter`, `/scr:submit-act`, `/scr:submit-surah`, etc.
+
+**Example:**
+```
+/scr:submit-chapter 3
+```
+Finalize Chapter 3 after editor review. Marks it as complete in the workflow.
+
+---
+
+### `/scr:complete-draft`
+
+**Description:** Mark the entire manuscript draft as complete.
+
+**Usage:** `/scr:complete-draft`
+
+**Prerequisites:** All units must be submitted
+
+**Example:**
+```
+/scr:complete-draft
+```
+After all chapters are submitted, mark the full draft as complete. Unlocks publishing, export, and translation commands.
+
+---
+
+### `/scr:new-revision`
+
+**Description:** Start a new revision of the manuscript. Archives the current draft and begins a fresh pass.
+
+**Usage:** `/scr:new-revision`
+
+**Prerequisites:** Archived draft must exist
+
+**Example:**
+```
+/scr:new-revision
+```
+Archive the current draft and start revision 2. All drafts are preserved in the archive.
+
+---
+
+### `/scr:autopilot`
+
+**Description:** Run the full drafting pipeline autonomously. Choose guided, supervised, or full-auto profiles.
+
+**Usage:** `/scr:autopilot [--profile guided|supervised|full-auto] [--from <stage>] [--to <stage>] [--unit N] [--resume]`
+
+**Prerequisites:** None (recommended: run `/scr:profile-writer` first)
+
+**Flags:**
+- `--profile` -- Control level: `guided` (pauses for approval), `supervised` (pauses at milestones), `full-auto` (runs everything)
+- `--from` / `--to` -- Limit the pipeline stages
+- `--unit N` -- Start from a specific unit
+- `--resume` -- Continue from where autopilot left off
+
+**Example:**
+```
+/scr:autopilot --profile supervised --from plan --to draft
+```
+Run planning and drafting for all units, pausing at milestones for your review.
+
+---
+
+### `/scr:series-bible`
+
+**Description:** Create, view, or check the series bible -- a persistent cross-book knowledge base for multi-volume works (novel series, TV seasons, comic runs, sequel trilogies, multi-book commentaries).
+
+**Usage:** `/scr:series-bible [--init] [--import <work_path>] [--check] [--timeline] [--characters]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--init` -- Create a new series bible
+- `--import <work_path>` -- Import from an existing work
+- `--check` -- Verify consistency across volumes
+- `--timeline` -- Show series-wide timeline
+- `--characters` -- Show character appearances across volumes
+
+**Example:**
+```
+/scr:series-bible --init
+```
+Start a series bible for a trilogy. Track characters, world details, and timelines across all books.
+
+---
+
+## Navigation
+
+Commands for finding your way through the workflow and understanding your manuscript.
+
+### `/scr:next`
+
+**Description:** Auto-detect what to do next in your workflow and run it. The one command a writer can always use.
+
+**Usage:** `/scr:next`
+
+**Prerequisites:** None
+
+**Example:**
+```
+/scr:next
+```
+Not sure what comes after planning? Just run `/scr:next` and Scriven figures it out.
+
+---
+
+### `/scr:do`
+
+**Description:** Natural language router. Type what you want in plain English, Scriven figures out which command to run.
+
+**Usage:** `/scr:do "<what you want to do>"`
+
+**Prerequisites:** None
+
+**Example:**
+```
+/scr:do "edit the scene where Maria meets the detective"
+```
+Scriven maps your intent to the right command and runs it.
+
+---
+
+### `/scr:help`
+
+**Description:** Show Scriven commands grouped by workflow stage, filtered to what's relevant for your current work type and progress.
+
+**Usage:** `/scr:help [category or search term]`
+
+**Prerequisites:** None
+
+**Example:**
+```
+/scr:help publishing
+```
+Show all publishing-related commands available for your work type.
+
+---
+
+### `/scr:progress`
+
+**Description:** Show current state and next step. How far along are you, what's drafted, what's pending.
+
+**Usage:** `/scr:progress`
+
+**Prerequisites:** None
+
+**Example:**
+```
+/scr:progress
+```
+See "Chapter 4 of 12 drafted. 32,000 words. Next: discuss-chapter 5."
+
+---
+
+### `/scr:demo`
+
+**Description:** Launch or clear a pre-built sample project sandbox for exploring Scriven without risk.
+
+**Usage:** `/scr:demo [--clear] [--genre <genre>]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--clear` -- Remove the demo project
+- `--genre <genre>` -- Choose a demo genre
+
+**Example:**
+```
+/scr:demo
+```
+Explore Scriven with a pre-built watchmaker story -- 5 scenes, full context files, everything ready to try commands.
+
+---
+
+### `/scr:import`
+
+**Description:** Import an existing manuscript (docx, markdown, txt, or directory) and structure it into a Scriven `.manuscript/` directory.
+
+**Usage:** `/scr:import <file_or_directory_path> [--type <work_type>]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--type <work_type>` -- Specify the work type if Scriven can't auto-detect it
+
+**Example:**
+```
+/scr:import ~/Documents/my-novel.docx --type novel
+```
+Import an existing Word document and split it into chapters, scenes, and context files.
+
+---
+
+### `/scr:map-manuscript`
+
+**Description:** Spawn parallel analysis agents to understand an existing manuscript's voice, structure, characters, and themes.
+
+**Usage:** `/scr:map-manuscript`
+
+**Prerequisites:** None
+
+**Example:**
+```
+/scr:map-manuscript
+```
+Analyze a manuscript you imported. Scriven reads the whole thing and extracts voice profile, character list, themes, and structure.
+
+---
+
+### `/scr:manuscript-stats`
+
+**Description:** Show manuscript word count, chapter count, estimated page count, and reading time.
+
+**Usage:** `/scr:manuscript-stats [--detail]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--detail` -- Show per-unit breakdown
+
+**Example:**
+```
+/scr:manuscript-stats --detail
+```
+See word counts per chapter, total pages, and estimated reading time.
+
+---
+
+## Session
+
+Writer-friendly git abstractions. Save your work, compare versions, and undo mistakes -- no git knowledge required.
+
+### `/scr:save`
+
+**Description:** Save your current work. Auto-generates a descriptive save message from context.
+
+**Usage:** `/scr:save [optional message]`
+
+**Prerequisites:** None
+
+**Example:**
+```
+/scr:save "finished the rooftop confrontation"
+```
+Save your work with a note. If you skip the message, Scriven writes one based on what changed.
+
+---
+
+### `/scr:history`
+
+**Description:** See the timeline of your saves. Shows when you saved and what you were working on.
+
+**Usage:** `/scr:history [--limit N]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--limit N` -- Show only the last N saves
+
+**Example:**
+```
+/scr:history --limit 5
+```
+See your last 5 saves with timestamps and descriptions.
+
+---
+
+### `/scr:compare`
+
+**Description:** Compare your current work with a previous save. Shows changes in plain prose, not code diff.
+
+**Usage:** `/scr:compare [save number or 'last']`
+
+**Prerequisites:** None
+
+**Example:**
+```
+/scr:compare last
+```
+See what changed since your last save, described in plain language.
+
+---
+
+### `/scr:versions`
+
+**Description:** List your draft versions with readable labels.
+
+**Usage:** `/scr:versions [--all]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--all` -- Show all versions including archived drafts
+
+**Example:**
+```
+/scr:versions
+```
+See "Draft 1 (archived), Draft 2 (current), 12 saves."
+
+---
+
+### `/scr:undo`
+
+**Description:** Undo your last save and go back to the previous version.
+
+**Usage:** `/scr:undo [--force]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--force` -- Skip the confirmation prompt
+
+**Example:**
+```
+/scr:undo
+```
+Go back to the previous save. Scriven shows what will be reverted and asks for confirmation.
+
+---
+
+### `/scr:pause-work`
+
+**Description:** Pause your work session. Captures where you are and what you were thinking so you can pick up later.
+
+**Usage:** `/scr:pause-work`
+
+**Prerequisites:** None
+
+**Example:**
+```
+/scr:pause-work
+```
+Capture your mental state before stepping away. Scriven notes what you were working on, open threads, and next steps.
+
+---
+
+### `/scr:resume-work`
+
+**Description:** Pick up where you left off. Reads your last session and tells you what's next.
+
+**Usage:** `/scr:resume-work`
+
+**Prerequisites:** None
+
+**Example:**
+```
+/scr:resume-work
+```
+Get oriented after a break. Scriven reminds you what you were doing and suggests what to tackle next.
+
+---
+
+### `/scr:session-report`
+
+**Description:** See what you accomplished this session. Shows units drafted, words written, and time spent.
+
+**Usage:** `/scr:session-report`
+
+**Prerequisites:** None
+
+**Example:**
+```
+/scr:session-report
+```
+End-of-session summary: "You drafted 3 chapters (8,400 words) over 2.5 hours. Voice consistency: 94%."
+
+---
+
+## Structure
+
+Commands for visualizing and managing your narrative structure, themes, and timeline.
+
+### `/scr:plot-graph`
+
+**Description:** Visualize and manage the narrative arc structure of the story.
+
+**Usage:** `/scr:plot-graph [--edit] [--type <arc_type>]`
+
+**Prerequisites:** OUTLINE.md must exist
+
+**Flags:**
+- `--edit` -- Modify the arc structure
+- `--type <arc_type>` -- Arc type: three-act, five-act, hero's journey, kishotenketsu, etc.
+
+**Available for:** Prose, script, visual, interactive
+
+**Group adaptation:**
+- Academic: becomes `/scr:argument-map`
+- Sacred: becomes `/scr:theological-arc`
+
+**Example:**
+```
+/scr:plot-graph --type hero's-journey
+```
+Visualize your novel's structure mapped to the hero's journey.
+
+---
+
+### `/scr:timeline`
+
+**Description:** Generate a chronological event timeline from the outline.
+
+**Usage:** `/scr:timeline`
+
+**Prerequisites:** OUTLINE.md must exist
+
+**Available for:** Prose, script, academic, visual, interactive
+
+**Group adaptation:**
+- Sacred: becomes `/scr:chronology`
+
+**Example:**
+```
+/scr:timeline
+```
+See events in chronological order, even if your narrative is non-linear.
+
+---
+
+### `/scr:theme-tracker`
+
+**Description:** Track thematic threads across the work with auto-detection suggestions.
+
+**Usage:** `/scr:theme-tracker`
+
+**Prerequisites:** THEMES.md must exist
+
+**Available for:** Prose, script, visual, poetry, interactive
+
+**Group adaptation:**
+- Academic: becomes `/scr:research-questions`
+- Sacred: becomes `/scr:doctrine-tracker`
+
+**Example:**
+```
+/scr:theme-tracker
+```
+See where your themes appear across chapters and which ones need more development.
+
+---
+
+### `/scr:subplot-map`
+
+**Description:** Visualize subplot threads and their intersections across the work.
+
+**Usage:** `/scr:subplot-map`
+
+**Prerequisites:** OUTLINE.md must exist, at least 2 threads
+
+**Available for:** Prose, script, interactive
+
+**Group adaptation:**
+- Sacred: becomes `/scr:narrative-threads`
+
+**Example:**
+```
+/scr:subplot-map
+```
+See how your subplots weave together and where they intersect with the main plot.
+
+---
+
+### `/scr:outline`
+
+**Description:** Display or edit the structural outline of the work.
+
+**Usage:** `/scr:outline [--edit]`
+
+**Prerequisites:** OUTLINE.md must exist
+
+**Available for:** Prose, script, academic, visual, interactive, sacred
+
+**Flags:**
+- `--edit` -- Modify the outline
+
+**Example:**
+```
+/scr:outline --edit
+```
+View and restructure your outline interactively.
+
+---
+
+## Structure Management
+
+Commands for modifying the structural units in your outline -- adding, removing, splitting, merging, and reordering.
+
+### `/scr:add-unit`
+
+**Description:** Add a new unit to the end of the outline.
+
+**Usage:** `/scr:add-unit [title]`
+
+**Prerequisites:** OUTLINE.md must exist
+
+**Available for:** Prose, script, academic, visual, interactive, sacred
+
+**Example:**
+```
+/scr:add-unit "The Aftermath"
+```
+Add a new chapter (or act, section, surah, etc.) at the end of the outline.
+
+---
+
+### `/scr:insert-unit`
+
+**Description:** Insert a new unit at a specific position in the outline.
+
+**Usage:** `/scr:insert-unit [position] [title]`
+
+**Prerequisites:** OUTLINE.md must exist
+
+**Available for:** Prose, script, academic, visual, interactive, sacred
+
+**Example:**
+```
+/scr:insert-unit 3 "The Reveal"
+```
+Insert a new chapter at position 3, shifting later chapters forward.
+
+---
+
+### `/scr:remove-unit`
+
+**Description:** Remove a unit from the outline with draft safety checks.
+
+**Usage:** `/scr:remove-unit [unit-id]`
+
+**Prerequisites:** OUTLINE.md must exist
+
+**Available for:** Prose, script, academic, visual, interactive, sacred
+
+**Example:**
+```
+/scr:remove-unit 7
+```
+Remove chapter 7. Scriven warns if it has drafted content and asks for confirmation.
+
+---
+
+### `/scr:split-unit`
+
+**Description:** Split one unit into two at a specified point.
+
+**Usage:** `/scr:split-unit [unit-id] [split-point]`
+
+**Prerequisites:** OUTLINE.md must exist
+
+**Available for:** Prose, script, academic, visual, interactive, sacred
+
+**Example:**
+```
+/scr:split-unit 5 "after the trial scene"
+```
+Split Chapter 5 into two chapters at the specified point.
+
+---
+
+### `/scr:merge-units`
+
+**Description:** Merge two adjacent units into one.
+
+**Usage:** `/scr:merge-units [unit-id-1] [unit-id-2]`
+
+**Prerequisites:** OUTLINE.md must exist
+
+**Available for:** Prose, script, academic, visual, interactive, sacred
+
+**Example:**
+```
+/scr:merge-units 3 4
+```
+Merge chapters 3 and 4 into a single chapter.
+
+---
+
+### `/scr:reorder-units`
+
+**Description:** Reorder units in the outline by moving a unit to a new position.
+
+**Usage:** `/scr:reorder-units [unit-id] [new-position]`
+
+**Prerequisites:** OUTLINE.md must exist
+
+**Available for:** Prose, script, academic, visual, interactive, sacred
+
+**Example:**
+```
+/scr:reorder-units 8 3
+```
+Move chapter 8 to position 3, shifting other chapters accordingly.
+
+---
+
+## Character & World
+
+Commands for creating and managing characters, relationships, and world-building. Hidden for poetry and speech work types.
+
+### `/scr:new-character`
+
+**Description:** Build a complete character profile through guided interactive interview.
+
+**Usage:** `/scr:new-character`
+
+**Prerequisites:** WORK.md must exist
+
+**Available for:** Prose, script, visual, interactive
+
+**Group adaptation:**
+- Academic: becomes `/scr:new-concept` (academic concept profile)
+- Sacred: becomes `/scr:new-figure` (sacred figure profile)
+
+**Example:**
+```
+/scr:new-character
+```
+Start building a character. Scriven interviews you about appearance, personality, backstory, voice, and role in the story.
+
+---
+
+### `/scr:character-sheet`
+
+**Description:** Display or edit a specific character's full profile.
+
+**Usage:** `/scr:character-sheet [name] [--edit]`
+
+**Prerequisites:** CHARACTERS.md must exist
+
+**Available for:** Prose, script, visual, interactive
+
+**Group adaptation:**
+- Academic: becomes `/scr:concept-sheet`
+- Sacred: becomes `/scr:figure-sheet`
+
+**Flags:**
+- `--edit` -- Modify the character profile
+
+**Example:**
+```
+/scr:character-sheet Maria --edit
+```
+View Maria's full profile and make changes.
+
+---
+
+### `/scr:relationship-map`
+
+**Description:** Generate an ASCII relationship graph between characters.
+
+**Usage:** `/scr:relationship-map [--edit]`
+
+**Prerequisites:** CHARACTERS.md must exist with at least 2 characters
+
+**Available for:** Prose, script, visual, interactive
+
+**Group adaptation:**
+- Sacred: becomes `/scr:lineage-map` (genealogical/covenantal relationships)
+
+**Flags:**
+- `--edit` -- Modify relationships
+
+**Example:**
+```
+/scr:relationship-map
+```
+See how all your characters relate to each other in an ASCII diagram.
+
+---
+
+### `/scr:build-world`
+
+**Description:** Generate or refine the world document through progressive questioning.
+
+**Usage:** `/scr:build-world [--area <area>]`
+
+**Prerequisites:** None
+
+**Available for:** Prose, script, visual, interactive
+
+**Group adaptation:**
+- Sacred: becomes `/scr:build-cosmology` (sacred geography, cosmological framework)
+
+**Flags:**
+- `--area <area>` -- Focus on a specific area of the world
+
+**Example:**
+```
+/scr:build-world --area "magic system"
+```
+Flesh out your magic system through guided world-building questions.
+
+---
+
+### `/scr:cast-list`
+
+**Description:** Display the roster of all characters with roles and brief descriptions.
+
+**Usage:** `/scr:cast-list`
+
+**Prerequisites:** None
+
+**Available for:** Prose, script, visual, interactive
+
+**Group adaptation:**
+- Sacred: becomes `/scr:figures-list`
+
+**Example:**
+```
+/scr:cast-list
+```
+Quick overview of all characters: name, role, one-line description.
+
+---
+
+### `/scr:character-arc`
+
+**Description:** Visualize a character's emotional and growth arc across the story.
+
+**Usage:** `/scr:character-arc [name]`
+
+**Prerequisites:** CHARACTERS.md must exist
+
+**Available for:** Prose, script, visual, interactive
+
+**Group adaptation:**
+- Sacred: becomes `/scr:figure-arc` (spiritual/historical arc)
+
+**Example:**
+```
+/scr:character-arc Maria
+```
+See Maria's emotional journey mapped across chapters -- where she starts, key turning points, where she ends.
+
+---
+
+### `/scr:character-voice-sample`
+
+**Description:** Generate a dialogue sample to preview a character's voice before drafting.
+
+**Usage:** `/scr:character-voice-sample [name]`
+
+**Prerequisites:** CHARACTERS.md and STYLE-GUIDE.md must exist
+
+**Available for:** Prose, script, visual, interactive
+
+**Group adaptation:**
+- Sacred: becomes `/scr:register-sample` (voice register sample)
+
+**Example:**
+```
+/scr:character-voice-sample Detective Chen
+```
+Hear how Detective Chen sounds in dialogue before you start drafting scenes with them.
+
+---
+
+## Quality
+
+Commands for calibrating voice and polishing prose.
+
+### `/scr:voice-test`
+
+**Description:** Voice calibration gate. Generates a 300-word passage in the writer's proposed voice and asks "does this sound like you?" before any real drafting begins.
+
+**Usage:** `/scr:voice-test`
+
+**Prerequisites:** None
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:voice-test
+```
+Scriven drafts a sample passage using your voice profile. If it doesn't sound right, you refine together until it does.
+
+---
+
+### `/scr:line-edit`
+
+**Description:** Perform a line-level prose quality pass with inline annotations.
+
+**Usage:** `/scr:line-edit`
+
+**Prerequisites:** Draft must exist
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:line-edit
+```
+Scriven reads your prose line by line, flagging weak verbs, passive voice, redundancy, and awkward phrasing.
+
+---
+
+### `/scr:copy-edit`
+
+**Description:** Perform a correctness pass for grammar, spelling, punctuation, and consistency.
+
+**Usage:** `/scr:copy-edit`
+
+**Prerequisites:** Draft must exist
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:copy-edit
+```
+Catch typos, grammar issues, and consistency problems (character name spellings, timeline errors, style inconsistencies).
+
+---
+
+### `/scr:polish`
+
+**Description:** Chain line-edit, copy-edit, and voice-check for comprehensive prose polish.
+
+**Usage:** `/scr:polish`
+
+**Prerequisites:** Draft and STYLE-GUIDE.md must exist
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:polish
+```
+Run all three quality passes in sequence. The comprehensive final polish before publication.
+
+---
+
+### `/scr:quick-write`
+
+**Description:** Write a scene, passage, or chapter outside the full planning workflow.
+
+**Usage:** `/scr:quick-write`
+
+**Prerequisites:** None
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:quick-write
+```
+Skip the plan-then-draft workflow and just write. Good for inspiration strikes or experimental scenes.
+
+---
+
+## Review
+
+Commands for reviewing your manuscript from different angles -- continuity, voice, sensitivity, pacing, dialogue, and reader experience.
+
+### `/scr:continuity-check`
+
+**Description:** Automated continuity verification to scan for narrative contradictions across the manuscript.
+
+**Usage:** `/scr:continuity-check`
+
+**Prerequisites:** Draft must exist
+
+**Available for:** Prose, script, visual, interactive
+
+**Group adaptation:**
+- Academic: becomes `/scr:citation-check`
+- Sacred: becomes `/scr:doctrinal-check`
+
+**Example:**
+```
+/scr:continuity-check
+```
+Find contradictions: "In Chapter 3 Maria has brown eyes, but in Chapter 7 they're green."
+
+---
+
+### `/scr:voice-check`
+
+**Description:** Compare drafted prose against STYLE-GUIDE.md to detect voice drift.
+
+**Usage:** `/scr:voice-check`
+
+**Prerequisites:** Draft and STYLE-GUIDE.md must exist
+
+**Available for:** All work types
+
+**Group adaptation:**
+- Sacred: becomes `/scr:register-check` (voice register consistency)
+
+**Example:**
+```
+/scr:voice-check
+```
+Detect where your drafted prose drifts from your established voice profile.
+
+---
+
+### `/scr:sensitivity-review`
+
+**Description:** Flag potential sensitivity issues with context, suggest alternatives, and note intentional craft.
+
+**Usage:** `/scr:sensitivity-review`
+
+**Prerequisites:** Draft must exist
+
+**Available for:** All work types
+
+**Group adaptation:**
+- Academic: becomes `/scr:ethics-review`
+- Sacred: becomes `/scr:interfaith-review` (sensitivity across traditions)
+
+**Example:**
+```
+/scr:sensitivity-review
+```
+Flag content that could be unintentionally harmful, with context-aware suggestions that respect your creative intent.
+
+---
+
+### `/scr:pacing-analysis`
+
+**Description:** Generate a structure-aware pacing report analyzing scene tempo and narrative flow.
+
+**Usage:** `/scr:pacing-analysis`
+
+**Prerequisites:** Draft must exist
+
+**Available for:** Prose, script, academic, visual, interactive, sacred
+
+**Example:**
+```
+/scr:pacing-analysis
+```
+See where your story drags or rushes. Scriven maps scene length, tension, and tempo across the full manuscript.
+
+---
+
+### `/scr:dialogue-audit`
+
+**Description:** Audit dialogue for character voice differentiation, attribution clarity, and talking-head detection.
+
+**Usage:** `/scr:dialogue-audit`
+
+**Prerequisites:** Draft must exist with dialogue
+
+**Available for:** Prose, script, interactive
+
+**Group adaptation:**
+- Visual: adapted behavior for balloon text analysis
+
+**Example:**
+```
+/scr:dialogue-audit
+```
+Check that each character sounds distinct, dialogue tags are clear, and scenes aren't just talking heads.
+
+---
+
+### `/scr:beta-reader`
+
+**Description:** Simulate a beta reader's experience of the manuscript with cross-AI peer review.
+
+**Usage:** `/scr:beta-reader`
+
+**Prerequisites:** Draft must exist
+
+**Available for:** All work types
+
+**Group adaptation:**
+- Academic: becomes `/scr:reviewer-simulation`
+- Sacred: becomes `/scr:theological-review` (doctrinal/pastoral review)
+
+**Example:**
+```
+/scr:beta-reader
+```
+Get a simulated reader's reaction: what hooked them, where they got confused, what felt slow, what surprised them.
+
+---
+
+### `/scr:originality-check`
+
+**Description:** Scan drafted prose for AI-generated patterns and unintentional similarity to published works.
+
+**Usage:** `/scr:originality-check`
+
+**Prerequisites:** Draft must exist
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:originality-check
+```
+Flag passages that feel generic or accidentally echo published works.
+
+---
+
+## Publishing
+
+Commands for preparing your manuscript for publication -- front/back matter, marketing copy, export formats, and publishing workflows.
+
+### `/scr:front-matter`
+
+**Description:** Generate publication-ready front matter elements in Chicago Manual of Style order.
+
+**Usage:** `/scr:front-matter`
+
+**Prerequisites:** Complete draft must exist
+
+**Available for:** Prose, script, academic, visual, sacred
+
+**Group adaptation:**
+- Academic: adapted behavior for academic front matter (abstract, acknowledgments, etc.)
+- Sacred: adapted behavior for sacred front matter (imprimatur, dedication to deity, etc.)
+
+**Example:**
+```
+/scr:front-matter
+```
+Generate title page, copyright page, dedication, epigraph, table of contents, and more.
+
+---
+
+### `/scr:back-matter`
+
+**Description:** Generate publication-ready back matter elements.
+
+**Usage:** `/scr:back-matter`
+
+**Prerequisites:** Complete draft must exist
+
+**Available for:** Prose, script, academic, visual, sacred
+
+**Group adaptation:**
+- Academic: adapted behavior for academic back matter (bibliography, appendices, etc.)
+- Sacred: adapted behavior for sacred back matter (glossary of terms, concordance index, etc.)
+
+**Example:**
+```
+/scr:back-matter
+```
+Generate acknowledgments, about the author, reading group guide, also by, and more.
+
+---
+
+### `/scr:blurb`
+
+**Description:** Generate marketing blurb in three variations for back cover and retailer listings.
+
+**Usage:** `/scr:blurb`
+
+**Prerequisites:** Complete draft must exist
+
+**Available for:** Prose, script, visual, poetry, interactive, sacred
+
+**Example:**
+```
+/scr:blurb
+```
+Get three blurb variations: punchy (Amazon listing), standard (back cover), extended (Goodreads).
+
+---
+
+### `/scr:synopsis`
+
+**Description:** Generate plot synopsis at specified length for query and submission packages.
+
+**Usage:** `/scr:synopsis`
+
+**Prerequisites:** Complete draft must exist
+
+**Available for:** Prose, script, visual
+
+**Example:**
+```
+/scr:synopsis
+```
+Generate a 1-page and 3-page synopsis for agent submissions.
+
+---
+
+### `/scr:query-letter`
+
+**Description:** Generate agent query letter adapted to genre conventions.
+
+**Usage:** `/scr:query-letter`
+
+**Prerequisites:** Blurb and synopsis must exist
+
+**Available for:** Prose, script, sacred
+
+**Example:**
+```
+/scr:query-letter
+```
+Draft a query letter following genre conventions with hook, pitch, bio, and comp titles.
+
+---
+
+### `/scr:book-proposal`
+
+**Description:** Generate nonfiction book proposal for agent or publisher submission.
+
+**Usage:** `/scr:book-proposal`
+
+**Prerequisites:** Synopsis must exist
+
+**Available for:** Prose, sacred (nonfiction only)
+
+**Example:**
+```
+/scr:book-proposal
+```
+Generate a full book proposal: overview, market analysis, chapter summaries, author platform, sample chapter.
+
+---
+
+### `/scr:discussion-questions`
+
+**Description:** Generate reading group discussion questions exploring themes, characters, and craft.
+
+**Usage:** `/scr:discussion-questions`
+
+**Prerequisites:** Complete draft must exist
+
+**Available for:** Prose
+
+**Group adaptation:**
+- Sacred: becomes `/scr:study-questions` (study/reflection questions)
+
+**Example:**
+```
+/scr:discussion-questions
+```
+Generate 10-15 book club questions that spark real conversation about your themes.
+
+---
+
+### `/scr:publish`
+
+**Description:** Publishing wizard or preset-driven pipeline. Chains export commands based on destination.
+
+**Usage:** `/scr:publish [--preset <preset>] [--all]`
+
+**Prerequisites:** None (wraps export commands)
+
+**Flags:**
+- `--preset <preset>` -- Use a preset: kdp, ingram, submission, query
+- `--all` -- Run all applicable presets
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:publish --preset kdp
+```
+Run the full KDP publishing pipeline: format interior, generate cover template, create EPUB and print-ready PDF.
+
+---
+
+### `/scr:export`
+
+**Description:** Compile and export manuscript to publication-ready formats.
+
+**Usage:** `/scr:export --format <format> [--formatted] [--print-ready]`
+
+**Prerequisites:** Complete draft must exist
+
+**Flags:**
+- `--format` -- Target format: markdown, docx, pdf, epub, fountain, fdx, latex, kdp, ingram, submission, query
+- `--formatted` -- Use designed/formatted template (vs. manuscript format)
+- `--print-ready` -- Generate print-ready output with bleeds and crop marks
+
+**Available for:** All work types (format availability varies by work type)
+
+**Example:**
+```
+/scr:export --format epub
+```
+Export your manuscript as a publication-ready EPUB with proper metadata, table of contents, and styling.
+
+---
+
+### `/scr:autopilot-publish`
+
+**Description:** Run full publishing pipeline unattended with quality gate (voice-check + continuity-check).
+
+**Usage:** `/scr:autopilot-publish --preset <preset>`
+
+**Prerequisites:** Complete draft must exist
+
+**Flags:**
+- `--preset <preset>` -- Publishing preset to run
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:autopilot-publish --preset kdp
+```
+Run quality checks and then generate all KDP deliverables automatically.
+
+---
+
+## Illustration
+
+Commands for generating cover art, scene illustrations, character references, maps, and visual layouts.
+
+### `/scr:cover-art`
+
+**Description:** Generate structured cover art prompts with KDP-compliant dimensions.
+
+**Usage:** `/scr:cover-art [--kdp <trim_size>] [--series] [--prompt-only] [--element front|spine|back|full-wrap]`
+
+**Prerequisites:** WORK.md must exist
+
+**Available for:** Prose, visual, poetry, sacred
+
+**Flags:**
+- `--kdp <trim_size>` -- Generate at KDP dimensions (6x9, 5.5x8.5, etc.)
+- `--series` -- Generate series-consistent cover
+- `--prompt-only` -- Generate prompts without calling image API
+- `--element` -- Generate specific cover element
+
+**Example:**
+```
+/scr:cover-art --kdp 6x9 --element front
+```
+Generate a front cover illustration prompt sized for a 6x9 KDP paperback.
+
+---
+
+### `/scr:illustrate-scene`
+
+**Description:** Generate a scene-specific illustration prompt with character visuals, setting, and mood.
+
+**Usage:** `/scr:illustrate-scene <scene-ref> [--style <style>]`
+
+**Prerequisites:** ART-DIRECTION.md and draft must exist
+
+**Available for:** Prose, visual, interactive, sacred
+
+**Flags:**
+- `--style <style>` -- Art style override
+
+**Example:**
+```
+/scr:illustrate-scene 3-2 --style watercolor
+```
+Generate an illustration prompt for Chapter 3, Scene 2 in watercolor style.
+
+---
+
+### `/scr:character-ref`
+
+**Description:** Generate a character visual reference sheet prompt for illustration consistency.
+
+**Usage:** `/scr:character-ref <name> [--style <style>]`
+
+**Prerequisites:** CHARACTERS.md must exist
+
+**Available for:** Prose, script, visual, interactive
+
+**Group adaptation:**
+- Sacred: becomes `/scr:figure-ref` (visual figure reference for sacred art)
+
+**Flags:**
+- `--style <style>` -- Art style for the reference sheet
+
+**Example:**
+```
+/scr:character-ref Maria --style "realistic pencil"
+```
+Generate a character reference sheet for Maria to keep illustrations consistent.
+
+---
+
+### `/scr:art-direction`
+
+**Description:** Generate or refine the visual style bible for illustrations and cover art.
+
+**Usage:** `/scr:art-direction [--refine]`
+
+**Prerequisites:** None
+
+**Available for:** Prose, visual, interactive, sacred
+
+**Flags:**
+- `--refine` -- Refine existing art direction
+
+**Example:**
+```
+/scr:art-direction
+```
+Create ART-DIRECTION.md with color palette, style references, mood, and visual motifs for your book.
+
+---
+
+### `/scr:chapter-header`
+
+**Description:** Generate decorative chapter header/ornament design prompts.
+
+**Usage:** `/scr:chapter-header [--style <style>] [--chapter <ref>]`
+
+**Prerequisites:** None
+
+**Available for:** Prose, sacred
+
+**Flags:**
+- `--style <style>` -- Ornament style
+- `--chapter <ref>` -- Specific chapter
+
+**Example:**
+```
+/scr:chapter-header --style "art nouveau floral"
+```
+Generate decorative header designs for each chapter in art nouveau style.
+
+---
+
+### `/scr:map-illustration`
+
+**Description:** Generate world or regional map illustration prompts from WORLD.md geographic content.
+
+**Usage:** `/scr:map-illustration [--region <area>] [--style <style>]`
+
+**Prerequisites:** WORLD.md must exist
+
+**Available for:** Prose, visual, interactive, sacred
+
+**Flags:**
+- `--region <area>` -- Focus on a specific region
+- `--style <style>` -- Map style (fantasy, antique, satellite, etc.)
+
+**Example:**
+```
+/scr:map-illustration --style "tolkien-style hand-drawn"
+```
+Generate a fantasy map prompt based on the geography in your world-building document.
+
+---
+
+### `/scr:spread-layout`
+
+**Description:** Generate children's book page spread layouts with text and illustration zones.
+
+**Usage:** `/scr:spread-layout <spread-number> [--text-ratio <percent>]`
+
+**Prerequisites:** None
+
+**Available for:** Visual (children's books, picture books)
+
+**Flags:**
+- `--text-ratio <percent>` -- Percentage of spread dedicated to text
+
+**Example:**
+```
+/scr:spread-layout 4 --text-ratio 30
+```
+Design spread 4 with 30% text and 70% illustration area.
+
+---
+
+### `/scr:panel-layout`
+
+**Description:** Generate comic panel layouts with composition notes and balloon placement.
+
+**Usage:** `/scr:panel-layout <page-number> [--panels <count>] [--style <style>]`
+
+**Prerequisites:** None
+
+**Available for:** Visual (comics only)
+
+**Flags:**
+- `--panels <count>` -- Number of panels on the page
+- `--style <style>` -- Layout style
+
+**Example:**
+```
+/scr:panel-layout 12 --panels 6
+```
+Design a 6-panel layout for page 12 with composition and balloon placement notes.
+
+---
+
+### `/scr:storyboard`
+
+**Description:** Generate storyboard frames for script and visual work types with camera direction.
+
+**Usage:** `/scr:storyboard [--scene <ref>] [--act <number>]`
+
+**Prerequisites:** None
+
+**Available for:** Script, visual
+
+**Flags:**
+- `--scene <ref>` -- Storyboard a specific scene
+- `--act <number>` -- Storyboard an entire act
+
+**Example:**
+```
+/scr:storyboard --scene 2-3
+```
+Generate storyboard frames for Act 2, Scene 3 with camera angles, movement, and blocking notes.
+
+---
+
+## Translation
+
+Commands for translating your manuscript into other languages with consistency and cultural awareness.
+
+### `/scr:translate`
+
+**Description:** Translate manuscript to target language with glossary and translation memory support. Uses fresh-context-per-unit pattern for consistency.
+
+**Usage:** `/scr:translate <language> [--all] [--from <unit>] [--languages] [--add-language <lang>]`
+
+**Prerequisites:** Complete draft must exist
+
+**Flags:**
+- `--all` -- Translate all units
+- `--from <unit>` -- Start from a specific unit
+- `--languages` -- List configured target languages
+- `--add-language <lang>` -- Add a new target language
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:translate french --all
+```
+Translate the entire manuscript to French, unit by unit, using your glossary and translation memory.
+
+---
+
+### `/scr:translation-glossary`
+
+**Description:** Create and manage bilingual term glossary for consistent translation.
+
+**Usage:** `/scr:translation-glossary <language> [--add <term> --translation <value>] [--import] [--review] [--category <cat>]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--add <term> --translation <value>` -- Add a term
+- `--import` -- Import terms from existing translations
+- `--review` -- Review glossary entries
+- `--category <cat>` -- Filter by category
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:translation-glossary spanish --add "the Fold" --translation "el Pliegue"
+```
+Ensure "the Fold" is always translated as "el Pliegue" throughout the Spanish edition.
+
+---
+
+### `/scr:translation-memory`
+
+**Description:** Build and manage translation memory from completed translations.
+
+**Usage:** `/scr:translation-memory <language> [--build] [--stats] [--export] [--clear]`
+
+**Prerequisites:** Translation must exist for the language
+
+**Flags:**
+- `--build` -- Build memory from existing translations
+- `--stats` -- Show translation memory statistics
+- `--export` -- Export memory for reuse
+- `--clear` -- Clear translation memory
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:translation-memory french --build
+```
+Build translation memory from your completed French translation for reuse in future projects.
+
+---
+
+### `/scr:cultural-adaptation`
+
+**Description:** Flag idioms, humor, customs, and cultural references that need localization for target language.
+
+**Usage:** `/scr:cultural-adaptation <language> [--unit <unit>] [--severity <level>] [--report]`
+
+**Prerequisites:** Translation must exist for the language
+
+**Flags:**
+- `--unit <unit>` -- Check a specific unit
+- `--severity <level>` -- Filter by severity
+- `--report` -- Generate a full report
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:cultural-adaptation japanese --report
+```
+Generate a report of cultural references that need adaptation for Japanese readers.
+
+---
+
+### `/scr:back-translate`
+
+**Description:** Translate the translation back to source language and show side-by-side comparison with drift annotations.
+
+**Usage:** `/scr:back-translate <language> [--unit <unit>] [--report]`
+
+**Prerequisites:** Translation must exist for the language
+
+**Flags:**
+- `--unit <unit>` -- Check a specific unit
+- `--report` -- Generate a comparison report
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:back-translate french --report
+```
+Verify your French translation by translating it back to English and comparing with the original.
+
+---
+
+### `/scr:multi-publish`
+
+**Description:** Export translated editions in all target formats with localized front/back matter and language-specific formatting.
+
+**Usage:** `/scr:multi-publish [--languages <lang1,lang2,...>] [--format <format>] [--all-languages] [--all-formats]`
+
+**Prerequisites:** Translation must exist
+
+**Flags:**
+- `--languages` -- Specific languages to publish
+- `--format` -- Target format
+- `--all-languages` -- Publish all translated languages
+- `--all-formats` -- Export in all available formats
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:multi-publish --all-languages --format epub
+```
+Generate EPUBs for every translated edition with localized front/back matter.
+
+---
+
+### `/scr:autopilot-translate`
+
+**Description:** Run multi-language translation pipeline unattended with glossary, translation, adaptation, and publishing.
+
+**Usage:** `/scr:autopilot-translate [--languages <lang1,lang2,...>] [--all-languages] [--skip-publish] [--skip-adaptation] [--resume]`
+
+**Prerequisites:** Complete draft must exist
+
+**Flags:**
+- `--languages` -- Target languages
+- `--all-languages` -- Translate to all configured languages
+- `--skip-publish` -- Skip the publishing step
+- `--skip-adaptation` -- Skip cultural adaptation
+- `--resume` -- Resume interrupted pipeline
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:autopilot-translate --languages french,spanish,german
+```
+Translate to French, Spanish, and German end-to-end: glossary, translation, cultural adaptation, and publishing.
+
+---
+
+## Collaboration
+
+Commands for managing revision tracks and collaborative workflows.
+
+### `/scr:track`
+
+**Description:** Manage revision tracks -- create, switch, compare, merge, and propose changes for review.
+
+**Usage:** `/scr:track <create|list|switch|compare|merge|propose> [name] [options]`
+
+**Prerequisites:** None
+
+**Subcommands:**
+- `create` -- Create a new revision track
+- `list` -- List all tracks
+- `switch` -- Switch to a different track
+- `compare` -- Compare tracks side by side
+- `merge` -- Merge a track into the main draft
+- `propose` -- Propose changes from a track for review
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:track create "experimental-ending"
+```
+Create a revision track to experiment with an alternate ending without affecting your main draft.
+
+---
+
+## Utility
+
+General-purpose commands for project management, quick edits, notes, and system health.
+
+### `/scr:manager`
+
+**Description:** Interactive command center for managing multiple writing projects.
+
+**Usage:** `/scr:manager [--list] [--switch <project>] [--status]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--list` -- List all projects
+- `--switch <project>` -- Switch to a different project
+- `--status` -- Show status of all projects
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:manager --list
+```
+See all your writing projects with status, word count, and last activity.
+
+---
+
+### `/scr:health`
+
+**Description:** Diagnose and repair common project state issues.
+
+**Usage:** `/scr:health [--repair]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--repair` -- Attempt to fix detected issues
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:health --repair
+```
+Check for missing files, broken references, and state inconsistencies, then fix what can be fixed.
+
+---
+
+### `/scr:fast`
+
+**Description:** Make a quick inline edit without full planning overhead. For small fixes and tweaks.
+
+**Usage:** `/scr:fast <description of edit>`
+
+**Prerequisites:** None
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:fast "change Maria's hair from brown to black in chapter 3"
+```
+Make a targeted edit without going through the full plan-draft-review cycle.
+
+---
+
+### `/scr:add-note`
+
+**Description:** Add a quick note or reminder to the project notes file.
+
+**Usage:** `/scr:add-note <note text>`
+
+**Prerequisites:** None
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:add-note "Research 1920s speakeasy slang for chapter 7"
+```
+Jot down a thought for later without losing your flow.
+
+---
+
+### `/scr:check-notes`
+
+**Description:** Review all project notes.
+
+**Usage:** `/scr:check-notes [--clear]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--clear` -- Clear all notes after review
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:check-notes
+```
+Review everything you've jotted down during your writing sessions.
+
+---
+
+### `/scr:plant-seed`
+
+**Description:** Plant a creative seed -- an idea, image, or fragment for future use.
+
+**Usage:** `/scr:plant-seed <idea>`
+
+**Prerequisites:** None
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:plant-seed "What if the detective's daughter is the real thief?"
+```
+Save a story idea for later without committing to it now.
+
+---
+
+### `/scr:troubleshoot`
+
+**Description:** Diagnose why something isn't working and suggest fixes.
+
+**Usage:** `/scr:troubleshoot [description of problem]`
+
+**Prerequisites:** None
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:troubleshoot "draft command says OUTLINE.md is missing but it exists"
+```
+Scriven investigates the issue and tells you exactly what's wrong and how to fix it.
+
+---
+
+### `/scr:thread`
+
+**Description:** Start or continue a focused conversation thread on a specific topic.
+
+**Usage:** `/scr:thread <topic name>`
+
+**Prerequisites:** None
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:thread "magic system rules"
+```
+Start a dedicated conversation about your magic system that you can return to anytime.
+
+---
+
+### `/scr:settings`
+
+**Description:** View or modify project settings.
+
+**Usage:** `/scr:settings`
+
+**Prerequisites:** None
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:settings
+```
+Review and adjust your project configuration -- work type, autopilot profile, developer mode, and more.
+
+---
+
+### `/scr:profile-writer`
+
+**Description:** Build or refine the writer's Voice DNA profile through questionnaire, sample analysis, or reference authors.
+
+**Usage:** `/scr:profile-writer [--questionnaire] [--analyze <file>] [--reference] [--all] [--refine] [--refresh] [--export] [--import]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--questionnaire` -- Build profile through questions
+- `--analyze <file>` -- Analyze a writing sample
+- `--reference` -- Build from reference authors
+- `--all` -- Run all three methods
+- `--refine` -- Refine existing profile
+- `--refresh` -- Rebuild from scratch
+- `--export` -- Export voice profile
+- `--import` -- Import voice profile
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:profile-writer --analyze ~/Documents/my-essay.md
+```
+Build your Voice DNA profile by analyzing an existing piece of your writing.
+
+---
+
+## Sacred Exclusive
+
+Commands available only for sacred and historical work types (scripture, commentary, devotional, liturgical, historical chronicle, religious epic, sermon, etc.). These commands are hidden from other work types.
+
+### `/scr:concordance`
+
+**Description:** Build or search a concordance of key terms, names, and phrases across the sacred text. Essential for cross-referencing and intertextual study.
+
+**Usage:** `/scr:concordance [--build] [--search <term>] [--tradition <tradition>]`
+
+**Prerequisites:** Draft must exist
+
+**Flags:**
+- `--build` -- Build the concordance from the text
+- `--search <term>` -- Search for a specific term
+- `--tradition <tradition>` -- Filter by tradition
+
+**Example:**
+```
+/scr:concordance --search "covenant"
+```
+Find every occurrence of "covenant" across the text with surrounding context and cross-references.
+
+---
+
+### `/scr:cross-reference`
+
+**Description:** Map connections between passages -- parallel accounts, prophetic fulfillments, intertextual echoes, typological links.
+
+**Usage:** `/scr:cross-reference [--passage <ref>] [--type <parallel|fulfillment|echo|typology>]`
+
+**Prerequisites:** Draft must exist
+
+**Flags:**
+- `--passage <ref>` -- Start from a specific passage
+- `--type` -- Filter by reference type: parallel, fulfillment, echo, typology
+
+**Example:**
+```
+/scr:cross-reference --passage "Genesis 22" --type typology
+```
+Find typological connections to the binding of Isaac across the text.
+
+---
+
+### `/scr:genealogy`
+
+**Description:** Build and verify genealogical trees and lineages for figures in the text. Catches contradictions across chapters.
+
+**Usage:** `/scr:genealogy [--verify] [--figure <name>] [--tradition <tradition>]`
+
+**Prerequisites:** FIGURES.md must exist with at least 2 figures
+
+**Flags:**
+- `--verify` -- Check for genealogical contradictions
+- `--figure <name>` -- Focus on a specific figure
+- `--tradition <tradition>` -- Use tradition-specific lineage data
+
+**Example:**
+```
+/scr:genealogy --figure Abraham --verify
+```
+Build Abraham's genealogical tree and verify consistency across all mentions in the text.
+
+---
+
+### `/scr:chronology`
+
+**Description:** Timeline management with era-appropriate dating systems. Handles overlapping calendars and disputed dates.
+
+**Usage:** `/scr:chronology [--calendar <system>] [--verify] [--range <start>-<end>]`
+
+**Prerequisites:** None
+
+**Flags:**
+- `--calendar <system>` -- Calendar system: gregorian, hebrew, hijri, vikram_samvat, buddhist_era, regnal
+- `--verify` -- Check for chronological contradictions
+- `--range` -- Focus on a specific date range
+
+**Example:**
+```
+/scr:chronology --calendar hebrew --verify
+```
+Build a timeline using the Hebrew calendar and verify dates are consistent across the text.
+
+---
+
+### `/scr:annotation-layer`
+
+**Description:** Add or manage a commentary/exegetical layer alongside the primary sacred text. Support multiple annotation traditions simultaneously.
+
+**Usage:** `/scr:annotation-layer [tradition_name] [--list] [--remove <tradition>]`
+
+**Prerequisites:** Draft must exist
+
+**Flags:**
+- `--list` -- List all annotation layers
+- `--remove <tradition>` -- Remove an annotation layer
+
+**Example:**
+```
+/scr:annotation-layer reformed
+```
+Add a Reformed theological annotation layer to your text alongside existing Catholic annotations.
+
+---
+
+### `/scr:verse-numbering`
+
+**Description:** Manage verse/ayah/pasuk numbering systems. Handles differences between traditions (Masoretic vs. Septuagint numbering, Hafs vs. Warsh Quranic numbering, etc.).
+
+**Usage:** `/scr:verse-numbering [--system <system>] [--convert <from>-<to>] [--verify]`
+
+**Prerequisites:** Draft must exist
+
+**Flags:**
+- `--system <system>` -- Numbering system: masoretic, septuagint, quranic_hafs, quranic_warsh, pali_canon
+- `--convert <from>-<to>` -- Convert between numbering systems
+- `--verify` -- Verify numbering consistency
+
+**Example:**
+```
+/scr:verse-numbering --convert masoretic-septuagint
+```
+Show how verse numbers differ between Masoretic and Septuagint traditions.
+
+---
+
+### `/scr:source-tracking`
+
+**Description:** Track primary sources, oral traditions, manuscript variants, and source attributions. For historical and critical editions.
+
+**Usage:** `/scr:source-tracking [--add <source>] [--list] [--verify]`
+
+**Prerequisites:** WORK.md must exist
+
+**Flags:**
+- `--add <source>` -- Add a primary source
+- `--list` -- List all tracked sources
+- `--verify` -- Verify source attributions
+
+**Example:**
+```
+/scr:source-tracking --add "Dead Sea Scrolls, 1QIsaA"
+```
+Track the Dead Sea Scrolls as a primary source for your critical edition.
+
+---
+
+### `/scr:doctrinal-check`
+
+**Description:** Verify internal theological and doctrinal consistency across the text. Flag contradictions in doctrine, moral teaching, or cosmological claims.
+
+**Usage:** `/scr:doctrinal-check [unit number]`
+
+**Prerequisites:** Draft and DOCTRINES.md must exist
+
+**Example:**
+```
+/scr:doctrinal-check
+```
+Scan the entire text for doctrinal inconsistencies -- contradictions in theology, moral teaching, or cosmology.
+
+---
+
+## Work Type Adaptations Quick Reference
+
+Many commands automatically rename based on your work type group. Here is a summary:
+
+| Base Command | Academic | Sacred |
+|---|---|---|
+| `/scr:editor-review` | `/scr:peer-review` | `/scr:scholarly-review` |
+| `/scr:new-character` | `/scr:new-concept` | `/scr:new-figure` |
+| `/scr:character-sheet` | `/scr:concept-sheet` | `/scr:figure-sheet` |
+| `/scr:relationship-map` | -- | `/scr:lineage-map` |
+| `/scr:build-world` | -- | `/scr:build-cosmology` |
+| `/scr:cast-list` | -- | `/scr:figures-list` |
+| `/scr:character-arc` | -- | `/scr:figure-arc` |
+| `/scr:character-voice-sample` | -- | `/scr:register-sample` |
+| `/scr:plot-graph` | `/scr:argument-map` | `/scr:theological-arc` |
+| `/scr:timeline` | -- | `/scr:chronology` |
+| `/scr:theme-tracker` | `/scr:research-questions` | `/scr:doctrine-tracker` |
+| `/scr:subplot-map` | -- | `/scr:narrative-threads` |
+| `/scr:continuity-check` | `/scr:citation-check` | `/scr:doctrinal-check` |
+| `/scr:voice-check` | -- | `/scr:register-check` |
+| `/scr:sensitivity-review` | `/scr:ethics-review` | `/scr:interfaith-review` |
+| `/scr:beta-reader` | `/scr:reviewer-simulation` | `/scr:theological-review` |
+| `/scr:character-ref` | -- | `/scr:figure-ref` |
+| `/scr:discussion-questions` | -- | `/scr:study-questions` |
+
+Commands with **adaptive naming** (discuss, plan, draft, submit) change their suffix based on your work type's structural unit. For example, a novel uses chapters, so you get `/scr:draft-chapter`. A screenplay uses acts: `/scr:draft-act`. A Quranic commentary uses surahs: `/scr:draft-surah`.
+
+---
+
+*This reference is auto-generated from `data/CONSTRAINTS.json` and individual command files in `commands/scr/`. For the most current command details, run `/scr:help` inside your project.*
