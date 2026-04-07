@@ -836,6 +836,46 @@
       "hidden": ["prose", "script", "academic", "visual", "poetry", "interactive", "speech_song"],
       "requires": ["draft_exists", "DOCTRINES.md"]
     },
+    "manager": {
+      "category": "utility",
+      "available": ["all"],
+      "description": "Interactive command center for managing multiple writing projects"
+    },
+    "health": {
+      "category": "utility",
+      "available": ["all"],
+      "description": "Diagnose and repair common project state issues"
+    },
+    "fast": {
+      "category": "utility",
+      "available": ["all"],
+      "description": "Make a quick inline edit without full planning overhead"
+    },
+    "add-note": {
+      "category": "utility",
+      "available": ["all"],
+      "description": "Add a quick note or reminder to the project notes file"
+    },
+    "check-notes": {
+      "category": "utility",
+      "available": ["all"],
+      "description": "Review all project notes"
+    },
+    "plant-seed": {
+      "category": "utility",
+      "available": ["all"],
+      "description": "Plant a creative seed -- an idea, image, or fragment for future use"
+    },
+    "troubleshoot": {
+      "category": "utility",
+      "available": ["all"],
+      "description": "Diagnose why something isn't working and suggest fixes"
+    },
+    "thread": {
+      "category": "utility",
+      "available": ["all"],
+      "description": "Start or continue a focused conversation thread on a specific topic"
+    },
     "settings": { "category": "utility", "available": ["all"] },
     "profile-writer": { "category": "utility", "available": ["all"] },
     "save": { "category": "session", "available": ["all"] },
@@ -961,6 +1001,11 @@
   },
 
   "command_adaptations": {
+    "academic": {
+      "copy-edit": { "adapted_name": "citation-check", "additional_focus": "citation format, bibliography consistency" },
+      "beta-reader": { "adapted_name": "peer-review", "additional_focus": "methodology critique, argument strength" },
+      "export": { "adapted_name": "journal-submit", "additional_presets": ["apa", "mla", "chicago"] }
+    },
     "sacred": {
       "new-character": { "adapted_name": "new-figure", "description": "Create figure profile" },
       "character-sheet": { "adapted_name": "figure-sheet", "description": "View/edit figure profile" },
