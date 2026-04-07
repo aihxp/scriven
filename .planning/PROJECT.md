@@ -95,15 +95,20 @@ The previous developer established clear patterns for adding commands — each i
 - **Plan authority**: If a command file contradicts the product plan, fix the command — plan is canonical (section 15 for command specs)
 - **Progressive disclosure**: Onboarding asks 3 questions max; depth is optional and additive
 
-## Current Milestone: v1.1 Generic Platform Support
+## Current Milestone: v1.2 Documentation
 
-**Goal:** Make Scriven installable on any AI agent platform — including those without dedicated command directories — via a generic SKILL.md-based approach.
+**Goal:** Create complete documentation suite — README, guides, command reference, and contributor docs — verified against the live codebase.
 
 **Target features:**
-- Generic SKILL.md installer path for platforms without `.claude/commands/`-style directories
-- Manus Desktop support using this generic approach
-- Platform detection improvements (app bundle detection, SKILL.md directory conventions)
-- Installer refactoring to separate "command-directory platforms" from "skill-file platforms"
+- Enhanced README.md with full feature overview and quick start
+- Getting Started guide (install → first project → first draft)
+- Complete command reference (96+ commands with usage, flags, examples)
+- Work type guide (50+ work types, how each adapts Scriven)
+- Voice DNA guide (style guide system, tuning, registers)
+- Publishing pipeline guide (export formats, KDP, IngramSpark, submissions)
+- Sacred text guide (work types, voice registers, exclusive commands)
+- Translation guide (glossary, memory, cultural adaptation, RTL/CJK)
+- Contributor guide (how to add commands, agents, work types)
 
 ## Key Decisions
 
@@ -134,4 +139,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-07 after milestone v1.1 start*
+*Last updated: 2026-04-07 after milestone v1.2 start*
