@@ -165,7 +165,7 @@ Plans:
 - [x] 08-02-PLAN.md -- Editor-writer workflow and co-writing parallel track support
 - [x] 08-03-PLAN.md -- Multi-runtime installer, writer profile persistence, manager, health, and utility commands
 - [x] 08-04-PLAN.md -- Sacred-exclusive commands, voice registers, discuss categories, and command adaptations
-- [ ] 08-05-PLAN.md -- Sacred translation pipeline, tradition-aware front/back matter, sacred config schema, and test suite
+- [x] 08-05-PLAN.md -- Sacred translation pipeline, tradition-aware front/back matter, sacred config schema, and test suite
 
 ## Progress
 

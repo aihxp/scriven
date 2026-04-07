@@ -150,9 +150,9 @@ Requirements for full product release. Each maps to roadmap phases.
 - [x] **SACRED-04**: Sacred-exclusive commands (concordance, cross-reference, genealogy, chronology, annotation-layer, verse-numbering, source-tracking, doctrinal-check) fully implemented
 - [x] **SACRED-05**: Sacred-adapted commands (new-figure, lineage-map, build-cosmology, theological-arc, doctrine-tracker, etc.) auto-route correctly
 - [x] **SACRED-06**: Sacred discuss-phase with 10 tradition-specific categories
-- [ ] **SACRED-07**: Sacred translation pipeline: formal vs. dynamic equivalence, canonical alignment, liturgical preservation
-- [ ] **SACRED-08**: Tradition-aware front/back matter (imprimatur, nihil obstat, hekhsher, concordance, maps)
-- [ ] **SACRED-09**: Sacred config schema (tradition, verse numbering, calendar system, translation philosophy, canonical alignment)
+- [x] **SACRED-07**: Sacred translation pipeline: formal vs. dynamic equivalence, canonical alignment, liturgical preservation
+- [x] **SACRED-08**: Tradition-aware front/back matter (imprimatur, nihil obstat, hekhsher, concordance, maps)
+- [x] **SACRED-09**: Sacred config schema (tradition, verse numbering, calendar system, translation philosophy, canonical alignment)
 
 ## v2 Requirements
 
@@ -293,9 +293,9 @@ Requirements for full product release. Each maps to roadmap phases.
 | SACRED-04 | Phase 8 | Complete |
 | SACRED-05 | Phase 8 | Complete |
 | SACRED-06 | Phase 8 | Complete |
-| SACRED-07 | Phase 8 | Pending |
-| SACRED-08 | Phase 8 | Pending |
-| SACRED-09 | Phase 8 | Pending |
+| SACRED-07 | Phase 8 | Complete |
+| SACRED-08 | Phase 8 | Complete |
+| SACRED-09 | Phase 8 | Complete |
 
 **Coverage:**
 - v1 requirements: 101 total
