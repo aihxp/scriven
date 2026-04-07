@@ -41,7 +41,27 @@ Save to `.manuscript/CROSS-REFERENCES.md` with entries like:
 
 Show all cross-references for a specific passage. Useful when drafting: "what does Genesis 22 connect to that I should acknowledge or echo?"
 
-### --type <parallel|fulfillment|echo|typology>
+### --map
+
+Generate a visual cross-reference map showing connection density across units. Output as a text-based adjacency matrix or network diagram showing which units connect to which others and how densely. Save to `.manuscript/CROSS-REFERENCE-MAP.md`. Useful for seeing structural patterns — e.g., a heavily cross-referenced passage is likely a theological crux.
+
+### --add <source> <target> <type>
+
+Manually add a cross-reference. The writer specifies:
+- **source** — Source passage reference (e.g., "Genesis 22:8")
+- **target** — Target passage reference (e.g., "John 1:29")
+- **type** — One of: `parallel`, `fulfillment`, `echo`, `quotation`, `allusion`
+
+Connection types:
+- **parallel** — Similar passages telling the same event from different perspectives
+- **fulfillment** — Prophecy-fulfillment pairs (earlier prophecy, later fulfillment)
+- **echo** — Thematic echo where one passage deliberately evokes another
+- **quotation** — Direct quote of another passage or canonical source
+- **allusion** — Indirect reference to another passage without direct quotation
+
+Append to `.manuscript/CROSS-REFERENCES.md` and confirm.
+
+### --type <parallel|fulfillment|echo|quotation|allusion|typology>
 
 Filter to one connection type. Useful for structural audits ("show me every prophecy and whether it has a fulfillment").
 

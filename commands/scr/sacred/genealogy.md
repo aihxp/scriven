@@ -55,6 +55,16 @@ Cross-check every genealogical claim in drafted units against LINEAGES.md. Flag 
 
 Produce a report with specific citations and suggest fixes.
 
+### Lineage types
+
+Support multiple lineage types in the tree, distinguishing between:
+- **biological** — Blood relationships (parent-child, sibling)
+- **covenantal** — Covenant-based relationships (adoption, divine promise lines)
+- **spiritual** — Teacher-student, guru-disciple, rabbinic succession, apostolic succession
+- **royal** — Dynastic succession, tribal leadership, hereditary priesthood
+
+Mark each relationship edge with its type. A single figure can appear in multiple lineage types (e.g., Jesus in both biological/Davidic and covenantal/Abrahamic lines).
+
 ### --figure <name>
 
 Show the full ancestry and descendants of a specific figure, with every text reference. Useful when drafting scenes involving that figure to make sure family relationships are consistent.

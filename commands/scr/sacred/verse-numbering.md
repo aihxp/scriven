@@ -46,6 +46,17 @@ Psalm 51:1 (English) = Psalm 51:3 (Hebrew)
 
 Save the conversion table to `.manuscript/verse-conversion-{from}-{to}.md` for reference.
 
+### --dual
+
+Show dual numbering side by side where two systems diverge. Useful for commentaries or translations that need to reference both systems:
+
+```
+Psalm 51:1 (English) / Psalm 51:3 (Hebrew Masoretic)
+Genesis 31:55 (Masoretic) / Genesis 32:1 (Septuagint)
+```
+
+Store numbering metadata in `.manuscript/verse-map.json` with entries mapping each verse to its equivalent in other systems. This JSON file enables automated conversion and export in any numbering system.
+
 ### --verify
 
 Scan all drafted units and flag any verse numbering issues:

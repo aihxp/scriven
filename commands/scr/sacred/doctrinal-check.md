@@ -83,6 +83,16 @@ RECOMMENDATIONS
 - Whether to update DOCTRINES.md or revise the drafts
 ```
 
+## Severity levels
+
+Each finding is assigned a severity level:
+
+- **contradiction** — Directly opposes an affirmed doctrine in DOCTRINES.md. Highest priority. The writer almost certainly wants to fix this (or update DOCTRINES.md).
+- **tension** — May conflict with a doctrine, but the relationship is ambiguous. Could be intentional nuance, developing theology, or an oversight. Flag for review.
+- **novel** — Asserts something not addressed in DOCTRINES.md at all. Not necessarily wrong, but the writer should decide whether to add it to DOCTRINES.md or revise the passage. Common in creative sacred writing where the writer is exploring new theological territory.
+
+The report groups findings by severity, with contradictions first, tensions second, novel assertions third. This lets the writer triage efficiently.
+
 ## Handling ambiguity
 
 Some doctrinal questions have no clear answer. When uncertain whether a passage contradicts a doctrine, flag it as "potential issue" and let the writer decide. Don't assert contradictions you aren't sure of.
