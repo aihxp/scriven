@@ -62,7 +62,7 @@ From your answers, Scriven generates your project structure:
   config.json      -- project settings
 ```
 
-Every file adapts to your work type. Writing a screenplay? You get acts and scenes. A research paper? Sections and argument maps. A Quran commentary? Surahs and doctrinal frameworks. Scriven supports 50+ work types with tradition-native vocabulary.
+Every file adapts to your work type. Writing a screenplay? You get acts and scenes. A research paper? Sections and argument maps. A Quran commentary? Surahs and doctrinal frameworks. Scriven supports 46 work types with tradition-native vocabulary.
 
 ## Step 4: Develop Your Story
 
@@ -107,6 +107,6 @@ Beyond the core workflow, Scriven offers:
 - **Revision** -- `/scr:editor-review`, `/scr:line-edit`, `/scr:continuity-check`
 - **Publishing** -- `/scr:publish`, `/scr:export`, `/scr:cover-art`, `/scr:blurb`
 - **Collaboration** -- `/scr:save`, `/scr:history`, `/scr:compare`
-- **Navigation** -- `/scr:help`, `/scr:progress`, `/scr:pause-work`
+- **Navigation** -- `/scr:help`, `/scr:next`, `/scr:pause-work`
 
 For the full command list, see [Command Reference](command-reference.md).

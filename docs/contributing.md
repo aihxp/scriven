@@ -9,7 +9,7 @@ This guide walks you through extending Scriven: adding commands, agents, work ty
 Before diving in, here is how the codebase is organized:
 
 ```
-commands/scr/          89 command files (one per /scr:* command)
+commands/scr/          93 command files (one per /scr:* command)
 commands/scr/sacred/   8 sacred-exclusive subcommands
 agents/                6 specialized agents (drafter, voice-checker, etc.)
 data/CONSTRAINTS.json  Central constraint registry -- every command checks this
@@ -18,7 +18,7 @@ data/export-templates/ Export templates (Typst, CSS, LaTeX)
 templates/             9 project templates + sacred/ variants
 templates/sacred/      6 sacred-specific context templates
 bin/install.js         Multi-platform installer (Node.js)
-docs/                  Documentation suite (7 guides)
+docs/                  Documentation suite (9 guides)
 ```
 
 Key principle: the AI agent reads these files at runtime. There is no compilation, no bundling, no transpilation. If you can write markdown, you can contribute.

@@ -42,7 +42,7 @@ Output: `.manuscript/output/manuscript.md`
 /scr:export --format docx
 ```
 
-Output: `.manuscript/output/manuscript.docx`. Uses the `scriven-manuscript.docx` reference template for styling.
+Output: `.manuscript/output/manuscript.docx`. Uses Pandoc's default manuscript styling (12pt Times New Roman, double-spaced, 1-inch margins).
 
 **DOCX (Formatted)** -- Designed and typeset DOCX for review copies and ARCs (advance reader copies). Custom fonts, styled headers, polished layout.
 
@@ -50,7 +50,7 @@ Output: `.manuscript/output/manuscript.docx`. Uses the `scriven-manuscript.docx`
 /scr:export --format docx --formatted
 ```
 
-Output: `.manuscript/output/manuscript-formatted.docx`. Uses the `scriven-formatted.docx` reference template.
+Output: `.manuscript/output/manuscript-formatted.docx`. Uses a custom Pandoc reference document for styled layout.
 
 **PDF (Manuscript)** -- Standard manuscript-format PDF via the Typst engine.
 
@@ -261,8 +261,6 @@ Scriven ships with templates that control the look of your exported files. You c
 | Template | Location | Controls |
 |----------|----------|----------|
 | `scriven-book.typst` | `data/export-templates/` | Book interior PDF layout: trim size, margins, headers, page numbers |
-| `scriven-manuscript.docx` | `data/export-templates/` | Standard manuscript format DOCX styling |
-| `scriven-formatted.docx` | `data/export-templates/` | Designed/formatted DOCX styling |
 | `scriven-epub.css` | `data/export-templates/` | EPUB ebook styling and KDP compatibility |
 | `scriven-academic.latex` | `data/export-templates/` | Academic paper and thesis formatting |
 

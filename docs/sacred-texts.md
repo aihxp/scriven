@@ -270,7 +270,7 @@ Here is a quick walkthrough for starting a sacred writing project:
 
 2. **Set up your voice.** Run `/scr:profile-writer` to generate your STYLE-GUIDE.md. Pay special attention to the "Sacred voice registers" section at the bottom -- this is where you customize how YOUR writing voice handles each register. A prophetic passage in your voice should sound different from a prophetic passage in someone else's.
 
-3. **Explore and plan.** Use `/scr:sacred-discuss` (or the standard `/scr:discuss` -- it adapts automatically) to shape your first unit. Discuss the theological themes, source traditions, and structural approach you want to take.
+3. **Explore and plan.** Use `/scr:discuss` (it adapts automatically to your sacred work type) to shape your first unit. Discuss the theological themes, source traditions, and structural approach you want to take.
 
 4. **Draft.** Run `/scr:draft` (which becomes `/scr:draft-surah`, `/scr:draft-parashah`, etc., depending on your work type). The drafter agent will write in the register specified in your plan file, using your voice as defined in STYLE-GUIDE.md.
 

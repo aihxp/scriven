@@ -76,7 +76,7 @@ Groups related work types together. Commands use these groups for availability:
 }
 ```
 
-There are 8 groups: prose, script, academic, visual, poetry, interactive, speech_song, and sacred. Together they contain 50+ work types.
+There are 8 groups: prose, script, academic, visual, poetry, interactive, speech_song, and sacred. Together they contain 46 work types.
 
 ### work_types
 
@@ -140,7 +140,7 @@ The command registry. Each entry maps a command name to its category, availabili
 ```
 scriven/
   commands/
-    scr/                   89 command files (one per /scr:* command)
+    scr/                   93 command files (one per /scr:* command)
       draft.md             Core workflow: draft a unit
       new-work.md          Core workflow: start a new project
       autopilot.md         Autonomous pipeline orchestrator
@@ -186,7 +186,7 @@ scriven/
   docs/
     getting-started.md     Install to first draft in 10 minutes
     command-reference.md   Full command listing with usage
-    work-types.md          50+ work types and how they adapt Scriven
+    work-types.md          46 work types and how they adapt Scriven
     voice-dna.md           Voice profile system guide
     publishing.md          Export formats and publishing pipelines
     sacred-texts.md        Sacred work types and voice registers
@@ -368,7 +368,7 @@ Scriven's `package.json` has no runtime dependencies. The installer is pure Node
 
 ### Plan is canonical
 
-The product plan is the source of truth. If a command file contradicts the plan, the command file is wrong. This ensures consistency across 89 commands and prevents drift as multiple contributors work on the system.
+The product plan is the source of truth. If a command file contradicts the plan, the command file is wrong. This ensures consistency across 93 commands and prevents drift as multiple contributors work on the system.
 
 ### Backward compatibility
 

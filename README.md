@@ -14,7 +14,7 @@ npx scriven@latest
 
 ## What is this
 
-Scriven is a command system that turns your AI coding agent into a full creative writing studio. It supports 50+ work types -- novels, screenplays, research papers, poetry collections, scripture commentaries, comics, memoirs -- each with its own adaptive vocabulary and toolset.
+Scriven is a command system that turns your AI coding agent into a full creative writing studio. It supports 46 work types -- novels, screenplays, research papers, poetry collections, scripture commentaries, comics, memoirs -- each with its own adaptive vocabulary and toolset.
 
 You get 101 slash commands covering every stage of the writing pipeline:
 
@@ -25,7 +25,7 @@ You get 101 slash commands covering every stage of the writing pipeline:
 - **Translate** -- Deep translation with glossary management, cultural adaptation, back-translation verification, multi-language simultaneous publishing.
 - **Collaborate** -- Parallel revision tracks, co-writing workflows, continuity merge checking.
 
-Everything adapts to your work type. A novel uses `/scr:draft-chapter 3`. A screenplay uses `/scr:draft-act 1`. A Quran commentary uses `/scr:draft-surah 2`. Same system, tradition-native vocabulary.
+Everything adapts to your work type. A novel uses `/scr:draft` for chapters. A screenplay uses `/scr:draft` for acts. A Quran commentary uses `/scr:draft` for surahs. Same command, tradition-native vocabulary.
 
 ---
 
@@ -129,11 +129,13 @@ Scriven is built on five principles:
 
 - [Getting Started](docs/getting-started.md) -- Install to first draft in 10 minutes
 - [Command Reference](docs/command-reference.md) -- All 101 commands with usage, flags, and examples
-- [Work Types Guide](docs/work-types.md) -- How 50+ work types adapt Scriven's vocabulary
+- [Work Types Guide](docs/work-types.md) -- How 46 work types adapt Scriven's vocabulary
 - [Voice DNA Guide](docs/voice-dna.md) -- The 15+ dimension voice profiling system
 - [Publishing Guide](docs/publishing.md) -- 13 export formats, KDP, IngramSpark, submission packages
 - [Sacred Text Guide](docs/sacred-texts.md) -- 13 sacred work types, voice registers, tradition-native features
 - [Translation Guide](docs/translation.md) -- Multi-language pipeline with glossary and cultural adaptation
+- [Contributing](docs/contributing.md) -- How to add commands, agents, work types, and templates
+- [Architecture](docs/architecture.md) -- How Scriven works under the hood
 
 ---
 
@@ -155,7 +157,7 @@ Scriven is built on five principles:
 
 **Version:** 1.0.0
 
-All features shipped -- 101 commands across 50+ work types, with voice profiling, autopilot drafting, full publishing pipeline, illustration generation, translation, collaboration tools, and sacred text support. Runs on 9 AI coding agent runtimes.
+All features shipped -- 101 commands across 46 work types, with voice profiling, autopilot drafting, full publishing pipeline, illustration generation, translation, collaboration tools, and sacred text support. Runs on 9 AI coding agent runtimes.
 
 ---
 

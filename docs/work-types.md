@@ -214,7 +214,7 @@ If you're not sure which type fits:
 - **Writing poetry?** Use `poetry_collection` for a book of poems, `single_poem` for one poem, or `song_lyric` for lyrics.
 - **Writing for children?** Use `childrens_book` or `picture_book` -- these unlock illustration and spread layout tools.
 
-Your work type is stored in `.manuscript/config.json` and can be changed later with `/scr:settings`.
+Your work type is stored in `.manuscript/config.json` and can be changed later by editing the file directly or starting a new project with `/scr:new-work`.
 
 ## See Also
 
