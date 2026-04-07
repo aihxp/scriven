@@ -1,27 +1,23 @@
 # Roadmap: Scriven
 
-## Overview
+## Milestones
 
-Scriven goes from a working MVP (28 commands, 5 agents, installer) to a complete creative writing, publishing, and translation pipeline. The journey moves through eight phases: finishing the installable package, making it writer-friendly, building the creative data layer, polishing manuscripts to professional quality, exporting to every publishing format, adding visual assets, reaching new language markets, and finally extending to collaboration, additional runtimes, and sacred text support. Each phase delivers a coherent capability that unblocks the next.
+- [x] **v1.0 MVP** - Phases 1-8 (shipped 2026-04-07)
+- [ ] **v1.1 Generic Platform Support** - Phase 9 (in progress)
 
 ## Phases
 
-**Phase Numbering:**
-- Integer phases (1, 2, 3): Planned milestone work
-- Decimal phases (2.1, 2.2): Urgent insertions (marked with INSERTED)
+<details>
+<summary>v1.0 MVP (Phases 1-8) - SHIPPED 2026-04-07</summary>
 
-Decimal phases appear between their surrounding integers in numeric order.
-
-- [ ] **Phase 1: MVP Polish** - Ship installable npm package with demo, tests, and working npx experience
-- [ ] **Phase 2: Writer Experience** - Autopilot drafting modes, writer-friendly git, and session management
-- [ ] **Phase 3: Creative Toolkit** - Character management, world-building, and narrative structure tools
-- [ ] **Phase 4: Quality & Manuscript Completion** - Editing tools, quality gates, and front/back matter generation
-- [ ] **Phase 5: Export & Publishing** - Multi-format export pipeline with Pandoc/Typst and publishing wizard
-- [ ] **Phase 6: Illustration** - Cover art, interior illustration, and visual asset prompt generation
-- [ ] **Phase 7: Translation & Localization** - Multi-language translation pipeline with glossary, memory, and RTL/CJK support
-- [ ] **Phase 8: Collaboration, Platform & Sacred** - Revision tracks, multi-runtime support, and sacred text features
-
-## Phase Details
+- [x] **Phase 1: MVP Polish** - Ship installable npm package with demo, tests, and working npx experience
+- [x] **Phase 2: Writer Experience** - Autopilot drafting modes, writer-friendly git, and session management
+- [x] **Phase 3: Creative Toolkit** - Character management, world-building, and narrative structure tools
+- [x] **Phase 4: Quality & Manuscript Completion** - Editing tools, quality gates, and front/back matter generation
+- [x] **Phase 5: Export & Publishing** - Multi-format export pipeline with Pandoc/Typst and publishing wizard
+- [x] **Phase 6: Illustration** - Cover art, interior illustration, and visual asset prompt generation
+- [x] **Phase 7: Translation & Localization** - Multi-language translation pipeline with glossary, memory, and RTL/CJK support
+- [x] **Phase 8: Collaboration, Platform & Sacred** - Revision tracks, multi-runtime support, and sacred text features
 
 ### Phase 1: MVP Polish
 **Goal**: Writers can discover, install, and try Scriven in under 5 minutes with a compelling demo experience
@@ -167,18 +163,42 @@ Plans:
 - [x] 08-04-PLAN.md -- Sacred-exclusive commands, voice registers, discuss categories, and command adaptations
 - [x] 08-05-PLAN.md -- Sacred translation pipeline, tradition-aware front/back matter, sacred config schema, and test suite
 
+</details>
+
+### v1.1 Generic Platform Support (In Progress)
+
+**Milestone Goal:** Make Scriven installable on any AI agent platform -- including those without dedicated command directories -- via a generic SKILL.md-based approach.
+
+- [ ] **Phase 9: Generic Platform Support** - SKILL.md installer path for platforms without command directories
+
+## Phase Details
+
+### Phase 9: Generic Platform Support
+**Goal**: Scriven installs and runs on any AI agent platform, including those without dedicated command directories, via a consolidated SKILL.md manifest
+**Depends on**: Phase 8 (extends existing multi-runtime installer)
+**Requirements**: PLAT-01, PLAT-02, PLAT-03, PLAT-04, PLAT-05, PLAT-06
+**Success Criteria** (what must be TRUE):
+  1. User on a skill-file platform (Manus or unknown agent) can install Scriven and receive a working SKILL.md manifest that lists all available `/scr:*` commands with descriptions and trigger patterns
+  2. Installer automatically detects the user's platform type and routes to the correct strategy (command-directory or skill-file) without requiring manual configuration beyond selecting "Generic" for unrecognized platforms
+  3. Tests validate the generic SKILL.md installer path produces correct output alongside existing command-directory tests
+**Plans**: TBD
+
+Plans:
+(to be created by plan-phase)
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
+Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8 -> 9
 
-| Phase | Plans Complete | Status | Completed |
-|-------|----------------|--------|-----------|
-| 1. MVP Polish | 3/3 | Complete | - |
-| 2. Writer Experience | 0/4 | Planned | - |
-| 3. Creative Toolkit | 0/4 | Planned | - |
-| 4. Quality & Manuscript Completion | 0/6 | Planned | - |
-| 5. Export & Publishing | 4/5 | In Progress|  |
-| 6. Illustration | 0/4 | Planned | - |
-| 7. Translation & Localization | 0/4 | Planned | - |
-| 8. Collaboration, Platform & Sacred | 0/5 | Planned | - |
+| Phase | Milestone | Plans Complete | Status | Completed |
+|-------|-----------|----------------|--------|-----------|
+| 1. MVP Polish | v1.0 | 3/3 | Complete | 2026-04-07 |
+| 2. Writer Experience | v1.0 | 4/4 | Complete | 2026-04-07 |
+| 3. Creative Toolkit | v1.0 | 4/4 | Complete | 2026-04-07 |
+| 4. Quality & Manuscript Completion | v1.0 | 6/6 | Complete | 2026-04-07 |
+| 5. Export & Publishing | v1.0 | 5/5 | Complete | 2026-04-07 |
+| 6. Illustration | v1.0 | 4/4 | Complete | 2026-04-07 |
+| 7. Translation & Localization | v1.0 | 4/4 | Complete | 2026-04-07 |
+| 8. Collaboration, Platform & Sacred | v1.0 | 5/5 | Complete | 2026-04-07 |
+| 9. Generic Platform Support | v1.1 | 0/0 | Not started | - |
