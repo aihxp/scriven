@@ -49,13 +49,13 @@ Plans:
   3. Writer can save, view history, compare versions, and undo changes without ever seeing git commands or terminology
   4. Writer can pause a session, close their computer, return days later, and resume exactly where they left off with full context
   5. Writer can see a session report showing what was accomplished (units drafted, words written)
-**Plans**: TBD
+**Plans**: 4 plans
 
 Plans:
-- [ ] 02-01: TBD
-- [ ] 02-02: TBD
-- [ ] 02-03: TBD
-- [ ] 02-04: TBD
+- [ ] 02-01-PLAN.md -- Autopilot command with guided/supervised/full-auto profiles and config template update
+- [ ] 02-02-PLAN.md -- Writer-friendly git commands (save, history, compare, versions, undo)
+- [ ] 02-03-PLAN.md -- Session management commands (pause-work, resume-work, session-report) and template updates
+- [ ] 02-04-PLAN.md -- Phase 2 test suite validating all commands, config schema, and template updates
 
 ### Phase 3: Creative Toolkit
 **Goal**: Writers have structured tools for building and visualizing their story's characters, world, and narrative architecture
@@ -169,8 +169,8 @@ Phases execute in numeric order: 1 -> 2 -> 3 -> 4 -> 5 -> 6 -> 7 -> 8
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. MVP Polish | 0/3 | Planned | - |
-| 2. Writer Experience | 0/4 | Not started | - |
+| 1. MVP Polish | 3/3 | Complete | - |
+| 2. Writer Experience | 0/4 | Planned | - |
 | 3. Creative Toolkit | 0/3 | Not started | - |
 | 4. Quality & Manuscript Completion | 0/4 | Not started | - |
 | 5. Export & Publishing | 0/4 | Not started | - |
