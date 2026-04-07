@@ -257,3 +257,130 @@ sub {
   vertical-align: sub;
   line-height: 0;
 }
+
+/* ==========================================================================
+   RTL (Right-to-Left) Support
+   Languages: Arabic (ar), Hebrew (he), Urdu (ur), Persian (fa),
+              Yiddish (yi), Pashto (ps), Sindhi (sd)
+   ========================================================================== */
+
+[dir="rtl"],
+body[dir="rtl"] {
+  direction: rtl;
+  unicode-bidi: embed;
+  text-align: right;
+}
+
+[dir="rtl"] p {
+  text-indent: 1em;
+}
+
+/* RTL headings: right-aligned instead of left */
+[dir="rtl"] h1,
+[dir="rtl"] h2,
+[dir="rtl"] h3,
+[dir="rtl"] h4,
+[dir="rtl"] h5,
+[dir="rtl"] h6 {
+  text-align: right;
+}
+
+[dir="rtl"] h1 {
+  text-align: center;
+}
+
+/* RTL blockquotes: mirror padding */
+[dir="rtl"] blockquote {
+  padding-left: 0;
+  padding-right: 1.5em;
+}
+
+/* RTL lists: right-aligned bullets/numbers */
+[dir="rtl"] ul,
+[dir="rtl"] ol {
+  padding-left: 0;
+  padding-right: 2em;
+}
+
+/* RTL table cells */
+[dir="rtl"] th,
+[dir="rtl"] td {
+  text-align: right;
+}
+
+/* RTL footnotes */
+[dir="rtl"] .footnotes {
+  text-align: right;
+}
+
+/* ==========================================================================
+   CJK (Chinese, Japanese, Korean) Support
+   Languages: Chinese (zh), Japanese (ja), Korean (ko)
+   ========================================================================== */
+
+/* CJK line breaking: allow breaks between any CJK characters */
+[lang="zh"] body,
+[lang="ja"] body,
+[lang="ko"] body,
+body[lang="zh"],
+body[lang="ja"],
+body[lang="ko"],
+.cjk {
+  word-break: break-all;
+  overflow-wrap: break-word;
+}
+
+/* Japanese strict line break rules (kinsoku) */
+[lang="ja"] body,
+body[lang="ja"] {
+  line-break: strict;
+}
+
+/* CJK justification: inter-ideograph spacing */
+[lang="zh"] p,
+[lang="ja"] p,
+[lang="ko"] p,
+.cjk p {
+  text-align: justify;
+  text-justify: inter-ideograph;
+}
+
+/* CJK paragraphs: wider indent for ideographic characters */
+[lang="zh"] p,
+[lang="ja"] p,
+[lang="ko"] p,
+.cjk p {
+  text-indent: 2em;
+}
+
+/* Vertical CJK text option (for traditional layout) */
+.vertical-cjk {
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* CJK line height: slightly taller for readability with dense characters */
+[lang="zh"] body,
+[lang="ja"] body,
+[lang="ko"] body,
+body[lang="zh"],
+body[lang="ja"],
+body[lang="ko"] {
+  line-height: 1.8;
+}
+
+/* CJK punctuation spacing */
+[lang="zh"],
+[lang="ja"],
+[lang="ko"] {
+  font-feature-settings: "halt" 1;
+}
+
+/* CJK emphasis: use dots instead of italic (per typographic convention) */
+[lang="zh"] em,
+[lang="ja"] em,
+[lang="ko"] em {
+  font-style: normal;
+  text-emphasis-style: filled dot;
+  text-emphasis-position: under right;
+}

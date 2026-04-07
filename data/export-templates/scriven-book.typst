@@ -15,8 +15,18 @@
 // Text direction: parameterized for RTL compatibility (Phase 7)
 #let text-dir = $if(text-direction)$$text-direction$$else$ltr$endif$
 
+// Language code for CJK detection
+#let lang-code = $if(language)$"$language$"$else$"en"$endif$
+
+// CJK detection helper
+#let is-cjk = lang-code in ("zh", "ja", "ko")
+#let is-rtl = text-dir == rtl
+
 // Font configuration
 #let body-font = $if(mainfont)$"$mainfont$"$else$"Libertinus Serif"$endif$
+
+// CJK font fallback: when language is zh/ja/ko, prefer Noto Sans CJK
+#let cjk-font = if lang-code == "zh" { "Noto Sans CJK SC" } else if lang-code == "ja" { "Noto Sans CJK JP" } else if lang-code == "ko" { "Noto Sans CJK KR" } else { body-font }
 #let body-font-size = $if(fontsize)$$fontsize$$else$11pt$endif$
 #let body-line-spacing = $if(linestretch)$$linestretch$$else$1.4$endif$
 
@@ -38,16 +48,18 @@
     top: margin-top,
     bottom: margin-bottom,
   ),
-  // Running headers: book title left (verso), chapter title right (recto)
+  // Running headers: flip alignment for RTL (inside margin becomes right margin)
   header: context {
     let page-num = counter(page).get().first()
     if page-num > 1 {
       if calc.odd(page-num) {
-        // Recto (right-hand page): chapter title, right-aligned
-        align(right, emph(text(size: 9pt, fill: rgb("#555555"))[]))
+        // Recto page: for RTL, align left (outside); for LTR, align right (outside)
+        let recto-align = if is-rtl { left } else { right }
+        align(recto-align, emph(text(size: 9pt, fill: rgb("#555555"))[]))
       } else {
-        // Verso (left-hand page): book title, left-aligned
-        align(left, emph(text(size: 9pt, fill: rgb("#555555"), book-title)))
+        // Verso page: for RTL, align right (outside); for LTR, align left (outside)
+        let verso-align = if is-rtl { right } else { left }
+        align(verso-align, emph(text(size: 9pt, fill: rgb("#555555"), book-title)))
       }
     }
   },
@@ -62,17 +74,18 @@
 
 // Text settings
 #set text(
-  font: body-font,
+  font: if is-cjk { cjk-font } else { body-font },
   size: body-font-size,
   dir: text-dir,
-  lang: $if(language)$"$language$"$else$"en"$endif$,
-  // Fallback fonts for systems without Libertinus
+  lang: lang-code,
+  // Fallback fonts for systems without primary font
   fallback: true,
 )
 
+// Paragraph settings: CJK needs wider line spacing for readability
 #set par(
-  leading: body-line-spacing * 0.65em,
-  first-line-indent: 1.5em,
+  leading: if is-cjk { body-line-spacing * 0.85em } else { body-line-spacing * 0.65em },
+  first-line-indent: if is-cjk { 2em } else { 1.5em },
   justify: true,
 )
 
