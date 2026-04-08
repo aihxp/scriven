@@ -9,6 +9,6 @@
   "author": "Scriven contributors",
   "license": "MIT",
   "repository": { "type": "git", "url": "https://github.com/scriven/scriven" },
-  "engines": { "node": ">=18.0.0" },
+  "engines": { "node": ">=20.0.0" },
   "files": ["bin/", "lib/", "data/", "commands/", "agents/", "templates/", "README.md", "LICENSE"]
 }

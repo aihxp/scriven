@@ -7,6 +7,7 @@ const readline = require('readline');
 
 const PKG_ROOT = path.join(__dirname, '..');
 const VERSION = require('../package.json').version;
+const MIN_NODE_MAJOR = 20;
 
 const COLORS = {
   reset: '\x1b[0m',
@@ -25,6 +26,11 @@ const BANNER = `
 ${c('bold', 'Scriven')} ${c('gray', 'v' + VERSION)}
 ${c('dim', 'Spec-driven creative writing, publishing, and translation for AI coding agents.')}
 `;
+
+const RUNTIME_SUPPORT_NOTE = c(
+  'dim',
+  'Installer requires Node.js 20+. The runtimes below are installer targets with varying support evidence.'
+);
 
 const RUNTIMES = {
   'claude-code': {
@@ -192,6 +198,15 @@ function ask(rl, question) {
   return new Promise((resolve) => rl.question(question, resolve));
 }
 
+function requireSupportedNode() {
+  const major = Number.parseInt(process.versions.node.split('.')[0], 10);
+  if (!Number.isInteger(major) || major < MIN_NODE_MAJOR) {
+    console.error(c('red', `Scriven's installer requires Node.js 20+. You are running ${process.versions.node}.`));
+    console.error(c('dim', 'See the repository README for the full runtime support matrix and current installer guidance.'));
+    process.exit(1);
+  }
+}
+
 function copyDir(src, dest) {
   if (!fs.existsSync(src)) return 0;
   fs.mkdirSync(dest, { recursive: true });
@@ -211,6 +226,7 @@ function copyDir(src, dest) {
 
 async function main() {
   console.log(BANNER);
+  console.log(RUNTIME_SUPPORT_NOTE + '\n');
 
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
 
@@ -312,6 +328,7 @@ async function main() {
 
 // Only run interactive installer when executed directly
 if (require.main === module) {
+  requireSupportedNode();
   main().catch((err) => {
     console.error(c('red', '\nInstallation failed:'), err.message);
     process.exit(1);
