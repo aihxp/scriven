@@ -89,4 +89,36 @@ describe('npm pack dry-run', () => {
       'npm pack should include dotfile directory data/demo/.manuscript/'
     );
   });
+
+  it('includes proof artifact bundles', () => {
+    const expectedEntries = [
+      'data/proof/watchmaker-flow/README.md',
+      'data/proof/voice-dna/README.md',
+      'data/proof/voice-dna/STYLE-GUIDE-EXCERPT.md',
+      'data/proof/voice-dna/UNGUIDED-SAMPLE.md',
+      'data/proof/voice-dna/GUIDED-SAMPLE.md',
+    ];
+
+    for (const entry of expectedEntries) {
+      assert.ok(
+        packOutput.includes(entry),
+        `npm pack output should include "${entry}"`
+      );
+    }
+  });
+
+  it('includes currently shipped export templates', () => {
+    const expectedEntries = [
+      'data/export-templates/scriven-book.typst',
+      'data/export-templates/scriven-epub.css',
+      'data/export-templates/scriven-academic.latex',
+    ];
+
+    for (const entry of expectedEntries) {
+      assert.ok(
+        packOutput.includes(entry),
+        `npm pack output should include "${entry}"`
+      );
+    }
+  });
 });
