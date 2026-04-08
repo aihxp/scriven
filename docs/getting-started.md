@@ -4,9 +4,11 @@ Go from zero to a drafted scene in under 10 minutes. This guide walks you throug
 
 ## Prerequisites
 
-- **An AI coding agent** -- Claude Code, Cursor, Gemini CLI, or any of the 9 supported runtimes
+- **An AI coding agent** -- Claude Code, Cursor, Gemini CLI, or another current Scriven installer target
 - **Node.js 20+** -- needed for the installer only
 - That's it. No other dependencies for the core writing workflow.
+
+Before choosing a runtime, check [Runtime Support](runtime-support.md) for the current installer targets, install types, support levels, and verification status.
 
 ## Step 1: Install Scriven
 
@@ -16,7 +18,7 @@ Run the installer in your terminal:
 npx scriven@latest
 ```
 
-This installs Scriven's slash commands into your AI agent. The installer auto-detects your platform (Claude Code, Cursor, Gemini CLI, etc.) and places everything where your agent expects it. Takes about 30 seconds.
+This installs Scriven's slash commands into your AI agent. The installer auto-detects current runtime paths (Claude Code, Cursor, Gemini CLI, and other listed installer targets) and places everything where your agent expects it. Takes about 30 seconds.
 
 Once installed, every `/scr:` command is available inside your agent's chat.
 
