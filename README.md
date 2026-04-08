@@ -3,7 +3,7 @@
 [![npm version](https://img.shields.io/npm/v/scriven-cli)](https://www.npmjs.com/package/scriven-cli)
 [![npm downloads](https://img.shields.io/npm/dm/scriven-cli)](https://www.npmjs.com/package/scriven-cli)
 
-**[scriven-cli on npm](https://www.npmjs.com/package/scriven-cli)**
+**[scriven-cli on npm](https://www.npmjs.com/package/scriven-cli)** · **[GitHub Packages](https://github.com/aihxp/scriven/pkgs/npm/scriven-cli)** (`@aihxp/scriven-cli`)
 
 **Spec-driven creative writing, publishing, and translation for AI coding agents.**
 
