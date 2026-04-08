@@ -13,6 +13,7 @@ Scriven is a spec-driven creative writing, publishing, and translation pipeline 
 - **Backward compatibility**: Existing 28 commands and templates must continue working as new features are added
 - **Plan authority**: If a command file contradicts the product plan, fix the command — plan is canonical (section 15 for command specs)
 - **Progressive disclosure**: Onboarding asks 3 questions max; depth is optional and additive
+- **Runtime credibility**: `Node 20+` / `>=20.0.0` is the supported installer baseline. `docs/runtime-support.md` is the canonical runtime matrix, and installer targets are not interchangeable proof of host-runtime parity.
 ## Technology Stack
 
 ## Architecture Constraint
@@ -81,7 +82,8 @@ Scriven is a spec-driven creative writing, publishing, and translation pipeline 
 | **Versioning** | `npm version patch/minor/major` with git tags | Auto-creates git tag, bumps version. Pair with GitHub releases for changelog. | HIGH |
 | **npx support** | Already configured (`"bin": {"scriven": "./bin/install.js"}`) | `npx scriven@latest` will download and run the installer. Current setup is correct. | HIGH |
 | **Lockfile** | Commit `package-lock.json` but since there are zero dependencies, it's effectively empty | Standard practice. Will matter when/if dev dependencies are added for testing. | HIGH |
-| **Node version** | `"engines": {"node": ">=18.0.0"}` (already set) | Node 18 is LTS until April 2025 (EOL). Consider bumping to `>=20.0.0` (LTS until April 2026) or `>=22.0.0` (current LTS, April 2027 EOL). Recommend `>=20.0.0` as minimum. | HIGH |
+| **Node version** | `"engines": {"node": ">=20.0.0"}` | Scriven's supported installer baseline is Node 20+. This keeps package metadata, installer guidance, and runtime docs aligned on one minimum. | HIGH |
+See `docs/runtime-support.md` for the canonical runtime matrix, support levels, and host-runtime parity status.
 ### npm Publish Readiness Checklist
 ## Supporting Tools (Prerequisites for Users)
 | Tool | Purpose | Install | Required For |
