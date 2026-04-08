@@ -136,20 +136,23 @@ Scriven is built on five principles:
 - [Translation Guide](docs/translation.md) -- Multi-language pipeline with glossary and cultural adaptation
 - [Contributing](docs/contributing.md) -- How to add commands, agents, work types, and templates
 - [Architecture](docs/architecture.md) -- How Scriven works under the hood
+- [Shipped Assets](docs/shipped-assets.md) -- Canonical inventory of bundled export templates and launch-critical files
 
 ---
 
-## Supported AI coding agents
+## Installer Targets
 
-- **Claude Code** (primary, most complete)
-- **Cursor** (full support)
-- **Gemini CLI** (full support)
-- **Codex CLI** (full support)
-- **OpenCode** (full support)
-- **GitHub Copilot** (full support)
-- **Windsurf** (full support)
-- **Antigravity** (full support)
-- **Manus Desktop** (full support)
+Scriven currently ships installer targets for these AI coding agent environments:
+
+- **Claude Code** (primary reference runtime)
+- **Cursor**
+- **Gemini CLI**
+- **Codex CLI**
+- **OpenCode**
+- **GitHub Copilot**
+- **Windsurf**
+- **Antigravity**
+- **Manus Desktop**
 
 ---
 
@@ -157,7 +160,7 @@ Scriven is built on five principles:
 
 **Version:** 1.0.0
 
-All features shipped -- 101 commands across 46 work types, with voice profiling, autopilot drafting, full publishing pipeline, illustration generation, translation, collaboration tools, and sacred text support. Runs on 9 AI coding agent runtimes.
+Scriven's core command surface is shipped across 101 commands and 46 work types. Trust-and-proof hardening is currently focused on making launch claims, bundled assets, and runtime guidance fully auditable from the repo. See [Shipped Assets](docs/shipped-assets.md) for the canonical inventory.
 
 ---
 
