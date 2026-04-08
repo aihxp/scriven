@@ -137,6 +137,7 @@ Scriven is built on five principles:
 - [Contributing](docs/contributing.md) -- How to add commands, agents, work types, and templates
 - [Architecture](docs/architecture.md) -- How Scriven works under the hood
 - [Shipped Assets](docs/shipped-assets.md) -- Canonical inventory of bundled export templates and launch-critical files
+- [Runtime Support](docs/runtime-support.md) -- Canonical runtime matrix, Node baseline, and verification-status framing
 
 ---
 
@@ -154,13 +155,17 @@ Scriven currently ships installer targets for these AI coding agent environments
 - **Antigravity**
 - **Manus Desktop**
 
+**Installer baseline:** `Node.js 20+` for `npx scriven@latest` and `bin/install.js`.
+
+**Support note:** Claude Code is the primary reference runtime. The environments listed above are installer targets, not a claim that every host runtime has verified parity today. See the [runtime compatibility matrix](docs/runtime-support.md) for install type, support level, and verification status.
+
 ---
 
 ## Status
 
 **Version:** 1.0.0
 
-Scriven's core command surface is shipped across 101 commands and 46 work types. Trust-and-proof hardening is currently focused on making launch claims, bundled assets, and runtime guidance fully auditable from the repo. See [Shipped Assets](docs/shipped-assets.md) for the canonical inventory.
+Scriven's core command surface is shipped across 101 commands and 46 work types. Trust-and-proof hardening is currently focused on making launch claims, bundled assets, and runtime guidance fully auditable from the repo. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
 
 ---
 
