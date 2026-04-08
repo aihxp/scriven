@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.2
-milestone_name: Documentation
-status: verifying
-stopped_at: Completed 12-02-PLAN.md
+milestone: v1.3
+milestone_name: Trust & Proof
+status: defining_requirements
+stopped_at: Milestone initialized
 last_updated: "2026-04-07T20:32:48.934Z"
 last_activity: 2026-04-07
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 8
-  completed_plans: 8
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-07)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** Phase 12 — Developer Docs & Verification
+**Current focus:** Milestone v1.3 — defining requirements for Trust & Proof
 
 ## Current Position
 
-Phase: 12
-Plan: Not started
-Status: Phase complete — ready for verification
-Last activity: 2026-04-07
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-07 — Milestone v1.3 started
 
-Progress: [##########░░] 75% (phases 1-9 complete, 10-12 remaining)
+Progress: [░░░░░░░░░░░░] 0%
 
 ## Performance Metrics
 
@@ -66,6 +66,7 @@ Recent decisions affecting current work:
 - [Phase 12]: Used add-note.md as primary walkthrough example for contributor guide (simplest real command)
 - [Phase 12]: Created 5 missing command files (submit, complete-draft, new-revision, progress, settings) to match doc references
 - [Phase 12]: Work type count corrected from '50+' to '46' across all documentation
+- [Milestone v1.3]: Trust & Proof milestone focuses on closing claim-vs-surface gaps and adding proof artifacts
 
 ### Pending Todos
 

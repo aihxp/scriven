@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Scriven is a spec-driven creative writing, publishing, and translation pipeline that runs inside AI coding agents (Claude Code, Cursor, Gemini CLI). It covers the full lifecycle from blank page to publication-ready manuscript — including voice profiling, adaptive work types, autonomous drafting, illustration, translation, and multi-format export. Supports 50+ work types with tradition-native vocabulary (novels use chapters, screenplays use acts, Quran commentaries use surahs).
+Scriven is a spec-driven creative writing, publishing, and translation pipeline that runs inside AI coding agents. It takes writers from blank page to publication-ready manuscript with voice profiling, adaptive work types, autonomous drafting, illustration, translation, and multi-format export. It currently supports 46 work types with tradition-native vocabulary such as chapters, acts, and surahs.
 
 ## Core Value
 
@@ -29,46 +29,16 @@ Scriven is a spec-driven creative writing, publishing, and translation pipeline 
 - ✓ Publish wizard command (shell) — v0.3.0
 - ✓ Profile-writer and voice-test commands — v0.3.0
 - ✓ Beta reader, continuity check, editor review commands — v0.3.0
+- ✓ Generic SKILL.md installer path for skill-file platforms — v1.1
+- ✓ Core documentation suite, feature guides, contributor docs, and architecture docs — v1.2
 
 ### Active
 
-- [ ] Demo sample project with pre-baked watchmaker story (5 scenes, full context files)
-- [ ] Test suite (CONSTRAINTS.json validator, installer dry-run, command structure tests)
-- [ ] npm publish readiness (package.json, bin setup, npx scriven@latest works)
-- [ ] Autopilot mode (guided, supervised, full-auto profiles)
-- [ ] Writer mode vs developer mode toggle
-- [ ] Writer-friendly git abstractions (save, history, compare, versions, undo)
-- [ ] Session management (pause-work, resume-work)
-- [ ] Character creation and management tools
-- [ ] Relationship mapping, character arcs, character voice samples
-- [ ] Plot graph (three-act, five-act, hero's journey, kishotenketsu, etc.)
-- [ ] Timeline, theme tracker, subplot mapping
-- [ ] World-building command
-- [ ] Line edit, copy edit commands
-- [ ] Dialogue audit, pacing analysis
-- [ ] Sensitivity review
-- [ ] Full front matter (19 elements) and back matter (12+ elements)
-- [ ] Blurb, synopsis, query letter, book proposal generators
-- [ ] Export: markdown, docx (manuscript + formatted), PDF
-- [ ] Export: EPUB, Fountain, FDX, LaTeX
-- [ ] Export: KDP package, IngramSpark package, submission/query packages
-- [ ] Cover art generation (front, spine, back, full wrap)
-- [ ] Interior illustration prompts, character reference sheets
-- [ ] Art direction document, chapter headers, map illustration
-- [ ] Children's book / comic tools (spread layout, storyboard, panel layout)
-- [ ] Translation pipeline (per-language)
-- [ ] Glossary management, translation memory, cultural adaptation
-- [ ] Back-translation verification, multi-language export
-- [ ] RTL and CJK support
-- [ ] Collaboration: revision tracks, compare/merge, editor-writer workflow
-- [ ] Co-writing parallel tracks
-- [ ] Multi-runtime expansion (Codex, OpenCode, Copilot, Windsurf, Antigravity)
-- [ ] Writer profile system, manager (interactive command center)
-- [ ] Academic-specific features (citation check, peer review, journal templates)
-- [ ] Sacred voice registers (10 registers: prophetic, wisdom, legal, etc.)
-- [ ] Sacred-adapted commands (new-figure, lineage-map, build-cosmology, etc.)
-- [ ] Sacred translation pipeline (formal/dynamic equivalence, canonical alignment)
-- [ ] Tradition-aware front/back matter
+- [ ] Shipped export formats, templates, and documentation must match the actual repo surface without aspirational gaps
+- [ ] Installation guidance and platform requirements must be internally consistent, especially the Node.js floor and runtime claims
+- [ ] Product positioning should lead with the strongest wedge: AI-native longform writing with voice preservation
+- [ ] Scriven needs proof artifacts that make trust tangible: end-to-end sample flow, runtime support matrix, and Voice DNA before/after demo
+- [ ] Trust-critical claims must be regression-tested so shipped surface and docs do not drift apart again
 
 ### Out of Scope
 
@@ -79,13 +49,13 @@ Scriven is a spec-driven creative writing, publishing, and translation pipeline 
 
 ## Context
 
-Scriven is built as a Claude Code skill system — markdown files that define slash commands, agents, and templates. The installer (`bin/install.js`) copies these into the user's `.claude/` directory. There's no runtime library; the AI agent reads the command markdown and executes accordingly.
+Scriven is built as a markdown-first skill system. Commands, agents, templates, and constraints are all file-based; the installer (`bin/install.js`) copies those assets into supported AI runtimes. There is no compiled runtime library; the host agent reads the markdown instructions and executes them with its own tools.
 
-The product plan (`SCRIVEN-PRODUCT-PLAN-v0.3.md`) is the canonical source of truth at 1,887 lines across 20 sections. It went through 17 gap-fixes and is comprehensive. `data/CONSTRAINTS.json` is the runtime constraint system — every command checks it for work type availability, prerequisites, and adaptations.
+The product plan (`SCRIVEN-PRODUCT-PLAN-v0.3.md`) is the canonical source of truth. `data/CONSTRAINTS.json` is the runtime constraint system that governs work type availability, prerequisites, and adaptations.
 
-Phase 1 MVP has 28 commands built, 5 agents, templates for all context files, and a working installer. The demo command exists but needs sample project content. Tests don't exist yet. npm publishing is not yet configured.
+Milestones v1.0 through v1.2 shipped the core product surface, multi-runtime installer expansion, and a complete documentation suite. The docs verification pass also exposed a new class of product problem: trust gaps between what the product promises and what the repo can prove today.
 
-The previous developer established clear patterns for adding commands — each is a markdown file in `commands/scr/` with frontmatter and instructions. Adding new commands is mechanical work following these patterns.
+The most visible gaps are in the export stack and launch proof layer. Some docs and commands reference export templates that are not present in `data/export-templates/`, the minimum Node version guidance conflicts between planning and package metadata, and runtime support claims are broader than the current proof artifacts. This milestone is about tightening those seams so first impressions match reality.
 
 ## Constraints
 
@@ -95,20 +65,17 @@ The previous developer established clear patterns for adding commands — each i
 - **Plan authority**: If a command file contradicts the product plan, fix the command — plan is canonical (section 15 for command specs)
 - **Progressive disclosure**: Onboarding asks 3 questions max; depth is optional and additive
 
-## Current Milestone: v1.2 Documentation
+## Current Milestone: v1.3 Trust & Proof
 
-**Goal:** Create complete documentation suite — README, guides, command reference, and contributor docs — verified against the live codebase.
+**Goal:** Make Scriven's launch surface feel fully earned by aligning shipped assets, claims, requirements, and proof artifacts around the product's strongest differentiator.
 
 **Target features:**
-- Enhanced README.md with full feature overview and quick start
-- Getting Started guide (install → first project → first draft)
-- Complete command reference (96+ commands with usage, flags, examples)
-- Work type guide (50+ work types, how each adapts Scriven)
-- Voice DNA guide (style guide system, tuning, registers)
-- Publishing pipeline guide (export formats, KDP, IngramSpark, submissions)
-- Sacred text guide (work types, voice registers, exclusive commands)
-- Translation guide (glossary, memory, cultural adaptation, RTL/CJK)
-- Contributor guide (how to add commands, agents, work types)
+- Resolve export-template truth gaps by either shipping missing templates or narrowing claims and command paths to the files that actually exist
+- Align Node.js support policy, installer messaging, and package metadata on a single supported minimum version
+- Add runtime support proof so "full support" claims are backed by an explicit compatibility matrix and verification guidance
+- Reposition top-level messaging around voice-preserving longform writing, with breadth framed as expansion rather than the first impression
+- Add proof artifacts such as an end-to-end sample publishing flow and a Voice DNA before/after demonstration
+- Add regression coverage for trust-critical docs, templates, and packaging claims
 
 ## Key Decisions
 
@@ -120,6 +87,7 @@ The previous developer established clear patterns for adding commands — each i
 | Ship npm + polish in parallel | Get npx working early for feedback while improving experience | ✓ Good |
 | GSD-derived phase decomposition | Product plan has 10 phases but GSD regrouped into 8 for standard granularity | ✓ Good |
 | Generic SKILL.md installer for platforms without command directories | Manus and future platforms can use Scriven without needing a proprietary command system | — Pending |
+| Trust beats breadth on the launch surface | Narrow, provable claims create more confidence than ambitious but weakly evidenced breadth | — Pending |
 
 ## Evolution
 
@@ -139,4 +107,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-07 after milestone v1.2 start*
+*Last updated: 2026-04-07 after milestone v1.3 start*
