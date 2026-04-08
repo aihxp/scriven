@@ -168,9 +168,9 @@ Scriven currently ships installer targets for these AI coding agent environments
 
 ## Status
 
-**Version:** 1.0.0
+**Version:** 1.3.0
 
-Scriven's core command surface is shipped across 101 commands and 46 work types. Trust-and-proof hardening is currently focused on making launch claims, bundled assets, and runtime guidance fully auditable from the repo. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
+Scriven's core command surface is stable across 101 commands, 46 work types, and 10 installer targets. All four milestones (v1.0 MVP, v1.1 Generic Platform Support, v1.2 Documentation, v1.3 Trust & Proof) are shipped. 925 tests pass. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
 
 ---
 
