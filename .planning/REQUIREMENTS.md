@@ -49,23 +49,23 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TRUST-01 | TBD | Pending |
-| TRUST-02 | TBD | Pending |
-| TRUST-03 | TBD | Pending |
-| RUNTIME-01 | TBD | Pending |
-| RUNTIME-02 | TBD | Pending |
-| RUNTIME-03 | TBD | Pending |
-| PROOF-01 | TBD | Pending |
-| PROOF-02 | TBD | Pending |
-| PROOF-03 | TBD | Pending |
-| QA-01 | TBD | Pending |
-| QA-02 | TBD | Pending |
+| TRUST-01 | Phase 13 | Pending |
+| TRUST-02 | Phase 13 | Pending |
+| TRUST-03 | Phase 13 | Pending |
+| RUNTIME-01 | Phase 14 | Pending |
+| RUNTIME-02 | Phase 14 | Pending |
+| RUNTIME-03 | Phase 14 | Pending |
+| PROOF-01 | Phase 15 | Pending |
+| PROOF-02 | Phase 15 | Pending |
+| PROOF-03 | Phase 15 | Pending |
+| QA-01 | Phase 16 | Pending |
+| QA-02 | Phase 16 | Pending |
 
 **Coverage:**
 - v1.3 requirements: 11 total
-- Mapped to phases: 0
-- Unmapped: 11 ⚠️
+- Mapped to phases: 11
+- Unmapped: 0 ✓
 
 ---
 *Requirements defined: 2026-04-07*
-*Last updated: 2026-04-07 after initial definition*
+*Last updated: 2026-04-07 after roadmap creation*

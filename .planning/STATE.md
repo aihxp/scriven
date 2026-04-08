@@ -2,12 +2,12 @@
 gsd_state_version: 1.0
 milestone: v1.3
 milestone_name: Trust & Proof
-status: defining_requirements
-stopped_at: Milestone initialized
-last_updated: "2026-04-07T20:32:48.934Z"
+status: ready_for_planning
+stopped_at: Roadmap created
+last_updated: "2026-04-08T00:34:41Z"
 last_activity: 2026-04-07
 progress:
-  total_phases: 0
+  total_phases: 4
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-07)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** Milestone v1.3 — defining requirements for Trust & Proof
+**Current focus:** Milestone v1.3 — roadmap created, ready to plan Phase 13 Launch Surface Integrity
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 13 — Launch Surface Integrity
 Plan: —
-Status: Defining requirements
-Last activity: 2026-04-07 — Milestone v1.3 started
+Status: Roadmap created; ready for planning
+Last activity: 2026-04-07 — Created roadmap for milestone v1.3
 
 Progress: [░░░░░░░░░░░░] 0%
 
@@ -67,6 +67,7 @@ Recent decisions affecting current work:
 - [Phase 12]: Created 5 missing command files (submit, complete-draft, new-revision, progress, settings) to match doc references
 - [Phase 12]: Work type count corrected from '50+' to '46' across all documentation
 - [Milestone v1.3]: Trust & Proof milestone focuses on closing claim-vs-surface gaps and adding proof artifacts
+- [Milestone v1.3]: Requirements mapped into four phases: launch integrity, runtime credibility, proof artifacts, and trust regression coverage
 
 ### Pending Todos
 
@@ -79,5 +80,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-04-07T20:32:14.499Z
-Stopped at: Completed 12-02-PLAN.md
+Stopped at: Roadmap created for milestone v1.3
 Resume file: None

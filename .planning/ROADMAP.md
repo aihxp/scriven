@@ -4,7 +4,8 @@
 
 - [x] **v1.0 MVP** - Phases 1-8 (shipped 2026-04-07)
 - [x] **v1.1 Generic Platform Support** - Phase 9 (shipped 2026-04-07)
-- [ ] **v1.2 Documentation** - Phases 10-12 (in progress)
+- [x] **v1.2 Documentation** - Phases 10-12 (shipped 2026-04-07)
+- [ ] **v1.3 Trust & Proof** - Phases 13-16 (in progress)
 
 ## Phases
 
@@ -187,13 +188,22 @@ Plans:
 
 </details>
 
-### v1.2 Documentation (In Progress)
+### v1.2 Documentation (Shipped 2026-04-07)
 
 **Milestone Goal:** Create complete documentation suite -- README, guides, command reference, and contributor docs -- verified against the live codebase.
 
 - [x] **Phase 10: Core Documentation** - README, getting started guide, and complete command reference (completed 2026-04-07)
 - [x] **Phase 11: Feature & Domain Guides** - Work types, Voice DNA, publishing, sacred text, and translation guides (completed 2026-04-07)
 - [x] **Phase 12: Developer Docs & Verification** - Contributor guide, architecture overview, and codebase verification pass (completed 2026-04-07)
+
+### v1.3 Trust & Proof (In Progress)
+
+**Milestone Goal:** Make Scriven's launch surface feel fully earned by aligning shipped assets, claims, requirements, and proof artifacts around the product's strongest differentiator.
+
+- [ ] **Phase 13: Launch Surface Integrity** - Align launch-facing claims, export guidance, and shipped-asset inventory with the actual repo surface
+- [ ] **Phase 14: Runtime Credibility** - Make Node support and runtime claims explicit, consistent, and evidence-backed
+- [ ] **Phase 15: Proof Artifacts & Positioning** - Ship concrete voice-preservation proof and launch examples centered on Scriven's wedge
+- [ ] **Phase 16: Trust Regression Coverage** - Add release-time checks for trust-critical files, claims, and packaged contents
 
 ## Phase Details
 
@@ -242,10 +252,50 @@ Plans:
 - [x] 12-01-PLAN.md -- Contributor guide and architecture overview (DOC-09, DOC-10)
 - [x] 12-02-PLAN.md -- Codebase verification pass for all documentation (DOC-11)
 
+### Phase 13: Launch Surface Integrity
+**Goal**: Scriven's launch-facing claims, export guidance, and shipped assets are internally consistent and limited to what the repo can actually prove today
+**Depends on**: Phase 12 (uses the prior documentation verification pass as the starting point)
+**Requirements**: TRUST-01, TRUST-02, TRUST-03
+**Success Criteria** (what must be TRUE):
+  1. A first-time visitor sees launch-facing product claims that are all supported by files, commands, and assets present in the repo
+  2. A user following export documentation and command guidance can reach the referenced template files or documented fallbacks without dead ends
+  3. A maintainer can inspect one canonical inventory of shipped export templates and trust-critical launch assets to confirm what is actually included
+**Plans**: TBD
+
+### Phase 14: Runtime Credibility
+**Goal**: Users can tell exactly which Node.js baseline and runtime paths Scriven supports, and how confident they should be in each claim
+**Depends on**: Phase 13 (surface claims should be narrowed before runtime support is restated)
+**Requirements**: RUNTIME-01, RUNTIME-02, RUNTIME-03
+**Success Criteria** (what must be TRUE):
+  1. A user sees the same minimum supported Node.js version in package metadata, installer guidance, and planning/docs
+  2. A user can inspect a runtime compatibility matrix that lists each claimed runtime, its install path, support level, and verification status
+  3. A user can distinguish verified runtime support from generic or best-effort compatibility without reading source code
+**Plans**: TBD
+
+### Phase 15: Proof Artifacts & Positioning
+**Goal**: Prospective users can inspect concrete evidence that Scriven preserves voice in AI-native longform writing workflows
+**Depends on**: Phase 13, Phase 14
+**Requirements**: PROOF-01, PROOF-02, PROOF-03
+**Success Criteria** (what must be TRUE):
+  1. A user can inspect one end-to-end sample flow from setup through a credible writing or publishing outcome with no implied missing steps
+  2. A user can inspect a Voice DNA before-and-after artifact that clearly shows how style guidance changes the draft output
+  3. A visitor encountering launch-facing examples sees Scriven framed first as voice-preserving, AI-native longform writing software, with broader breadth presented as expansion
+**Plans**: TBD
+
+### Phase 16: Trust Regression Coverage
+**Goal**: Maintainers can catch trust-critical drift before release by testing launch claims, shipped assets, proof artifacts, and packaged contents
+**Depends on**: Phase 13, Phase 14, Phase 15
+**Requirements**: QA-01, QA-02
+**Success Criteria** (what must be TRUE):
+  1. A maintainer can run checks that fail when trust-critical files disappear, launch claims go stale, or docs point to missing assets
+  2. A maintainer can verify that packaged npm contents include the proof artifacts and shipped assets promised on the launch surface
+  3. A release candidate that would reintroduce claim-versus-surface drift is blocked before publish
+**Plans**: TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 10 -> 11 -> 12
+Phases execute in numeric order: 13 -> 14 -> 15 -> 16
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -261,3 +311,7 @@ Phases execute in numeric order: 10 -> 11 -> 12
 | 10. Core Documentation | v1.2 | 3/3 | Complete    | 2026-04-07 |
 | 11. Feature & Domain Guides | v1.2 | 3/3 | Complete    | 2026-04-07 |
 | 12. Developer Docs & Verification | v1.2 | 2/2 | Complete    | 2026-04-07 |
+| 13. Launch Surface Integrity | v1.3 | 0/TBD | Not started | - |
+| 14. Runtime Credibility | v1.3 | 0/TBD | Not started | - |
+| 15. Proof Artifacts & Positioning | v1.3 | 0/TBD | Not started | - |
+| 16. Trust Regression Coverage | v1.3 | 0/TBD | Not started | - |
