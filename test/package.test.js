@@ -9,7 +9,7 @@ const pkg = JSON.parse(fs.readFileSync(pkgPath, 'utf-8'));
 
 describe('package.json fields', () => {
   it('has correct name', () => {
-    assert.equal(pkg.name, '@aihxp/scriven-cli');
+    assert.equal(pkg.name, 'scriven-cli');
   });
 
   it('has bin entry pointing to install.js', () => {
@@ -24,11 +24,7 @@ describe('package.json fields', () => {
     );
   });
 
-  it('publishes to GitHub Packages as public', () => {
-    assert.equal(
-      pkg.publishConfig.registry,
-      'https://npm.pkg.github.com'
-    );
+  it('has publishConfig with public access', () => {
     assert.equal(pkg.publishConfig.access, 'public');
   });
 
