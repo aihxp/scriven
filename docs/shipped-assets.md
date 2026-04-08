@@ -22,6 +22,7 @@ These are the only export templates currently bundled in `data/export-templates/
 ## Trust-Critical Launch Files
 
 - `README.md` — primary launch narrative and status claims
+- `docs/runtime-support.md` — canonical runtime matrix, Node baseline, and support-confidence framing
 - `commands/scr/export.md` — source of truth for export command behavior
 - `docs/publishing.md` — user-facing explanation of export formats and publishing packages
 - `docs/contributing.md` — contributor-facing guidance for extending export support

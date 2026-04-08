@@ -28,7 +28,7 @@ Mistakes that cause rewrites, broken releases, or fundamental trust loss.
 3. Ensure shebang is exactly `#!/usr/bin/env node\n` with no variations
 4. Use OIDC Trusted Publishing for CI/CD (npm's new standard post-2025 token deprecation)
 5. Add a `postinstall` or startup self-test that verifies all expected directories were copied
-6. Pin `engines.node` to `>=18.0.0` and test on Node 18, 20, and 22
+6. Pin `engines.node` to `>=20.0.0` and test on Node 20 and 22
 
 **Detection:** Warning signs include: installer works locally but not via npx; works on macOS but not Linux/Windows; `npm pack` output doesn't list all files; CI publish succeeds but `npx` install fails.
 

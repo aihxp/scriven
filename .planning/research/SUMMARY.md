@@ -26,7 +26,7 @@ Scriven invokes external CLI tools via the AI agent's Bash capability -- it does
 - **DeepL API Pro + Google Cloud Translation v3**: Translation engines -- DeepL for European language quality, Google for 130+ language coverage
 - **Afterwriting CLI + Screenplain**: Screenplay tools -- Fountain-to-PDF and Fountain-to-FDX respectively (MEDIUM confidence, sporadic maintenance)
 
-**Critical version note:** Node.js minimum should be bumped to >=20.0.0 (Node 18 EOL passed April 2025). DALL-E 2/3 APIs sunset May 2026 -- use GPT Image 1.5 only. npm classic tokens were revoked Feb 2026 -- use granular access tokens.
+**Critical version note:** Scriven's installer baseline should be `>=20.0.0` / Node.js 20+. DALL-E 2/3 APIs sunset May 2026 -- use GPT Image 1.5 only. npm classic tokens were revoked Feb 2026 -- use granular access tokens.
 
 ### Expected Features
 
@@ -69,7 +69,7 @@ All new pipelines follow the existing orchestrator-delegate pattern: command mar
 
 ### Critical Pitfalls
 
-1. **Broken `npx` first-run** -- Test in clean environments before every publish; `npm pack --dry-run` to verify tarball contents; ensure exact shebang format; test on Node 18/20/22
+1. **Broken `npx` first-run** -- Test in clean environments before every publish; `npm pack --dry-run` to verify tarball contents; ensure exact shebang format; test on Node 20 and 22
 2. **Export formats failing platform validation** -- Run EPUBCheck programmatically; ship custom Pandoc reference.docx with Shunn manuscript formatting; implement exact KDP spine formula dynamically; build per-platform validation checklists
 3. **Voice DNA drift in utility text** -- Load STYLE-GUIDE.md for ALL generated text including blurbs, synopses, and front matter; run voice-check as post-generation validation step
 4. **Illustration character inconsistency** -- Generate and approve character reference sheets BEFORE any scene illustrations; include character visual descriptions in every prompt; never auto-approve generated images

@@ -322,6 +322,12 @@ The installer supports two scopes:
 
 The user chooses during installation.
 
+### Runtime credibility
+
+Scriven's supported installer baseline is `Node.js 20+` (`>=20.0.0`). That baseline applies to `npx scriven@latest`, `bin/install.js`, and the repo's JavaScript test suite, not to the markdown command system once files are installed.
+
+This architecture doc is intentionally about mechanics: detection rules, install path shapes, `commands` versus `skills`, and global versus project scope. For the authoritative runtime matrix, support levels, and verification status, see [`docs/runtime-support.md`](runtime-support.md).
+
 ## Voice DNA Pipeline
 
 The Voice DNA system is what makes Scriven's output sound like the writer, not like AI. Here is how STYLE-GUIDE.md flows through the system.

@@ -99,9 +99,10 @@ describe('EXP-02: export docx (D-02)', () => {
     assert.match(content, /docx/i, 'should contain docx section');
   });
 
-  it('references --reference-doc for manuscript docx', () => {
+  it('describes optional custom reference docs for manuscript docx', () => {
     const content = fs.readFileSync(filePath, 'utf8');
-    assert.match(content, /--reference-doc/, 'should reference --reference-doc');
+    assert.match(content, /Pandoc's default DOCX styling/, 'should describe the default DOCX styling');
+    assert.match(content, /optional `--reference-doc`/, 'should allow an optional custom reference doc');
   });
 
   it('checks for pandoc with command -v', () => {
@@ -120,9 +121,10 @@ describe('EXP-03: export docx --formatted', () => {
     assert.match(content, /formatted/i, 'should contain formatted section');
   });
 
-  it('references scriven-formatted.docx reference doc', () => {
+  it('describes default formatted docx output with optional custom reference doc', () => {
     const content = fs.readFileSync(filePath, 'utf8');
-    assert.match(content, /scriven-formatted\.docx/, 'should reference scriven-formatted.docx');
+    assert.match(content, /default DOCX output/, 'should describe Pandoc default DOCX output');
+    assert.doesNotMatch(content, /scriven-formatted\.docx/, 'should not reference a missing bundled formatted reference doc');
   });
 });
 

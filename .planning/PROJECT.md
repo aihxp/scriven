@@ -36,7 +36,7 @@ Scriven is a spec-driven creative writing, publishing, and translation pipeline 
 
 ### Active
 
-- [ ] Installation guidance and platform requirements must be internally consistent, especially the Node.js floor and runtime claims
+- [ ] Installation guidance and platform requirements must stay internally consistent around the Node.js 20+ installer baseline and runtime evidence model
 - [ ] Product positioning should lead with the strongest wedge: AI-native longform writing with voice preservation
 - [ ] Scriven needs proof artifacts that make trust tangible: end-to-end sample flow, runtime support matrix, and Voice DNA before/after demo
 - [ ] Trust-critical claims must be regression-tested so shipped surface and docs do not drift apart again
@@ -56,7 +56,7 @@ The product plan (`SCRIVEN-PRODUCT-PLAN-v0.3.md`) is the canonical source of tru
 
 Milestones v1.0 through v1.2 shipped the core product surface, multi-runtime installer expansion, and a complete documentation suite. The docs verification pass also exposed a new class of product problem: trust gaps between what the product promises and what the repo can prove today.
 
-The most visible gaps are in the export stack and launch proof layer. Some docs and commands reference export templates that are not present in `data/export-templates/`, the minimum Node version guidance conflicts between planning and package metadata, and runtime support claims are broader than the current proof artifacts. This milestone is about tightening those seams so first impressions match reality.
+The most visible gaps are in the export stack and launch proof layer. Some docs and commands reference export templates that are not present in `data/export-templates/`, and runtime support claims are broader than the current proof artifacts. This milestone is tightening those seams by standardizing on a Node 20+ installer baseline and making runtime evidence explicit enough that first impressions match reality.
 
 ## Constraints
 
@@ -72,7 +72,7 @@ The most visible gaps are in the export stack and launch proof layer. Some docs 
 
 **Target features:**
 - Resolve export-template truth gaps by either shipping missing templates or narrowing claims and command paths to the files that actually exist
-- Align Node.js support policy, installer messaging, and package metadata on a single supported minimum version
+- Align Node.js support policy, installer messaging, and package metadata on the `Node 20+` / `>=20.0.0` installer baseline
 - Add runtime support proof so "full support" claims are backed by an explicit compatibility matrix and verification guidance
 - Reposition top-level messaging around voice-preserving longform writing, with breadth framed as expansion rather than the first impression
 - Add proof artifacts such as an end-to-end sample publishing flow and a Voice DNA before/after demonstration
