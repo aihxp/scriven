@@ -288,7 +288,12 @@ Plans:
   1. A user can inspect one end-to-end sample flow from setup through a credible writing or publishing outcome with no implied missing steps
   2. A user can inspect a Voice DNA before-and-after artifact that clearly shows how style guidance changes the draft output
   3. A visitor encountering launch-facing examples sees Scriven framed first as voice-preserving, AI-native longform writing software, with broader breadth presented as expansion
-**Plans**: TBD
+**Plans**: 3 plans
+
+Plans:
+- [ ] 15-01-PLAN.md -- Create canonical sample-flow proof artifacts from the shipped watchmaker demo
+- [ ] 15-02-PLAN.md -- Create a Voice DNA before/after proof bundle and wire it into the docs
+- [ ] 15-03-PLAN.md -- Reposition launch and onboarding docs around the proof layer and wedge
 
 ### Phase 16: Trust Regression Coverage
 **Goal**: Maintainers can catch trust-critical drift before release by testing launch claims, shipped assets, proof artifacts, and packaged contents
@@ -321,5 +326,5 @@ Phases execute in numeric order: 13 -> 14 -> 15 -> 16
 | 12. Developer Docs & Verification | v1.2 | 2/2 | Complete    | 2026-04-07 |
 | 13. Launch Surface Integrity | v1.3 | 2/2 | Complete    | 2026-04-08 |
 | 14. Runtime Credibility | v1.3 | 2/2 | Complete | 2026-04-08 |
-| 15. Proof Artifacts & Positioning | v1.3 | 0/TBD | Not started | - |
+| 15. Proof Artifacts & Positioning | v1.3 | 0/3 | Ready to execute | - |
 | 16. Trust Regression Coverage | v1.3 | 0/TBD | Not started | - |

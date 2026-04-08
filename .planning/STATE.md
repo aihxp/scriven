@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.3
 milestone_name: Trust & Proof
-status: ready_to_plan
-stopped_at: Phase 14 complete; ready to plan Phase 15
-last_updated: "2026-04-08T01:58:00Z"
-last_activity: 2026-04-08 -- Phase 14 completed and verified
+status: ready_to_execute
+stopped_at: Phase 15 planning complete; ready to execute
+last_updated: "2026-04-08T02:20:00Z"
+last_activity: 2026-04-08 -- Phase 15 planning completed
 progress:
   total_phases: 4
   completed_phases: 2
-  total_plans: 4
+  total_plans: 7
   completed_plans: 4
   percent: 50
 ---
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-04-08)
 
 ## Current Position
 
-Phase: 15 (Proof Artifacts & Positioning) — READY TO PLAN
-Plan: 0 of TBD
-Status: Phase 14 complete; Phase 15 not yet planned
-Last activity: 2026-04-08 -- Phase 14 completed and verified
+Phase: 15 (Proof Artifacts & Positioning) — READY TO EXECUTE
+Plan: 0 of 3
+Status: Phase 15 planned; execution not started
+Last activity: 2026-04-08 -- Phase 15 planning completed
 
 Progress: [██████░░░░░░] 50%
 
@@ -74,6 +74,8 @@ Recent decisions affecting current work:
 - [Phase 14]: `docs/runtime-support.md` will become the canonical runtime matrix and confidence document
 - [Phase 14]: `Node 20+` / `>=20.0.0` is the supported installer baseline across package metadata, installer UX, and planning/docs
 - [Phase 14]: Installer targets are not interchangeable proof of host-runtime parity; launch docs must point to the matrix for support confidence
+- [Phase 15]: Canonical proof artifacts should live under `data/` where possible so packaged-content verification can land cleanly in Phase 16
+- [Phase 15]: The shipped watchmaker demo is the primary proof corpus; proof docs should curate it rather than inventing a second flagship sample
 
 ### Pending Todos
 
@@ -86,5 +88,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-04-08T01:38:45Z
-Stopped at: Phase 14 complete; ready to plan Phase 15
+Stopped at: Phase 15 planning complete; ready to execute
 Resume file: None
