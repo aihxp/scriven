@@ -1,62 +1,71 @@
-# Requirements: Scriven v1.2 — Documentation
+# Requirements: Scriven v1.3 — Trust & Proof
 
 **Defined:** 2026-04-07
 **Core Value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
 
-## v1.2 Requirements
+## v1.3 Requirements
 
-### Core Documentation
+### Launch Surface Integrity
 
-- [x] **DOC-01**: Enhanced README.md with complete feature overview, quick start (3 commands), supported runtimes, philosophy, and links to all guides
-- [x] **DOC-02**: Getting Started guide -- install to first draft in 10 minutes, covering `npx scriven@latest`, `/scr:new-work`, `/scr:discuss`, `/scr:draft`
-- [x] **DOC-03**: Complete command reference -- all 96+ commands organized by category with usage, flags, examples, prerequisites, and work-type adaptations
+- [ ] **TRUST-01**: User sees only top-level product claims that are supported by the current repo surface and shipped assets
+- [ ] **TRUST-02**: User can follow export documentation and command guidance without encountering missing template files or undocumented fallbacks
+- [ ] **TRUST-03**: User can inspect a canonical shipped-asset inventory for export templates and trust-critical launch materials
 
-### Feature Guides
+### Runtime Credibility
 
-- [x] **DOC-04**: Work type guide -- how each of 50+ work types adapts Scriven's vocabulary, hierarchy, commands, and context files
-- [x] **DOC-05**: Voice DNA guide -- how STYLE-GUIDE.md works, 15+ dimensions, how to tune voice, voice-test calibration, sacred registers
-- [x] **DOC-06**: Publishing pipeline guide -- export formats (13), publish wizard, presets, KDP/IngramSpark packages, submission packages
-- [x] **DOC-07**: Sacred text guide -- 13 work types, 10 voice registers, 8 exclusive commands, sacred translation, tradition-aware front/back matter
-- [x] **DOC-08**: Translation guide -- translation pipeline, glossary management, translation memory, cultural adaptation, back-translation, RTL/CJK
+- [ ] **RUNTIME-01**: User sees a single, consistent minimum supported Node.js version across package metadata, installer guidance, and planning/docs
+- [ ] **RUNTIME-02**: User can inspect a runtime compatibility matrix that states install path, support level, and verification status for each claimed runtime
+- [ ] **RUNTIME-03**: User can distinguish verified runtime support from best-effort or generic compatibility
 
-### Developer Documentation
+### Proof Artifacts
 
-- [x] **DOC-09**: Contributor guide -- how to add commands (pattern), agents (pattern), work types (CONSTRAINTS.json), templates, and export formats
-- [x] **DOC-10**: Architecture overview -- skill system design, CONSTRAINTS.json schema, file structure, agent orchestration, fresh-context-per-unit pattern
+- [ ] **PROOF-01**: User can inspect one end-to-end sample flow that demonstrates Scriven from setup through a credible writing or publishing outcome
+- [ ] **PROOF-02**: User can inspect a Voice DNA proof artifact that clearly shows how style guidance changes draft output
+- [ ] **PROOF-03**: User can inspect launch-facing examples that reinforce Scriven's wedge as voice-preserving, AI-native longform writing software
 
-### Quality
+### Quality Gates
 
-- [x] **DOC-11**: All documentation verified against live codebase -- no references to nonexistent commands, flags, or files
+- [ ] **QA-01**: Maintainer can run tests that catch missing trust-critical files, stale launch claims, and doc-to-asset mismatches before publish
+- [ ] **QA-02**: Maintainer can verify that packaged npm contents include the proof artifacts and shipped assets promised on the launch surface
+
+## v2 Requirements
+
+### Proof Expansion
+
+- **PROOF-04**: User can inspect multiple genre-specific end-to-end demos beyond the core sample flow
+- **RUNTIME-04**: Maintainer can run runtime-specific smoke verification automatically across supported AI agent platforms
+- **TRUST-04**: User can inspect public launch evidence such as screenshots, walkthroughs, or case studies for each major workflow area
 
 ## Out of Scope
 
 | Feature | Reason |
 |---------|--------|
-| API documentation | Scriven has no API -- it's a skill system |
-| Video tutorials | Text-first, videos can come later |
-| Internationalized docs | English-first, translations can follow |
+| New major writing features | This milestone is about credibility and proof, not breadth expansion |
+| GUI or hosted dashboard for proof artifacts | Must preserve the pure skill/command architecture |
+| Full CI automation across every claimed runtime | Valuable, but too large for this credibility-first milestone |
+| Reworking Voice DNA fundamentals | Core value is established; this milestone proves it more clearly rather than redesigning it |
 
 ## Traceability
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| DOC-01 | Phase 10 | Complete |
-| DOC-02 | Phase 10 | Complete |
-| DOC-03 | Phase 10 | Complete |
-| DOC-04 | Phase 11 | Complete |
-| DOC-05 | Phase 11 | Complete |
-| DOC-06 | Phase 11 | Complete |
-| DOC-07 | Phase 11 | Complete |
-| DOC-08 | Phase 11 | Complete |
-| DOC-09 | Phase 12 | Complete |
-| DOC-10 | Phase 12 | Complete |
-| DOC-11 | Phase 12 | Complete |
+| TRUST-01 | TBD | Pending |
+| TRUST-02 | TBD | Pending |
+| TRUST-03 | TBD | Pending |
+| RUNTIME-01 | TBD | Pending |
+| RUNTIME-02 | TBD | Pending |
+| RUNTIME-03 | TBD | Pending |
+| PROOF-01 | TBD | Pending |
+| PROOF-02 | TBD | Pending |
+| PROOF-03 | TBD | Pending |
+| QA-01 | TBD | Pending |
+| QA-02 | TBD | Pending |
 
 **Coverage:**
-- v1.2 requirements: 11 total
-- Mapped to phases: 11
-- Unmapped: 0
+- v1.3 requirements: 11 total
+- Mapped to phases: 0
+- Unmapped: 11 ⚠️
 
 ---
 *Requirements defined: 2026-04-07*
-*Last updated: 2026-04-07 after v1.2 roadmap creation*
+*Last updated: 2026-04-07 after initial definition*
