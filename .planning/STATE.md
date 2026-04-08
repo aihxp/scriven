@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.3
 milestone_name: Trust & Proof
-status: ready_to_execute
-stopped_at: Phase 15 planning complete; ready to execute
-last_updated: "2026-04-08T02:20:00Z"
-last_activity: 2026-04-08 -- Phase 15 planning completed
+status: ready_to_plan
+stopped_at: Phase 15 complete; ready to plan Phase 16
+last_updated: "2026-04-08T02:45:20Z"
+last_activity: 2026-04-08 -- Phase 15 completed and verified
 progress:
   total_phases: 4
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 7
-  completed_plans: 4
-  percent: 50
+  completed_plans: 7
+  percent: 75
 ---
 
 # Project State
@@ -21,28 +21,28 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-08)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** Phase 15 — Proof Artifacts & Positioning
+**Current focus:** Phase 16 — Trust Regression Coverage
 
 ## Current Position
 
-Phase: 15 (Proof Artifacts & Positioning) — READY TO EXECUTE
-Plan: 0 of 3
-Status: Phase 15 planned; execution not started
-Last activity: 2026-04-08 -- Phase 15 planning completed
+Phase: 16 (Trust Regression Coverage) — READY TO PLAN
+Plan: 0 of TBD
+Status: Phase 15 complete; Phase 16 not yet planned
+Last activity: 2026-04-08 -- Phase 15 completed and verified
 
-Progress: [██████░░░░░░] 50%
+Progress: [█████████░░░] 75%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 51 (37 from v1.0, 2 from v1.1, 8 from v1.2, 4 from v1.3)
+- Total plans completed: 54 (37 from v1.0, 2 from v1.1, 8 from v1.2, 7 from v1.3)
 - Average duration: ~3 min
 - Total execution time: ~2.0 hours
 
 **Recent Trend:**
 
-- Last 5 plans: 3min, 3min, 6min, 3min, 3min
+- Last 5 plans: 7min, 7min, 4min, 3min, 3min
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -76,6 +76,8 @@ Recent decisions affecting current work:
 - [Phase 14]: Installer targets are not interchangeable proof of host-runtime parity; launch docs must point to the matrix for support confidence
 - [Phase 15]: Canonical proof artifacts should live under `data/` where possible so packaged-content verification can land cleanly in Phase 16
 - [Phase 15]: The shipped watchmaker demo is the primary proof corpus; proof docs should curate it rather than inventing a second flagship sample
+- [Phase 15]: `docs/proof-artifacts.md` is the canonical proof landing page, while proof evidence itself lives under `data/proof/`
+- [Phase 15]: Launch and onboarding docs should route skeptical users to proof artifacts before the broader feature surface
 
 ### Pending Todos
 
@@ -87,6 +89,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-08T01:38:45Z
-Stopped at: Phase 15 planning complete; ready to execute
+Last session: 2026-04-08T02:45:20Z
+Stopped at: Phase 15 complete; ready to plan Phase 16
 Resume file: None

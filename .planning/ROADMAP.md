@@ -202,7 +202,7 @@ Plans:
 
 - [x] **Phase 13: Launch Surface Integrity** - Align launch-facing claims, export guidance, and shipped-asset inventory with the actual repo surface (completed 2026-04-08)
 - [x] **Phase 14: Runtime Credibility** - Make Node support and runtime claims explicit, consistent, and evidence-backed (completed 2026-04-08)
-- [ ] **Phase 15: Proof Artifacts & Positioning** - Ship concrete voice-preservation proof and launch examples centered on Scriven's wedge
+- [x] **Phase 15: Proof Artifacts & Positioning** - Ship concrete voice-preservation proof and launch examples centered on Scriven's wedge (completed 2026-04-08)
 - [ ] **Phase 16: Trust Regression Coverage** - Add release-time checks for trust-critical files, claims, and packaged contents
 
 ## Phase Details
@@ -291,9 +291,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 15-01-PLAN.md -- Create canonical sample-flow proof artifacts from the shipped watchmaker demo
-- [ ] 15-02-PLAN.md -- Create a Voice DNA before/after proof bundle and wire it into the docs
-- [ ] 15-03-PLAN.md -- Reposition launch and onboarding docs around the proof layer and wedge
+- [x] 15-01-PLAN.md -- Create canonical sample-flow proof artifacts from the shipped watchmaker demo
+- [x] 15-02-PLAN.md -- Create a Voice DNA before/after proof bundle and wire it into the docs
+- [x] 15-03-PLAN.md -- Reposition launch and onboarding docs around the proof layer and wedge
 
 ### Phase 16: Trust Regression Coverage
 **Goal**: Maintainers can catch trust-critical drift before release by testing launch claims, shipped assets, proof artifacts, and packaged contents
@@ -326,5 +326,5 @@ Phases execute in numeric order: 13 -> 14 -> 15 -> 16
 | 12. Developer Docs & Verification | v1.2 | 2/2 | Complete    | 2026-04-07 |
 | 13. Launch Surface Integrity | v1.3 | 2/2 | Complete    | 2026-04-08 |
 | 14. Runtime Credibility | v1.3 | 2/2 | Complete | 2026-04-08 |
-| 15. Proof Artifacts & Positioning | v1.3 | 0/3 | Ready to execute | - |
+| 15. Proof Artifacts & Positioning | v1.3 | 3/3 | Complete | 2026-04-08 |
 | 16. Trust Regression Coverage | v1.3 | 0/TBD | Not started | - |

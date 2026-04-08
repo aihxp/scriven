@@ -19,9 +19,9 @@
 
 ### Proof Artifacts
 
-- [ ] **PROOF-01**: User can inspect one end-to-end sample flow that demonstrates Scriven from setup through a credible writing or publishing outcome
-- [ ] **PROOF-02**: User can inspect a Voice DNA proof artifact that clearly shows how style guidance changes draft output
-- [ ] **PROOF-03**: User can inspect launch-facing examples that reinforce Scriven's wedge as voice-preserving, AI-native longform writing software
+- [x] **PROOF-01**: User can inspect one end-to-end sample flow that demonstrates Scriven from setup through a credible writing or publishing outcome
+- [x] **PROOF-02**: User can inspect a Voice DNA proof artifact that clearly shows how style guidance changes draft output
+- [x] **PROOF-03**: User can inspect launch-facing examples that reinforce Scriven's wedge as voice-preserving, AI-native longform writing software
 
 ### Quality Gates
 
@@ -55,9 +55,9 @@
 | RUNTIME-01 | Phase 14 | Complete (2026-04-08) |
 | RUNTIME-02 | Phase 14 | Complete (2026-04-08) |
 | RUNTIME-03 | Phase 14 | Complete (2026-04-08) |
-| PROOF-01 | Phase 15 | Pending |
-| PROOF-02 | Phase 15 | Pending |
-| PROOF-03 | Phase 15 | Pending |
+| PROOF-01 | Phase 15 | Complete (2026-04-08) |
+| PROOF-02 | Phase 15 | Complete (2026-04-08) |
+| PROOF-03 | Phase 15 | Complete (2026-04-08) |
 | QA-01 | Phase 16 | Pending |
 | QA-02 | Phase 16 | Pending |
 
@@ -68,4 +68,4 @@
 
 ---
 *Requirements defined: 2026-04-07*
-*Last updated: 2026-04-08 after Phase 14 completion*
+*Last updated: 2026-04-08 after Phase 15 completion*
