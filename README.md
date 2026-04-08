@@ -6,6 +6,8 @@
 
 Scriven brings spec-driven workflows to creative writing. It runs inside your AI coding agent (Claude Code, Cursor, Gemini CLI, and more) and handles everything from blank page to publication-ready package.
 
+Scriven is best understood as **AI-native longform writing software built around voice preservation**. Its core promise is narrow and high-stakes: drafted prose should sound like the writer, not like AI. If you want evidence before features, start with the [Proof Artifacts](docs/proof-artifacts.md).
+
 ```bash
 npx scriven-cli@latest
 ```
@@ -14,9 +16,9 @@ npx scriven-cli@latest
 
 ## What is this
 
-Scriven is a command system that turns your AI coding agent into a full creative writing studio. It supports 46 work types -- novels, screenplays, research papers, poetry collections, scripture commentaries, comics, memoirs -- each with its own adaptive vocabulary and toolset.
+Scriven is a command system that turns your AI coding agent into a voice-preserving creative writing studio. It supports 46 work types -- novels, screenplays, research papers, poetry collections, scripture commentaries, comics, memoirs -- each with its own adaptive vocabulary and toolset.
 
-You get 101 slash commands covering every stage of the writing pipeline:
+The wedge comes first: Scriven profiles the writer, loads that voice into every drafting step, and keeps each unit on fresh context so the prose stays specific to the project. From there, it expands into 101 slash commands covering the rest of the pipeline:
 
 - **Create** -- Set up a project with tailored context files. Progressive onboarding, never overwhelming.
 - **Write** -- Discuss, plan, draft, and revise one unit at a time. The drafter agent loads your Voice DNA and writes in *your* voice, not generic AI prose.
@@ -43,6 +45,8 @@ npx scriven-cli@latest
 ```
 
 If you only ever type `/scr:next`, you can complete an entire novel. It always knows what's next.
+
+If you want the shortest proof-first route, read [Proof Artifacts](docs/proof-artifacts.md) before exploring the rest of the docs.
 
 ---
 
@@ -127,6 +131,7 @@ Scriven is built on five principles:
 
 ## Documentation
 
+- [Proof Artifacts](docs/proof-artifacts.md) -- Canonical proof hub for the watchmaker sample flow and Voice DNA before/after bundle
 - [Getting Started](docs/getting-started.md) -- Install to first draft in 10 minutes
 - [Command Reference](docs/command-reference.md) -- All 101 commands with usage, flags, and examples
 - [Work Types Guide](docs/work-types.md) -- How 46 work types adapt Scriven's vocabulary
