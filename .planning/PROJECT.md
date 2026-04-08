@@ -68,9 +68,10 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - **Plan authority**: If a command file contradicts the product plan, fix the command — plan is canonical (section 15 for command specs)
 - **Progressive disclosure**: Onboarding asks 3 questions max; depth is optional and additive
 
-## Current Milestone: v1.3 Trust & Proof
+## Latest Milestone: v1.3 Trust & Proof
 
 **Goal:** Make Scriven's launch surface feel fully earned by aligning shipped assets, claims, requirements, and proof artifacts around the product's strongest differentiator.
+**Status:** Shipped 2026-04-08
 
 **Target features:**
 - Resolve export-template truth gaps by either shipping missing templates or narrowing claims and command paths to the files that actually exist
@@ -79,6 +80,10 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - Reposition top-level messaging around voice-preserving longform writing, with breadth framed as expansion rather than the first impression
 - Add proof artifacts such as an end-to-end sample publishing flow and a Voice DNA before/after demonstration
 - Add regression coverage for trust-critical docs, templates, and packaging claims
+
+## Next Milestone
+
+TBD. v1.3 is archived as the current shipped milestone, and the next milestone should be defined explicitly rather than inferred.
 
 ## Key Decisions
 

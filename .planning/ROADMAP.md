@@ -199,6 +199,7 @@ Plans:
 ### v1.3 Trust & Proof (Shipped 2026-04-08)
 
 **Milestone Goal:** Make Scriven's launch surface feel fully earned by aligning shipped assets, claims, requirements, and proof artifacts around the product's strongest differentiator.
+**Archive:** `.planning/milestones/v1.3-ROADMAP.md`
 
 - [x] **Phase 13: Launch Surface Integrity** - Align launch-facing claims, export guidance, and shipped-asset inventory with the actual repo surface (completed 2026-04-08)
 - [x] **Phase 14: Runtime Credibility** - Make Node support and runtime claims explicit, consistent, and evidence-backed (completed 2026-04-08)
