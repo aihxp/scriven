@@ -274,7 +274,11 @@ Plans:
   1. A user sees the same minimum supported Node.js version in package metadata, installer guidance, and planning/docs
   2. A user can inspect a runtime compatibility matrix that lists each claimed runtime, its install path, support level, and verification status
   3. A user can distinguish verified runtime support from generic or best-effort compatibility without reading source code
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 14-01-PLAN.md -- Establish canonical runtime policy, Node baseline, trust inventory wiring, and planning/doc consistency
+- [ ] 14-02-PLAN.md -- Propagate runtime credibility language into README, onboarding, and root instruction docs
 
 ### Phase 15: Proof Artifacts & Positioning
 **Goal**: Prospective users can inspect concrete evidence that Scriven preserves voice in AI-native longform writing workflows
@@ -316,6 +320,6 @@ Phases execute in numeric order: 13 -> 14 -> 15 -> 16
 | 11. Feature & Domain Guides | v1.2 | 3/3 | Complete    | 2026-04-07 |
 | 12. Developer Docs & Verification | v1.2 | 2/2 | Complete    | 2026-04-07 |
 | 13. Launch Surface Integrity | v1.3 | 2/2 | Complete    | 2026-04-08 |
-| 14. Runtime Credibility | v1.3 | 0/TBD | Not started | - |
+| 14. Runtime Credibility | v1.3 | 0/2 | Not started | - |
 | 15. Proof Artifacts & Positioning | v1.3 | 0/TBD | Not started | - |
 | 16. Trust Regression Coverage | v1.3 | 0/TBD | Not started | - |
