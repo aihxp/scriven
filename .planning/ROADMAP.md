@@ -5,7 +5,7 @@
 - [x] **v1.0 MVP** - Phases 1-8 (shipped 2026-04-07)
 - [x] **v1.1 Generic Platform Support** - Phase 9 (shipped 2026-04-07)
 - [x] **v1.2 Documentation** - Phases 10-12 (shipped 2026-04-07)
-- [ ] **v1.3 Trust & Proof** - Phases 13-16 (in progress)
+- [x] **v1.3 Trust & Proof** - Phases 13-16 (shipped 2026-04-08)
 
 ## Phases
 
@@ -196,14 +196,14 @@ Plans:
 - [x] **Phase 11: Feature & Domain Guides** - Work types, Voice DNA, publishing, sacred text, and translation guides (completed 2026-04-07)
 - [x] **Phase 12: Developer Docs & Verification** - Contributor guide, architecture overview, and codebase verification pass (completed 2026-04-07)
 
-### v1.3 Trust & Proof (In Progress)
+### v1.3 Trust & Proof (Shipped 2026-04-08)
 
 **Milestone Goal:** Make Scriven's launch surface feel fully earned by aligning shipped assets, claims, requirements, and proof artifacts around the product's strongest differentiator.
 
 - [x] **Phase 13: Launch Surface Integrity** - Align launch-facing claims, export guidance, and shipped-asset inventory with the actual repo surface (completed 2026-04-08)
 - [x] **Phase 14: Runtime Credibility** - Make Node support and runtime claims explicit, consistent, and evidence-backed (completed 2026-04-08)
 - [x] **Phase 15: Proof Artifacts & Positioning** - Ship concrete voice-preservation proof and launch examples centered on Scriven's wedge (completed 2026-04-08)
-- [ ] **Phase 16: Trust Regression Coverage** - Add release-time checks for trust-critical files, claims, and packaged contents
+- [x] **Phase 16: Trust Regression Coverage** - Add release-time checks for trust-critical files, claims, and packaged contents (completed 2026-04-08)
 
 ## Phase Details
 
@@ -303,7 +303,11 @@ Plans:
   1. A maintainer can run checks that fail when trust-critical files disappear, launch claims go stale, or docs point to missing assets
   2. A maintainer can verify that packaged npm contents include the proof artifacts and shipped assets promised on the launch surface
   3. A release candidate that would reintroduce claim-versus-surface drift is blocked before publish
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [x] 16-01-PLAN.md -- Add trust-regression tests for canonical launch/proof/runtime docs and shipped-asset truth
+- [x] 16-02-PLAN.md -- Extend npm pack dry-run coverage for proof bundles and currently shipped export templates
 
 ## Progress
 
@@ -327,4 +331,4 @@ Phases execute in numeric order: 13 -> 14 -> 15 -> 16
 | 13. Launch Surface Integrity | v1.3 | 2/2 | Complete    | 2026-04-08 |
 | 14. Runtime Credibility | v1.3 | 2/2 | Complete | 2026-04-08 |
 | 15. Proof Artifacts & Positioning | v1.3 | 3/3 | Complete | 2026-04-08 |
-| 16. Trust Regression Coverage | v1.3 | 0/TBD | Not started | - |
+| 16. Trust Regression Coverage | v1.3 | 2/2 | Complete | 2026-04-08 |

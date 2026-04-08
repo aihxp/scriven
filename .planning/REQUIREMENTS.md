@@ -25,8 +25,8 @@
 
 ### Quality Gates
 
-- [ ] **QA-01**: Maintainer can run tests that catch missing trust-critical files, stale launch claims, and doc-to-asset mismatches before publish
-- [ ] **QA-02**: Maintainer can verify that packaged npm contents include the proof artifacts and shipped assets promised on the launch surface
+- [x] **QA-01**: Maintainer can run tests that catch missing trust-critical files, stale launch claims, and doc-to-asset mismatches before publish
+- [x] **QA-02**: Maintainer can verify that packaged npm contents include the proof artifacts and shipped assets promised on the launch surface
 
 ## v2 Requirements
 
@@ -58,8 +58,8 @@
 | PROOF-01 | Phase 15 | Complete (2026-04-08) |
 | PROOF-02 | Phase 15 | Complete (2026-04-08) |
 | PROOF-03 | Phase 15 | Complete (2026-04-08) |
-| QA-01 | Phase 16 | Pending |
-| QA-02 | Phase 16 | Pending |
+| QA-01 | Phase 16 | Complete (2026-04-08) |
+| QA-02 | Phase 16 | Complete (2026-04-08) |
 
 **Coverage:**
 - v1.3 requirements: 11 total
@@ -68,4 +68,4 @@
 
 ---
 *Requirements defined: 2026-04-07*
-*Last updated: 2026-04-08 after Phase 15 completion*
+*Last updated: 2026-04-08 after Phase 16 completion*

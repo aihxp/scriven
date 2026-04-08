@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.3
 milestone_name: Trust & Proof
-status: ready_to_plan
-stopped_at: Phase 15 complete; ready to plan Phase 16
-last_updated: "2026-04-08T02:45:20Z"
-last_activity: 2026-04-08 -- Phase 15 completed and verified
+status: ready_to_complete
+stopped_at: Milestone v1.3 complete; ready for audit and archive
+last_updated: "2026-04-08T03:15:00Z"
+last_activity: 2026-04-08 -- Phase 16 completed and verified
 progress:
   total_phases: 4
-  completed_phases: 3
-  total_plans: 7
-  completed_plans: 7
-  percent: 75
+  completed_phases: 4
+  total_plans: 9
+  completed_plans: 9
+  percent: 100
 ---
 
 # Project State
@@ -21,28 +21,28 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-08)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** Phase 16 — Trust Regression Coverage
+**Current focus:** Milestone v1.3 — Audit & Archive
 
 ## Current Position
 
-Phase: 16 (Trust Regression Coverage) — READY TO PLAN
-Plan: 0 of TBD
-Status: Phase 15 complete; Phase 16 not yet planned
-Last activity: 2026-04-08 -- Phase 15 completed and verified
+Phase: 16 (Trust Regression Coverage) — COMPLETE
+Plan: 2 of 2
+Status: All milestone phases complete; audit and archival next
+Last activity: 2026-04-08 -- Phase 16 completed and verified
 
-Progress: [█████████░░░] 75%
+Progress: [████████████] 100%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 54 (37 from v1.0, 2 from v1.1, 8 from v1.2, 7 from v1.3)
+- Total plans completed: 56 (37 from v1.0, 2 from v1.1, 8 from v1.2, 9 from v1.3)
 - Average duration: ~3 min
 - Total execution time: ~2.0 hours
 
 **Recent Trend:**
 
-- Last 5 plans: 7min, 7min, 4min, 3min, 3min
+- Last 5 plans: 4min, 3min, 7min, 7min, 4min
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -78,6 +78,8 @@ Recent decisions affecting current work:
 - [Phase 15]: The shipped watchmaker demo is the primary proof corpus; proof docs should curate it rather than inventing a second flagship sample
 - [Phase 15]: `docs/proof-artifacts.md` is the canonical proof landing page, while proof evidence itself lives under `data/proof/`
 - [Phase 15]: Launch and onboarding docs should route skeptical users to proof artifacts before the broader feature surface
+- [Phase 16]: Trust regression coverage should test canonical docs and linked assets directly instead of snapshotting large docs
+- [Phase 16]: Packaged-asset checks should live in the existing npm pack dry-run test path so publish-time enforcement remains automatic
 
 ### Pending Todos
 
@@ -89,6 +91,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-08T02:45:20Z
-Stopped at: Phase 15 complete; ready to plan Phase 16
+Last session: 2026-04-08T03:15:00Z
+Stopped at: Milestone v1.3 complete; ready for audit and archive
 Resume file: None

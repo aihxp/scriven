@@ -38,10 +38,10 @@ Scriven is a spec-driven creative writing, publishing, and translation pipeline 
 - ✓ Canonical watchmaker sample-flow proof artifact and proof hub shipped — v1.3 Phase 15
 - ✓ Voice DNA before/after proof bundle shipped under packaged contents — v1.3 Phase 15
 - ✓ Launch and onboarding docs now foreground the voice-preservation wedge and proof layer — v1.3 Phase 15
+- ✓ Trust-critical launch, proof, and runtime surfaces now have release-time regression tests — v1.3 Phase 16
+- ✓ Packaged proof bundles and shipped export templates are enforced in npm pack dry-run coverage — v1.3 Phase 16
 
 ### Active
-
-- [ ] Trust-critical claims must be regression-tested so shipped surface and docs do not drift apart again
 
 ### Out of Scope
 
@@ -58,7 +58,7 @@ The product plan (`SCRIVEN-PRODUCT-PLAN-v0.3.md`) is the canonical source of tru
 
 Milestones v1.0 through v1.2 shipped the core product surface, multi-runtime installer expansion, and a complete documentation suite. The docs verification pass also exposed a new class of product problem: trust gaps between what the product promises and what the repo can prove today.
 
-The most visible gaps were in the export stack and launch proof layer. Phase 13 aligned shipped-asset truth, Phase 14 standardized the Node 20+ installer baseline while making runtime evidence explicit, and Phase 15 added the canonical proof layer that makes Scriven's voice-preservation wedge tangible. The remaining work in this milestone is Phase 16, which adds regression coverage so trust does not drift again.
+The most visible gaps were in the export stack and launch proof layer. Phase 13 aligned shipped-asset truth, Phase 14 standardized the Node 20+ installer baseline while making runtime evidence explicit, Phase 15 added the canonical proof layer that makes Scriven's voice-preservation wedge tangible, and Phase 16 turned those trust surfaces into release-time regression gates. Milestone v1.3 is now functionally complete and ready for audit/archive.
 
 ## Constraints
 
@@ -110,4 +110,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-08 after Phase 15 completion*
+*Last updated: 2026-04-08 after Phase 16 completion*
