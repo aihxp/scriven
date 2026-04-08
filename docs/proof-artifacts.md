@@ -25,4 +25,14 @@ Start with the proof bundle if you want the curated version. Follow the underlyi
 
 ## Voice DNA
 
-This section will host the canonical Voice DNA proof bundle introduced later in Phase 15. The goal is to let a reader compare one fixed brief before and after style-guide guidance is applied.
+**What it proves:** Scriven's style-guide layer changes draft behavior in visible ways when the same brief is written unguided versus guided.
+
+**Canonical artifact:** `data/proof/voice-dna/README.md`
+
+**Artifact bundle:**
+
+- `data/proof/voice-dna/STYLE-GUIDE-EXCERPT.md`
+- `data/proof/voice-dna/UNGUIDED-SAMPLE.md`
+- `data/proof/voice-dna/GUIDED-SAMPLE.md`
+
+Read the bundle in order if you want to inspect sentence rhythm, metaphor selection, dialogue restraint, and physical grounding at the same time.

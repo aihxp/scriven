@@ -8,6 +8,8 @@ This guide explains how Voice DNA works, what each dimension controls, and how t
 
 Voice DNA is your writing fingerprint captured in a single file: `STYLE-GUIDE.md`. This file lives in your `.manuscript/` directory and is the single most important artifact in your project.
 
+If you want a concrete proof artifact before reading the full theory, start with `data/proof/voice-dna/README.md`. That bundle compares one fixed brief before and after style-guide guidance is applied.
+
 When the drafter agent writes a scene, chapter, or passage, it loads STYLE-GUIDE.md first -- before the outline, before the characters, before anything else. Every sentence it writes gets checked against your voice profile. Does this sentence match the writer's typical sentence length? Does this metaphor density match their style? Is this dialogue tag pattern consistent with how they write?
 
 STYLE-GUIDE.md profiles your voice across 15+ dimensions organized into 9 parts. The next section walks through each one.
