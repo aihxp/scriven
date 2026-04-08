@@ -1,0 +1,68 @@
+# Runtime Support
+
+Scriven's runtime claims should be grounded in what the repo can actually prove. This document is the canonical source of truth for Scriven's installer baseline, runtime evidence levels, support levels, and verification status.
+
+## Node.js Baseline
+
+Scriven's supported installer baseline is `Node.js 20+` (`>=20.0.0`).
+
+Node is required for:
+
+- running `npx scriven@latest`
+- executing `bin/install.js`
+- running the repo's JavaScript test suite
+
+Node is not a runtime dependency for Scriven's markdown command system itself. Once installed, Scriven's command files, agent prompts, templates, and constraints are read by the host AI coding agent.
+
+## Evidence Levels
+
+- **Installer registry**: the runtime appears in `bin/install.js` with a label, install type, detection rule, and install path shapes.
+- **Registry-tested**: `test/installer.test.js` asserts the runtime key exists and that its install properties match the expected `commands` or `skills` strategy.
+- **Repo-documented**: the install strategy and detection behavior are described in project docs such as `docs/architecture.md`.
+- **Host-runtime parity**: end-to-end proof that the installed command surface behaves equivalently inside the host agent. Scriven does not currently ship this proof for any runtime in the repo.
+
+## Support Levels
+
+- **Primary reference runtime**: the runtime used as Scriven's primary example when docs need one concrete reference environment.
+- **Standard installer target**: the installer ships a first-class command-directory target for this runtime, with registry and path-shape evidence in the repo.
+- **Skills installer target**: the installer ships a manifest-based target for runtimes that do not use command directories.
+- **Generic skills fallback**: a catch-all manifest target for platforms without a dedicated runtime adapter.
+
+## Verification Status
+
+- **Registry-tested**: installer registry shape is covered by automated tests.
+- **Repo-documented**: detection and install strategy are documented in the repo.
+- **No host-runtime parity verification yet**: Scriven does not currently ship an end-to-end verification artifact for behavior inside the host runtime.
+
+## Runtime Compatibility Matrix
+
+| Runtime | Install Type | Install Path Shape | Repo Evidence | Support Level | Verification Status |
+|---------|--------------|--------------------|---------------|---------------|---------------------|
+| Claude Code | commands | `~/.claude/commands/scr` + `~/.claude/agents` or `.claude/commands/scr` + `.claude/agents` | Installer registry, registry-tested, repo-documented | Primary reference runtime | Registry-tested; repo-documented; no host-runtime parity verification yet |
+| Cursor | commands | `~/.cursor/commands/scr` + `~/.cursor/agents` or `.cursor/commands/scr` + `.cursor/agents` | Installer registry, registry-tested, repo-documented | Standard installer target | Registry-tested; repo-documented; no host-runtime parity verification yet |
+| Gemini CLI | commands | `~/.gemini/commands/scr` + `~/.gemini/agents` or `.gemini/commands/scr` + `.gemini/agents` | Installer registry, registry-tested, repo-documented | Standard installer target | Registry-tested; repo-documented; no host-runtime parity verification yet |
+| Codex CLI | commands | `~/.codex/commands/scr` + `~/.codex/agents` or `.codex/commands/scr` + `.codex/agents` | Installer registry, registry-tested, repo-documented | Standard installer target | Registry-tested; repo-documented; no host-runtime parity verification yet |
+| OpenCode | commands | `~/.config/opencode/commands/scr` + `~/.config/opencode/agents` or `.config/opencode/commands/scr` + `.config/opencode/agents` | Installer registry, registry-tested, repo-documented | Standard installer target | Registry-tested; repo-documented; no host-runtime parity verification yet |
+| GitHub Copilot | commands | `~/.github/commands/scr` + `~/.github/agents` or `.github/commands/scr` + `.github/agents` | Installer registry, registry-tested, repo-documented | Standard installer target | Registry-tested; repo-documented; no host-runtime parity verification yet |
+| Windsurf | commands | `~/.windsurf/commands/scr` + `~/.windsurf/agents` or `.windsurf/commands/scr` + `.windsurf/agents` | Installer registry, registry-tested, repo-documented | Standard installer target | Registry-tested; repo-documented; no host-runtime parity verification yet |
+| Antigravity | commands | `~/.gemini/antigravity/commands/scr` + `~/.gemini/antigravity/agents` or `.gemini/antigravity/commands/scr` + `.gemini/antigravity/agents` | Installer registry, registry-tested, repo-documented | Standard installer target | Registry-tested; repo-documented; no host-runtime parity verification yet |
+| Manus Desktop | skills | `~/.manus/skills/scriven/SKILL.md` or `.manus/skills/scriven/SKILL.md` | Installer registry, registry-tested, repo-documented | Skills installer target | Registry-tested; repo-documented; no host-runtime parity verification yet |
+| Generic (SKILL.md) | skills | `~/.scriven/skills/SKILL.md` or `.scriven/skills/SKILL.md` | Installer registry, registry-tested | Generic skills fallback | Registry-tested; no host-runtime parity verification yet |
+
+## What Scriven Proves Today
+
+Scriven currently proves all of the following in-repo:
+
+- a named installer target exists for each runtime listed above
+- each target has a declared install strategy (`commands` or `skills`)
+- each target has expected install-path properties in the installer registry
+- the runtime registry shape is covered by automated installer tests
+- the high-level install strategies and detection rules are documented in `docs/architecture.md`
+
+Scriven does not currently prove:
+
+- end-to-end host-runtime parity across every listed runtime
+- that every runtime behaves identically once commands are installed
+- dedicated smoke-test artifacts for each runtime environment
+
+That distinction is intentional. Installer-path coverage is valuable, but it is not the same thing as verified runtime parity.
