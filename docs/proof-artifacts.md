@@ -2,6 +2,11 @@
 
 This document is the canonical index of Scriven's proof layer. It points to concrete artifacts a prospective user can inspect when asking whether Scriven's claims are earned by the repo.
 
+## Start Here
+
+- Read the **Watchmaker Sample Flow** if you want one end-to-end writing workflow from setup through drafts, review, and next step.
+- Read **Voice DNA** if you want the shortest possible proof of how style guidance changes output on the same brief.
+
 ## Watchmaker Sample Flow
 
 **What it proves:** Scriven ships one credible writing workflow from setup context through drafted outcome, review evidence, and next-step continuity.

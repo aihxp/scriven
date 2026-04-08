@@ -2,6 +2,8 @@
 
 Go from zero to a drafted scene in under 10 minutes. This guide walks you through installation, project setup, and your first draft.
 
+Want evidence first? Start with [Proof Artifacts](proof-artifacts.md). The watchmaker sample flow and the Voice DNA before/after bundle give you the fastest way to inspect what Scriven actually proves today.
+
 ## Prerequisites
 
 - **An AI coding agent** -- Claude Code, Cursor, Gemini CLI, or another current Scriven installer target
@@ -39,6 +41,8 @@ This creates a pre-built short story project -- a retired watchmaker who receive
 - 1 planned-but-undrafted scene so you can watch the drafter work
 
 Explore at your own pace. When you're ready to start your own work, run `/scr:demo --clear` to clean up.
+
+If you want a curated reading path instead of jumping straight into the demo files, open [Proof Artifacts](proof-artifacts.md) first. It maps the watchmaker sample to the exact files worth inspecting.
 
 ## Step 3: Start Your Project
 
