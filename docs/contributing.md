@@ -321,6 +321,8 @@ The `templates/config.json` file is the project configuration template. If your 
 
 Export templates live in `data/export-templates/` and define how manuscripts are converted to output formats.
 
+See `docs/shipped-assets.md` for the canonical inventory of shipped export templates and trust-critical launch assets.
+
 ### Step 1: Create the template file
 
 Add your template to `data/export-templates/`. Existing templates:
