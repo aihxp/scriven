@@ -1,5 +1,10 @@
 # Scriven
 
+[![npm version](https://img.shields.io/npm/v/scriven-cli)](https://www.npmjs.com/package/scriven-cli)
+[![npm downloads](https://img.shields.io/npm/dm/scriven-cli)](https://www.npmjs.com/package/scriven-cli)
+
+**[scriven-cli on npm](https://www.npmjs.com/package/scriven-cli)**
+
 **Spec-driven creative writing, publishing, and translation for AI coding agents.**
 
 *I don't outline -- Claude does. I don't edit -- Claude does. I don't format -- Claude does. I just write.*
@@ -160,7 +165,7 @@ Scriven currently ships installer targets for these AI coding agent environments
 - **Antigravity**
 - **Manus Desktop**
 
-**Installer baseline:** `Node.js 20+` for `npx scriven@latest` and `bin/install.js`.
+**Installer baseline:** `Node.js 20+` for `npx scriven-cli@latest` and `bin/install.js`.
 
 **Support note:** Claude Code is the primary reference runtime. The environments listed above are installer targets, not a claim that every host runtime has verified parity today. See the [runtime compatibility matrix](docs/runtime-support.md) for install type, support level, and verification status.
 
@@ -168,7 +173,7 @@ Scriven currently ships installer targets for these AI coding agent environments
 
 ## Status
 
-**Version:** 1.3.0
+**Version:** 1.3.1
 
 Scriven's core command surface is stable across 101 commands, 46 work types, and 10 installer targets. All four milestones (v1.0 MVP, v1.1 Generic Platform Support, v1.2 Documentation, v1.3 Trust & Proof) are shipped. 925 tests pass. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
 

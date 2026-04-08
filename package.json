@@ -1,6 +1,6 @@
 {
   "name": "scriven-cli",
-  "version": "1.3.0",
+  "version": "1.3.1",
   "description": "Spec-driven creative writing, publishing, and translation pipeline for AI coding agents. From blank page to published book.",
   "bin": { "scriven": "./bin/install.js" },
   "scripts": { "start": "node bin/install.js", "test": "node --test test/*.test.js", "prepublishOnly": "npm test" },
@@ -9,6 +9,8 @@
   "author": "Scriven contributors",
   "license": "MIT",
   "repository": { "type": "git", "url": "https://github.com/aihxp/scriven" },
+  "homepage": "https://github.com/aihxp/scriven#readme",
+  "bugs": { "url": "https://github.com/aihxp/scriven/issues" },
   "engines": { "node": ">=20.0.0" },
-  "files": ["bin/", "lib/", "data/", "commands/", "agents/", "templates/", "README.md", "LICENSE"]
+  "files": ["bin/", "lib/", "data/", "commands/", "agents/", "templates/", "docs/", "README.md", "LICENSE"]
 }
