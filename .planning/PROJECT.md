@@ -13,7 +13,7 @@ Scriven is a spec-driven creative writing, publishing, and translation pipeline 
 ### Validated
 
 - ✓ Core workflow commands (new-work → discuss → plan → draft → editor-review → submit → complete) — v0.3.0
-- ✓ Adaptive naming system across 50+ work types with structural hierarchy — v0.3.0
+- ✓ Adaptive naming system across 46 work types with structural hierarchy — v0.3.0
 - ✓ Voice DNA system (STYLE-GUIDE.md generation, 15+ dimensions) — v0.3.0
 - ✓ Drafter agent with fresh-context-per-atomic-unit architecture — v0.3.0
 - ✓ 5 agent prompts (drafter, researcher, continuity checker, voice checker, plan checker) — v0.3.0
@@ -31,10 +31,11 @@ Scriven is a spec-driven creative writing, publishing, and translation pipeline 
 - ✓ Beta reader, continuity check, editor review commands — v0.3.0
 - ✓ Generic SKILL.md installer path for skill-file platforms — v1.1
 - ✓ Core documentation suite, feature guides, contributor docs, and architecture docs — v1.2
+- ✓ Launch-facing shipped-asset inventory and export docs aligned to actual repo surface — v1.3 Phase 13
+- ✓ Launch-facing root docs narrowed to repo-provable claims and shipped-template truth — v1.3 Phase 13
 
 ### Active
 
-- [ ] Shipped export formats, templates, and documentation must match the actual repo surface without aspirational gaps
 - [ ] Installation guidance and platform requirements must be internally consistent, especially the Node.js floor and runtime claims
 - [ ] Product positioning should lead with the strongest wedge: AI-native longform writing with voice preservation
 - [ ] Scriven needs proof artifacts that make trust tangible: end-to-end sample flow, runtime support matrix, and Voice DNA before/after demo
@@ -86,8 +87,8 @@ The most visible gaps are in the export stack and launch proof layer. Some docs 
 | CONSTRAINTS.json as single source for command availability | One file controls all work type adaptations; easy to extend | ✓ Good |
 | Ship npm + polish in parallel | Get npx working early for feedback while improving experience | ✓ Good |
 | GSD-derived phase decomposition | Product plan has 10 phases but GSD regrouped into 8 for standard granularity | ✓ Good |
-| Generic SKILL.md installer for platforms without command directories | Manus and future platforms can use Scriven without needing a proprietary command system | — Pending |
-| Trust beats breadth on the launch surface | Narrow, provable claims create more confidence than ambitious but weakly evidenced breadth | — Pending |
+| Generic SKILL.md installer for platforms without command directories | Manus and future platforms can use Scriven without needing a proprietary command system | ✓ Good |
+| Trust beats breadth on the launch surface | Narrow, provable claims create more confidence than ambitious but weakly evidenced breadth | ✓ Good |
 
 ## Evolution
 
@@ -107,4 +108,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-07 after milestone v1.3 start*
+*Last updated: 2026-04-08 after Phase 13 completion*

@@ -2,41 +2,41 @@
 gsd_state_version: 1.0
 milestone: v1.3
 milestone_name: Trust & Proof
-status: executing
-stopped_at: Phase 13 planning complete
-last_updated: "2026-04-08T00:50:52.912Z"
-last_activity: 2026-04-08 -- Phase 13 planning complete
+status: ready
+stopped_at: Phase 13 complete; ready to plan Phase 14
+last_updated: "2026-04-08T01:01:13Z"
+last_activity: 2026-04-08 -- Phase 13 complete
 progress:
   total_phases: 4
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 2
-  completed_plans: 0
-  percent: 0
+  completed_plans: 2
+  percent: 25
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-07)
+See: .planning/PROJECT.md (updated 2026-04-08)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** Phase 13 — Launch Surface Integrity (planned, ready to execute)
+**Current focus:** Phase 14 — Runtime Credibility
 
 ## Current Position
 
-Phase: 13 — Launch Surface Integrity
-Plan: —
-Status: Ready to execute
-Last activity: 2026-04-08 -- Phase 13 planning complete
+Phase: 14 — Runtime Credibility
+Plan: Not started
+Status: Ready to plan
+Last activity: 2026-04-08 -- Phase 13 complete
 
-Progress: [░░░░░░░░░░░░] 0%
+Progress: [███░░░░░░░░░] 25%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 47 (37 from v1.0, 2 from v1.1)
+- Total plans completed: 49 (37 from v1.0, 2 from v1.1, 8 from v1.2, 2 from v1.3)
 - Average duration: ~3 min
 - Total execution time: ~2.0 hours
 
@@ -68,6 +68,8 @@ Recent decisions affecting current work:
 - [Phase 12]: Work type count corrected from '50+' to '46' across all documentation
 - [Milestone v1.3]: Trust & Proof milestone focuses on closing claim-vs-surface gaps and adding proof artifacts
 - [Milestone v1.3]: Requirements mapped into four phases: launch integrity, runtime credibility, proof artifacts, and trust regression coverage
+- [Phase 13]: `docs/shipped-assets.md` is the canonical inventory for shipped export templates and trust-critical launch files
+- [Phase 13]: Launch-facing docs should avoid absolute shipped-surface claims unless the repo can prove them directly
 
 ### Pending Todos
 
@@ -79,6 +81,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-07T20:32:14.499Z
-Stopped at: Phase 13 planning complete
+Last session: 2026-04-08T01:01:13Z
+Stopped at: Phase 13 complete; ready to plan Phase 14
 Resume file: None

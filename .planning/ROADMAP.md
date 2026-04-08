@@ -200,7 +200,7 @@ Plans:
 
 **Milestone Goal:** Make Scriven's launch surface feel fully earned by aligning shipped assets, claims, requirements, and proof artifacts around the product's strongest differentiator.
 
-- [ ] **Phase 13: Launch Surface Integrity** - Align launch-facing claims, export guidance, and shipped-asset inventory with the actual repo surface
+- [x] **Phase 13: Launch Surface Integrity** - Align launch-facing claims, export guidance, and shipped-asset inventory with the actual repo surface (completed 2026-04-08)
 - [ ] **Phase 14: Runtime Credibility** - Make Node support and runtime claims explicit, consistent, and evidence-backed
 - [ ] **Phase 15: Proof Artifacts & Positioning** - Ship concrete voice-preservation proof and launch examples centered on Scriven's wedge
 - [ ] **Phase 16: Trust Regression Coverage** - Add release-time checks for trust-critical files, claims, and packaged contents
@@ -263,8 +263,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 13-01-PLAN.md -- Narrow README and npm launch claims to repo-provable surface area
-- [ ] 13-02-PLAN.md -- Align export guidance to real templates/fallbacks and add canonical shipped-asset inventory
+- [x] 13-01-PLAN.md -- Create canonical shipped-asset inventory and align export-facing docs to shipped template truth
+- [x] 13-02-PLAN.md -- Narrow README and root-doc launch claims to repo-provable shipped-surface truth
 
 ### Phase 14: Runtime Credibility
 **Goal**: Users can tell exactly which Node.js baseline and runtime paths Scriven supports, and how confident they should be in each claim
@@ -315,7 +315,7 @@ Phases execute in numeric order: 13 -> 14 -> 15 -> 16
 | 10. Core Documentation | v1.2 | 3/3 | Complete    | 2026-04-07 |
 | 11. Feature & Domain Guides | v1.2 | 3/3 | Complete    | 2026-04-07 |
 | 12. Developer Docs & Verification | v1.2 | 2/2 | Complete    | 2026-04-07 |
-| 13. Launch Surface Integrity | v1.3 | 0/TBD | Not started | - |
+| 13. Launch Surface Integrity | v1.3 | 2/2 | Complete    | 2026-04-08 |
 | 14. Runtime Credibility | v1.3 | 0/TBD | Not started | - |
 | 15. Proof Artifacts & Positioning | v1.3 | 0/TBD | Not started | - |
 | 16. Trust Regression Coverage | v1.3 | 0/TBD | Not started | - |

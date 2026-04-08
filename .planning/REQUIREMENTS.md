@@ -7,9 +7,9 @@
 
 ### Launch Surface Integrity
 
-- [ ] **TRUST-01**: User sees only top-level product claims that are supported by the current repo surface and shipped assets
-- [ ] **TRUST-02**: User can follow export documentation and command guidance without encountering missing template files or undocumented fallbacks
-- [ ] **TRUST-03**: User can inspect a canonical shipped-asset inventory for export templates and trust-critical launch materials
+- [x] **TRUST-01**: User sees only top-level product claims that are supported by the current repo surface and shipped assets
+- [x] **TRUST-02**: User can follow export documentation and command guidance without encountering missing template files or undocumented fallbacks
+- [x] **TRUST-03**: User can inspect a canonical shipped-asset inventory for export templates and trust-critical launch materials
 
 ### Runtime Credibility
 
@@ -49,9 +49,9 @@
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| TRUST-01 | Phase 13 | Pending |
-| TRUST-02 | Phase 13 | Pending |
-| TRUST-03 | Phase 13 | Pending |
+| TRUST-01 | Phase 13 | Complete (2026-04-08) |
+| TRUST-02 | Phase 13 | Complete (2026-04-08) |
+| TRUST-03 | Phase 13 | Complete (2026-04-08) |
 | RUNTIME-01 | Phase 14 | Pending |
 | RUNTIME-02 | Phase 14 | Pending |
 | RUNTIME-03 | Phase 14 | Pending |
@@ -68,4 +68,4 @@
 
 ---
 *Requirements defined: 2026-04-07*
-*Last updated: 2026-04-07 after roadmap creation*
+*Last updated: 2026-04-08 after Phase 13 completion*
