@@ -33,12 +33,13 @@ Scriven is a spec-driven creative writing, publishing, and translation pipeline 
 - ✓ Core documentation suite, feature guides, contributor docs, and architecture docs — v1.2
 - ✓ Launch-facing shipped-asset inventory and export docs aligned to actual repo surface — v1.3 Phase 13
 - ✓ Launch-facing root docs narrowed to repo-provable claims and shipped-template truth — v1.3 Phase 13
+- ✓ Node 20+ installer baseline unified across package metadata, installer UX, runtime docs, and planning docs — v1.3 Phase 14
+- ✓ Canonical runtime support matrix and support-evidence framing shipped for claimed runtimes — v1.3 Phase 14
 
 ### Active
 
-- [ ] Installation guidance and platform requirements must stay internally consistent around the Node.js 20+ installer baseline and runtime evidence model
 - [ ] Product positioning should lead with the strongest wedge: AI-native longform writing with voice preservation
-- [ ] Scriven needs proof artifacts that make trust tangible: end-to-end sample flow, runtime support matrix, and Voice DNA before/after demo
+- [ ] Scriven needs proof artifacts that make trust tangible: end-to-end sample flow and Voice DNA before/after demo
 - [ ] Trust-critical claims must be regression-tested so shipped surface and docs do not drift apart again
 
 ### Out of Scope
@@ -56,7 +57,7 @@ The product plan (`SCRIVEN-PRODUCT-PLAN-v0.3.md`) is the canonical source of tru
 
 Milestones v1.0 through v1.2 shipped the core product surface, multi-runtime installer expansion, and a complete documentation suite. The docs verification pass also exposed a new class of product problem: trust gaps between what the product promises and what the repo can prove today.
 
-The most visible gaps are in the export stack and launch proof layer. Some docs and commands reference export templates that are not present in `data/export-templates/`, and runtime support claims are broader than the current proof artifacts. This milestone is tightening those seams by standardizing on a Node 20+ installer baseline and making runtime evidence explicit enough that first impressions match reality.
+The most visible gaps were in the export stack and launch proof layer. Phase 13 aligned shipped-asset truth, and Phase 14 standardized the Node 20+ installer baseline while making runtime evidence explicit enough that first impressions match reality. The remaining work in this milestone is to make the product's voice-preservation wedge tangible through proof artifacts and to add regression coverage so trust does not drift again.
 
 ## Constraints
 
@@ -108,4 +109,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-08 after Phase 13 completion*
+*Last updated: 2026-04-08 after Phase 14 completion*

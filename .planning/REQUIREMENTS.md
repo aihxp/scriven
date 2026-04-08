@@ -13,9 +13,9 @@
 
 ### Runtime Credibility
 
-- [ ] **RUNTIME-01**: User sees a single, consistent minimum supported Node.js version across package metadata, installer guidance, and planning/docs
-- [ ] **RUNTIME-02**: User can inspect a runtime compatibility matrix that states install path, support level, and verification status for each claimed runtime
-- [ ] **RUNTIME-03**: User can distinguish verified runtime support from best-effort or generic compatibility
+- [x] **RUNTIME-01**: User sees a single, consistent minimum supported Node.js version across package metadata, installer guidance, and planning/docs
+- [x] **RUNTIME-02**: User can inspect a runtime compatibility matrix that states install path, support level, and verification status for each claimed runtime
+- [x] **RUNTIME-03**: User can distinguish verified runtime support from best-effort or generic compatibility
 
 ### Proof Artifacts
 
@@ -52,9 +52,9 @@
 | TRUST-01 | Phase 13 | Complete (2026-04-08) |
 | TRUST-02 | Phase 13 | Complete (2026-04-08) |
 | TRUST-03 | Phase 13 | Complete (2026-04-08) |
-| RUNTIME-01 | Phase 14 | Pending |
-| RUNTIME-02 | Phase 14 | Pending |
-| RUNTIME-03 | Phase 14 | Pending |
+| RUNTIME-01 | Phase 14 | Complete (2026-04-08) |
+| RUNTIME-02 | Phase 14 | Complete (2026-04-08) |
+| RUNTIME-03 | Phase 14 | Complete (2026-04-08) |
 | PROOF-01 | Phase 15 | Pending |
 | PROOF-02 | Phase 15 | Pending |
 | PROOF-03 | Phase 15 | Pending |
@@ -68,4 +68,4 @@
 
 ---
 *Requirements defined: 2026-04-07*
-*Last updated: 2026-04-08 after Phase 13 completion*
+*Last updated: 2026-04-08 after Phase 14 completion*

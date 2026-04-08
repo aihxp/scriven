@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.3
 milestone_name: Trust & Proof
-status: ready
-stopped_at: Phase 14 planning complete; ready to execute
-last_updated: "2026-04-08T01:38:45Z"
-last_activity: 2026-04-08 -- Phase 14 planning complete
+status: ready_to_plan
+stopped_at: Phase 14 complete; ready to plan Phase 15
+last_updated: "2026-04-08T01:58:00Z"
+last_activity: 2026-04-08 -- Phase 14 completed and verified
 progress:
   total_phases: 4
-  completed_phases: 1
-  total_plans: 2
-  completed_plans: 0
-  percent: 25
+  completed_phases: 2
+  total_plans: 4
+  completed_plans: 4
+  percent: 50
 ---
 
 # Project State
@@ -21,28 +21,28 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-08)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** Phase 14 — Runtime Credibility
+**Current focus:** Phase 15 — Proof Artifacts & Positioning
 
 ## Current Position
 
-Phase: 14 — Runtime Credibility
-Plan: —
-Status: Ready to execute
-Last activity: 2026-04-08 -- Phase 14 planning complete
+Phase: 15 (Proof Artifacts & Positioning) — READY TO PLAN
+Plan: 0 of TBD
+Status: Phase 14 complete; Phase 15 not yet planned
+Last activity: 2026-04-08 -- Phase 14 completed and verified
 
-Progress: [███░░░░░░░░░] 25%
+Progress: [██████░░░░░░] 50%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 49 (37 from v1.0, 2 from v1.1, 8 from v1.2, 2 from v1.3)
+- Total plans completed: 51 (37 from v1.0, 2 from v1.1, 8 from v1.2, 4 from v1.3)
 - Average duration: ~3 min
 - Total execution time: ~2.0 hours
 
 **Recent Trend:**
 
-- Last 5 plans: 3min, 3min, 3min, 3min, 7min
+- Last 5 plans: 3min, 3min, 6min, 3min, 3min
 - Trend: Stable
 
 *Updated after each plan completion*
@@ -72,6 +72,8 @@ Recent decisions affecting current work:
 - [Phase 13]: Launch-facing docs should avoid absolute shipped-surface claims unless the repo can prove them directly
 - [Phase 14]: Split planning into a source-of-truth runtime policy pass, followed by launch/onboarding propagation
 - [Phase 14]: `docs/runtime-support.md` will become the canonical runtime matrix and confidence document
+- [Phase 14]: `Node 20+` / `>=20.0.0` is the supported installer baseline across package metadata, installer UX, and planning/docs
+- [Phase 14]: Installer targets are not interchangeable proof of host-runtime parity; launch docs must point to the matrix for support confidence
 
 ### Pending Todos
 
@@ -84,5 +86,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-04-08T01:38:45Z
-Stopped at: Phase 14 planning complete; ready to execute
+Stopped at: Phase 14 complete; ready to plan Phase 15
 Resume file: None

@@ -201,7 +201,7 @@ Plans:
 **Milestone Goal:** Make Scriven's launch surface feel fully earned by aligning shipped assets, claims, requirements, and proof artifacts around the product's strongest differentiator.
 
 - [x] **Phase 13: Launch Surface Integrity** - Align launch-facing claims, export guidance, and shipped-asset inventory with the actual repo surface (completed 2026-04-08)
-- [ ] **Phase 14: Runtime Credibility** - Make Node support and runtime claims explicit, consistent, and evidence-backed
+- [x] **Phase 14: Runtime Credibility** - Make Node support and runtime claims explicit, consistent, and evidence-backed (completed 2026-04-08)
 - [ ] **Phase 15: Proof Artifacts & Positioning** - Ship concrete voice-preservation proof and launch examples centered on Scriven's wedge
 - [ ] **Phase 16: Trust Regression Coverage** - Add release-time checks for trust-critical files, claims, and packaged contents
 
@@ -277,8 +277,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 14-01-PLAN.md -- Establish canonical runtime policy, Node baseline, trust inventory wiring, and planning/doc consistency
-- [ ] 14-02-PLAN.md -- Propagate runtime credibility language into README, onboarding, and root instruction docs
+- [x] 14-01-PLAN.md -- Establish canonical runtime policy, Node baseline, trust inventory wiring, and planning/doc consistency
+- [x] 14-02-PLAN.md -- Propagate runtime credibility language into README, onboarding, and root instruction docs
 
 ### Phase 15: Proof Artifacts & Positioning
 **Goal**: Prospective users can inspect concrete evidence that Scriven preserves voice in AI-native longform writing workflows
@@ -320,6 +320,6 @@ Phases execute in numeric order: 13 -> 14 -> 15 -> 16
 | 11. Feature & Domain Guides | v1.2 | 3/3 | Complete    | 2026-04-07 |
 | 12. Developer Docs & Verification | v1.2 | 2/2 | Complete    | 2026-04-07 |
 | 13. Launch Surface Integrity | v1.3 | 2/2 | Complete    | 2026-04-08 |
-| 14. Runtime Credibility | v1.3 | 0/2 | Not started | - |
+| 14. Runtime Credibility | v1.3 | 2/2 | Complete | 2026-04-08 |
 | 15. Proof Artifacts & Positioning | v1.3 | 0/TBD | Not started | - |
 | 16. Trust Regression Coverage | v1.3 | 0/TBD | Not started | - |
