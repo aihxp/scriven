@@ -260,7 +260,11 @@ Plans:
   1. A first-time visitor sees launch-facing product claims that are all supported by files, commands, and assets present in the repo
   2. A user following export documentation and command guidance can reach the referenced template files or documented fallbacks without dead ends
   3. A maintainer can inspect one canonical inventory of shipped export templates and trust-critical launch assets to confirm what is actually included
-**Plans**: TBD
+**Plans**: 2 plans
+
+Plans:
+- [ ] 13-01-PLAN.md -- Narrow README and npm launch claims to repo-provable surface area
+- [ ] 13-02-PLAN.md -- Align export guidance to real templates/fallbacks and add canonical shipped-asset inventory
 
 ### Phase 14: Runtime Credibility
 **Goal**: Users can tell exactly which Node.js baseline and runtime paths Scriven supports, and how confident they should be in each claim
