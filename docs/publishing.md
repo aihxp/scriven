@@ -50,7 +50,7 @@ Output: `.manuscript/output/manuscript.docx`. Uses Pandoc's default manuscript s
 /scr:export --format docx --formatted
 ```
 
-Output: `.manuscript/output/manuscript-formatted.docx`. Uses a custom Pandoc reference document for styled layout.
+Output: `.manuscript/output/manuscript-formatted.docx`. The shipped command path currently uses Pandoc's default DOCX output. If you want a styled review-copy layout, provide your own Pandoc reference document.
 
 **PDF (Manuscript)** -- Standard manuscript-format PDF via the Typst engine.
 

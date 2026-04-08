@@ -239,13 +239,12 @@ Standard manuscript format DOCX (12pt Times New Roman, double-spaced, 1" margins
 ```bash
 pandoc .manuscript/output/assembled-manuscript.md \
   -o .manuscript/output/manuscript.docx \
-  --reference-doc=data/export-templates/scriven-manuscript.docx \
   --metadata-file=.manuscript/output/metadata.yaml \
   --toc \
   --toc-depth=1
 ```
 
-**Note:** The reference doc `scriven-manuscript.docx` controls all styling. If it does not exist, warn the writer and run Pandoc without `--reference-doc` (Pandoc will use its default styles).
+**Current shipped behavior:** Scriven does not currently bundle a manuscript DOCX reference document in `data/export-templates/`. This command uses Pandoc's default DOCX styling. If you want a custom manuscript reference document, add your own `.docx` template and pass it to Pandoc as an optional `--reference-doc`.
 
 ---
 
@@ -256,11 +255,12 @@ Designed/typeset DOCX for review copies and ARCs.
 ```bash
 pandoc .manuscript/output/assembled-manuscript.md \
   -o .manuscript/output/manuscript-formatted.docx \
-  --reference-doc=data/export-templates/scriven-formatted.docx \
   --metadata-file=.manuscript/output/metadata.yaml \
   --toc \
   --toc-depth=2
 ```
+
+**Current shipped behavior:** Scriven does not currently bundle a formatted DOCX reference document in `data/export-templates/`. The shipped command path uses Pandoc's default DOCX output. If you want a styled review-copy layout, supply your own Pandoc reference document as an optional `--reference-doc`.
 
 ---
 
@@ -667,11 +667,10 @@ Copy the individual files into the package directory. Then create a combined DOC
 pandoc .manuscript/output/query-package/query-letter.md \
   .manuscript/output/query-package/synopsis.md \
   .manuscript/output/query-package/sample-chapters.md \
-  -o .manuscript/output/query-package/query-package.docx \
-  --reference-doc=data/export-templates/scriven-manuscript.docx
+  -o .manuscript/output/query-package/query-package.docx
 ```
 
-If the reference doc does not exist, run Pandoc without `--reference-doc` (Pandoc uses default styles).
+The shipped query-package flow uses Pandoc's default DOCX styling. If you want a custom manuscript look, provide your own Pandoc reference document when running the underlying command.
 
 Output: `.manuscript/output/query-package/` containing `query-letter.md`, `synopsis.md`, `sample-chapters.md`, `query-package.docx`
 
