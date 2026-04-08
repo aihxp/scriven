@@ -80,7 +80,7 @@ Scriven is a spec-driven creative writing, publishing, and translation pipeline 
 | **Publishing method** | `npm publish` with 2FA from local machine | Most secure for small-team projects. Trusted publishing (OIDC via GitHub Actions) is overkill until Scriven has CI/CD. | HIGH |
 | **Prepublish check** | `npm pack --dry-run` before every publish | Verify no secrets, no unnecessary files leaked. The `"files"` field in package.json already scopes what's included. | HIGH |
 | **Versioning** | `npm version patch/minor/major` with git tags | Auto-creates git tag, bumps version. Pair with GitHub releases for changelog. | HIGH |
-| **npx support** | Already configured (`"bin": {"scriven": "./bin/install.js"}`) | `npx scriven@latest` will download and run the installer. Current setup is correct. | HIGH |
+| **npx support** | Already configured (`"bin": {"scriven": "./bin/install.js"}`) | Package `@aihxp/scriven-cli` on GitHub Packages; `npx @aihxp/scriven-cli@latest` after `~/.npmrc` scope + token per [GitHub npm registry docs](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry). | HIGH |
 | **Lockfile** | Commit `package-lock.json` but since there are zero dependencies, it's effectively empty | Standard practice. Will matter when/if dev dependencies are added for testing. | HIGH |
 | **Node version** | `"engines": {"node": ">=20.0.0"}` | Scriven's supported installer baseline is Node 20+. This keeps package metadata, installer guidance, and runtime docs aligned on one minimum. | HIGH |
 See `docs/runtime-support.md` for the canonical runtime matrix, support levels, and host-runtime parity status.

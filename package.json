@@ -1,10 +1,13 @@
 {
-  "name": "scriven-cli",
-  "version": "1.3.1",
+  "name": "@aihxp/scriven-cli",
+  "version": "1.3.2",
   "description": "Spec-driven creative writing, publishing, and translation pipeline for AI coding agents. From blank page to published book.",
   "bin": { "scriven": "./bin/install.js" },
   "scripts": { "start": "node bin/install.js", "test": "node --test test/*.test.js", "prepublishOnly": "npm test" },
-  "publishConfig": { "access": "public" },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
   "keywords": ["writing", "creative-writing", "ai", "claude", "claude-code", "novel", "screenplay", "publishing", "kdp", "translation"],
   "author": "Scriven contributors",
   "license": "MIT",

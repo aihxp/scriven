@@ -1,9 +1,6 @@
 # Scriven
 
-[![npm version](https://img.shields.io/npm/v/scriven-cli)](https://www.npmjs.com/package/scriven-cli)
-[![npm downloads](https://img.shields.io/npm/dm/scriven-cli)](https://www.npmjs.com/package/scriven-cli)
-
-**[scriven-cli on npm](https://www.npmjs.com/package/scriven-cli)** · **[GitHub Packages](https://github.com/aihxp/scriven/pkgs/npm/scriven-cli)** (`@aihxp/scriven-cli`)
+**Package:** [@aihxp/scriven-cli on GitHub Packages](https://github.com/aihxp/scriven/pkgs/npm/scriven-cli)
 
 **Spec-driven creative writing, publishing, and translation for AI coding agents.**
 
@@ -13,9 +10,17 @@ Scriven brings spec-driven workflows to creative writing. It runs inside your AI
 
 Scriven is best understood as **AI-native longform writing software built around voice preservation**. Its core promise is narrow and high-stakes: drafted prose should sound like the writer, not like AI. If you want evidence before features, start with the [Proof Artifacts](docs/proof-artifacts.md).
 
+Install is from **GitHub Packages** only (not the public npm registry). Add a [personal access token](https://docs.github.com/en/packages/learn-github-packages/about-permissions-for-github-packages#about-scopes-and-permissions-for-package-registries) with at least **`read:packages`** (fine-grained: **Packages → Read** for this repository), then:
+
 ```bash
-npx scriven-cli@latest
+# ~/.npmrc (one-time)
+echo '@aihxp:registry=https://npm.pkg.github.com' >> ~/.npmrc
+echo '//npm.pkg.github.com/:_authToken=YOUR_GITHUB_TOKEN' >> ~/.npmrc
+
+npx @aihxp/scriven-cli@latest
 ```
+
+See [Working with the npm registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry) for details.
 
 ---
 
@@ -39,8 +44,8 @@ Everything adapts to your work type. A novel uses `/scr:draft` for chapters. A s
 ## Quick start
 
 ```bash
-# Install
-npx scriven-cli@latest
+# Install (after ~/.npmrc is set for @aihxp — see above)
+npx @aihxp/scriven-cli@latest
 
 # In any project directory, open Claude Code (or your preferred agent) and:
 /scr:new-work        # Start a fresh project
@@ -165,7 +170,7 @@ Scriven currently ships installer targets for these AI coding agent environments
 - **Antigravity**
 - **Manus Desktop**
 
-**Installer baseline:** `Node.js 20+` for `npx scriven-cli@latest` and `bin/install.js`.
+**Installer baseline:** `Node.js 20+` for `npx @aihxp/scriven-cli@latest` (GitHub Packages) and `bin/install.js`.
 
 **Support note:** Claude Code is the primary reference runtime. The environments listed above are installer targets, not a claim that every host runtime has verified parity today. See the [runtime compatibility matrix](docs/runtime-support.md) for install type, support level, and verification status.
 
@@ -173,7 +178,7 @@ Scriven currently ships installer targets for these AI coding agent environments
 
 ## Status
 
-**Version:** 1.3.1
+**Version:** 1.3.2
 
 Scriven's core command surface is stable across 101 commands, 46 work types, and 10 installer targets. All four milestones (v1.0 MVP, v1.1 Generic Platform Support, v1.2 Documentation, v1.3 Trust & Proof) are shipped. 925 tests pass. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
 

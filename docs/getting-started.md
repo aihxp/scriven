@@ -14,13 +14,22 @@ Before choosing a runtime, check [Runtime Support](runtime-support.md) for the c
 
 ## Step 1: Install Scriven
 
-Run the installer in your terminal:
+Scriven is published as **`@aihxp/scriven-cli`** on [GitHub Packages](https://github.com/aihxp/scriven/pkgs/npm/scriven-cli) (not the public npm registry). Configure npm once, then run the installer:
 
-```
-npx scriven@latest
-```
+1. Create a GitHub [personal access token](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/managing-your-personal-access-tokens) with **`read:packages`** (or fine-grained **Packages → Read** for this repo).
+2. Add to your user **`~/.npmrc`**:
+   ```
+   @aihxp:registry=https://npm.pkg.github.com
+   //npm.pkg.github.com/:_authToken=YOUR_TOKEN
+   ```
+3. Run:
+   ```
+   npx @aihxp/scriven-cli@latest
+   ```
 
 This installs Scriven's slash commands into your AI agent. The installer auto-detects current runtime paths (Claude Code, Cursor, Gemini CLI, and other listed installer targets) and places everything where your agent expects it. Takes about 30 seconds.
+
+Reference: [GitHub — Working with the npm registry](https://docs.github.com/en/packages/working-with-a-github-packages-registry/working-with-the-npm-registry).
 
 Once installed, every `/scr:` command is available inside your agent's chat.
 

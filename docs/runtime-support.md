@@ -8,7 +8,7 @@ Scriven's supported installer baseline is `Node.js 20+` (`>=20.0.0`).
 
 Node is required for:
 
-- running `npx scriven@latest`
+- running `npx @aihxp/scriven-cli@latest` (GitHub Packages; requires `~/.npmrc` — see [Getting Started](getting-started.md))
 - executing `bin/install.js`
 - running the repo's JavaScript test suite
 
