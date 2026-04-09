@@ -6,7 +6,7 @@
 - [x] **v1.1 Generic Platform Support** - Phase 9 (shipped 2026-04-07)
 - [x] **v1.2 Documentation** - Phases 10-12 (shipped 2026-04-07)
 - [x] **v1.3 Trust & Proof** - Phases 13-16 (shipped 2026-04-09)
-- [ ] **v1.4 Perplexity & Technical Writing** - Phases 17-19 (planned)
+- [x] **v1.4 Perplexity & Technical Writing** - Phases 17-19 (shipped 2026-04-09)
 
 ## Phases
 
@@ -201,9 +201,9 @@ Plans:
 
 **Milestone Goal:** Make Scriven's launch surface feel fully earned by aligning shipped assets, claims, requirements, and proof artifacts around the product's strongest differentiator. Archived details: `.planning/milestones/v1.3-ROADMAP.md`
 
-### v1.4 Perplexity & Technical Writing (Planned 2026-04-09)
+### v1.4 Perplexity & Technical Writing (Shipped 2026-04-09)
 
-**Milestone Goal:** Extend Scriven's runtime surface to Perplexity Desktop and define a research-backed technical-writing family without weakening the current trust and adaptive-workflow model.
+**Milestone Goal:** Extend Scriven's runtime surface to Perplexity Desktop and define a research-backed technical-writing family without weakening the current trust and adaptive-workflow model. Archived details: `.planning/milestones/v1.4-ROADMAP.md`
 
 ## Phase Details
 
@@ -322,49 +322,6 @@ Plans:
 Plans:
 - [x] 16-01-PLAN.md -- Add trust-regression tests for canonical launch/proof/runtime docs and shipped-asset truth
 - [x] 16-02-PLAN.md -- Extend npm pack dry-run coverage for proof bundles and currently shipped export templates
-
-### Phase 17: Perplexity Runtime Support
-**Goal**: Users can install Scriven into the currently documented Perplexity Desktop surface and understand exactly what level of support that target has
-**Depends on**: Phase 16 (reuse the runtime-credibility and trust-claim guardrails rather than inventing new ones)
-**Requirements**: RUNTIME-05, RUNTIME-06, RUNTIME-07
-**Success Criteria** (what must be TRUE):
-  1. A user can choose Perplexity Desktop in the installer and receive an install flow that matches the real platform surface
-  2. A user can inspect runtime docs and distinguish Perplexity Desktop support from broader Perplexity availability without reading source code
-  3. A maintainer can verify the new runtime target and its trust framing through installer tests and documentation checks
-**Plans**: 2 plans
-
-Plans:
-- [x] 17-01-PLAN.md -- Add Perplexity Desktop runtime target, installer strategy, and support-matrix wiring
-- [x] 17-02-PLAN.md -- Add Perplexity runtime docs, troubleshooting, and verification coverage without overclaiming parity
-
-### Phase 18: Technical Writing Domain Modeling
-**Goal**: Users can start technical-writing projects with document-native vocabulary, templates, and command behavior grounded in real technical-writing document families
-**Depends on**: Phase 17 (runtime additions and support framing should be stable before a second major surface change lands)
-**Requirements**: TECHDOC-01, TECHDOC-02, TECHDOC-03, TECHDOC-04
-**Success Criteria** (what must be TRUE):
-  1. A user can choose from a first-pass technical-writing family such as guides, runbooks, references, or design specs when starting a new project
-  2. A technical-writing project uses domain-native hierarchy, file names, and command adaptations instead of fiction-centric defaults
-  3. A technical-writing project gets templates and command availability that fit structured documentation workflows
-**Plans**: 3 plans
-
-Plans:
-- [x] 18-01-PLAN.md -- Define technical-writing work-type family, hierarchy vocabulary, and constraint-model updates
-- [x] 18-02-PLAN.md -- Add templates, file adaptations, and command gating for first-pass technical-writing workflows
-- [x] 18-03-PLAN.md -- Update help and work-type documentation for the new technical-writing family
-
-### Phase 19: Verification & Trust Surface Updates
-**Goal**: Maintainers can trust the Perplexity and technical-writing additions because docs, counts, and tests stay aligned with the live repo
-**Depends on**: Phase 17, Phase 18
-**Requirements**: QA-03, TRUST-04
-**Success Criteria** (what must be TRUE):
-  1. A maintainer can run tests that fail when the Perplexity runtime target or technical-writing work-type surface drifts
-  2. A user reading README and guide docs sees correct counts, support framing, and technical-writing scope
-  3. The new milestone surfaces fit the same trust model established in v1.3
-**Plans**: 2 plans
-
-Plans:
-- [x] 19-01-PLAN.md -- Add regression coverage for Perplexity runtime support and technical-writing work types
-- [x] 19-02-PLAN.md -- Update launch/docs trust surfaces and verify counts, examples, and support framing
 
 ## Progress
 

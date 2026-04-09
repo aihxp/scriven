@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.4
-milestone_name: Perplexity & Technical Writing
-status: Phase implementation complete; ready for milestone audit/closeout
-stopped_at: Phase 19 completed; milestone ready for audit/complete
-last_updated: "2026-04-09T17:10:00.000Z"
+milestone: none
+milestone_name: null
+status: Awaiting next milestone definition
+stopped_at: v1.4 archived and tagged; ready for /gsd-new-milestone
+last_updated: "2026-04-09T21:40:00.000Z"
 last_activity: 2026-04-09
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 7
-  completed_plans: 7
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** v1.4 milestone closeout — Perplexity support and technical-writing family implemented
+**Current focus:** define the next milestone from a clean planning state
 
 ## Current Position
 
-Phase: 19
-Plan: Complete
-Status: Phase implementation complete; ready for milestone audit/closeout
+Phase: None
+Plan: None
+Status: Awaiting next milestone definition
 Last activity: 2026-04-09
 
 Progress: [------------] 0%
@@ -36,7 +36,7 @@ Progress: [------------] 0%
 
 **Velocity:**
 
-- Total plans completed: 65 (37 from v1.0, 2 from v1.1, 8 from v1.2, 9 from v1.3, 2 from v1.4 phase 17, 3 from v1.4 phase 18, 2 from v1.4 phase 19)
+- Total plans completed: 65 (37 from v1.0, 2 from v1.1, 8 from v1.2, 9 from v1.3, 7 from v1.4)
 - Average duration: ~3 min
 - Total execution time: ~2.0 hours
 
@@ -80,11 +80,14 @@ Recent decisions affecting current work:
 - [Phase 15]: Launch and onboarding docs should route skeptical users to proof artifacts before the broader feature surface
 - [Phase 16]: Trust regression coverage should test canonical docs and linked assets directly instead of snapshotting large docs
 - [Phase 16]: Packaged-asset checks should live in the existing npm pack dry-run test path so publish-time enforcement remains automatic
+- [Phase 17]: Guided runtime targets are valid first-class support surfaces when the installer and docs explain the setup model explicitly
+- [Phase 18]: Technical writing should start as a small family of real document types instead of one vague catch-all work type
+- [Phase 19]: New trust surfaces should be locked with targeted tests for counts, packaging, and scope wording
 
 ### Pending Todos
 
-- Run milestone audit / complete workflow for v1.4
-- Decide whether to ship or continue expanding technical-writing coverage in a follow-on milestone
+- Start the next milestone with /gsd-new-milestone
+- Decide whether to deepen runtime verification, expand proof assets, or broaden technical-writing outputs next
 
 ### Blockers/Concerns
 
@@ -93,5 +96,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-04-09T10:19:06Z
-Stopped at: Phase 19 completed; milestone ready for audit/complete
+Stopped at: v1.4 archived and tagged; ready for /gsd-new-milestone
 Resume file: None

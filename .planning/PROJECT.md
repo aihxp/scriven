@@ -46,7 +46,7 @@ Scriven is a spec-driven writing, publishing, and translation pipeline that runs
 
 ### Active
 
-- None — v1.4 phase implementation is complete locally and ready for milestone closeout.
+- None — v1.4 shipped on 2026-04-09 and no new milestone is defined yet.
 
 ### Out of Scope
 
@@ -63,7 +63,7 @@ The product plan (`SCRIVEN-PRODUCT-PLAN-v0.3.md`) is the canonical source of tru
 
 Milestones v1.0 through v1.2 shipped the core product surface, multi-runtime installer expansion, and a complete documentation suite. The docs verification pass also exposed a new class of product problem: trust gaps between what the product promises and what the repo can prove today.
 
-The most visible gaps were in the export stack and launch proof layer. Phase 13 aligned shipped-asset truth, Phase 14 standardized the Node 20+ installer baseline while making runtime evidence explicit, Phase 15 added the canonical proof layer that makes Scriven's voice-preservation wedge tangible, and Phase 16 turned those trust surfaces into release-time regression gates. Milestone v1.4 now extends that posture into Perplexity Desktop support and a first-pass technical-writing family without weakening the existing trust model.
+The most visible gaps were in the export stack and launch proof layer. Phase 13 aligned shipped-asset truth, Phase 14 standardized the Node 20+ installer baseline while making runtime evidence explicit, Phase 15 added the canonical proof layer that makes Scriven's voice-preservation wedge tangible, and Phase 16 turned those trust surfaces into release-time regression gates. Milestone v1.4 then extended that posture into Perplexity Desktop support and a first-pass technical-writing family without weakening the existing trust model.
 
 ## Constraints
 
@@ -73,10 +73,26 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - **Plan authority**: If a command file contradicts the product plan, fix the command — plan is canonical (section 15 for command specs)
 - **Progressive disclosure**: Onboarding asks 3 questions max; depth is optional and additive
 
-## Current Milestone: v1.4 Perplexity & Technical Writing
+## Current State
+
+**Latest shipped milestone:** v1.4 Perplexity & Technical Writing  
+**Status:** Shipped 2026-04-09; no active milestone is currently defined
+
+**Current product surface:**
+- Perplexity Desktop is supported as a guided local-MCP runtime target with explicit trust framing
+- Technical writing is a first-pass family with four work types and technical-native scaffolding
+- Release-time tests protect packaging, counts, runtime wording, and technical-writing scope against drift
+
+## Next Milestone Goals
+
+- Choose the next product focus and define a fresh milestone with `/gsd-new-milestone`
+- Decide whether the next expansion should deepen runtime verification, broaden public proof assets, or expand technical-writing outputs
+- Keep the trust-first standard: new support claims should stay source-backed, narrow, and testable
+
+<details>
+<summary>Archived milestone context: v1.4 Perplexity & Technical Writing</summary>
 
 **Goal:** Extend Scriven's runtime surface to Perplexity while defining a research-backed technical-writing expansion that fits the existing adaptive work-type system.
-**Status:** Phase implementation complete locally on 2026-04-09
 
 **Target features:**
 - Add installer support for Perplexity as a named runtime target with support-level framing consistent with `docs/runtime-support.md`
@@ -89,6 +105,8 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - Runtime additions must follow the same "installer target, not parity proof" discipline established in v1.3
 - Technical-writing support should be research-first so document taxonomy and table-stakes are based on real technical-writing workflows rather than guessed from adjacent prose types
 
+</details>
+
 ## Key Decisions
 
 | Decision | Rationale | Outcome |
@@ -100,6 +118,8 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 | GSD-derived phase decomposition | Product plan has 10 phases but GSD regrouped into 8 for standard granularity | ✓ Good |
 | Generic SKILL.md installer for platforms without command directories | Manus and future platforms can use Scriven without needing a proprietary command system | ✓ Good |
 | Trust beats breadth on the launch surface | Narrow, provable claims create more confidence than ambitious but weakly evidenced breadth | ✓ Good |
+| Guided runtime targets can be first-class when their setup model is explicit | Some host surfaces are real but do not expose writable command registries; guided setup is better than fake parity | ✓ Good |
+| Technical writing should start as a small, domain-native family | A narrow set of real document types produces better adaptive behavior than one vague catch-all type | ✓ Good |
 
 ## Evolution
 
@@ -119,4 +139,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-09 after starting milestone v1.4*
+*Last updated: 2026-04-09 after shipping milestone v1.4*
