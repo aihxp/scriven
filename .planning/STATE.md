@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.3
-milestone_name: Trust & Proof
-status: milestone_complete
-stopped_at: Milestone v1.3 fully archived; next milestone TBD
-last_updated: "2026-04-09T10:00:00Z"
-last_activity: 2026-04-09 -- v1.3 milestone closeout finalized and planning reset for next milestone
+milestone: v1.4
+milestone_name: Perplexity & Technical Writing
+status: defining_requirements
+stopped_at: Milestone v1.4 started; research and requirements in progress
+last_updated: "2026-04-09T10:19:06Z"
+last_activity: 2026-04-09 -- Milestone v1.4 started for Perplexity runtime support and technical-writing research
 progress:
-  total_phases: 4
-  completed_phases: 4
-  total_plans: 9
-  completed_plans: 9
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -21,16 +21,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** No active milestone — next milestone TBD
+**Current focus:** Milestone v1.4 definition — Perplexity runtimes and technical-writing scope
 
 ## Current Position
 
-Phase: v1.3 complete
-Plan: 9 of 9
-Status: Milestone fully archived; waiting for next milestone definition
-Last activity: 2026-04-09 -- v1.3 milestone closeout finalized and planning reset
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-09 -- Milestone v1.4 started
 
-Progress: [████████████] 100%
+Progress: [------------] 0%
 
 ## Performance Metrics
 
@@ -83,7 +83,9 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-None yet.
+- Define Perplexity runtime support requirements and implementation boundaries
+- Research technical-writing document families and choose milestone scope
+- Create the v1.4 roadmap and phase breakdown
 
 ### Blockers/Concerns
 
@@ -91,6 +93,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-09T10:00:00Z
-Stopped at: Milestone v1.3 fully archived; next milestone TBD
+Last session: 2026-04-09T10:19:06Z
+Stopped at: Milestone v1.4 started; research and requirements in progress
 Resume file: None

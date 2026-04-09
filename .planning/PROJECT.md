@@ -43,9 +43,9 @@ Scriven is a spec-driven creative writing, publishing, and translation pipeline 
 
 ### Active
 
-- [ ] PROOF-04 — Expand the proof layer with multiple genre-specific end-to-end demos beyond the watchmaker sample flow
-- [ ] RUNTIME-04 — Add automated runtime-specific smoke verification across supported AI agent platforms
-- [ ] TRUST-04 — Add public launch evidence such as screenshots, walkthroughs, or case studies for major workflows
+- [ ] RUNTIME-05 — Scriven can install into Perplexity runtimes with accurate support framing and verification status
+- [ ] RUNTIME-06 — Scriven can install into Perplexity Desktop with the correct installer strategy and path expectations
+- [ ] TECHDOC-01 — Scriven supports research-backed technical-writing work types and document structures without weakening the core creative-writing experience
 
 ### Out of Scope
 
@@ -72,34 +72,21 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - **Plan authority**: If a command file contradicts the product plan, fix the command — plan is canonical (section 15 for command specs)
 - **Progressive disclosure**: Onboarding asks 3 questions max; depth is optional and additive
 
-## Latest Milestone: v1.3 Trust & Proof
+## Current Milestone: v1.4 Perplexity & Technical Writing
 
-**Goal:** Make Scriven's launch surface feel fully earned by aligning shipped assets, claims, requirements, and proof artifacts around the product's strongest differentiator.
-**Status:** Shipped 2026-04-09
+**Goal:** Extend Scriven's runtime surface to Perplexity while defining a research-backed technical-writing expansion that fits the existing adaptive work-type system.
+**Status:** Starting 2026-04-09
 
 **Target features:**
-- Resolve export-template truth gaps by either shipping missing templates or narrowing claims and command paths to the files that actually exist
-- Align Node.js support policy, installer messaging, and package metadata on the `Node 20+` / `>=20.0.0` installer baseline
-- Add runtime support proof so "full support" claims are backed by an explicit compatibility matrix and verification guidance
-- Reposition top-level messaging around voice-preserving longform writing, with breadth framed as expansion rather than the first impression
-- Add proof artifacts such as an end-to-end sample publishing flow and a Voice DNA before/after demonstration
-- Add regression coverage for trust-critical docs, templates, and packaging claims
+- Add installer support for Perplexity as a named runtime target with support-level framing consistent with `docs/runtime-support.md`
+- Add installer support for Perplexity Desktop if its path model differs from the CLI/runtime entry
+- Research the technical-writing document families Scriven should support before implementing new work types or command adaptations
+- Translate that research into scoped requirements for technical-writing work types, context files, and publishing/export expectations
 
-**Closeout notes:**
-- All four milestone phases now have verification, validation, and security records
-- The milestone audit passed with full requirements coverage and no open UAT backlog
-- Post-`v1.3.3` review fixes were folded back into the shipped baseline before the `1.3.4` release prep
-- Historical planning-health drift was reconciled so `.planning/` is healthy again
-
-## Next Milestone
-
-TBD. v1.3 is archived as the current shipped milestone, and the next milestone should be defined explicitly rather than inferred.
-
-## Next Milestone Goals
-
-- Expand the public proof layer beyond one flagship sample
-- Add automated runtime smoke verification so support evidence reaches host-runtime parity checks
-- Add public-facing launch evidence that complements the repo-native proof artifacts
+**Key context:**
+- The milestone should preserve the markdown-first, zero-runtime-dependency architecture
+- Runtime additions must follow the same "installer target, not parity proof" discipline established in v1.3
+- Technical-writing support should be research-first so document taxonomy and table-stakes are based on real technical-writing workflows rather than guessed from adjacent prose types
 
 ## Key Decisions
 
@@ -131,4 +118,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-09 after v1.3 milestone completion*
+*Last updated: 2026-04-09 after starting milestone v1.4*
