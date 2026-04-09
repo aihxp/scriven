@@ -43,6 +43,10 @@ Scriven is a spec-driven creative writing, publishing, and translation pipeline 
 
 ### Active
 
+- [ ] PROOF-04 — Expand the proof layer with multiple genre-specific end-to-end demos beyond the watchmaker sample flow
+- [ ] RUNTIME-04 — Add automated runtime-specific smoke verification across supported AI agent platforms
+- [ ] TRUST-04 — Add public launch evidence such as screenshots, walkthroughs, or case studies for major workflows
+
 ### Out of Scope
 
 - Real-time collaborative editing (Google Docs style) — complexity outweighs value for CLI tool
@@ -58,7 +62,7 @@ The product plan (`SCRIVEN-PRODUCT-PLAN-v0.3.md`) is the canonical source of tru
 
 Milestones v1.0 through v1.2 shipped the core product surface, multi-runtime installer expansion, and a complete documentation suite. The docs verification pass also exposed a new class of product problem: trust gaps between what the product promises and what the repo can prove today.
 
-The most visible gaps were in the export stack and launch proof layer. Phase 13 aligned shipped-asset truth, Phase 14 standardized the Node 20+ installer baseline while making runtime evidence explicit, Phase 15 added the canonical proof layer that makes Scriven's voice-preservation wedge tangible, and Phase 16 turned those trust surfaces into release-time regression gates. Milestone v1.3 is now functionally complete and ready for audit/archive.
+The most visible gaps were in the export stack and launch proof layer. Phase 13 aligned shipped-asset truth, Phase 14 standardized the Node 20+ installer baseline while making runtime evidence explicit, Phase 15 added the canonical proof layer that makes Scriven's voice-preservation wedge tangible, and Phase 16 turned those trust surfaces into release-time regression gates. Milestone v1.3 is now fully archived, and the project is waiting on the next milestone definition.
 
 ## Constraints
 
@@ -81,9 +85,20 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - Add proof artifacts such as an end-to-end sample publishing flow and a Voice DNA before/after demonstration
 - Add regression coverage for trust-critical docs, templates, and packaging claims
 
+**Closeout notes:**
+- All four milestone phases now have verification, validation, and security records
+- The milestone audit passed with full requirements coverage and no open UAT backlog
+- Historical planning-health drift was reconciled so `.planning/` is healthy again
+
 ## Next Milestone
 
 TBD. v1.3 is archived as the current shipped milestone, and the next milestone should be defined explicitly rather than inferred.
+
+## Next Milestone Goals
+
+- Expand the public proof layer beyond one flagship sample
+- Add automated runtime smoke verification so support evidence reaches host-runtime parity checks
+- Add public-facing launch evidence that complements the repo-native proof artifacts
 
 ## Key Decisions
 
@@ -115,4 +130,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-08 after Phase 16 completion*
+*Last updated: 2026-04-09 after v1.3 milestone completion*
