@@ -208,6 +208,20 @@ Plans:
 
 ## Phase Details
 
+### Phase 9: Generic Platform Support
+**Goal**: Scriven installs and runs on any AI agent platform, including those without dedicated command directories, via a consolidated `SKILL.md` manifest
+**Depends on**: Phase 8 (extends existing multi-runtime installer)
+**Requirements**: PLAT-01, PLAT-02, PLAT-03, PLAT-04, PLAT-05, PLAT-06
+**Success Criteria** (what must be TRUE):
+  1. A user on a skill-file platform can install Scriven and receive a working `SKILL.md` manifest that lists all available `/scr:*` commands with descriptions and trigger patterns
+  2. Installer automatically detects the user's platform type and routes to the correct strategy without requiring manual configuration beyond selecting `Generic` for unrecognized platforms
+  3. Tests validate the generic `SKILL.md` installer path alongside existing command-directory installer coverage
+**Plans**: 2 plans
+
+Plans:
+- [x] 09-01-PLAN.md -- Installer refactor: type classification, SKILL.md generator, Manus skill-file path, Generic option
+- [x] 09-02-PLAN.md -- Test suite for generic SKILL.md installer path
+
 ### Phase 10: Core Documentation
 **Goal**: A new user can find Scriven, understand what it does, install it, and look up any command without leaving the docs
 **Depends on**: Phase 9 (all features must be built before documenting them)
