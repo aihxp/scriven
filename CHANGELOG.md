@@ -2,6 +2,17 @@
 
 All notable package-level changes to `scriven-cli` are documented here.
 
+## 1.5.0 - 2026-04-09
+
+This release packages the shipped `v1.5 Runtime Install Reliability` milestone.
+
+- added explicit non-interactive installer flags for runtime selection, scope, mode, help, and version output
+- added one-run multi-runtime installs for Codex and Claude Code with shared `.scriven` output written once per run
+- generated native Codex `$scr-*` skills backed by mirrored installed command markdown under `.codex/commands/scr`
+- tightened reinstall cleanup so Scriven removes stale generated Codex skill wrappers and other Scriven-owned runtime assets without wiping unrelated user files
+- updated README and runtime-facing docs to describe the real Codex and Claude install surfaces truthfully
+- expanded installer and trust-regression coverage so silent install parsing, Codex skill generation, and runtime-surface wording stay aligned
+
 ## 1.4.1 - 2026-04-09
 
 This release is a packaging follow-up to `1.4.0`.

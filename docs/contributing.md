@@ -9,7 +9,7 @@ This guide walks you through extending Scriven: adding commands, agents, work ty
 Before diving in, here is how the codebase is organized:
 
 ```
-commands/scr/          93 command files (one per /scr:* command)
+commands/scr/          Core command tree (101 command files total, including sacred subcommands)
 commands/scr/sacred/   8 sacred-exclusive subcommands
 agents/                6 specialized agents (drafter, voice-checker, etc.)
 data/CONSTRAINTS.json  Central constraint registry -- every command checks this

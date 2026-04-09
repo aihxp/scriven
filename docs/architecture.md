@@ -140,7 +140,7 @@ The command registry. Each entry maps a command name to its category, availabili
 ```
 scriven/
   commands/
-    scr/                   93 command files (one per /scr:* command)
+    scr/                   Core command tree (101 command files total, including sacred subcommands)
       draft.md             Core workflow: draft a unit
       new-work.md          Core workflow: start a new project
       autopilot.md         Autonomous pipeline orchestrator
@@ -393,7 +393,7 @@ Scriven's `package.json` has no runtime dependencies. The installer is pure Node
 
 ### Plan is canonical
 
-The product plan is the source of truth. If a command file contradicts the plan, the command file is wrong. This ensures consistency across 93 commands and prevents drift as multiple contributors work on the system.
+The product plan is the source of truth. If a command file contradicts the plan, the command file is wrong. This ensures consistency across 101 commands and prevents drift as multiple contributors work on the system.
 
 ### Backward compatibility
 

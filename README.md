@@ -187,11 +187,11 @@ Scriven currently ships installer targets for these AI tooling environments:
 
 ## Status
 
-**Version:** 1.4.1
+**Version:** 1.5.0
 
-Scriven's core command surface is stable across 101 commands, 50 work types, and 11 installer targets. All five roadmap milestones through v1.4 (MVP, Generic Platform Support, Documentation, Trust & Proof, and Perplexity & Technical Writing) are shipped in the repo. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
+Scriven's core command surface is stable across 101 commands, 50 work types, and 11 installer targets. All six roadmap milestones through `v1.5` (MVP, Generic Platform Support, Documentation, Trust & Proof, Perplexity & Technical Writing, and Runtime Install Reliability) are shipped in the repo. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
 
-Version `1.4.1` is a packaging follow-up to the shipped `v1.4 Perplexity & Technical Writing` milestone. It keeps the `v1.4` feature surface intact while cleaning up npm publish metadata so the installer command is packaged the way the repo expects.
+Version `1.5.0` packages the shipped `v1.5 Runtime Install Reliability` milestone. It brings the real installer surface in line with how Codex and Claude Code actually work today: silent multi-runtime installs, generated Codex `$scr-*` skills backed by mirrored command markdown, clean Scriven-owned reinstall behavior, and docs/tests that lock that contract in place.
 
 Package history is tracked in [CHANGELOG.md](CHANGELOG.md), and the public-facing summary for this release is in [docs/release-notes.md](docs/release-notes.md).
 

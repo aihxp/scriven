@@ -34,8 +34,8 @@ describe('phase 19 technical-writing trust surfaces', () => {
   });
 
   it('keeps the README status section aligned to the shipped milestone state', () => {
-    assert.match(readme, /All five roadmap milestones through v1\.4 .* shipped in the repo/i);
-    assert.doesNotMatch(readme, /v1\.4 .* in progress/i);
+    assert.match(readme, /All six roadmap milestones through `?v1\.5`? .* shipped in the repo/i);
+    assert.doesNotMatch(readme, /v1\.5 .* in progress/i);
   });
 
   it('makes the technical-writing family visible without overstating later-scope features', () => {
