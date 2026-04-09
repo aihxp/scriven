@@ -1,0 +1,117 @@
+const { describe, it } = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const ROOT = path.join(__dirname, '..');
+
+function read(relativePath) {
+  return fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
+}
+
+function exists(relativePath) {
+  return fs.existsSync(path.join(ROOT, relativePath));
+}
+
+describe('phase 13 shipped-asset truth', () => {
+  const shippedAssets = read('docs/shipped-assets.md');
+
+  it('keeps the canonical shipped-template inventory aligned to disk', () => {
+    const shippedTemplates = [
+      'data/export-templates/scriven-book.typst',
+      'data/export-templates/scriven-epub.css',
+      'data/export-templates/scriven-academic.latex',
+    ];
+    const absentTemplates = [
+      'data/export-templates/scriven-manuscript.docx',
+      'data/export-templates/scriven-formatted.docx',
+      'data/export-templates/scriven-kdp-cover.typst',
+      'data/export-templates/scriven-ingram-cover.typst',
+    ];
+
+    for (const relativePath of shippedTemplates) {
+      assert.ok(
+        shippedAssets.includes(path.basename(relativePath)),
+        `docs/shipped-assets.md should list ${path.basename(relativePath)}`
+      );
+      assert.ok(exists(relativePath), `Expected shipped template to exist: ${relativePath}`);
+    }
+
+    for (const relativePath of absentTemplates) {
+      assert.ok(
+        shippedAssets.includes(path.basename(relativePath)),
+        `docs/shipped-assets.md should mention ${path.basename(relativePath)}`
+      );
+      assert.ok(!exists(relativePath), `Expected template to remain absent: ${relativePath}`);
+    }
+  });
+
+  it('keeps the phase 13 trust-critical files inventoried', () => {
+    const trustCriticalFiles = [
+      'README.md',
+      'commands/scr/export.md',
+      'docs/publishing.md',
+      'docs/contributing.md',
+      'AGENTS.md',
+      'CLAUDE.md',
+    ];
+
+    for (const relativePath of trustCriticalFiles) {
+      assert.ok(
+        shippedAssets.includes(`\`${relativePath}\``),
+        `docs/shipped-assets.md should inventory ${relativePath}`
+      );
+      assert.ok(exists(relativePath), `Trust-critical file is missing: ${relativePath}`);
+    }
+  });
+});
+
+describe('phase 13 export guidance', () => {
+  const exportDoc = read('commands/scr/export.md');
+  const publishingDoc = read('docs/publishing.md');
+
+  it('describes DOCX export as shipped-default plus optional custom reference docs', () => {
+    assert.match(exportDoc, /Pandoc's default DOCX styling/);
+    assert.match(exportDoc, /optional `--reference-doc`/);
+    assert.match(exportDoc, /default DOCX output/);
+    assert.doesNotMatch(exportDoc, /scriven-manuscript\.docx/);
+    assert.doesNotMatch(exportDoc, /scriven-formatted\.docx/);
+
+    assert.match(publishingDoc, /Pandoc's default DOCX styling/);
+    assert.match(publishingDoc, /default DOCX output/);
+    assert.match(publishingDoc, /provide your own Pandoc reference document/);
+    assert.doesNotMatch(publishingDoc, /bundled DOCX reference document/i);
+  });
+});
+
+describe('phase 13 contributor and root-doc alignment', () => {
+  const contributingDoc = read('docs/contributing.md');
+  const readme = read('README.md');
+  const agentsDoc = read('AGENTS.md');
+  const claudeDoc = read('CLAUDE.md');
+
+  it('keeps contributor guidance pointed at the canonical inventory', () => {
+    assert.match(contributingDoc, /docs\/shipped-assets\.md/);
+    assert.match(contributingDoc, /scriven-book\.typst/);
+    assert.match(contributingDoc, /scriven-epub\.css/);
+    assert.match(contributingDoc, /scriven-academic\.latex/);
+    assert.doesNotMatch(contributingDoc, /scriven-manuscript\.docx/);
+    assert.doesNotMatch(contributingDoc, /scriven-formatted\.docx/);
+  });
+
+  it('keeps README aligned to the canonical shipped surface', () => {
+    assert.match(readme, /46 work types/);
+    assert.match(readme, /\[Shipped Assets\]\(docs\/shipped-assets\.md\)/);
+    assert.doesNotMatch(readme, /\bAll features shipped\b/i);
+    assert.doesNotMatch(readme, /\bfull support\b/i);
+  });
+
+  it('keeps AGENTS.md and CLAUDE.md aligned on shipped-versus-planned templates', () => {
+    for (const [name, doc] of [['AGENTS.md', agentsDoc], ['CLAUDE.md', claudeDoc]]) {
+      assert.match(doc, /46 work types/, `${name} should keep the 46 work-type count`);
+      assert.match(doc, /## Currently Shipped Export Templates/, `${name} should list shipped templates`);
+      assert.match(doc, /## Planned Export Templates/, `${name} should list planned templates separately`);
+      assert.doesNotMatch(doc, /Template Files Scriven Should Ship/, `${name} should not use the retired heading`);
+    }
+  });
+});
