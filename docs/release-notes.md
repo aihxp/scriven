@@ -2,25 +2,23 @@
 
 This document is the public-facing summary of what changed between package releases. For package history, see the root [CHANGELOG](../CHANGELOG.md).
 
-## 1.4.0 - 2026-04-09
+## 1.4.1 - 2026-04-09
 
 ### What changed
 
-- Added guided Perplexity Desktop support with explicit runtime-support framing instead of overstating parity
-- Added four technical-writing work types: technical guide, runbook, API reference, and design spec
-- Added technical-native scaffolding for audience, environment, procedures, and references during `/scr:new-work`
-- Added verification and trust-surface coverage so the new runtime and work-type claims stay aligned with the package and docs
+- Normalized npm publish metadata for the `scriven` installer command and repository URL
+- Marked the packaged installer entrypoint as executable
+- Updated package-level regression coverage so the publish-safe bin path stays locked in
 
 ### Why it matters
 
-`1.4.0` turns the already-shipped `v1.4` milestone into the package a user actually installs. It expands Scriven into technical writing and Perplexity Desktop without weakening the trust posture that `v1.3` established.
+`1.4.1` does not add new writer-facing features. It makes the npm package cleaner and less surprising after the `1.4.0` release by aligning the published metadata with what npm actually expects.
 
 ### Affected areas
 
-- runtime support and installation guidance
-- work-type modeling and technical-writing templates
-- onboarding and generated project config
-- trust-surface regression checks
+- npm packaging metadata
+- installer entrypoint permissions
+- package-time regression checks
 
 ### Verification
 

@@ -2,6 +2,14 @@
 
 All notable package-level changes to `scriven-cli` are documented here.
 
+## 1.4.1 - 2026-04-09
+
+This release is a packaging follow-up to `1.4.0`.
+
+- normalized npm publish metadata to the form npm expects for the `scriven` bin mapping and repository URL
+- marked `bin/install.js` executable in the package so the shipped installer entrypoint is explicit on disk
+- updated the package regression test to enforce the publish-safe bin path going forward
+
 ## 1.4.0 - 2026-04-09
 
 This release packages the shipped `v1.4 Perplexity & Technical Writing` milestone.

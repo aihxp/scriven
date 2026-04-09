@@ -13,7 +13,7 @@ describe('package.json fields', () => {
   });
 
   it('has bin entry pointing to install.js', () => {
-    assert.equal(pkg.bin.scriven, './bin/install.js');
+    assert.equal(pkg.bin.scriven, 'bin/install.js');
   });
 
   it('has engines field', () => {
