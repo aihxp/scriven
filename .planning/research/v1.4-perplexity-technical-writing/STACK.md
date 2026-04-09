@@ -1,68 +1,142 @@
-# v1.4 Research — Stack
+# Technology Stack
 
-## Scope
+**Project:** Scriven v1.4 — Perplexity runtimes and technical-writing support
+**Researched:** 2026-04-09
 
-Research for milestone `v1.4 Perplexity & Technical Writing`.
+## Recommendation
 
-Focus:
-- Perplexity runtime support
-- Perplexity Desktop support
-- technical-writing document support inside Scriven's existing markdown-first architecture
+Scriven should **not** add any new npm runtime dependencies, compiled services, or a Scriven-specific MCP server for this milestone. The correct stack move is:
 
-## Verified Findings
+1. Keep Scriven as a file-only installer plus markdown command system.
+2. Treat **Perplexity web/Comet** as an **in-app prompt surface** unless Perplexity publishes a writable command/skill manifest format.
+3. Treat **Perplexity Mac app** as an **optional local-MCP surface** that depends on Perplexity's own helper app plus user-installed external MCP servers.
+4. Reuse the existing **Pandoc + Typst + optional reference-doc / bibliography** toolchain for technical-writing families, adding templates and config only where the shipped surface is currently too book-centric or too academic-specific.
 
-### Perplexity runtime surface
+## Recommended Stack
 
-- Perplexity's official support article says **local MCPs are currently supported on macOS via the Perplexity Mac app**.
-- The same article says **remote MCP is coming soon** and is **not yet the currently documented general surface**.
-- Local MCP setup for the Mac app depends on a helper application, **PerplexityXPC**, plus a user-supplied command that launches an MCP server.
+### Perplexity Runtime Surface
 
-### Practical implication for Scriven
+| Technology | Version | Purpose | Why | Confidence |
+|------------|---------|---------|-----|------------|
+| **Perplexity Spaces + custom instructions** | Current SaaS surface | Web/runtime-friendly way to load project-specific behavior | Perplexity officially supports Spaces with custom AI instructions. This is the closest verified equivalent to a reusable Scriven prompt surface in the web product. | HIGH |
+| **Comet shortcuts** | Current desktop/browser surface | Lightweight reusable task entrypoints | Perplexity's official work guide positions shortcuts as reusable prompts/actions. This fits Scriven's command-style UX better than pretending a filesystem command registry exists. | MEDIUM |
+| **Perplexity Mac app local MCP connectors** | Current Mac app surface | Optional desktop access to local files/tools | Perplexity officially supports local MCP on macOS through the Mac App Store app, with PerplexityXPC as a required helper. This is the only verified local integration surface I found. | HIGH |
+| **`@modelcontextprotocol/server-filesystem`** | Current official MCP server package | Optional access to a Scriven workspace from Perplexity Mac app | Perplexity's own help docs point users to the official filesystem MCP server for local directory access. This is an external prerequisite, not a Scriven dependency. | HIGH |
+| **Node.js 20+** | Existing baseline | Installer runtime and optional `npx` transport for external MCP servers | Scriven already requires Node 20+ for its installer. That baseline is also sufficient for `npx`-launched MCP servers in Perplexity's local-MCP flow. | HIGH |
 
-- Scriven should **not** model Perplexity support as a command-directory runtime like Claude Code or Cursor.
-- The safest near-term interpretation is:
-  - **Perplexity Desktop / Mac app** = a distinct runtime target with an MCP-oriented install flow
-  - **Perplexity (broader/web)** = only supported if Scriven can honestly point to a real, documented Perplexity connector/runtime path
+### Export / Technical-Writing Toolchain
 
-### Technical-writing stack implications
+| Technology | Version | Purpose | Why | Confidence |
+|------------|---------|---------|-----|------------|
+| **Pandoc** | 3.9.x | Core document conversion for technical-writing families | Existing Scriven export flows already depend on Pandoc. Official docs confirm it supports DOCX reference docs, section numbering, TOC depth, bibliography, citeproc, split-level, and list-of-figures/tables features that technical docs need. | HIGH |
+| **Typst via Pandoc** | Existing Scriven PDF path | PDF output for reports, guides, and specs | Keep Typst as the default PDF engine. No new binary is needed for technical-writing PDFs; what is missing is a manual/report template, not a renderer. | HIGH |
+| **Shipped `scriven-academic.latex` template** | Existing | Citation-heavy technical or research-adjacent outputs | The repo already ships an academic LaTeX template, which is the right existing surface for bibliography-heavy document families. | HIGH |
+| **User-supplied DOCX reference documents** | Optional | House style, corporate templates, SOP/manual styling | Pandoc officially uses styles and document properties from a reference DOCX. Scriven currently ships no DOCX reference docs, so this remains the correct near-term assumption for polished Word output. | HIGH |
+| **Optional shipped CSL / DOCX / Typst templates** | New file assets only | Future technical-writing presets | If milestone scope includes RFCs, manuals, implementation guides, or SOPs, the right addition is new files under `data/export-templates/`, not new libraries. | HIGH |
 
-- No new runtime dependency is required just to add technical-writing work types.
-- Existing stack assumptions still fit:
-  - markdown command files
-  - `CONSTRAINTS.json` for work-type gating and adaptations
-  - existing export guidance for PDF, DOCX, HTML/EPUB-style outputs where relevant
-- The milestone should avoid introducing doc-site frameworks, static-site generators, or new npm libraries unless there is a later, explicit need.
+## Integration Implications For This Repo
 
-## Recommended Stack Direction
+### Perplexity
 
-### Keep
+- **Do not add a fake `perplexity` or `perplexity-desktop` file-copy runtime to `bin/install.js` yet.**
+  I found no official Perplexity documentation for a writable `commands` directory, `agents` directory, `SKILL.md` manifest path, or config-file schema analogous to the runtimes Scriven already supports.
 
-- Node-only installer baseline
-- markdown-first command system
-- constraint-driven work-type modeling
-- docs/runtime-support trust framing
+- **Support Perplexity web/Comet through generated prompt assets or docs, not filesystem installation.**
+  Verified surfaces are Spaces/custom instructions and shortcuts, both configured in-app.
 
-### Add
+- **Support Perplexity Mac app through optional MCP guidance, not a bundled MCP server.**
+  The official local-MCP flow is: install Perplexity from the Mac App Store, install the PerplexityXPC helper, then add a connector by entering a server command in-app.
 
-- a **Perplexity Desktop** runtime entry if the installer can generate a useful MCP-oriented setup artifact or installation guidance
-- a **Perplexity** runtime/support record only if the repo can document a real official target without overstating parity
-- technical-writing work types and templates using existing markdown/template infrastructure
+- **If Scriven documents a filesystem MCP setup, scope it narrowly.**
+  Recommended allowed paths are the writer's project root and, only if needed, the relevant Scriven data directory (`.scriven/` project-local or `~/.scriven/` global). Do not recommend broad home-directory access.
 
-### Do Not Add
+- **Prefer explicit allowed-directory arguments for filesystem MCP.**
+  This is an inference from the official filesystem MCP server docs: the server requires at least one allowed directory, and it errors if started without command-line directories and without roots support. Perplexity's help article documents entering a raw command string, but does not document roots support. Safest setup: pass explicit paths in the command.
 
-- npm runtime dependencies for Perplexity integration
-- a bespoke Perplexity SDK dependency
-- claims of verified parity across all Perplexity surfaces
-- technical-writing support that assumes a full docs-site generator in this milestone
+- **Assume cloud app connectors are not equivalent to desktop local access.**
+  Perplexity's Box connector docs explicitly say Box works in the web browser and is not supported in the Mac app or Windows app. Do not treat desktop Perplexity support as proof that enterprise cloud-document connectors are available there.
+
+### Technical-Writing Families
+
+- **No new renderer is needed for first-wave technical writing.**
+  Pandoc already covers the structural features that manuals, white papers, design docs, proposals, and implementation guides typically need.
+
+- **The real gap is templates, not tooling.**
+  Current shipped templates are:
+  `scriven-book.typst`, `scriven-epub.css`, and `scriven-academic.latex`.
+  That means Scriven can honestly support:
+  academic/citation-heavy outputs,
+  generic DOCX/PDF/EPUB conversion,
+  and book-centric print PDFs.
+  It cannot honestly claim a polished shipped template for branded manuals, RFC/spec PDFs, or corporate DOCX house styles yet.
+
+- **DOCX remains default-styled unless the user supplies a reference document.**
+  This matters for technical-writing families more than for fiction, because internal docs and white papers often must match company templates exactly.
+
+- **Academic export assumptions already overlap with technical writing.**
+  `CONSTRAINTS.json` already exposes `white_paper`, `research_paper`, `journal_article`, `thesis`, `literature_review`, and `monograph` in the academic group, and academic command adaptations already include citation- and journal-oriented behavior. New technical-writing work types should reuse this export posture where possible instead of inventing a parallel toolchain.
+
+## What Should Be Added
+
+| Category | Add | Why |
+|----------|-----|-----|
+| Perplexity support | Docs and/or template assets for Spaces, shortcuts, and local MCP setup | Matches the official integration surface without inventing unsupported install paths |
+| Perplexity support | Optional installer UX note or docs note for Perplexity Mac app + PerplexityXPC + external MCP requirements | Makes the support boundary explicit and honest |
+| Technical writing | New export templates under `data/export-templates/` for manual/report/spec families | Solves the real formatting gap without changing architecture |
+| Technical writing | Optional curated DOCX reference docs and CSL files as shipped assets | Improves Word and citation output while staying file-only |
+| Testing/docs | Runtime-matrix updates and tests that preserve the "installer target vs parity proof" distinction | Keeps support framing consistent with `docs/runtime-support.md` |
+
+## What Should NOT Be Added
+
+| Category | Do Not Add | Why Not |
+|----------|------------|---------|
+| Runtime architecture | **No new npm runtime dependencies in `package.json`** | Violates Scriven's zero-runtime-dependency architecture |
+| Perplexity support | **No Scriven-specific MCP server** | Adds an executable service surface Scriven does not need; Perplexity already supports external MCP servers |
+| Perplexity support | **No guessed `~/.perplexity/...` or `~/.comet/...` installer target** | I found no official manifest or config-path contract to justify it |
+| Perplexity support | **No browser automation requirement** | Fragile and contrary to the current installer model |
+| Technical writing | **No Sphinx, MkDocs, Docusaurus, or Asciidoctor as core stack** | They introduce a second documentation build system and/or runtime dependency chain that Scriven does not need for this milestone |
+| Technical writing | **No new PDF engine** | Typst plus Pandoc already cover the rendering layer; the missing asset is templates |
+
+## Suggested External Assumptions
+
+```bash
+# Existing Scriven baseline
+node --version   # 20+
+
+# Optional Perplexity Mac app local-MCP setup
+# Entered inside Perplexity's Add Connector UI, not installed by Scriven:
+npx -y @modelcontextprotocol/server-filesystem /absolute/path/to/project
+
+# Only add Scriven's shared data dir if a workflow truly needs it:
+npx -y @modelcontextprotocol/server-filesystem /absolute/path/to/project /absolute/path/to/.scriven
+```
+
+Notes:
+
+- The filesystem MCP command above is a **recommended integration example**, not something Scriven should install or vendor.
+- For project-scoped Scriven installs, prefer exposing the project root and project-local `.scriven/` only.
+
+## Alternatives Considered
+
+| Category | Recommended | Alternative | Why Not |
+|----------|-------------|-------------|---------|
+| Perplexity integration | Spaces / shortcuts / local MCP docs | First-class `bin/install.js` runtime target | No official writable path or manifest format found |
+| Desktop file access | External filesystem MCP server | Scriven-authored MCP server | Unnecessary executable surface and maintenance burden |
+| Technical-writing output | Pandoc + Typst + file templates | Sphinx / MkDocs / Docusaurus | Adds a second product architecture and dependency chain |
+| Word styling | Reference DOCX files | Custom DOCX post-processor | Extra complexity when Pandoc already has an official reference-doc mechanism |
 
 ## Sources
 
-- Perplexity Help Center — Local and Remote MCPs for Perplexity: <https://www.perplexity.ai/help-center/en/articles/11502712-local-and-remote-mcps-for-perplexity>
-- Perplexity Docs — Agent API Quickstart: <https://docs.perplexity.ai/docs/agent-api/quickstart>
+- Repo: [`bin/install.js`](../../../bin/install.js), [`docs/runtime-support.md`](../../../docs/runtime-support.md), [`docs/shipped-assets.md`](../../../docs/shipped-assets.md), [`commands/scr/export.md`](../../../commands/scr/export.md), [`data/CONSTRAINTS.json`](../../../data/CONSTRAINTS.json)
+- Perplexity Help Center: https://www.perplexity.ai/help-center/en/articles/11502712-local-and-remote-mcps-for-perplexity
+- Perplexity Help Center: https://www.perplexity.ai/help-center/en/articles/10352961-what-are-spaces
+- Perplexity Help Center: https://www.perplexity.ai/help-center/en/articles/13130932-using-the-box-connector
+- Perplexity Docs: https://docs.perplexity.ai/docs/getting-started/integrations/mcp-server
+- Pandoc User's Guide: https://pandoc.org/MANUAL.html
+- MCP Filesystem Server README: https://github.com/modelcontextprotocol/servers/tree/main/src/filesystem
 
-## Bottom Line
+## Confidence Notes
 
-The stack path is conservative:
-- treat **Perplexity Desktop (Mac app + local MCP)** as the concrete runtime surface
-- treat broader **Perplexity support** as limited by current official connector/runtime evidence
-- implement technical-writing support entirely inside the existing markdown/template/constraints system
+- **HIGH:** Perplexity Mac local MCP support, PerplexityXPC helper requirement, external-command connector setup, Pandoc reference-doc/citeproc/TOC capabilities, current Scriven shipped template surface.
+- **MEDIUM:** Using Comet shortcuts as the best Scriven-style entrypoint; treating explicit filesystem-server path args as the safest Perplexity configuration. These are evidence-backed recommendations, but part of the conclusion is inference from the official surfaces rather than a direct Perplexity statement.
+- **LOW:** Exact local app-bundle detection paths for Perplexity or Comet. I did not find official path documentation, so Scriven should avoid path-based install claims here.

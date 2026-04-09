@@ -2,14 +2,14 @@
 gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: Perplexity & Technical Writing
-status: defining_requirements
-stopped_at: Milestone v1.4 started; research and requirements in progress
-last_updated: "2026-04-09T10:19:06Z"
-last_activity: 2026-04-09 -- Milestone v1.4 started for Perplexity runtime support and technical-writing research
+status: roadmap_created
+stopped_at: Roadmap created for milestone v1.4; Phase 17 ready for discussion/planning
+last_updated: "2026-04-09T10:31:00Z"
+last_activity: 2026-04-09 -- Roadmap created for milestone v1.4 with phases 17-19
 progress:
-  total_phases: 0
+  total_phases: 3
   completed_phases: 0
-  total_plans: 0
+  total_plans: 7
   completed_plans: 0
   percent: 0
 ---
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** Milestone v1.4 definition — Perplexity runtimes and technical-writing scope
+**Current focus:** Phase 17 planning — Perplexity runtime support
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-04-09 -- Milestone v1.4 started
+Phase: 17 — Perplexity Runtime Support
+Plan: Not started
+Status: Roadmap created; ready for discuss/plan
+Last activity: 2026-04-09 -- Milestone v1.4 roadmap created
 
 Progress: [------------] 0%
 
@@ -83,9 +83,9 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-- Define Perplexity runtime support requirements and implementation boundaries
-- Research technical-writing document families and choose milestone scope
-- Create the v1.4 roadmap and phase breakdown
+- Start Phase 17 planning for Perplexity runtime support
+- Validate Perplexity Desktop install strategy against the current official platform surface
+- Begin Phase 18 after runtime support framing is stable
 
 ### Blockers/Concerns
 
@@ -94,5 +94,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-04-09T10:19:06Z
-Stopped at: Milestone v1.4 started; research and requirements in progress
+Stopped at: Roadmap created for milestone v1.4; Phase 17 ready for discussion/planning
 Resume file: None
