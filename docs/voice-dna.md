@@ -138,7 +138,7 @@ This section governs the speed and flow of narrative.
 - **Between chapters** -- Cliffhangers, echoes, or clean breaks
 - **Time jumps** -- How they're signaled, how frequent, how handled
 
-### Part 8: Reference Influences
+### Part 7: Reference Influences
 
 This section captures the authors, works, and passages that anchor your voice.
 
@@ -159,17 +159,17 @@ These rules override everything else. If the writer says "never use semicolons,"
 
 ## Setting Up Your Voice Profile
 
-Your STYLE-GUIDE.md is created during project setup. There are two paths:
+Your STYLE-GUIDE.md starts as a template during project setup, then gets filled in through Voice DNA profiling. There are two main paths:
 
 ### Path 1: Interview (recommended)
 
-Run `/scr:discuss` or `/scr:profile-writer` and Scriven interviews you about your writing preferences. It asks about your sentence style, dialogue preferences, figurative language density, and other dimensions. From your answers, it generates a complete STYLE-GUIDE.md.
+Run `/scr:profile-writer --questionnaire` (or simply `/scr:profile-writer`) and Scriven interviews you about your writing preferences. It asks about your sentence style, dialogue preferences, figurative language density, and other dimensions, then writes those decisions into STYLE-GUIDE.md.
 
 ### Path 2: Writing sample
 
-Paste a sample of your existing writing (500-1000 words works well) and Scriven analyzes it to extract your voice profile automatically. This works especially well if you have published work or a manuscript-in-progress that represents the voice you want.
+Run `/scr:profile-writer --analyze <file>` with a sample of your existing writing (500-1000 words works well) and Scriven analyzes it to extract your voice profile automatically. This works especially well if you have published work or a manuscript-in-progress that represents the voice you want.
 
-Either way, the result is a STYLE-GUIDE.md file filled with your specific values instead of template placeholders.
+After profiling, run `/scr:voice-test` before drafting. `/scr:discuss` comes later in the workflow and assumes STYLE-GUIDE.md already exists for the unit-planning conversation.
 
 ## Calibrating with voice-test
 

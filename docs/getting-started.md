@@ -70,7 +70,23 @@ From your answers, Scriven generates your project structure:
 
 Every file adapts to your work type. Writing a screenplay? You get acts and scenes. A research paper? Sections and argument maps. A Quran commentary? Surahs and doctrinal frameworks. Scriven supports 46 work types with tradition-native vocabulary.
 
-## Step 4: Develop Your Story
+## Step 4: Calibrate Your Voice
+
+Before you draft anything substantial, turn the STYLE-GUIDE template into a real voice profile:
+
+```
+/scr:profile-writer
+```
+
+This interview builds your Voice DNA from your preferences, reference works, or a writing sample. When it finishes, run:
+
+```
+/scr:voice-test
+```
+
+That calibration pass writes a short sample and lets you say what sounds right or wrong before Scriven starts drafting real units.
+
+## Step 5: Develop Your Story
 
 Before drafting, shape your ideas:
 
@@ -82,9 +98,9 @@ This opens a collaborative conversation where you and the AI work through the cr
 
 Your decisions get saved to a context file that the drafter will use. Think of this as giving the drafter its marching orders.
 
-If you'd rather jump straight to drafting, that works too -- Scriven will use sensible defaults from your voice profile.
+If you already refined your voice profile, you can also skip this step and draft with the defaults you've approved.
 
-## Step 5: Write Your First Draft
+## Step 6: Write Your First Draft
 
 Draft your first unit:
 

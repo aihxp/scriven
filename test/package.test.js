@@ -18,10 +18,7 @@ describe('package.json fields', () => {
 
   it('has engines field', () => {
     assert.ok(pkg.engines.node, 'engines.node should be defined');
-    assert.ok(
-      pkg.engines.node.startsWith('>='),
-      `engines.node should start with ">=" but got "${pkg.engines.node}"`
-    );
+    assert.equal(pkg.engines.node, '>=20.0.0');
   });
 
   it('has publishConfig with public access', () => {
@@ -57,14 +54,16 @@ describe('bin/install.js', () => {
 });
 
 describe('npm pack dry-run', () => {
-  let packOutput;
+  let packFiles;
 
-  // Run npm pack once and reuse output
+  // Run npm pack once and reuse the file list
   before(() => {
-    packOutput = execSync('npm pack --dry-run 2>&1', {
+    const packOutput = execSync('npm pack --dry-run --json', {
       encoding: 'utf-8',
       cwd: path.join(__dirname, '..'),
     });
+    const [{ files }] = JSON.parse(packOutput);
+    packFiles = new Set(files.map((file) => file.path));
   });
 
   it('includes all critical directories', () => {
@@ -73,19 +72,23 @@ describe('npm pack dry-run', () => {
       'data/CONSTRAINTS.json',
       'commands/scr/demo.md',
       'templates/STYLE-GUIDE.md',
-      'agents/',
     ];
     for (const entry of expectedEntries) {
       assert.ok(
-        packOutput.includes(entry),
+        packFiles.has(entry),
         `npm pack output should include "${entry}"`
       );
     }
+
+    assert.ok(
+      Array.from(packFiles).some((entry) => entry.startsWith('agents/')),
+      'npm pack output should include files from "agents/"'
+    );
   });
 
   it('includes demo manuscript files', () => {
     assert.ok(
-      packOutput.includes('data/demo/.manuscript/STYLE-GUIDE.md'),
+      packFiles.has('data/demo/.manuscript/STYLE-GUIDE.md'),
       'npm pack should include dotfile directory data/demo/.manuscript/'
     );
   });
@@ -101,7 +104,7 @@ describe('npm pack dry-run', () => {
 
     for (const entry of expectedEntries) {
       assert.ok(
-        packOutput.includes(entry),
+        packFiles.has(entry),
         `npm pack output should include "${entry}"`
       );
     }
@@ -116,7 +119,7 @@ describe('npm pack dry-run', () => {
 
     for (const entry of expectedEntries) {
       assert.ok(
-        packOutput.includes(entry),
+        packFiles.has(entry),
         `npm pack output should include "${entry}"`
       );
     }

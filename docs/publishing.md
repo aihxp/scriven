@@ -16,7 +16,7 @@ Scriven's export pipeline uses external tools for format conversion. You only ne
 | **Afterwriting** | `npm i -g afterwriting` | Screenplay PDF |
 | **Screenplain** | `pip install screenplain` | Final Draft (FDX) export |
 
-Run `/scr:health` to check which tools are installed on your system. Scriven will also warn you at export time if a required tool is missing and show the install command.
+Scriven warns at export time if a required tool is missing and shows the install command for the format you selected.
 
 **No tools needed for:** Markdown export and Fountain export -- these are pure text conversions handled by Scriven directly.
 
@@ -36,13 +36,13 @@ These cover the most common publishing and review needs.
 
 Output: `.manuscript/output/manuscript.md`
 
-**DOCX (Manuscript Format)** -- Standard manuscript format: 12pt Times New Roman, double-spaced, 1-inch margins. This is what agents and editors expect for submissions.
+**DOCX (Manuscript Format)** -- Manuscript DOCX assembled through Pandoc. Use this when you need a Word file as the starting point for submissions or further formatting.
 
 ```
 /scr:export --format docx
 ```
 
-Output: `.manuscript/output/manuscript.docx`. Uses Pandoc's default manuscript styling (12pt Times New Roman, double-spaced, 1-inch margins).
+Output: `.manuscript/output/manuscript.docx`. The shipped path uses Pandoc's default DOCX styling because Scriven does not bundle a manuscript reference document. If you need standard manuscript formatting, provide your own Pandoc reference document.
 
 **DOCX (Formatted)** -- Designed and typeset DOCX for review copies and ARCs (advance reader copies). Custom fonts, styled headers, polished layout.
 

@@ -6,7 +6,9 @@ const os = require('os');
 const readline = require('readline');
 
 const PKG_ROOT = path.join(__dirname, '..');
-const VERSION = require('../package.json').version;
+const PKG = require('../package.json');
+const VERSION = PKG.version;
+const DOCS_URL = PKG.homepage || PKG.repository?.url || 'https://github.com/aihxp/scriven';
 const MIN_NODE_MAJOR = 20;
 
 const COLORS = {
@@ -241,7 +243,14 @@ async function main() {
   });
 
   const runtimeChoice = await ask(rl, `\n${c('dim', 'Choice [1]: ')}`);
-  const runtimeKey = runtimeKeys[(parseInt(runtimeChoice) || 1) - 1];
+  const parsedRuntimeChoice = Number.parseInt((runtimeChoice || '1').trim(), 10);
+  const validRuntimeChoice = Number.isInteger(parsedRuntimeChoice)
+    && parsedRuntimeChoice >= 1
+    && parsedRuntimeChoice <= runtimeKeys.length;
+  if ((runtimeChoice || '').trim() && !validRuntimeChoice) {
+    console.log(c('yellow', `Invalid choice "${runtimeChoice.trim()}". Defaulting to 1 (${RUNTIMES[runtimeKeys[0]].label}).`));
+  }
+  const runtimeKey = runtimeKeys[validRuntimeChoice ? parsedRuntimeChoice - 1 : 0];
   const runtime = RUNTIMES[runtimeKey];
 
   console.log('\n' + c('bold', 'Install scope:'));
@@ -323,7 +332,7 @@ async function main() {
     console.log(`  ${c('cyan', '3.')} Run ${c('bold', '/scr:new-work')} to start a new project`);
     console.log(`     or ${c('bold', '/scr:demo')} to explore a sample project first`);
   }
-  console.log('\n' + c('dim', 'Docs: https://github.com/scriven/scriven\n'));
+  console.log('\n' + c('dim', `Docs: ${DOCS_URL}\n`));
 }
 
 // Only run interactive installer when executed directly

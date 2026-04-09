@@ -1,6 +1,7 @@
 const { describe, it } = require('node:test');
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
+const os = require('node:os');
 const path = require('node:path');
 
 const { RUNTIMES } = require('../bin/install.js');
@@ -13,6 +14,18 @@ function read(relativePath) {
 
 function exists(relativePath) {
   return fs.existsSync(path.join(ROOT, relativePath));
+}
+
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function toDocPathShape(value) {
+  const normalized = value.split(path.sep).join('/');
+  const home = os.homedir().split(path.sep).join('/');
+  return normalized.startsWith(`${home}/`)
+    ? `~/${normalized.slice(home.length + 1)}`
+    : normalized;
 }
 
 describe('trust-critical shipped assets', () => {
@@ -92,8 +105,10 @@ describe('launch-surface regression checks', () => {
       /\bfull support\b/i,
     ];
 
-    for (const pattern of forbiddenPhrases) {
-      assert.ok(!pattern.test(readme), `README.md should not contain forbidden phrase: ${pattern}`);
+    for (const [name, doc] of [['README.md', readme], ['docs/getting-started.md', gettingStarted]]) {
+      for (const pattern of forbiddenPhrases) {
+        assert.ok(!pattern.test(doc), `${name} should not contain forbidden phrase: ${pattern}`);
+      }
     }
   });
 });
@@ -129,10 +144,35 @@ describe('runtime support regression checks', () => {
   });
 
   it('covers every installer runtime label from bin/install.js', () => {
-    for (const runtime of Object.values(RUNTIMES)) {
-      assert.ok(
-        runtimeSupport.includes(`| ${runtime.label} |`),
-        `docs/runtime-support.md should include a matrix row for ${runtime.label}`
+    for (const [runtimeKey, runtime] of Object.entries(RUNTIMES)) {
+      const installType = runtime.type;
+      const supportLevel = runtimeKey === 'claude-code'
+        ? 'Primary reference runtime'
+        : runtimeKey === 'generic'
+          ? 'Generic skills fallback'
+          : installType === 'skills'
+            ? 'Skills installer target'
+            : 'Standard installer target';
+      const repoEvidence = runtimeKey === 'generic'
+        ? 'Installer registry, registry-tested'
+        : 'Installer registry, registry-tested, repo-documented';
+      const verificationStatus = runtimeKey === 'generic'
+        ? 'Registry-tested; no host-runtime parity verification yet'
+        : 'Registry-tested; repo-documented; no host-runtime parity verification yet';
+      const globalPath = toDocPathShape(
+        installType === 'skills' ? runtime.skills_dir_global : runtime.commands_dir_global
+      );
+      const projectPath = toDocPathShape(
+        installType === 'skills' ? runtime.skills_dir_project : runtime.commands_dir_project
+      );
+      const expectedRow = new RegExp(
+        `\\| ${escapeRegex(runtime.label)} \\| ${escapeRegex(installType)} \\| .*${escapeRegex(globalPath)}.*${escapeRegex(projectPath)}.*\\| ${escapeRegex(repoEvidence)} \\| ${escapeRegex(supportLevel)} \\| ${escapeRegex(verificationStatus)} \\|`
+      );
+
+      assert.match(
+        runtimeSupport,
+        expectedRow,
+        `docs/runtime-support.md should preserve the canonical matrix row for ${runtime.label}`
       );
     }
   });

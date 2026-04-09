@@ -69,6 +69,10 @@ Look up the requested format in `CONSTRAINTS.json` under the `exports` section. 
 | `fountain` | `fountain` |
 | `fdx` | `fdx` |
 | `latex` | `latex` |
+| `kdp-package` | `kdp_package` |
+| `ingram-package` | `ingram_package` |
+| `query-package` | `query_package` |
+| `submission-package` | `submission_package` |
 
 Find the current work type's group in `CONSTRAINTS.json` under `work_type_groups`. Check if the group is in the format's `available` list (or if `available` contains `"all"`).
 
@@ -85,7 +89,7 @@ Check for required external tools based on the requested format.
 
 **For markdown:** No external tools needed. Skip to Step 3.
 
-**For docx, epub, latex:** Check for Pandoc:
+**For docx, epub, latex, query-package:** Check for Pandoc:
 
 ```bash
 command -v pandoc >/dev/null 2>&1
@@ -234,7 +238,7 @@ cp .manuscript/output/assembled-manuscript.md .manuscript/output/manuscript.md
 
 #### FORMAT: docx (EXP-02)
 
-Standard manuscript format DOCX (12pt Times New Roman, double-spaced, 1" margins).
+Manuscript export DOCX using Pandoc's default Word styling.
 
 ```bash
 pandoc .manuscript/output/assembled-manuscript.md \
@@ -244,7 +248,7 @@ pandoc .manuscript/output/assembled-manuscript.md \
   --toc-depth=1
 ```
 
-**Current shipped behavior:** Scriven does not currently bundle a manuscript DOCX reference document in `data/export-templates/`. This command uses Pandoc's default DOCX styling. If you want a custom manuscript reference document, add your own `.docx` template and pass it to Pandoc as an optional `--reference-doc`.
+**Current shipped behavior:** Scriven does not currently bundle a manuscript DOCX reference document in `data/export-templates/`. This command uses Pandoc's default DOCX styling. If you need standard manuscript formatting (for example 12pt, double-spaced, 1-inch margins), supply your own `.docx` reference document via Pandoc's optional `--reference-doc`.
 
 ---
 
@@ -635,8 +639,8 @@ Check for the following files:
 
 | File | Source | If Missing |
 |------|--------|------------|
-| Query letter | `.manuscript/output/query-letter.md` | Suggest running `/scr:query-letter` to generate one |
-| Synopsis | `.manuscript/output/synopsis.md` | Suggest running `/scr:synopsis` to generate one |
+| Query letter | `.manuscript/marketing/QUERY-LETTER.md` | Suggest running `/scr:query-letter` to generate one |
+| Synopsis | `.manuscript/marketing/SYNOPSIS-*.md` | Suggest running `/scr:synopsis` to generate one |
 | Sample chapters | First 3 body units from OUTLINE.md | Assembled from `.manuscript/drafts/body/` |
 
 If query letter or synopsis are missing:
@@ -661,7 +665,14 @@ Read OUTLINE.md and extract the first 3 body units (chapters/scenes). Read their
 mkdir -p .manuscript/output/query-package
 ```
 
-Copy the individual files into the package directory. Then create a combined DOCX:
+Copy `.manuscript/marketing/QUERY-LETTER.md` into the package directory as `query-letter.md`.
+
+Select the synopsis file from `.manuscript/marketing/` in this order of preference:
+1. `SYNOPSIS-1p.md`
+2. `SYNOPSIS-2p.md`
+3. Any other `SYNOPSIS-*.md`
+
+Copy the chosen synopsis into the package directory as `synopsis.md`. Then create a combined DOCX:
 
 ```bash
 pandoc .manuscript/output/query-package/query-letter.md \
@@ -689,9 +700,9 @@ Check for the following files:
 | File | Source | If Missing |
 |------|--------|------------|
 | Full manuscript DOCX | `.manuscript/output/manuscript.docx` | Run `/scr:export --format docx` first |
-| Synopsis | `.manuscript/output/synopsis.md` | Suggest running `/scr:synopsis` |
-| Cover letter | `.manuscript/output/query-letter.md` | Suggest running `/scr:query-letter` (adapted as cover letter) |
-| Author bio | `.manuscript/back-matter/about-the-author.md` | Suggest running `/scr:back-matter --element about-the-author` |
+| Synopsis | `.manuscript/marketing/SYNOPSIS-*.md` | Suggest running `/scr:synopsis` |
+| Cover letter | `.manuscript/marketing/QUERY-LETTER.md` | Suggest running `/scr:query-letter` (adapted as cover letter) |
+| Author bio | `.manuscript/back-matter/about-author.md` | Suggest running `/scr:back-matter --element about-author` |
 
 If prerequisites are missing:
 > **Missing prerequisites for submission package:**
@@ -701,7 +712,7 @@ If prerequisites are missing:
 > - Full manuscript: `/scr:export --format docx`
 > - Synopsis: `/scr:synopsis`
 > - Cover letter: `/scr:query-letter`
-> - Author bio: `/scr:back-matter --element about-the-author`
+> - Author bio: `/scr:back-matter --element about-author`
 >
 > Or continue with available materials only?
 
@@ -714,9 +725,9 @@ mkdir -p .manuscript/output/submission-package
 Copy available files into the package directory:
 
 - `manuscript.docx` -- full manuscript in standard format
-- `synopsis.md` -- 1-2 page synopsis
-- `cover-letter.md` -- adapted from query letter for this specific submission
-- `about-the-author.md` -- author bio from back matter
+- `synopsis.md` -- chosen from `.manuscript/marketing/SYNOPSIS-*.md` (prefer `1p`, then `2p`)
+- `cover-letter.md` -- adapted from `.manuscript/marketing/QUERY-LETTER.md` for this specific submission
+- `about-author.md` -- author bio from back matter
 
 **Step 3: Generate submission checklist**
 
@@ -739,7 +750,7 @@ Create `submission-checklist.md` in the package directory:
 - Always follow the specific agent's submission guidelines
 ```
 
-Output: `.manuscript/output/submission-package/` containing `manuscript.docx`, `synopsis.md`, `cover-letter.md`, `about-the-author.md`, `submission-checklist.md`
+Output: `.manuscript/output/submission-package/` containing `manuscript.docx`, `synopsis.md`, `cover-letter.md`, `about-author.md`, `submission-checklist.md`
 
 ---
 
