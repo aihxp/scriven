@@ -75,7 +75,7 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 ## Latest Milestone: v1.3 Trust & Proof
 
 **Goal:** Make Scriven's launch surface feel fully earned by aligning shipped assets, claims, requirements, and proof artifacts around the product's strongest differentiator.
-**Status:** Shipped 2026-04-08
+**Status:** Shipped 2026-04-09
 
 **Target features:**
 - Resolve export-template truth gaps by either shipping missing templates or narrowing claims and command paths to the files that actually exist
@@ -88,6 +88,7 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 **Closeout notes:**
 - All four milestone phases now have verification, validation, and security records
 - The milestone audit passed with full requirements coverage and no open UAT backlog
+- Post-`v1.3.3` review fixes were folded back into the shipped baseline before the `1.3.4` release prep
 - Historical planning-health drift was reconciled so `.planning/` is healthy again
 
 ## Next Milestone

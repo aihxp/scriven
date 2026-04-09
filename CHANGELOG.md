@@ -1,6 +1,21 @@
 # Changelog
 
-All notable changes to Scriven are documented here.
+All notable package-level changes to `scriven-cli` are documented here.
+
+## 1.3.4 - 2026-04-09
+
+This release rolls up the hardening work that landed after `1.3.3`.
+
+- fixed review-driven issues across export, runtime, publishing, and historical command/doc paths
+- added explicit validation artifacts for phases 13-16 and retroactive security artifacts for phases 13-16
+- expanded regression coverage with new phase-level Nyquist tests for phases 13-15 and stronger package/runtime trust checks for phase 16
+- reconciled planning-health drift and finalized the archived `v1.3 Trust & Proof` milestone state
+- prepared and published `scriven-cli@1.3.4` from that hardened baseline
+
+## 1.3.3 - 2026-04-08
+
+- restored public npm publishing for `scriven-cli`
+- shipped the `v1.3 Trust & Proof` product surface before the post-release hardening pass
 
 ## [0.3.0] — 2026-04-06
 

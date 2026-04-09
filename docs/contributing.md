@@ -18,7 +18,7 @@ data/export-templates/ Export templates (Typst, CSS, LaTeX)
 templates/             9 project templates + sacred/ variants
 templates/sacred/      6 sacred-specific context templates
 bin/install.js         Multi-platform installer (Node.js)
-docs/                  Documentation suite (9 guides)
+docs/                  Documentation suite (13 guides)
 ```
 
 Key principle: the AI agent reads these files at runtime. There is no compilation, no bundling, no transpilation. If you can write markdown, you can contribute.
@@ -365,6 +365,26 @@ After adding a command, verify:
 2. The CONSTRAINTS.json entry matches the file
 3. The description in frontmatter matches CONSTRAINTS.json
 4. If the command references other files, those files exist
+
+## Documenting a Release
+
+When a package release changes the public story, update the release docs alongside the code.
+
+### Release docs to update
+
+- `CHANGELOG.md` -- package-level release history
+- `docs/release-notes.md` -- public-facing summary of what changed and why it matters
+- `README.md` -- current version/status blurb when the release changes the headline positioning
+- `.planning/` milestone summary files -- only when the release closes out milestone work or changes the archive story
+
+### Minimum release checklist
+
+1. Bump the package version in `package.json` and any mirrored version metadata such as `data/CONSTRAINTS.json`
+2. Update `CHANGELOG.md` with the new version and the user-visible changes
+3. Update `docs/release-notes.md` with a concise explanation of what changed, why, and how it was verified
+4. Run `npm test`
+5. Run `npm pack --dry-run`
+6. Publish only after the docs and package metadata tell the same story
 
 ## Code Style
 

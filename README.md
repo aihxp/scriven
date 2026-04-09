@@ -146,6 +146,7 @@ Scriven is built on five principles:
 - [Translation Guide](docs/translation.md) -- Multi-language pipeline with glossary and cultural adaptation
 - [Contributing](docs/contributing.md) -- How to add commands, agents, work types, and templates
 - [Architecture](docs/architecture.md) -- How Scriven works under the hood
+- [Release Notes](docs/release-notes.md) -- Public summary of what changed between package releases
 - [Shipped Assets](docs/shipped-assets.md) -- Canonical inventory of bundled export templates and launch-critical files
 - [Runtime Support](docs/runtime-support.md) -- Canonical runtime matrix, Node baseline, and verification-status framing
 
@@ -176,6 +177,10 @@ Scriven currently ships installer targets for these AI coding agent environments
 **Version:** 1.3.4
 
 Scriven's core command surface is stable across 101 commands, 46 work types, and 10 installer targets. All four milestones (v1.0 MVP, v1.1 Generic Platform Support, v1.2 Documentation, v1.3 Trust & Proof) are shipped, and the full automated test suite is green. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
+
+Version `1.3.4` rolls up the post-`1.3.3` hardening pass: review-driven fixes across export/runtime/publishing paths, explicit validation and security records for v1.3, and the finalized Trust & Proof archive.
+
+Package history is tracked in [CHANGELOG.md](CHANGELOG.md), and the public-facing summary for this release is in [docs/release-notes.md](docs/release-notes.md).
 
 ---
 

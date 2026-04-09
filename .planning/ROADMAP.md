@@ -5,7 +5,7 @@
 - [x] **v1.0 MVP** - Phases 1-8 (shipped 2026-04-07)
 - [x] **v1.1 Generic Platform Support** - Phase 9 (shipped 2026-04-07)
 - [x] **v1.2 Documentation** - Phases 10-12 (shipped 2026-04-07)
-- [x] **v1.3 Trust & Proof** - Phases 13-16 (shipped 2026-04-08)
+- [x] **v1.3 Trust & Proof** - Phases 13-16 (shipped 2026-04-09)
 
 ## Phases
 
@@ -196,7 +196,7 @@ Plans:
 - [x] **Phase 11: Feature & Domain Guides** - Work types, Voice DNA, publishing, sacred text, and translation guides (completed 2026-04-07)
 - [x] **Phase 12: Developer Docs & Verification** - Contributor guide, architecture overview, and codebase verification pass (completed 2026-04-07)
 
-### v1.3 Trust & Proof (Shipped 2026-04-08)
+### v1.3 Trust & Proof (Shipped 2026-04-09)
 
 **Milestone Goal:** Make Scriven's launch surface feel fully earned by aligning shipped assets, claims, requirements, and proof artifacts around the product's strongest differentiator. Archived details: `.planning/milestones/v1.3-ROADMAP.md`
 
