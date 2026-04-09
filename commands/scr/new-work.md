@@ -58,7 +58,7 @@ For technical work types, load the matching files from `templates/technical/` an
 Write `.manuscript/config.json` with:
 ```json
 {
-  "scriven_version": "1.3.4",
+  "scriven_version": "1.4.0",
   "work_type": "<chosen>",
   "group": "<group>",
   "command_unit": "<unit>",

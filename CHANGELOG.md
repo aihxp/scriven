@@ -2,6 +2,15 @@
 
 All notable package-level changes to `scriven-cli` are documented here.
 
+## 1.4.0 - 2026-04-09
+
+This release packages the shipped `v1.4 Perplexity & Technical Writing` milestone.
+
+- added guided Perplexity Desktop support as a documented local-MCP runtime target with explicit trust framing
+- added four technical-writing work types: technical guide, runbook, API reference, and design spec
+- added technical-native scaffolding and config defaults for audience, environment, procedures, and references
+- expanded trust-surface regression coverage so the new runtime and work-type claims stay aligned with the package and docs
+
 ## 1.3.4 - 2026-04-09
 
 This release rolls up the hardening work that landed after `1.3.3`.
