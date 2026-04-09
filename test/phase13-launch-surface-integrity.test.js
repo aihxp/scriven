@@ -100,7 +100,7 @@ describe('phase 13 contributor and root-doc alignment', () => {
   });
 
   it('keeps README aligned to the canonical shipped surface', () => {
-    assert.match(readme, /46 work types/);
+    assert.match(readme, /50 work types/);
     assert.match(readme, /\[Shipped Assets\]\(docs\/shipped-assets\.md\)/);
     assert.doesNotMatch(readme, /\bAll features shipped\b/i);
     assert.doesNotMatch(readme, /\bfull support\b/i);
@@ -108,7 +108,7 @@ describe('phase 13 contributor and root-doc alignment', () => {
 
   it('keeps AGENTS.md and CLAUDE.md aligned on shipped-versus-planned templates', () => {
     for (const [name, doc] of [['AGENTS.md', agentsDoc], ['CLAUDE.md', claudeDoc]]) {
-      assert.match(doc, /46 work types/, `${name} should keep the 46 work-type count`);
+      assert.match(doc, /50 work types/, `${name} should keep the 50 work-type count`);
       assert.match(doc, /## Currently Shipped Export Templates/, `${name} should list shipped templates`);
       assert.match(doc, /## Planned Export Templates/, `${name} should list planned templates separately`);
       assert.doesNotMatch(doc, /Template Files Scriven Should Ship/, `${name} should not use the retired heading`);

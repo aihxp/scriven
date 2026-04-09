@@ -20,9 +20,9 @@ Run the installer in your terminal:
 npx scriven-cli@latest
 ```
 
-This installs Scriven's slash commands into your AI agent. The installer auto-detects current runtime paths (Claude Code, Cursor, Gemini CLI, and other listed installer targets) and places everything where your agent expects it. Takes about 30 seconds.
+This installs Scriven into the runtime you choose. Command-directory and skills targets place files where the runtime expects them. Guided targets like Perplexity Desktop instead write setup assets and show the exact connector steps you need. Takes about 30 seconds.
 
-Once installed, every `/scr:` command is available inside your agent's chat.
+Once installed, `/scr:` commands are available inside command and skills runtimes. Guided targets explain their supported setup path directly in the generated setup files.
 
 ## Step 2: Explore the Demo (Optional)
 
@@ -68,7 +68,7 @@ From your answers, Scriven generates your project structure:
   config.json      -- project settings
 ```
 
-Every file adapts to your work type. Writing a screenplay? You get acts and scenes. A research paper? Sections and argument maps. A Quran commentary? Surahs and doctrinal frameworks. Scriven supports 46 work types with tradition-native vocabulary.
+Every file adapts to your work type. Writing a screenplay? You get acts and scenes. A research paper? Sections and argument maps. A runbook? Procedures and system maps. A Quran commentary? Surahs and doctrinal frameworks. Scriven supports 50 work types with tradition-native vocabulary.
 
 ## Step 4: Calibrate Your Voice
 

@@ -334,8 +334,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 17-01-PLAN.md -- Add Perplexity Desktop runtime target, installer strategy, and support-matrix wiring
-- [ ] 17-02-PLAN.md -- Add Perplexity runtime docs, troubleshooting, and verification coverage without overclaiming parity
+- [x] 17-01-PLAN.md -- Add Perplexity Desktop runtime target, installer strategy, and support-matrix wiring
+- [x] 17-02-PLAN.md -- Add Perplexity runtime docs, troubleshooting, and verification coverage without overclaiming parity
 
 ### Phase 18: Technical Writing Domain Modeling
 **Goal**: Users can start technical-writing projects with document-native vocabulary, templates, and command behavior grounded in real technical-writing document families
@@ -348,9 +348,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [ ] 18-01-PLAN.md -- Define technical-writing work-type family, hierarchy vocabulary, and constraint-model updates
-- [ ] 18-02-PLAN.md -- Add templates, file adaptations, and command gating for first-pass technical-writing workflows
-- [ ] 18-03-PLAN.md -- Update help and work-type documentation for the new technical-writing family
+- [x] 18-01-PLAN.md -- Define technical-writing work-type family, hierarchy vocabulary, and constraint-model updates
+- [x] 18-02-PLAN.md -- Add templates, file adaptations, and command gating for first-pass technical-writing workflows
+- [x] 18-03-PLAN.md -- Update help and work-type documentation for the new technical-writing family
 
 ### Phase 19: Verification & Trust Surface Updates
 **Goal**: Maintainers can trust the Perplexity and technical-writing additions because docs, counts, and tests stay aligned with the live repo
@@ -363,8 +363,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 19-01-PLAN.md -- Add regression coverage for Perplexity runtime support and technical-writing work types
-- [ ] 19-02-PLAN.md -- Update launch/docs trust surfaces and verify counts, examples, and support framing
+- [x] 19-01-PLAN.md -- Add regression coverage for Perplexity runtime support and technical-writing work types
+- [x] 19-02-PLAN.md -- Update launch/docs trust surfaces and verify counts, examples, and support framing
 
 ## Progress
 
@@ -389,6 +389,6 @@ Phases execute in numeric order: 17 -> 18 -> 19
 | 14. Runtime Credibility | v1.3 | 2/2 | Complete | 2026-04-08 |
 | 15. Proof Artifacts & Positioning | v1.3 | 3/3 | Complete | 2026-04-08 |
 | 16. Trust Regression Coverage | v1.3 | 2/2 | Complete | 2026-04-08 |
-| 17. Perplexity Runtime Support | v1.4 | 0/2 | Planned | — |
-| 18. Technical Writing Domain Modeling | v1.4 | 0/3 | Planned | — |
-| 19. Verification & Trust Surface Updates | v1.4 | 0/2 | Planned | — |
+| 17. Perplexity Runtime Support | v1.4 | 2/2 | Complete    | 2026-04-09 |
+| 18. Technical Writing Domain Modeling | v1.4 | 3/3 | Complete | 2026-04-09 |
+| 19. Verification & Trust Surface Updates | v1.4 | 2/2 | Complete | 2026-04-09 |

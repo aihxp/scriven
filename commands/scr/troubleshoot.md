@@ -21,6 +21,7 @@ You are diagnosing why something isn't working in the writer's Scriven project.
    - **"My draft doesn't sound right"** -- Check if STYLE-GUIDE.md exists and is populated, suggest `/scr:profile-writer --refine` or `/scr:voice-test`
    - **"Something broke"** -- Run the health checks from `/scr:health` inline and report findings
    - **"I lost my work"** -- Check git log, suggest `/scr:history` or `/scr:versions` to recover
+   - **"Perplexity Desktop setup isn't working"** -- Check that the writer is on macOS with the Perplexity app installed, that PerplexityXPC has been installed if prompted, and that the generated connector command points only at the intended project paths. If Scriven was installed for Perplexity Desktop, direct the writer to the generated `.scriven/perplexity/SETUP.md` guide and the canonical `docs/runtime-support.md` matrix.
 
 3. **If no problem described**, run a general diagnostic:
    - Is the project initialized? (WORK.md exists?)

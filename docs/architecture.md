@@ -76,7 +76,7 @@ Groups related work types together. Commands use these groups for availability:
 }
 ```
 
-There are 8 groups: prose, script, academic, visual, poetry, interactive, speech_song, and sacred. Together they contain 46 work types.
+There are 9 groups: prose, script, academic, technical, visual, poetry, interactive, speech_song, and sacred. Together they contain 50 work types.
 
 ### work_types
 
@@ -133,7 +133,7 @@ The command registry. Each entry maps a command name to its category, availabili
 
 - **`available`** -- `["all"]` means universal. Otherwise, list specific group names like `["prose", "script"]`.
 - **`renames_by_unit`** -- The command name adapts based on the project's `command_unit`.
-- **`adapted`** -- Per-group overrides. The `editor-review` command becomes `peer-review` for academic works and `scholarly-review` for sacred works.
+- **`adapted`** -- Per-group overrides. The `editor-review` command becomes `peer-review` for academic works, `technical-review` for technical docs, and `scholarly-review` for sacred works.
 
 ## File Structure
 
@@ -164,7 +164,7 @@ scriven/
       scriven-book.typst     Book interior PDF
       scriven-epub.css       EPUB styling
       scriven-academic.latex Academic paper formatting
-  templates/
+    templates/
     config.json            Per-project configuration template
     WORK.md                Work overview template
     OUTLINE.md             Structural outline template
@@ -174,6 +174,13 @@ scriven/
     STATE.md               Progress tracking template
     BRIEF.md               Project brief template
     WORLD.md               World-building template
+    technical/             Technical-writing template variants
+      DOC-BRIEF.md           Replaces BRIEF.md for technical docs
+      AUDIENCE.md            Reader and audience contract
+      DEPENDENCIES.md        Systems, owners, and interface map
+      SYSTEM.md              Replaces WORLD.md for technical docs
+      PROCEDURES.md          Replaces PLOT-GRAPH.md for technical docs
+      REFERENCES.md          Replaces THEMES.md for technical docs
     sacred/                Sacred-specific templates
       FIGURES.md             Replaces CHARACTERS.md for sacred works
       DOCTRINES.md           Theological framework
@@ -187,7 +194,7 @@ scriven/
     proof-artifacts.md     Canonical proof layer and artifact index
     getting-started.md     Install to first draft in 10 minutes
     command-reference.md   Full command listing with usage
-    work-types.md          46 work types and how they adapt Scriven
+    work-types.md          50 work types and how they adapt Scriven
     voice-dna.md           Voice profile system guide
     publishing.md          Export formats and publishing pipelines
     sacred-texts.md        Sacred work types and voice registers
@@ -309,13 +316,16 @@ The installer detects which AI agents are available by checking for their config
 | Windsurf | `~/.windsurf` exists | commands |
 | Antigravity | `~/.gemini/antigravity` exists | commands |
 | Manus Desktop | `~/.manus` or Manus.app exists | skills |
+| Perplexity Desktop | `/Applications/Perplexity.app` or `~/Applications/Perplexity.app` exists | guided-mcp |
 | Generic | Fallback (never auto-detected) | skills |
 
-### Two installation strategies
+### Three installation strategies
 
 **Command-directory (type: `commands`).** Copies individual command markdown files into the agent's command directory (e.g., `~/.claude/commands/scr/`). Each file becomes a slash command. Also copies agent files to the agent directory. This is the native approach for agents that support file-based commands.
 
 **Skill-file (type: `skills`).** Generates a single `SKILL.md` manifest file that lists all commands in a table. For platforms that do not support file-based command directories (like Manus), the SKILL.md acts as a command index that the agent reads to discover available commands. The agent then reads individual command files from the package directory.
+
+**Guided local-MCP (type: `guided-mcp`).** Writes setup assets and connector recipes for runtimes that expose a documented local-MCP surface instead of a writable slash-command directory. Perplexity Desktop currently fits this model: Scriven writes a setup guide and filesystem-server command recipe under `.scriven/perplexity/`, and the user adds that command inside Perplexity Desktop's Connectors UI.
 
 ### Installation modes
 
@@ -324,13 +334,13 @@ The installer supports two scopes:
 - **Global** -- Installs to the user's home directory (`~/.claude/commands/scr/`). Commands available in all projects.
 - **Project** -- Installs to the current project directory (`.claude/commands/scr/`). Commands scoped to this project only.
 
-The user chooses during installation.
+The user chooses during installation. Guided local-MCP targets still write their setup assets globally or per-project, but the connector itself remains tied to the specific project paths the user allows.
 
 ### Runtime credibility
 
 Scriven's supported installer baseline is `Node.js 20+` (`>=20.0.0`). That baseline applies to `npx scriven-cli@latest`, `bin/install.js`, and the repo's JavaScript test suite, not to the markdown command system once files are installed.
 
-This architecture doc is intentionally about mechanics: detection rules, install path shapes, `commands` versus `skills`, and global versus project scope. For the authoritative runtime matrix, support levels, and verification status, see [`docs/runtime-support.md`](runtime-support.md).
+This architecture doc is intentionally about mechanics: detection rules, install path shapes, `commands` versus `skills` versus `guided-mcp`, and global versus project scope. For the authoritative runtime matrix, support levels, and verification status, see [`docs/runtime-support.md`](runtime-support.md).
 
 ## Voice DNA Pipeline
 

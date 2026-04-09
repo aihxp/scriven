@@ -18,6 +18,7 @@ Node is not a runtime dependency for Scriven's markdown command system itself. O
 
 - **Installer registry**: the runtime appears in `bin/install.js` with a label, install type, detection rule, and install path shapes.
 - **Registry-tested**: `test/installer.test.js` asserts the runtime key exists and that its install properties match the expected `commands` or `skills` strategy.
+- **Guided setup assets**: the installer writes setup files or connector recipes for a documented runtime surface instead of copying slash-command files.
 - **Repo-documented**: the install strategy and detection behavior are described in project docs such as [Architecture](architecture.md).
 - **Host-runtime parity**: end-to-end proof that the installed command surface behaves equivalently inside the host agent. Scriven does not currently ship this proof for any runtime in the repo.
 
@@ -26,6 +27,7 @@ Node is not a runtime dependency for Scriven's markdown command system itself. O
 - **Primary reference runtime**: the runtime used as Scriven's primary example when docs need one concrete reference environment.
 - **Standard installer target**: the installer ships a first-class command-directory target for this runtime, with registry and path-shape evidence in the repo.
 - **Skills installer target**: the installer ships a manifest-based target for runtimes that do not use command directories.
+- **Guided desktop MCP target**: the installer ships setup assets and connector recipes for a documented desktop local-MCP surface rather than a writable command directory.
 - **Generic skills fallback**: a catch-all manifest target for platforms without a dedicated runtime adapter.
 
 ## Verification Status
@@ -47,6 +49,7 @@ Node is not a runtime dependency for Scriven's markdown command system itself. O
 | Windsurf | commands | `~/.windsurf/commands/scr` + `~/.windsurf/agents` or `.windsurf/commands/scr` + `.windsurf/agents` | Installer registry, registry-tested, repo-documented | Standard installer target | Registry-tested; repo-documented; no host-runtime parity verification yet |
 | Antigravity | commands | `~/.gemini/antigravity/commands/scr` + `~/.gemini/antigravity/agents` or `.gemini/antigravity/commands/scr` + `.gemini/antigravity/agents` | Installer registry, registry-tested, repo-documented | Standard installer target | Registry-tested; repo-documented; no host-runtime parity verification yet |
 | Manus Desktop | skills | `~/.manus/skills/scriven/SKILL.md` or `.manus/skills/scriven/SKILL.md` | Installer registry, registry-tested, repo-documented | Skills installer target | Registry-tested; repo-documented; no host-runtime parity verification yet |
+| Perplexity Desktop | guided-mcp | `~/.scriven/perplexity/SETUP.md` or `.scriven/perplexity/SETUP.md` plus Perplexity Desktop Connectors setup | Installer registry, registry-tested, guided setup assets, repo-documented | Guided desktop MCP target | Registry-tested; repo-documented; no host-runtime parity verification yet |
 | Generic (SKILL.md) | skills | `~/.scriven/skills/SKILL.md` or `.scriven/skills/SKILL.md` | Installer registry, registry-tested | Generic skills fallback | Registry-tested; no host-runtime parity verification yet |
 
 ## What Scriven Proves Today
@@ -54,7 +57,7 @@ Node is not a runtime dependency for Scriven's markdown command system itself. O
 Scriven currently proves all of the following in-repo:
 
 - a named installer target exists for each runtime listed above
-- each target has a declared install strategy (`commands` or `skills`)
+- each target has a declared install strategy (`commands`, `skills`, or `guided-mcp`)
 - each target has expected install-path properties in the installer registry
 - the runtime registry shape is covered by automated installer tests
 - the high-level install strategies and detection rules are documented in [Architecture](architecture.md)
@@ -65,7 +68,7 @@ Scriven does not currently prove:
 - that every runtime behaves identically once commands are installed
 - dedicated smoke-test artifacts for each runtime environment
 
-That distinction is intentional. Installer-path coverage is valuable, but it is not the same thing as verified runtime parity.
+That distinction is intentional. Installer-path coverage and guided setup assets are valuable, but they are not the same thing as verified runtime parity.
 
 ## See Also
 

@@ -69,6 +69,7 @@ describe('phase 14 runtime credibility wiring', () => {
     assert.match(readme, /Node\.js 20\+/);
     assert.match(readme, /\[Runtime Support\]\(docs\/runtime-support\.md\)/);
     assert.match(readme, /installer targets/);
+    assert.match(readme, /Perplexity Desktop/);
     assert.doesNotMatch(readme, /\bfull support\b/i);
 
     assert.match(gettingStarted, /Node\.js 20\+/);

@@ -38,6 +38,15 @@
     "measurement_system": "source"
   },
 
+  "technical": {
+    "audience_level": "mixed",
+    "prerequisite_knowledge": [],
+    "supported_environment": "",
+    "supported_versions": [],
+    "source_of_truth": [],
+    "review_mode": "accuracy_first"
+  },
+
   "collaboration": {
     "tracks_enabled": false,
     "default_track": "canon"

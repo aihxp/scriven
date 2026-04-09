@@ -2,7 +2,7 @@
 
 ## What This Is
 
-Scriven is a spec-driven creative writing, publishing, and translation pipeline that runs inside AI coding agents. It takes writers from blank page to publication-ready manuscript with voice profiling, adaptive work types, autonomous drafting, illustration, translation, and multi-format export. It currently supports 46 work types with tradition-native vocabulary such as chapters, acts, and surahs.
+Scriven is a spec-driven writing, publishing, and translation pipeline that runs inside AI coding agents. It takes writers from blank page to publication-ready manuscript or technical document set with voice profiling, adaptive work types, autonomous drafting, illustration, translation, and multi-format export. It currently supports 50 work types with tradition-native vocabulary such as chapters, acts, procedures, and surahs.
 
 ## Core Value
 
@@ -13,7 +13,7 @@ Scriven is a spec-driven creative writing, publishing, and translation pipeline 
 ### Validated
 
 - ✓ Core workflow commands (new-work → discuss → plan → draft → editor-review → submit → complete) — v0.3.0
-- ✓ Adaptive naming system across 46 work types with structural hierarchy — v0.3.0
+- ✓ Adaptive naming system across 50 work types with structural hierarchy — v0.3.0
 - ✓ Voice DNA system (STYLE-GUIDE.md generation, 15+ dimensions) — v0.3.0
 - ✓ Drafter agent with fresh-context-per-atomic-unit architecture — v0.3.0
 - ✓ 5 agent prompts (drafter, researcher, continuity checker, voice checker, plan checker) — v0.3.0
@@ -40,12 +40,13 @@ Scriven is a spec-driven creative writing, publishing, and translation pipeline 
 - ✓ Launch and onboarding docs now foreground the voice-preservation wedge and proof layer — v1.3 Phase 15
 - ✓ Trust-critical launch, proof, and runtime surfaces now have release-time regression tests — v1.3 Phase 16
 - ✓ Packaged proof bundles and shipped export templates are enforced in npm pack dry-run coverage — v1.3 Phase 16
+- ✓ Perplexity Desktop ships as a guided local-MCP runtime target with explicit support framing — v1.4 Phase 17
+- ✓ Technical-writing family adds guide, runbook, API reference, and design spec work types with technical-native scaffolding — v1.4 Phase 18
+- ✓ Perplexity and technical-writing trust surfaces now have count and packaging regression coverage — v1.4 Phase 19
 
 ### Active
 
-- [ ] RUNTIME-05 — Scriven can install into Perplexity runtimes with accurate support framing and verification status
-- [ ] RUNTIME-06 — Scriven can install into Perplexity Desktop with the correct installer strategy and path expectations
-- [ ] TECHDOC-01 — Scriven supports research-backed technical-writing work types and document structures without weakening the core creative-writing experience
+- None — v1.4 phase implementation is complete locally and ready for milestone closeout.
 
 ### Out of Scope
 
@@ -62,7 +63,7 @@ The product plan (`SCRIVEN-PRODUCT-PLAN-v0.3.md`) is the canonical source of tru
 
 Milestones v1.0 through v1.2 shipped the core product surface, multi-runtime installer expansion, and a complete documentation suite. The docs verification pass also exposed a new class of product problem: trust gaps between what the product promises and what the repo can prove today.
 
-The most visible gaps were in the export stack and launch proof layer. Phase 13 aligned shipped-asset truth, Phase 14 standardized the Node 20+ installer baseline while making runtime evidence explicit, Phase 15 added the canonical proof layer that makes Scriven's voice-preservation wedge tangible, and Phase 16 turned those trust surfaces into release-time regression gates. Milestone v1.3 is now fully archived, and the project is waiting on the next milestone definition.
+The most visible gaps were in the export stack and launch proof layer. Phase 13 aligned shipped-asset truth, Phase 14 standardized the Node 20+ installer baseline while making runtime evidence explicit, Phase 15 added the canonical proof layer that makes Scriven's voice-preservation wedge tangible, and Phase 16 turned those trust surfaces into release-time regression gates. Milestone v1.4 now extends that posture into Perplexity Desktop support and a first-pass technical-writing family without weakening the existing trust model.
 
 ## Constraints
 
@@ -75,7 +76,7 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 ## Current Milestone: v1.4 Perplexity & Technical Writing
 
 **Goal:** Extend Scriven's runtime surface to Perplexity while defining a research-backed technical-writing expansion that fits the existing adaptive work-type system.
-**Status:** Starting 2026-04-09
+**Status:** Phase implementation complete locally on 2026-04-09
 
 **Target features:**
 - Add installer support for Perplexity as a named runtime target with support-level framing consistent with `docs/runtime-support.md`

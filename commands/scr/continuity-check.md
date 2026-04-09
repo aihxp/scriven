@@ -15,7 +15,7 @@ If `N` is provided, checks only Act N against previous acts. Otherwise checks en
 
 ## Instruction
 
-Load `.manuscript/config.json` to get `work_type`. Load Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) to check command adaptations. For sacred work types, this command is called 'doctrinal-check' and should additionally verify doctrinal consistency and canonical alignment. For academic work types, this command is called 'citation-check' and should additionally verify citation consistency and reference accuracy. Use adapted terminology throughout all output.
+Load `.manuscript/config.json` to get `work_type`. Load Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) to check command adaptations. For sacred work types, this command is called 'doctrinal-check' and should additionally verify doctrinal consistency and canonical alignment. For academic work types, this command is called 'citation-check' and should additionally verify citation consistency and reference accuracy. For technical work types, this command is called 'consistency-check' and should additionally verify terminology consistency, prerequisite order, command syntax, version references, and recovery steps. Use adapted terminology throughout all output.
 
 Spawn a continuity analysis agent that reads all drafted scenes and checks:
 
@@ -70,6 +70,14 @@ Spawn a continuity analysis agent that reads all drafted scenes and checks:
   </check>
 </continuity_checks>
 
+For technical work types, reinterpret the checks above through a documentation lens:
+- "character consistency" becomes audience/role consistency
+- "timeline logic" becomes procedure order and escalation order
+- "object tracking" becomes command, file, flag, and artifact tracking
+- "spatial consistency" becomes environment/platform consistency
+- "information flow" becomes prerequisite and dependency disclosure
+- "world rules" becomes system constraints, supported-version, and safety consistency
+
 ### OUTPUT
 
 Generate a continuity report with:
@@ -83,4 +91,4 @@ For each issue:
 - What the established fact was and where it was established
 - Suggested fix
 
-Save to `.manuscript/{act_num}-CONTINUITY-REPORT.md` or `.manuscript/FULL-CONTINUITY-REPORT.md`
+Save to `.manuscript/{act_num}-CONTINUITY-REPORT.md` or `.manuscript/FULL-CONTINUITY-REPORT.md`. For technical work types, use `CONSISTENCY-REPORT` in the writer-facing title even if the file path stays the same.

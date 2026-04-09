@@ -15,7 +15,8 @@ agents/                6 specialized agents (drafter, voice-checker, etc.)
 data/CONSTRAINTS.json  Central constraint registry -- every command checks this
 data/demo/             Pre-baked demo project (watchmaker story)
 data/export-templates/ Export templates (Typst, CSS, LaTeX)
-templates/             9 project templates + sacred/ variants
+templates/             9 base project templates + technical/ and sacred/ variants
+templates/technical/   6 technical-writing context variants
 templates/sacred/      6 sacred-specific context templates
 bin/install.js         Multi-platform installer (Node.js)
 docs/                  Documentation suite (13 guides)
@@ -214,6 +215,7 @@ Work types belong to groups. Existing groups:
 - `prose` -- novel, memoir, essay, etc.
 - `script` -- screenplay, stage play, TV pilot, etc.
 - `academic` -- research paper, thesis, journal article, etc.
+- `technical` -- technical guide, runbook, API reference, design spec
 - `visual` -- comic, graphic novel, children's book, etc.
 - `poetry` -- poetry collection, single poem, song lyric
 - `interactive` -- interactive fiction, game narrative
@@ -304,13 +306,15 @@ Create `templates/{NAME}.md` with placeholder content. Here is the pattern -- ea
 [To be developed during /scr:discuss]
 ```
 
-### Step 2: Sacred variants
+### Step 2: Technical and sacred variants
 
-If your template needs a sacred-specific version, add it to `templates/sacred/`. Sacred templates replace or extend the standard ones for sacred work types. For example:
+If your template needs a technical-writing-specific or sacred-specific version, add it to `templates/technical/` or `templates/sacred/`. These templates replace or extend the standard ones for their work-type groups. For example:
 
 - `templates/CHARACTERS.md` is the standard character template
+- `templates/technical/AUDIENCE.md` replaces it for technical docs
 - `templates/sacred/FIGURES.md` replaces it for sacred works (uses "figures" instead of "characters")
 
+Existing technical templates: `DOC-BRIEF.md`, `AUDIENCE.md`, `DEPENDENCIES.md`, `SYSTEM.md`, `PROCEDURES.md`, `REFERENCES.md`.
 Existing sacred templates: `COSMOLOGY.md`, `DOCTRINES.md`, `FIGURES.md`, `FRAMEWORK.md`, `LINEAGES.md`, `THEOLOGICAL-ARC.md`.
 
 ### Step 3: Register in config.json

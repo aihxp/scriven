@@ -5,11 +5,11 @@
 
 **[scriven-cli on npm](https://www.npmjs.com/package/scriven-cli)**
 
-**Spec-driven creative writing, publishing, and translation for AI coding agents.**
+**Spec-driven writing, publishing, and translation for AI coding agents.**
 
 *I don't outline -- Claude does. I don't edit -- Claude does. I don't format -- Claude does. I just write.*
 
-Scriven brings spec-driven workflows to creative writing. It runs inside your AI coding agent (Claude Code, Cursor, Gemini CLI, and more) and handles everything from blank page to publication-ready package.
+Scriven brings spec-driven workflows to longform writing. It runs inside your AI coding agent (Claude Code, Cursor, Gemini CLI, and more) and also ships a guided Perplexity Desktop setup path for file-aware support without overstating parity.
 
 Scriven is best understood as **AI-native longform writing software built around voice preservation**. Its core promise is narrow and high-stakes: drafted prose should sound like the writer, not like AI. If you want evidence before features, start with the [Proof Artifacts](docs/proof-artifacts.md).
 
@@ -21,7 +21,7 @@ npx scriven-cli@latest
 
 ## What is this
 
-Scriven is a command system that turns your AI coding agent into a voice-preserving creative writing studio. It supports 46 work types -- novels, screenplays, research papers, poetry collections, scripture commentaries, comics, memoirs -- each with its own adaptive vocabulary and toolset.
+Scriven is a command system that turns your AI coding agent into a voice-preserving writing studio. It supports 50 work types -- novels, screenplays, research papers, technical guides, runbooks, scripture commentaries, comics, memoirs -- each with its own adaptive vocabulary and toolset.
 
 The wedge comes first: Scriven profiles the writer, loads that voice into every drafting step, and keeps each unit on fresh context so the prose stays specific to the project. From there, it expands into 101 slash commands covering the rest of the pipeline:
 
@@ -79,6 +79,8 @@ For sacred and historical texts, Voice DNA is supplemented by 10 sacred voice re
 **Script:** screenplay, stage play, TV pilot, TV series bible, audio drama, libretto/musical
 
 **Academic:** research paper, thesis/dissertation, journal article, white paper, literature review, monograph
+
+**Technical writing:** technical guide/user guide, runbook/SOP, API or CLI reference, design spec/architecture doc
 
 **Visual:** comic, graphic novel, children's book, picture book
 
@@ -139,7 +141,7 @@ Scriven is built on five principles:
 - [Proof Artifacts](docs/proof-artifacts.md) -- Canonical proof hub for the watchmaker sample flow and Voice DNA before/after bundle
 - [Getting Started](docs/getting-started.md) -- Install to first draft in 10 minutes
 - [Command Reference](docs/command-reference.md) -- All 101 commands with usage, flags, and examples
-- [Work Types Guide](docs/work-types.md) -- How 46 work types adapt Scriven's vocabulary
+- [Work Types Guide](docs/work-types.md) -- How 50 work types adapt Scriven's vocabulary
 - [Voice DNA Guide](docs/voice-dna.md) -- The 15+ dimension voice profiling system
 - [Publishing Guide](docs/publishing.md) -- 13 export formats, KDP, IngramSpark, submission packages
 - [Sacred Text Guide](docs/sacred-texts.md) -- 13 sacred work types, voice registers, tradition-native features
@@ -154,7 +156,7 @@ Scriven is built on five principles:
 
 ## Installer Targets
 
-Scriven currently ships installer targets for these AI coding agent environments:
+Scriven currently ships installer targets for these AI tooling environments:
 
 - **Claude Code** (primary reference runtime)
 - **Cursor**
@@ -165,11 +167,12 @@ Scriven currently ships installer targets for these AI coding agent environments
 - **Windsurf**
 - **Antigravity**
 - **Manus Desktop**
+- **Perplexity Desktop** (guided local-MCP setup)
 - **Generic (SKILL.md)** fallback
 
 **Installer baseline:** `Node.js 20+` for `npx scriven-cli@latest` and `bin/install.js`.
 
-**Support note:** Claude Code is the primary reference runtime. The environments listed above are installer targets, not a claim that every host runtime has verified parity today. See the [runtime compatibility matrix](docs/runtime-support.md) for install type, support level, and verification status.
+**Support note:** Claude Code is the primary reference runtime. The environments listed above are installer targets, not a claim that every host runtime has verified parity today. Perplexity Desktop is a guided local-MCP target rather than a slash-command runtime. See the [runtime compatibility matrix](docs/runtime-support.md) for install type, support level, and verification status.
 
 ---
 
@@ -177,7 +180,7 @@ Scriven currently ships installer targets for these AI coding agent environments
 
 **Version:** 1.3.4
 
-Scriven's core command surface is stable across 101 commands, 46 work types, and 10 installer targets. All four milestones (v1.0 MVP, v1.1 Generic Platform Support, v1.2 Documentation, v1.3 Trust & Proof) are shipped, and the full automated test suite is green. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
+Scriven's core command surface is stable across 101 commands, 50 work types, and 11 installer targets. All four milestones (v1.0 MVP, v1.1 Generic Platform Support, v1.2 Documentation, v1.3 Trust & Proof) are shipped, and the v1.4 technical-writing expansion is in progress. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
 
 Version `1.3.4` rolls up the post-`1.3.3` hardening pass: review-driven fixes across export/runtime/publishing paths, explicit validation and security records for v1.3, and the finalized Trust & Proof archive.
 

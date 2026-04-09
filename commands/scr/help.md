@@ -25,7 +25,7 @@ Ask the user what they want to do. Don't list 170 commands — show them this:
 Scriven — ready to start.
 
 What do you want to do?
-  /scr:new-work        Start a new project (novel, screenplay, paper, etc.)
+  /scr:new-work        Start a new project (novel, runbook, screenplay, paper, etc.)
   /scr:demo            Explore a pre-built sample project first
   /scr:import <file>   Bring in an existing manuscript
   /scr:profile-writer  Set up your writer profile
@@ -45,7 +45,7 @@ Group by stage:
 - **Collaborate** — track, compare, merge (shown only if developer_mode is true; otherwise show save/history/compare/versions)
 - **Navigate** — next, progress, pause-work, resume-work
 
-Only show commands where `available` includes the current work type's group, OR where it's `"all"`. Use adapted names when the work type has adaptations — Bible commentary shows `/scr:new-figure`, not `/scr:new-character`.
+Only show commands where `available` includes the current work type's group, OR where it's `"all"`. Use adapted names when the work type has adaptations — Bible commentary shows `/scr:new-figure`, and technical docs show `/scr:procedure-map`, not the generic names.
 
 ## The filtered view
 

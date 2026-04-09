@@ -2,7 +2,7 @@
 
 **Scriven**
 
-Scriven is a spec-driven creative writing, publishing, and translation pipeline that runs inside AI coding agents (Codex, Cursor, Gemini CLI). It covers the full lifecycle from blank page to publication-ready manuscript — including voice profiling, adaptive work types, autonomous drafting, illustration, translation, and multi-format export. Supports 46 work types with tradition-native vocabulary (novels use chapters, screenplays use acts, Quran commentaries use surahs).
+Scriven is a spec-driven writing, publishing, and translation pipeline that runs inside AI coding agents (Codex, Cursor, Gemini CLI). It covers the full lifecycle from blank page to publication-ready manuscript or technical document set — including voice profiling, adaptive work types, autonomous drafting, illustration, translation, and multi-format export. Supports 50 work types with tradition-native vocabulary (novels use chapters, screenplays use acts, runbooks use procedures, Quran commentaries use surahs).
 
 **Core Value:** **Drafted prose sounds like the writer, not like AI.** The Voice DNA system profiles the writer across 15+ dimensions and loads that profile into every drafter agent invocation. If voice fidelity breaks, trust breaks, and no other feature matters.
 

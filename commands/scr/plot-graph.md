@@ -34,6 +34,7 @@ You are a story structure analyst. Load:
 **Work-type adaptation:** Check CONSTRAINTS.json `file_adaptations` for the current work type:
 - Default: reads `PLOT-GRAPH.md`
 - Academic work types: reads `ARGUMENT-MAP.md`, command appears as `argument-map`
+- Technical work types: reads `PROCEDURES.md`, command appears as `procedure-map`
 - Sacred work types: reads `THEOLOGICAL-ARC.md`, command appears as `theological-arc`
 
 Use adapted terminology throughout all output.
@@ -41,6 +42,14 @@ Use adapted terminology throughout all output.
 ---
 
 ### ARC TYPE AUTO-DETECTION (when `--type` is not specified)
+
+For technical work types, skip narrative arc detection and instead infer one of these procedure shapes from `OUTLINE.md`:
+- `quickstart` -- shortest happy-path onboarding flow
+- `standard-operating-procedure` -- repeatable operational task
+- `reference-walkthrough` -- resource-by-resource explanation with examples
+- `decision-record` -- context, options, decision, consequences
+
+Always tell the writer which structure you inferred and let them rename or refine it.
 
 <auto_detect>
 When the writer does not specify `--type`, detect the arc type from OUTLINE.md structure using these heuristics:
@@ -96,6 +105,14 @@ Present the story arc as a visual structure showing:
   - Emotional register (rising | falling | steady | shift)
 </plot_graph_display>
 
+For technical work types, present a procedure or document flow instead:
+- reader goal
+- prerequisites
+- ordered steps or sections
+- validation checkpoints
+- escalation or rollback points
+- sections still missing examples, warnings, or references
+
 **Arc Type Beat Structures:**
 
 <arc_beats>
@@ -150,6 +167,7 @@ Commit: `structure: update plot graph`
 - **Empty outline:** Show the arc template with placeholder positions and suggest filling them in.
 - **Arc type change with existing beats:** Remap beats to the new arc type. Show what moved, what was added, what has no equivalent. Ask for confirmation before saving.
 - **Custom arc:** Ask writer to define their own beat names and positions.
+- **Technical work type:** Use procedure-map terminology and keep the output grounded in task flow, not dramatic beats.
 
 ## Tone
 

@@ -13,7 +13,7 @@ Progressive disclosure. Ask 3 questions max before starting. Don't interrogate t
 
 ## The 3 questions
 
-1. **What are you writing?** — Show the main categories: Novel, Short story, Screenplay, TV pilot, Stage play, Research paper, Thesis, Memoir, Poetry collection, Children's book, Comic, Scripture/sacred text, Historical account, or "something else" (free text).
+1. **What are you writing?** — Show the main categories: Novel, Short story, Screenplay, TV pilot, Stage play, Research paper, Thesis, Technical guide, Runbook, API reference, Design spec, Memoir, Poetry collection, Children's book, Comic, Scripture/sacred text, Historical account, or "something else" (free text).
 
 2. **Got a premise or research question?** — One sentence is fine. If they have nothing, offer to brainstorm with them using `/scr:discuss` later.
 
@@ -25,7 +25,7 @@ If `--type` is given, skip question 1.
 ## After the 3 questions
 
 Look up the chosen work type in CONSTRAINTS.json. Note:
-- Its `group` (prose, script, academic, visual, poetry, interactive, sacred, speech_song)
+- Its `group` (prose, script, academic, technical, visual, poetry, interactive, sacred, speech_song)
 - Its `hierarchy` (top/mid/atomic units)
 - Its `command_unit` (what commands will be named — chapter, act, section, surah, etc.)
 - Its `config_defaults` if any (for sacred types: verse numbering, calendar, etc.)
@@ -37,20 +37,21 @@ Create the following structure. Use the `file_adaptations` section of CONSTRAINT
 ```
 .manuscript/
 ├── WORK.md              (always)
-├── BRIEF.md             (→ PROPOSAL.md for academic, → FRAMEWORK.md for sacred)
+├── BRIEF.md             (→ PROPOSAL.md for academic, → DOC-BRIEF.md for technical, → FRAMEWORK.md for sacred)
 ├── OUTLINE.md           (always)
 ├── STATE.md             (always — tracks workflow position)
 ├── STYLE-GUIDE.md       (always)
-├── CHARACTERS.md        (→ CONCEPTS.md for academic, → FIGURES.md for sacred; skipped for poetry/speech)
-├── RELATIONSHIPS.md     (→ LINEAGES.md for sacred; skipped for academic/poetry/speech)
-├── WORLD.md             (→ CONTEXT.md for academic, → COSMOLOGY.md for sacred; skipped for poetry/speech)
-├── PLOT-GRAPH.md        (→ ARGUMENT-MAP.md for academic, → THEOLOGICAL-ARC.md for sacred; skipped for poetry/speech)
-├── THEMES.md            (→ QUESTIONS.md for academic, → DOCTRINES.md for sacred)
+├── CHARACTERS.md        (→ CONCEPTS.md for academic, → AUDIENCE.md for technical, → FIGURES.md for sacred; skipped for poetry/speech)
+├── RELATIONSHIPS.md     (→ DEPENDENCIES.md for technical, → LINEAGES.md for sacred; skipped for academic/poetry/speech)
+├── WORLD.md             (→ CONTEXT.md for academic, → SYSTEM.md for technical, → COSMOLOGY.md for sacred; skipped for poetry/speech)
+├── PLOT-GRAPH.md        (→ ARGUMENT-MAP.md for academic, → PROCEDURES.md for technical, → THEOLOGICAL-ARC.md for sacred; skipped for poetry/speech)
+├── THEMES.md            (→ QUESTIONS.md for academic, → REFERENCES.md for technical, → DOCTRINES.md for sacred)
 ├── config.json
 └── archive/
 ```
 
 For sacred work types, also create: `CONCORDANCE.md`, `CHRONOLOGY.md`, `SOURCES.md`, `annotations/`.
+For technical work types, load the matching files from `templates/technical/` and treat them as the first-pass document contract for audience, environment, procedures, and references.
 
 ## Config file
 
@@ -68,6 +69,7 @@ Write `.manuscript/config.json` with:
 ```
 
 For sacred work types, also add the `sacred` block with tradition, verse_numbering_system, calendar_system, translation_philosophy, canonical_alignment, etc. Use the work type's `config_defaults` as starting values.
+For technical work types, also keep the `technical` block and fill it with audience level, prerequisite knowledge, supported environment, supported versions, source-of-truth references, and review mode. Use the work type's `config_defaults` as the starting point.
 
 ## Voice DNA calibration
 

@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.4
 milestone_name: Perplexity & Technical Writing
-status: roadmap_created
-stopped_at: Roadmap created for milestone v1.4; Phase 17 ready for discussion/planning
-last_updated: "2026-04-09T10:31:00Z"
-last_activity: 2026-04-09 -- Roadmap created for milestone v1.4 with phases 17-19
+status: Phase implementation complete; ready for milestone audit/closeout
+stopped_at: Phase 19 completed; milestone ready for audit/complete
+last_updated: "2026-04-09T17:10:00.000Z"
+last_activity: 2026-04-09
 progress:
   total_phases: 3
-  completed_phases: 0
+  completed_phases: 3
   total_plans: 7
-  completed_plans: 0
-  percent: 0
+  completed_plans: 7
+  percent: 100
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** Phase 17 planning — Perplexity runtime support
+**Current focus:** v1.4 milestone closeout — Perplexity support and technical-writing family implemented
 
 ## Current Position
 
-Phase: 17 — Perplexity Runtime Support
-Plan: Not started
-Status: Roadmap created; ready for discuss/plan
-Last activity: 2026-04-09 -- Milestone v1.4 roadmap created
+Phase: 19
+Plan: Complete
+Status: Phase implementation complete; ready for milestone audit/closeout
+Last activity: 2026-04-09
 
 Progress: [------------] 0%
 
@@ -36,7 +36,7 @@ Progress: [------------] 0%
 
 **Velocity:**
 
-- Total plans completed: 56 (37 from v1.0, 2 from v1.1, 8 from v1.2, 9 from v1.3)
+- Total plans completed: 65 (37 from v1.0, 2 from v1.1, 8 from v1.2, 9 from v1.3, 2 from v1.4 phase 17, 3 from v1.4 phase 18, 2 from v1.4 phase 19)
 - Average duration: ~3 min
 - Total execution time: ~2.0 hours
 
@@ -83,9 +83,8 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-- Start Phase 17 planning for Perplexity runtime support
-- Validate Perplexity Desktop install strategy against the current official platform surface
-- Begin Phase 18 after runtime support framing is stable
+- Run milestone audit / complete workflow for v1.4
+- Decide whether to ship or continue expanding technical-writing coverage in a follow-on milestone
 
 ### Blockers/Concerns
 
@@ -94,5 +93,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-04-09T10:19:06Z
-Stopped at: Roadmap created for milestone v1.4; Phase 17 ready for discussion/planning
+Stopped at: Phase 19 completed; milestone ready for audit/complete
 Resume file: None

@@ -1,8 +1,8 @@
 # Work Types Guide
 
-Scriven adapts itself to what you're writing. When you run `/scr:new-work` and tell Scriven you're writing a novel, a screenplay, a Quran commentary, or a research paper, it changes its vocabulary, commands, file names, and available features to match your tradition. A novel has chapters and scenes. A screenplay has acts and sequences. A Quranic text has surahs and ayahs. You never have to force your work into someone else's structure.
+Scriven adapts itself to what you're writing. When you run `/scr:new-work` and tell Scriven you're writing a novel, a screenplay, a runbook, a Quran commentary, or a research paper, it changes its vocabulary, commands, file names, and available features to match your tradition. A novel has chapters and scenes. A screenplay has acts and sequences. A runbook has procedures and steps. A Quranic text has surahs and ayahs. You never have to force your work into someone else's structure.
 
-This guide covers all 46 work types Scriven supports, organized into 8 groups.
+This guide covers all 50 work types Scriven supports, organized into 9 groups.
 
 ## How Work Types Adapt Scriven
 
@@ -14,19 +14,19 @@ Every work type defines a three-level structural hierarchy: **top level**, **mid
 
 ### 2. Command names
 
-Commands rename themselves to match your domain. `/scr:draft-chapter` becomes `/scr:draft-surah` for Quranic work, `/scr:draft-act` for screenplays, `/scr:draft-section` for research papers. Some commands get entirely different names for specific groups -- for example, `/scr:character-sheet` becomes `/scr:figure-sheet` for sacred work types, and `/scr:plot-graph` becomes `/scr:argument-map` for academic work. See the [Command Adaptations](#command-adaptations) section below.
+Commands rename themselves to match your domain. `/scr:draft-chapter` becomes `/scr:draft-surah` for Quranic work, `/scr:draft-act` for screenplays, `/scr:draft-section` for research papers, and `/scr:draft-procedure` for runbooks. Some commands get entirely different names for specific groups -- for example, `/scr:character-sheet` becomes `/scr:figure-sheet` for sacred work types, and `/scr:plot-graph` becomes `/scr:procedure-map` for technical work. See the [Command Adaptations](#command-adaptations) section below.
 
 ### 3. File names
 
-Context files rename per group. The default `CHARACTERS.md` becomes `FIGURES.md` for sacred work types and `CONCEPTS.md` for academic work. `PLOT-GRAPH.md` becomes `THEOLOGICAL-ARC.md` for sacred and `ARGUMENT-MAP.md` for academic. See [File Adaptations](#file-adaptations) below.
+Context files rename per group. The default `CHARACTERS.md` becomes `FIGURES.md` for sacred work types, `CONCEPTS.md` for academic work, and `AUDIENCE.md` for technical writing. `PLOT-GRAPH.md` becomes `THEOLOGICAL-ARC.md` for sacred, `ARGUMENT-MAP.md` for academic, and `PROCEDURES.md` for technical work. See [File Adaptations](#file-adaptations) below.
 
 ### 4. Available commands
 
-Not every command makes sense for every work type. Poetry collections don't need `/scr:subplot-map`. Academic papers don't need `/scr:dialogue-audit`. Scriven hides irrelevant commands and shows only what applies to your work type. Sacred work types get 8 exclusive commands (concordance, cross-reference, genealogy, etc.) that don't appear for other groups.
+Not every command makes sense for every work type. Poetry collections don't need `/scr:subplot-map`. Academic papers don't need `/scr:dialogue-audit`. Runbooks don't need query-package exports. Scriven hides irrelevant commands and shows only what applies to your work type. Sacred work types get 8 exclusive commands (concordance, cross-reference, genealogy, etc.) that don't appear for other groups.
 
 ## Work Type Groups
 
-Scriven organizes its 46 work_types into 8 groups. Each group shares command adaptations and file naming conventions.
+Scriven organizes its 50 work_types into 9 groups. Each group shares command adaptations and file naming conventions.
 
 ### Prose
 
@@ -51,6 +51,14 @@ Research and scholarly writing with emphasis on argumentation, citation, and pee
 **Members:** Research Paper, Thesis / Dissertation, Journal Article, White Paper, Literature Review, Monograph
 
 Academic work types rename several commands: `/scr:editor-review` becomes `/scr:peer-review`, `/scr:plot-graph` becomes `/scr:argument-map`, `/scr:beta-reader` becomes `/scr:reviewer-simulation`. Context files also adapt -- `CHARACTERS.md` becomes `CONCEPTS.md`, `THEMES.md` becomes `QUESTIONS.md`.
+
+### Technical Writing
+
+Task-oriented documentation and system explanation work where accuracy, audience fit, and procedure clarity matter more than narrative structure.
+
+**Members:** Technical Guide / User Guide, Runbook / SOP, API or CLI Reference, Design Spec / Architecture Doc
+
+Technical-writing work types keep the core discuss → plan → draft flow, but rename context and review surfaces to match docs work. `WORLD.md` becomes `SYSTEM.md`, `PLOT-GRAPH.md` becomes `PROCEDURES.md`, `/scr:build-world` becomes `/scr:map-system`, and `/scr:editor-review` becomes `/scr:technical-review`.
 
 ### Visual
 
@@ -139,6 +147,15 @@ Page counts use ~250 words/page (standard manuscript format).
 | Literature Review | 5,000–15,000 | 20–60 | 4–8 sections | 1,000–3,000 | 4–12 |
 | Monograph | 50,000–100,000 | 200–400 | 8–15 chapters | 4,000–8,000 | 16–32 |
 
+### Technical Writing
+
+| Work Type | Words | Pages | Units | Words/Unit | Pages/Unit |
+|-----------|-------|-------|-------|------------|------------|
+| Technical Guide | 3,000–25,000 | 12–100 | 4–12 sections | 500–2,500 | 2–10 |
+| Runbook | 1,500–12,000 | 6–48 | 3–10 procedures | 300–1,500 | 1–6 |
+| API / CLI Reference | 2,000–30,000 | 8–120 | 5–40 resources | 150–1,000 | 1–4 |
+| Design Spec | 2,000–15,000 | 8–60 | 4–12 sections | 500–2,000 | 2–8 |
+
 ### Visual
 
 | Work Type | Words | Pages | Units | Words/Unit | Pages/Unit |
@@ -212,6 +229,10 @@ Every work type Scriven supports, with its group and structural hierarchy. Data 
 | white_paper | Academic | -- | section | subsection | section |
 | literature_review | Academic | -- | section | subsection | section |
 | monograph | Academic | part | chapter | section | chapter |
+| technical_guide | Technical Writing | -- | section | procedure | section |
+| runbook | Technical Writing | -- | procedure | step | procedure |
+| api_reference | Technical Writing | -- | resource | endpoint | resource |
+| design_spec | Technical Writing | system | section | decision | section |
 | comic | Visual | volume | issue | panel | issue |
 | graphic_novel | Visual | volume | chapter | panel | chapter |
 | childrens_book | Visual | -- | spread | page | spread |
@@ -242,20 +263,20 @@ Every work type Scriven supports, with its group and structural hierarchy. Data 
 
 Context files rename based on your work type group. This keeps the vocabulary natural -- a sacred text project has FIGURES.md instead of CHARACTERS.md, because you're writing about historical and religious figures, not fictional characters.
 
-| Default File | Academic | Sacred & Historical |
-|-------------|----------|-------------------|
-| BRIEF.md | PROPOSAL.md | FRAMEWORK.md |
-| CHARACTERS.md | CONCEPTS.md | FIGURES.md |
-| RELATIONSHIPS.md | RELATIONSHIPS.md | LINEAGES.md |
-| WORLD.md | CONTEXT.md | COSMOLOGY.md |
-| PLOT-GRAPH.md | ARGUMENT-MAP.md | THEOLOGICAL-ARC.md |
-| THEMES.md | QUESTIONS.md | DOCTRINES.md |
+| Default File | Academic | Technical Writing | Sacred & Historical |
+|-------------|----------|-------------------|-------------------|
+| BRIEF.md | PROPOSAL.md | DOC-BRIEF.md | FRAMEWORK.md |
+| CHARACTERS.md | CONCEPTS.md | AUDIENCE.md | FIGURES.md |
+| RELATIONSHIPS.md | RELATIONSHIPS.md | DEPENDENCIES.md | LINEAGES.md |
+| WORLD.md | CONTEXT.md | SYSTEM.md | COSMOLOGY.md |
+| PLOT-GRAPH.md | ARGUMENT-MAP.md | PROCEDURES.md | THEOLOGICAL-ARC.md |
+| THEMES.md | QUESTIONS.md | REFERENCES.md | DOCTRINES.md |
 
 All other groups (Prose, Script, Visual, Poetry, Interactive, Speech & Song) use the default file names.
 
 ## Command Adaptations
 
-Certain commands rename themselves for academic and sacred work type groups. Both the original and adapted names work -- Scriven recognizes either.
+Certain commands rename themselves for academic, technical, and sacred work type groups. Both the original and adapted names work -- Scriven recognizes either.
 
 ### Academic Adaptations
 
@@ -266,6 +287,16 @@ Certain commands rename themselves for academic and sacred work type groups. Bot
 | export | journal-submit | APA, MLA, Chicago presets |
 
 Additional adaptations defined in the commands section of CONSTRAINTS.json: `editor-review` becomes `peer-review`, `plot-graph` becomes `argument-map`, `theme-tracker` becomes `research-questions`, `continuity-check` becomes `citation-check`, `sensitivity-review` becomes `ethics-review`, `new-character` becomes `new-concept`, `character-sheet` becomes `concept-sheet`.
+
+### Technical Writing Adaptations
+
+| Original Command | Adapted Name | Description |
+|-----------------|--------------|-------------|
+| build-world | map-system | System boundaries, environments, and operating context |
+| plot-graph | procedure-map | Procedure flow, escalation path, and task sequence |
+| editor-review | technical-review | Accuracy, clarity, and audience-fit review |
+| beta-reader | usability-review | Reader/operator task-completion review |
+| continuity-check | consistency-check | Terminology, procedure, and version consistency |
 
 ### Sacred Adaptations
 
@@ -296,6 +327,7 @@ When you run `/scr:new-work`, Scriven asks what you're writing and picks the bes
 /scr:new-work --type screenplay
 /scr:new-work --type scripture_quranic
 /scr:new-work --type research_paper
+/scr:new-work --type runbook
 ```
 
 If you're not sure which type fits:
@@ -303,6 +335,7 @@ If you're not sure which type fits:
 - **Writing fiction?** Start with `novel`, `novella`, `short_story`, or `flash_fiction` depending on length.
 - **Writing for performance?** Use `screenplay`, `stage_play`, `tv_pilot`, or `audio_drama`.
 - **Writing scholarship?** Use `research_paper`, `thesis`, or `journal_article`.
+- **Writing technical docs?** Use `technical_guide`, `runbook`, `api_reference`, or `design_spec` depending on whether you're teaching, operating, documenting, or deciding.
 - **Writing sacred or religious text?** Pick the tradition-specific type (e.g., `scripture_biblical`, `scripture_quranic`) or use `scripture_generic`.
 - **Writing poetry?** Use `poetry_collection` for a book of poems, `single_poem` for one poem, or `song_lyric` for lyrics.
 - **Writing for children?** Use `childrens_book` or `picture_book` -- these unlock illustration and spread layout tools.

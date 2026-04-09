@@ -14,6 +14,13 @@ Generate or refine the world document through structured progressive questioning
 
 **Areas:** `geography`, `culture`, `technology`, `rules`, `history`
 
+For technical work types, reinterpret `--area` as:
+- `geography` -> system boundaries and deployment shape
+- `culture` -> audience, ownership, and operating norms
+- `technology` -> stack, tooling, and interface surface
+- `rules` -> supported constraints, permissions, and safety boundaries
+- `history` -> change history, prior decisions, and known incidents
+
 ## Instruction
 
 You are building the world document. Load:
@@ -26,14 +33,23 @@ Determine adapted terminology from CONSTRAINTS.json:
 - Default: "build world", generates `WORLD.md`
 - Sacred: "build cosmology" (renamed via CONSTRAINTS.json), generates `COSMOLOGY.md`
 - Academic: generates `CONTEXT.md`
+- Technical: "map system", generates `SYSTEM.md`
 
 ---
 
 ### INITIAL MODE (no existing world file)
 
 <world_build_initial>
-  The writer has no world document yet. Ask 3-5 seed questions (D-05) to establish the foundation:
+  The writer has no world document yet. Ask 3-5 seed questions (D-05) to establish the foundation.
 
+  For technical work types, ask instead:
+  1. "Who is this document for, and what are they trying to accomplish?"
+  2. "What system, service, or workflow does it describe?"
+  3. "What prerequisites or access does the reader need before they can follow it?"
+  4. "Which environment, platform, or version boundaries matter?"
+  5. "What can go wrong if the reader misunderstands this guidance?"
+
+  Otherwise use the default questions:
   1. **Scale:** "What's the scale of your world? A single city, a region, a continent, a planet, or something larger?"
 
   2. **Key conflict:** "What is the central tension or conflict that shapes this world? (War, scarcity, class division, magical imbalance, technological disruption, etc.)"
@@ -46,12 +62,19 @@ Determine adapted terminology from CONSTRAINTS.json:
 
   Wait for answers. Do not proceed until the writer responds.
 
-  After receiving answers, generate an initial WORLD.md using the template from `templates/WORLD.md`. Populate each section with what can be inferred from the seed answers:
+  After receiving answers, generate an initial world/system document using the appropriate template (`templates/WORLD.md` or `templates/technical/SYSTEM.md`). Populate each section with what can be inferred from the seed answers:
   - Geography: scale, key locations implied by the setting
   - Culture: social dynamics implied by the conflict
   - Technology/Magic: tech level from time period, any magic from distinguishing feature
   - Rules/Laws: governance implied by conflict and culture
   - History: backstory that would lead to the current state
+
+  For technical work types, translate those buckets into:
+  - system scope and boundaries
+  - operating context and ownership
+  - tooling, interfaces, and environment assumptions
+  - permissions, constraints, and failure conditions
+  - change history and prior decisions
 
   Mark sections that need more detail with `<!-- needs refinement -->` comments.
 
@@ -108,4 +131,5 @@ Determine adapted terminology from CONSTRAINTS.json:
 - **Invalid --area value:** List valid areas: geography, culture, technology, rules, history
 - **Sacred work type:** Use "build cosmology" terminology; questions adapt to cosmological themes (divine geography, spiritual hierarchy, sacred history)
 - **Academic work type:** Use "build context" terminology; questions focus on intellectual landscape, institutional setting, field dynamics
+- **Technical work type:** Use "map system" terminology; questions focus on system boundaries, operating context, dependencies, and supported environments
 - **World file already comprehensive:** Acknowledge it looks thorough and ask if there's a specific aspect to explore further

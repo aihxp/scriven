@@ -28,6 +28,12 @@ function toDocPathShape(value) {
     : normalized;
 }
 
+function docMentionsPath(doc, relativePath) {
+  return doc.includes(`\`${relativePath}\``)
+    || doc.includes(`](${relativePath})`)
+    || doc.includes(`](../${relativePath})`);
+}
+
 describe('trust-critical shipped assets', () => {
   const shippedAssets = read('docs/shipped-assets.md');
 
@@ -127,7 +133,7 @@ describe('canonical proof hub integrity', () => {
 
     for (const relativePath of canonicalArtifacts) {
       assert.ok(
-        proofArtifacts.includes(`\`${relativePath}\``),
+        docMentionsPath(proofArtifacts, relativePath),
         `docs/proof-artifacts.md should reference ${relativePath}`
       );
       assert.ok(exists(relativePath), `Proof artifact is missing: ${relativePath}`);
@@ -150,20 +156,32 @@ describe('runtime support regression checks', () => {
         ? 'Primary reference runtime'
         : runtimeKey === 'generic'
           ? 'Generic skills fallback'
+          : installType === 'guided-mcp'
+            ? 'Guided desktop MCP target'
           : installType === 'skills'
             ? 'Skills installer target'
             : 'Standard installer target';
       const repoEvidence = runtimeKey === 'generic'
         ? 'Installer registry, registry-tested'
+        : installType === 'guided-mcp'
+          ? 'Installer registry, registry-tested, guided setup assets, repo-documented'
         : 'Installer registry, registry-tested, repo-documented';
       const verificationStatus = runtimeKey === 'generic'
         ? 'Registry-tested; no host-runtime parity verification yet'
         : 'Registry-tested; repo-documented; no host-runtime parity verification yet';
       const globalPath = toDocPathShape(
-        installType === 'skills' ? runtime.skills_dir_global : runtime.commands_dir_global
+        installType === 'skills'
+          ? runtime.skills_dir_global
+          : installType === 'guided-mcp'
+            ? runtime.guide_dir_global
+            : runtime.commands_dir_global
       );
       const projectPath = toDocPathShape(
-        installType === 'skills' ? runtime.skills_dir_project : runtime.commands_dir_project
+        installType === 'skills'
+          ? runtime.skills_dir_project
+          : installType === 'guided-mcp'
+            ? runtime.guide_dir_project
+            : runtime.commands_dir_project
       );
       const expectedRow = new RegExp(
         `\\| ${escapeRegex(runtime.label)} \\| ${escapeRegex(installType)} \\| .*${escapeRegex(globalPath)}.*${escapeRegex(projectPath)}.*\\| ${escapeRegex(repoEvidence)} \\| ${escapeRegex(supportLevel)} \\| ${escapeRegex(verificationStatus)} \\|`

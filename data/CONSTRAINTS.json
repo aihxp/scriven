@@ -16,6 +16,10 @@
       "label": "Academic",
       "members": ["research_paper", "thesis", "journal_article", "white_paper", "literature_review", "monograph"]
     },
+    "technical": {
+      "label": "Technical Writing",
+      "members": ["technical_guide", "runbook", "api_reference", "design_spec"]
+    },
     "visual": {
       "label": "Visual",
       "members": ["comic", "graphic_novel", "childrens_book", "picture_book"]
@@ -275,6 +279,66 @@
       "unit_count_range": [8, 15],
       "unit_word_range": [4000, 8000],
       "unit_page_range": [16, 32]
+    },
+    "technical_guide": {
+      "label": "Technical Guide / User Guide",
+      "group": "technical",
+      "hierarchy": { "top": null, "mid": "section", "atomic": "procedure" },
+      "command_unit": "section",
+      "word_count_range": [3000, 25000],
+      "page_range": [12, 100],
+      "unit_count_range": [4, 12],
+      "unit_word_range": [500, 2500],
+      "unit_page_range": [2, 10],
+      "config_defaults": {
+        "audience_level": "mixed",
+        "review_mode": "accuracy_first"
+      }
+    },
+    "runbook": {
+      "label": "Runbook / SOP",
+      "group": "technical",
+      "hierarchy": { "top": null, "mid": "procedure", "atomic": "step" },
+      "command_unit": "procedure",
+      "word_count_range": [1500, 12000],
+      "page_range": [6, 48],
+      "unit_count_range": [3, 10],
+      "unit_word_range": [300, 1500],
+      "unit_page_range": [1, 6],
+      "config_defaults": {
+        "audience_level": "operator",
+        "review_mode": "accuracy_first"
+      }
+    },
+    "api_reference": {
+      "label": "API or CLI Reference",
+      "group": "technical",
+      "hierarchy": { "top": null, "mid": "resource", "atomic": "endpoint" },
+      "command_unit": "resource",
+      "word_count_range": [2000, 30000],
+      "page_range": [8, 120],
+      "unit_count_range": [5, 40],
+      "unit_word_range": [150, 1000],
+      "unit_page_range": [1, 4],
+      "config_defaults": {
+        "audience_level": "developer",
+        "review_mode": "accuracy_first"
+      }
+    },
+    "design_spec": {
+      "label": "Design Spec / Architecture Doc",
+      "group": "technical",
+      "hierarchy": { "top": "system", "mid": "section", "atomic": "decision" },
+      "command_unit": "section",
+      "word_count_range": [2000, 15000],
+      "page_range": [8, 60],
+      "unit_count_range": [4, 12],
+      "unit_word_range": [500, 2000],
+      "unit_page_range": [2, 8],
+      "config_defaults": {
+        "audience_level": "mixed",
+        "review_mode": "accuracy_first"
+      }
     },
     "poetry_collection": {
       "label": "Poetry Collection",
@@ -593,6 +657,7 @@
       "available": ["all"],
       "adapted": {
         "academic": { "rename": "peer-review" },
+        "technical": { "rename": "technical-review" },
         "sacred": { "rename": "scholarly-review" }
       },
       "description": "Manual review of drafted unit and editor-writer collaboration workflow",
@@ -676,8 +741,9 @@
     },
     "build-world": {
       "category": "character_world",
-      "available": ["prose", "script", "visual", "interactive"],
+      "available": ["prose", "script", "technical", "visual", "interactive"],
       "adapted": {
+        "technical": { "rename": "map-system" },
         "sacred": { "rename": "build-cosmology" }
       },
       "hidden": ["academic", "poetry", "speech_song"]
@@ -708,9 +774,10 @@
     },
     "plot-graph": {
       "category": "structure",
-      "available": ["prose", "script", "visual", "interactive"],
+      "available": ["prose", "script", "technical", "visual", "interactive"],
       "adapted": {
         "academic": { "rename": "argument-map" },
+        "technical": { "rename": "procedure-map" },
         "sacred": { "rename": "theological-arc" }
       },
       "hidden": ["poetry", "speech_song"],
@@ -743,58 +810,59 @@
     },
     "outline": {
       "category": "structure",
-      "available": ["prose", "script", "academic", "visual", "interactive", "sacred"],
+      "available": ["prose", "script", "academic", "technical", "visual", "interactive", "sacred"],
       "adapted": {},
       "hidden": ["poetry", "speech_song"],
       "requires": ["OUTLINE.md"]
     },
     "add-unit": {
       "category": "structure_management",
-      "available": ["prose", "script", "academic", "visual", "interactive", "sacred"],
+      "available": ["prose", "script", "academic", "technical", "visual", "interactive", "sacred"],
       "adapted": {},
       "hidden": ["poetry", "speech_song"],
       "requires": ["OUTLINE.md"]
     },
     "insert-unit": {
       "category": "structure_management",
-      "available": ["prose", "script", "academic", "visual", "interactive", "sacred"],
+      "available": ["prose", "script", "academic", "technical", "visual", "interactive", "sacred"],
       "adapted": {},
       "hidden": ["poetry", "speech_song"],
       "requires": ["OUTLINE.md"]
     },
     "remove-unit": {
       "category": "structure_management",
-      "available": ["prose", "script", "academic", "visual", "interactive", "sacred"],
+      "available": ["prose", "script", "academic", "technical", "visual", "interactive", "sacred"],
       "adapted": {},
       "hidden": ["poetry", "speech_song"],
       "requires": ["OUTLINE.md"]
     },
     "split-unit": {
       "category": "structure_management",
-      "available": ["prose", "script", "academic", "visual", "interactive", "sacred"],
+      "available": ["prose", "script", "academic", "technical", "visual", "interactive", "sacred"],
       "adapted": {},
       "hidden": ["poetry", "speech_song"],
       "requires": ["OUTLINE.md"]
     },
     "merge-units": {
       "category": "structure_management",
-      "available": ["prose", "script", "academic", "visual", "interactive", "sacred"],
+      "available": ["prose", "script", "academic", "technical", "visual", "interactive", "sacred"],
       "adapted": {},
       "hidden": ["poetry", "speech_song"],
       "requires": ["OUTLINE.md"]
     },
     "reorder-units": {
       "category": "structure_management",
-      "available": ["prose", "script", "academic", "visual", "interactive", "sacred"],
+      "available": ["prose", "script", "academic", "technical", "visual", "interactive", "sacred"],
       "adapted": {},
       "hidden": ["poetry", "speech_song"],
       "requires": ["OUTLINE.md"]
     },
     "continuity-check": {
       "category": "review",
-      "available": ["prose", "script", "visual", "interactive"],
+      "available": ["prose", "script", "technical", "visual", "interactive"],
       "adapted": {
         "academic": { "rename": "citation-check" },
+        "technical": { "rename": "consistency-check" },
         "sacred": { "rename": "doctrinal-check" }
       },
       "hidden": ["poetry", "speech_song"],
@@ -837,6 +905,7 @@
       "available": ["all"],
       "adapted": {
         "academic": { "rename": "reviewer-simulation" },
+        "technical": { "rename": "usability-review" },
         "sacred": { "rename": "theological-review" }
       },
       "requires": ["draft_exists"]
@@ -1128,7 +1197,7 @@
       "category": "collaboration",
       "description": "Manage revision tracks -- create, switch, compare, merge, and propose changes",
       "subcommands": ["create", "list", "switch", "compare", "merge", "propose"],
-      "available": ["prose", "script", "academic", "visual", "sacred", "poetry", "interactive", "speech_song"],
+      "available": ["prose", "script", "academic", "technical", "visual", "sacred", "poetry", "interactive", "speech_song"],
       "hidden": [],
       "requires": [],
       "co_writing": true
@@ -1142,9 +1211,9 @@
 
   "exports": {
     "markdown": { "available": ["all"] },
-    "docx_manuscript": { "available": ["prose", "script", "academic", "poetry", "speech_song", "sacred"] },
-    "docx_formatted": { "available": ["prose", "academic", "poetry", "speech_song", "sacred"] },
-    "pdf_manuscript": { "available": ["prose", "script", "academic", "visual", "poetry", "speech_song", "sacred"] },
+    "docx_manuscript": { "available": ["prose", "script", "academic", "technical", "poetry", "speech_song", "sacred"] },
+    "docx_formatted": { "available": ["prose", "academic", "technical", "poetry", "speech_song", "sacred"] },
+    "pdf_manuscript": { "available": ["prose", "script", "academic", "technical", "visual", "poetry", "speech_song", "sacred"] },
     "pdf_print_ready": { "available": ["prose", "visual", "poetry", "sacred"] },
     "fountain": { "available": ["script"] },
     "fdx": { "available": ["script"], "constraint": "screenplay_or_tv_only" },
@@ -1245,6 +1314,13 @@
       "beta-reader": { "adapted_name": "peer-review", "additional_focus": "methodology critique, argument strength" },
       "export": { "adapted_name": "journal-submit", "additional_presets": ["apa", "mla", "chicago"] }
     },
+    "technical": {
+      "build-world": { "adapted_name": "map-system", "description": "System boundaries, environments, and operating context" },
+      "plot-graph": { "adapted_name": "procedure-map", "description": "Procedure flow, escalation path, and task sequence" },
+      "editor-review": { "adapted_name": "technical-review", "description": "Accuracy, clarity, and audience-fit review" },
+      "beta-reader": { "adapted_name": "usability-review", "description": "Operator or reader trial for task completion" },
+      "continuity-check": { "adapted_name": "consistency-check", "description": "Terminology, procedure, and version consistency" }
+    },
     "sacred": {
       "new-character": { "adapted_name": "new-figure", "description": "Create figure profile" },
       "character-sheet": { "adapted_name": "figure-sheet", "description": "View/edit figure profile" },
@@ -1280,6 +1356,14 @@
       "WORLD.md": "CONTEXT.md",
       "PLOT-GRAPH.md": "ARGUMENT-MAP.md",
       "THEMES.md": "QUESTIONS.md"
+    },
+    "technical": {
+      "BRIEF.md": "DOC-BRIEF.md",
+      "CHARACTERS.md": "AUDIENCE.md",
+      "RELATIONSHIPS.md": "DEPENDENCIES.md",
+      "WORLD.md": "SYSTEM.md",
+      "PLOT-GRAPH.md": "PROCEDURES.md",
+      "THEMES.md": "REFERENCES.md"
     },
     "sacred": {
       "BRIEF.md": "FRAMEWORK.md",

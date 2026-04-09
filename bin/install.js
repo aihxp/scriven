@@ -23,6 +23,79 @@ const COLORS = {
 };
 
 function c(color, text) { return `${COLORS[color]}${text}${COLORS.reset}`; }
+function shellQuote(value) {
+  return `'${String(value).replace(/'/g, `'\"'\"'`)}'`;
+}
+
+function buildFilesystemMcpCommand(allowedDirs) {
+  return `npx -y @modelcontextprotocol/server-filesystem ${allowedDirs.map(shellQuote).join(' ')}`;
+}
+
+function generatePerplexitySetupGuide({ isGlobal, guideDir, dataDir, currentProjectDir }) {
+  const connectorCommand = isGlobal
+    ? buildFilesystemMcpCommand(['/absolute/path/to/project', dataDir])
+    : buildFilesystemMcpCommand([currentProjectDir, dataDir]);
+  const currentProjectCommand = buildFilesystemMcpCommand([currentProjectDir, dataDir]);
+
+  return `# Scriven for Perplexity Desktop
+
+This setup target prepares Scriven for **Perplexity Desktop on macOS** using Perplexity's documented **local MCP connector** flow.
+
+## What this target supports
+
+- Guided setup assets for Perplexity Desktop
+- Local filesystem access to a Scriven project and Scriven's shared data
+- Honest runtime framing: this is **not** slash-command parity with Claude Code, Codex CLI, Cursor, or Gemini CLI
+
+## Prerequisites
+
+1. Install **Perplexity Desktop** from the Mac App Store
+2. In Perplexity Desktop, open **Settings -> Connectors**
+3. Install the **PerplexityXPC** helper when prompted
+4. Ensure Node.js 20+ is available so \`npx\` can run the filesystem MCP server
+
+## Add the connector
+
+In Perplexity Desktop:
+
+1. Open **Settings -> Connectors**
+2. Click **Add Connector**
+3. In the **Simple** tab, choose any server name such as \`Scriven Project Files\`
+4. Paste this command:
+
+\`\`\`bash
+${connectorCommand}
+\`\`\`
+
+5. Save and wait for the connector to show **Running**
+6. Toggle the connector on from **Sources** when you want Perplexity to access your Scriven files
+
+## Current project command
+
+This installer was run from:
+
+\`\`\`
+${currentProjectDir}
+\`\`\`
+
+If you want a command that is ready for this specific project right now, use:
+
+\`\`\`bash
+${currentProjectCommand}
+\`\`\`
+
+## Notes
+
+- ${isGlobal ? 'Global install stores shared setup assets under your home directory, but the MCP connector itself still needs a project path.' : 'Project install points the connector at this project and its local .scriven directory.'}
+- Keep the allowed directories narrow. Prefer the project root and the matching Scriven data directory only.
+- Voice-critical drafting still depends on explicit \`STYLE-GUIDE.md\` loading per unit. Perplexity memory or spaces are not a substitute for Scriven's Voice DNA pipeline.
+
+## Installed assets
+
+- Guide directory: \`${guideDir}\`
+- Scriven data directory: \`${dataDir}\`
+`;
+}
 
 const BANNER = `
 ${c('bold', 'Scriven')} ${c('gray', 'v' + VERSION)}
@@ -113,6 +186,13 @@ const RUNTIMES = {
     skills_dir_global: path.join(os.homedir(), '.manus', 'skills', 'scriven'),
     skills_dir_project: '.manus/skills/scriven',
     detect: () => fs.existsSync(path.join(os.homedir(), '.manus')) || fs.existsSync('/Applications/Manus.app') || fs.existsSync(path.join(os.homedir(), 'Applications', 'Manus.app')),
+  },
+  'perplexity-desktop': {
+    label: 'Perplexity Desktop',
+    type: 'guided-mcp',
+    guide_dir_global: path.join(os.homedir(), '.scriven', 'perplexity'),
+    guide_dir_project: '.scriven/perplexity',
+    detect: () => fs.existsSync('/Applications/Perplexity.app') || fs.existsSync(path.join(os.homedir(), 'Applications', 'Perplexity.app')),
   },
   'generic': {
     label: 'Generic (SKILL.md)',
@@ -256,6 +336,9 @@ async function main() {
   console.log('\n' + c('bold', 'Install scope:'));
   console.log(`  ${c('cyan', '1.')} Global — available in all your projects`);
   console.log(`  ${c('cyan', '2.')} Project — just this directory`);
+  if (runtime.type === 'guided-mcp') {
+    console.log(c('dim', '  Note: Perplexity Desktop connectors still point at specific project paths even when you choose Global scope.'));
+  }
   const scopeChoice = await ask(rl, `\n${c('dim', 'Choice [1]: ')}`);
   const isGlobal = (scopeChoice || '1').trim() === '1';
 
@@ -288,6 +371,28 @@ async function main() {
     // Copy agent prompts
     const agentCount = copyDir(path.join(PKG_ROOT, 'agents'), path.join(skillsDir, 'agents'));
     console.log(`  ${c('green', '✓')} ${agentCount} agent prompts → ${c('dim', path.join(skillsDir, 'agents'))}`);
+  } else if (runtime.type === 'guided-mcp') {
+    const guideDir = isGlobal ? runtime.guide_dir_global : path.resolve(runtime.guide_dir_project);
+    const currentProjectDir = path.resolve('.');
+    const setupGuide = generatePerplexitySetupGuide({
+      isGlobal,
+      guideDir,
+      dataDir,
+      currentProjectDir,
+    });
+    const connectorCommand = isGlobal
+      ? buildFilesystemMcpCommand(['/absolute/path/to/project', dataDir])
+      : buildFilesystemMcpCommand([currentProjectDir, dataDir]);
+    const currentProjectCommand = buildFilesystemMcpCommand([currentProjectDir, dataDir]);
+
+    fs.mkdirSync(guideDir, { recursive: true });
+    fs.writeFileSync(path.join(guideDir, 'SETUP.md'), setupGuide);
+    fs.writeFileSync(path.join(guideDir, 'connector-command.txt'), connectorCommand + '\n');
+    fs.writeFileSync(path.join(guideDir, 'connector-command.current-project.txt'), currentProjectCommand + '\n');
+
+    console.log(`  ${c('green', '✓')} setup guide → ${c('dim', path.join(guideDir, 'SETUP.md'))}`);
+    console.log(`  ${c('green', '✓')} connector recipe → ${c('dim', path.join(guideDir, 'connector-command.txt'))}`);
+    console.log(`  ${c('green', '✓')} current-project connector recipe → ${c('dim', path.join(guideDir, 'connector-command.current-project.txt'))}`);
   } else {
     // Command-directory install path (existing behavior for type === 'commands' or undefined)
     const commandsDir = isGlobal ? runtime.commands_dir_global : path.resolve(runtime.commands_dir_project);
@@ -326,6 +431,13 @@ async function main() {
     console.log(`  ${c('cyan', '2.')} Read the SKILL.md to discover available /scr:* commands`);
     console.log(`  ${c('cyan', '3.')} Run ${c('bold', '/scr:new-work')} to start a new project`);
     console.log(`     or ${c('bold', '/scr:demo')} to explore a sample project first`);
+  } else if (runtime.type === 'guided-mcp') {
+    const guideDir = isGlobal ? runtime.guide_dir_global : path.resolve(runtime.guide_dir_project);
+    console.log(`  ${c('cyan', '1.')} Open ${runtime.label} on macOS and go to ${c('bold', 'Settings -> Connectors')}`);
+    console.log(`  ${c('cyan', '2.')} Install ${c('bold', 'PerplexityXPC')} if prompted`);
+    console.log(`  ${c('cyan', '3.')} Paste the connector command from ${c('dim', path.join(guideDir, 'connector-command.txt'))}`);
+    console.log(`  ${c('cyan', '4.')} Toggle the connector on from ${c('bold', 'Sources')} when you want Perplexity to access this project`);
+    console.log(`     Full guide: ${c('dim', path.join(guideDir, 'SETUP.md'))}`);
   } else {
     console.log(`  ${c('cyan', '1.')} Open ${runtime.label} in any directory`);
     console.log(`  ${c('cyan', '2.')} Run ${c('bold', '/scr:help')} to see available commands`);
@@ -344,4 +456,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { copyDir, RUNTIMES, generateSkillManifest };
+module.exports = { copyDir, RUNTIMES, generateSkillManifest, buildFilesystemMcpCommand, generatePerplexitySetupGuide };

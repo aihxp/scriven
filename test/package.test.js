@@ -72,6 +72,7 @@ describe('npm pack dry-run', () => {
       'data/CONSTRAINTS.json',
       'commands/scr/demo.md',
       'templates/STYLE-GUIDE.md',
+      'templates/technical/DOC-BRIEF.md',
     ];
     for (const entry of expectedEntries) {
       assert.ok(

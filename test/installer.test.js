@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const { copyDir, RUNTIMES, generateSkillManifest } = require('../bin/install.js');
+const { copyDir, RUNTIMES, generateSkillManifest, buildFilesystemMcpCommand, generatePerplexitySetupGuide } = require('../bin/install.js');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -59,6 +59,7 @@ describe('Installer RUNTIMES', () => {
     assert.ok('windsurf' in RUNTIMES, 'missing windsurf runtime');
     assert.ok('antigravity' in RUNTIMES, 'missing antigravity runtime');
     assert.ok('manus' in RUNTIMES, 'missing manus runtime');
+    assert.ok('perplexity-desktop' in RUNTIMES, 'missing perplexity-desktop runtime');
   });
 
   it('each runtime has required directory properties for its type', () => {
@@ -86,16 +87,21 @@ describe('Installer RUNTIMES', () => {
         for (const prop of skillProps) {
           assert.ok(prop in runtime, `skills runtime "${name}" missing property "${prop}"`);
         }
+      } else if (runtime.type === 'guided-mcp') {
+        const guidedProps = ['guide_dir_global', 'guide_dir_project'];
+        for (const prop of guidedProps) {
+          assert.ok(prop in runtime, `guided runtime "${name}" missing property "${prop}"`);
+        }
       }
     }
   });
 });
 
 describe('RUNTIMES type classification', () => {
-  it('every entry has a type property of commands or skills', () => {
+  it('every entry has a recognized runtime type', () => {
     for (const [name, runtime] of Object.entries(RUNTIMES)) {
       assert.ok(
-        runtime.type === 'commands' || runtime.type === 'skills',
+        runtime.type === 'commands' || runtime.type === 'skills' || runtime.type === 'guided-mcp',
         `runtime "${name}" has invalid type "${runtime.type}"`
       );
     }
@@ -126,6 +132,16 @@ describe('RUNTIMES type classification', () => {
     }
   });
 
+  it('guided runtimes have guide_dir properties', () => {
+    const guidedRuntimes = ['perplexity-desktop'];
+    for (const name of guidedRuntimes) {
+      assert.ok(name in RUNTIMES, `missing runtime "${name}"`);
+      assert.equal(RUNTIMES[name].type, 'guided-mcp', `runtime "${name}" should have type "guided-mcp"`);
+      assert.ok('guide_dir_global' in RUNTIMES[name], `runtime "${name}" missing guide_dir_global`);
+      assert.ok('guide_dir_project' in RUNTIMES[name], `runtime "${name}" missing guide_dir_project`);
+    }
+  });
+
   it('generic runtime has correct label and detect returns false', () => {
     assert.equal(RUNTIMES.generic.label, 'Generic (SKILL.md)');
     assert.equal(RUNTIMES.generic.detect(), false);
@@ -141,6 +157,12 @@ describe('RUNTIMES type classification', () => {
     assert.equal(typeof RUNTIMES.manus.detect, 'function');
     // detect() returns a boolean (may be true or false depending on environment)
     assert.equal(typeof RUNTIMES.manus.detect(), 'boolean');
+  });
+
+  it('perplexity desktop runtime detects via Perplexity.app and is not a file-copy target', () => {
+    assert.equal(RUNTIMES['perplexity-desktop'].type, 'guided-mcp');
+    assert.equal(typeof RUNTIMES['perplexity-desktop'].detect, 'function');
+    assert.equal(typeof RUNTIMES['perplexity-desktop'].detect(), 'boolean');
   });
 });
 
@@ -232,5 +254,28 @@ describe('Skill-file install simulation', () => {
     } finally {
       fs.rmSync(tmpDir, { recursive: true });
     }
+  });
+});
+
+describe('Perplexity Desktop guided setup', () => {
+  it('builds a filesystem MCP command with quoted allowed directories', () => {
+    const command = buildFilesystemMcpCommand(['/tmp/project', '/tmp/project/.scriven']);
+    assert.match(command, /^npx -y @modelcontextprotocol\/server-filesystem /);
+    assert.match(command, /'\/tmp\/project'/);
+    assert.match(command, /'\/tmp\/project\/\.scriven'/);
+  });
+
+  it('generates a setup guide that preserves the limited support boundary', () => {
+    const guide = generatePerplexitySetupGuide({
+      isGlobal: false,
+      guideDir: '/tmp/project/.scriven/perplexity',
+      dataDir: '/tmp/project/.scriven',
+      currentProjectDir: '/tmp/project',
+    });
+
+    assert.match(guide, /Perplexity Desktop on macOS/);
+    assert.match(guide, /local MCP connector/i);
+    assert.match(guide, /slash-command parity/i);
+    assert.match(guide, /STYLE-GUIDE\.md/);
   });
 });

@@ -1,0 +1,49 @@
+const { describe, it } = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('node:fs');
+const path = require('node:path');
+
+const ROOT = path.join(__dirname, '..');
+
+function read(relativePath) {
+  return fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
+}
+
+describe('phase 19 technical-writing trust surfaces', () => {
+  const readme = read('README.md');
+  const gettingStarted = read('docs/getting-started.md');
+  const workTypes = read('docs/work-types.md');
+  const architecture = read('docs/architecture.md');
+  const agentsDoc = read('AGENTS.md');
+  const claudeDoc = read('CLAUDE.md');
+
+  it('keeps root and onboarding docs aligned on the expanded work-type count', () => {
+    for (const [name, doc] of [
+      ['README.md', readme],
+      ['docs/getting-started.md', gettingStarted],
+      ['docs/work-types.md', workTypes],
+      ['docs/architecture.md', architecture],
+      ['AGENTS.md', agentsDoc],
+      ['CLAUDE.md', claudeDoc],
+    ]) {
+      assert.match(doc, /50 work types/, `${name} should keep the 50 work-type count`);
+    }
+
+    assert.match(workTypes, /9 groups/);
+    assert.match(architecture, /9 groups/);
+  });
+
+  it('makes the technical-writing family visible without overstating later-scope features', () => {
+    assert.match(readme, /Technical writing:/);
+    assert.match(gettingStarted, /runbook\? Procedures and system maps/);
+    assert.match(workTypes, /Technical Guide \/ User Guide/);
+    assert.match(workTypes, /Runbook \/ SOP/);
+    assert.match(workTypes, /API or CLI Reference/);
+    assert.match(workTypes, /Design Spec \/ Architecture Doc/);
+
+    for (const doc of [readme, workTypes]) {
+      assert.doesNotMatch(doc, /docs-site/i);
+      assert.doesNotMatch(doc, /portal-oriented/i);
+    }
+  });
+});
