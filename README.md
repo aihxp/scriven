@@ -180,7 +180,7 @@ Scriven currently ships installer targets for these AI tooling environments:
 
 **Version:** 1.3.4
 
-Scriven's core command surface is stable across 101 commands, 50 work types, and 11 installer targets. All four milestones (v1.0 MVP, v1.1 Generic Platform Support, v1.2 Documentation, v1.3 Trust & Proof) are shipped, and the v1.4 technical-writing expansion is in progress. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
+Scriven's core command surface is stable across 101 commands, 50 work types, and 11 installer targets. All five roadmap milestones through v1.4 (MVP, Generic Platform Support, Documentation, Trust & Proof, and Perplexity & Technical Writing) are shipped in the repo. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
 
 Version `1.3.4` rolls up the post-`1.3.3` hardening pass: review-driven fixes across export/runtime/publishing paths, explicit validation and security records for v1.3, and the finalized Trust & Proof archive.
 

@@ -33,6 +33,11 @@ describe('phase 19 technical-writing trust surfaces', () => {
     assert.match(architecture, /9 groups/);
   });
 
+  it('keeps the README status section aligned to the shipped milestone state', () => {
+    assert.match(readme, /All five roadmap milestones through v1\.4 .* shipped in the repo/i);
+    assert.doesNotMatch(readme, /v1\.4 .* in progress/i);
+  });
+
   it('makes the technical-writing family visible without overstating later-scope features', () => {
     assert.match(readme, /Technical writing:/);
     assert.match(gettingStarted, /runbook\? Procedures and system maps/);
