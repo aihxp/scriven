@@ -57,6 +57,7 @@ describe('phase 14 runtime credibility wiring', () => {
   const shippedAssets = read('docs/shipped-assets.md');
   const readme = read('README.md');
   const gettingStarted = read('docs/getting-started.md');
+  const troubleshootDoc = read('commands/scr/troubleshoot.md');
   const agentsDoc = read('AGENTS.md');
   const claudeDoc = read('CLAUDE.md');
 
@@ -76,6 +77,12 @@ describe('phase 14 runtime credibility wiring', () => {
     assert.match(gettingStarted, /\[Runtime Support\]\(runtime-support\.md\)/);
     assert.match(gettingStarted, /installer targets/);
     assert.doesNotMatch(gettingStarted, /\bsupported runtimes\b/i);
+  });
+
+  it('keeps Perplexity troubleshooting guidance honest for both install scopes', () => {
+    assert.match(troubleshootDoc, /~\/\.scriven\/perplexity\/SETUP\.md/);
+    assert.match(troubleshootDoc, /`\.scriven\/perplexity\/SETUP\.md`/);
+    assert.match(troubleshootDoc, /docs\/runtime-support\.md/);
   });
 
   it('keeps root instruction docs aligned to runtime-credibility policy', () => {
