@@ -24,7 +24,7 @@ The `--preset` argument is **required**. There is no interactive mode in autopil
 Load these project files:
 
 - `.manuscript/config.json` -- to get `work_type`, title, author
-- `data/CONSTRAINTS.json` -- to check `publishing_prerequisites` and export availability
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) -- to check `publishing_prerequisites` and export availability
 - `.manuscript/OUTLINE.md` -- to verify draft completeness
 
 **Validate preset:** Check that the `--preset` value matches a known preset name. If invalid:
@@ -96,8 +96,8 @@ For each prerequisite the preset needs:
 | front-matter | `.manuscript/front-matter/` has files | `/scr:front-matter` |
 | back-matter | `.manuscript/back-matter/` has files | `/scr:back-matter` |
 | blurb | `.manuscript/output/blurb.md` exists | `/scr:blurb` |
-| synopsis | `.manuscript/output/synopsis.md` exists | `/scr:synopsis` |
-| query-letter | `.manuscript/output/query-letter.md` exists | `/scr:query-letter` |
+| synopsis | Any `.manuscript/marketing/SYNOPSIS-*.md` file exists | `/scr:synopsis` |
+| query-letter | `.manuscript/marketing/QUERY-LETTER.md` exists | `/scr:query-letter` |
 
 Show progress as each prerequisite is generated:
 

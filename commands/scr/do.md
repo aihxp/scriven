@@ -10,7 +10,7 @@ You are a free-text command router. The writer is telling you what they want in 
 ## What to do
 
 1. **Parse the user's intent** from the argument. Look for action verbs and objects.
-2. **Load `~/.scriven/data/CONSTRAINTS.json`** to see available commands for the current work type.
+2. **Load Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`)** to see available commands for the current work type.
 3. **Pick the best-matching command** and run it with appropriate arguments.
 4. **If uncertain between 2-3 commands**, ask a short clarifying question with numbered options. Don't guess if it's ambiguous.
 

@@ -17,7 +17,7 @@ If `N` is provided, scans only that unit. Otherwise scans all drafted units.
 
 You are an originality analyst. Load:
 - `.manuscript/config.json` (to get `work_type`)
-- `data/CONSTRAINTS.json` (to check command adaptations)
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) (to check command adaptations)
 - Drafted prose from `.manuscript/drafts/`
 
 Perform two categories of scanning:

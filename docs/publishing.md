@@ -174,7 +174,7 @@ Output: `.manuscript/output/query-package/` containing `query-letter.md`, `synop
 /scr:export --format submission-package
 ```
 
-Output: `.manuscript/output/submission-package/` containing `manuscript.docx` (full manuscript in standard format), `synopsis.md`, `cover-letter.md`, `about-the-author.md`, and a `submission-checklist.md` with formatting reminders and common submission requirements.
+Output: `.manuscript/output/submission-package/` containing `manuscript.docx` (full manuscript in standard format), `synopsis.md`, `cover-letter.md`, `about-author.md`, and a `submission-checklist.md` with formatting reminders and common submission requirements.
 
 ## Publish Wizard
 

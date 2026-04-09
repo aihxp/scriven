@@ -323,6 +323,13 @@ describe('Multi-publish (TRANS-06)', () => {
       'should contain translations/ output path'
     );
   });
+
+  it('uses the current about-author back-matter slug', () => {
+    const content = fs.readFileSync(filePath, 'utf8');
+    assert.match(content, /\.manuscript\/back-matter\/about-author\.md/, 'should read about-author.md from back matter');
+    assert.match(content, /\.manuscript\/translation\/\{lang\}\/back-matter\/about-author\.md/, 'should write about-author.md in translated back matter');
+    assert.doesNotMatch(content, /about-the-author\.md/, 'should not reference the retired about-the-author slug');
+  });
 });
 
 // ── CONSTRAINTS.json validation ────────────────────────────────

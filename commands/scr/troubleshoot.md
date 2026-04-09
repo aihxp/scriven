@@ -12,7 +12,7 @@ You are diagnosing why something isn't working in the writer's Scriven project.
 1. **Gather context.** Read these files:
    - `.manuscript/STATE.md` -- current position and progress
    - `.manuscript/config.json` -- project configuration
-   - `~/.scriven/data/CONSTRAINTS.json` -- command availability and prerequisites
+   - Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) -- command availability and prerequisites
    - Recent git log (last 5 commits) -- what happened recently
 
 2. **If the writer described a problem**, focus on that. Common issues:

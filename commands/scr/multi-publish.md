@@ -29,7 +29,7 @@ You are a **multi-language publishing specialist**. Your job is to take translat
 ### STEP 1: LOAD CONTEXT
 
 1. Load `.manuscript/config.json` for `target_languages`, `source_language`, `work_type`, title, author
-2. Load `data/CONSTRAINTS.json` -- check prerequisites: `multi-publish` requires `translate` and `kdp-package`
+2. Load Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) -- check prerequisites: `multi-publish` requires `translate` and `kdp-package`
 3. Load `.manuscript/OUTLINE.md` for document structure
 4. Check which translations exist by scanning `.manuscript/translation/` for language subdirectories with drafts
 
@@ -119,9 +119,9 @@ For each language, generate translated back matter elements. Store in `.manuscri
 
 #### 4a. About the Author
 
-Translate the author bio from `.manuscript/back-matter/about-the-author.md`.
+Translate the author bio from `.manuscript/back-matter/about-author.md`.
 
-Save to `.manuscript/translation/{lang}/back-matter/about-the-author.md`
+Save to `.manuscript/translation/{lang}/back-matter/about-author.md`
 
 #### 4b. Also By / Series Title
 

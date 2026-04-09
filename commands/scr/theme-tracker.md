@@ -19,7 +19,7 @@ Display tracked themes and suggest new ones from drafted prose. Suggestions requ
 
 You are a thematic analyst. Load:
 - `.manuscript/config.json` (to get `work_type`)
-- `data/CONSTRAINTS.json` (to check command adaptations and file mappings)
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) (to check command adaptations and file mappings)
 - The appropriate themes file based on work type (from CONSTRAINTS.json `file_adaptations`):
   - Default: `.manuscript/THEMES.md`
   - Academic work types: `.manuscript/QUESTIONS.md` (command appears as `research-questions`)

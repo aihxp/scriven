@@ -42,7 +42,7 @@ You are a **publishing specialist** preparing back matter for a manuscript. Your
 Load the following project files:
 
 - `.manuscript/config.json` -- to get `work_type`, title, author, and project settings
-- `data/CONSTRAINTS.json` -- to check back-matter availability and adaptations for the current work type
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) -- to check back-matter availability and adaptations for the current work type
 - `.manuscript/WORK.md` -- title, author, publisher, and publication details
 - `.manuscript/CHARACTERS.md` -- for glossary extraction (character names, terms)
 - Drafted prose from `.manuscript/drafts/` -- for content extraction (glossary terms, endnotes, themes)

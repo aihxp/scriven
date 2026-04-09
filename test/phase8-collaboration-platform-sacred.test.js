@@ -131,6 +131,26 @@ describe('D-03: Multi-Runtime Installer (RUNTIME-01)', () => {
     assert.ok(/windsurf/i.test(content), 'should support Windsurf');
     assert.ok(/antigravity/i.test(content), 'should support Antigravity');
   });
+
+  it('commands avoid repo-local CONSTRAINTS.json and Claude-only agent paths', () => {
+    const commandFiles = fs.readdirSync(commandsDir).filter((file) => file.endsWith('.md'));
+
+    for (const file of commandFiles) {
+      const content = fs.readFileSync(path.join(commandsDir, file), 'utf8');
+      assert.doesNotMatch(
+        content,
+        /`data\/CONSTRAINTS\.json`/,
+        `${file} should not require the repo-local data/CONSTRAINTS.json path`
+      );
+    }
+
+    const draftContent = fs.readFileSync(path.join(commandsDir, 'draft.md'), 'utf8');
+    assert.doesNotMatch(
+      draftContent,
+      /~\/\.claude\/agents\/drafter\.md/,
+      'draft.md should not hardcode the Claude-specific drafter path'
+    );
+  });
 });
 
 // ── RUNTIME-02: Writer Profile Persistence ──────────────────

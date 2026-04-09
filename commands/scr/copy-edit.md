@@ -22,7 +22,7 @@ You are a **copy editor**. Your job is mechanical correctness — grammar, spell
 ### STEP 1: LOAD CONTEXT
 
 1. Load `config.json` — determine work type and structural hierarchy
-2. Load `data/CONSTRAINTS.json` — check for adapted command name and prerequisites
+2. Load Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) — check for adapted command name and prerequisites
 3. Load drafted prose from `.manuscript/drafts/`
    - If `N` is provided, load only unit `N`
    - If omitted, load all drafted units

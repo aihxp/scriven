@@ -288,6 +288,12 @@ describe('EXP-12: export query-package', () => {
     const content = fs.readFileSync(filePath, 'utf8');
     assert.match(content, /query-package/i, 'should contain query-package section');
   });
+
+  it('uses marketing outputs for synopsis and query letter prerequisites', () => {
+    const content = fs.readFileSync(filePath, 'utf8');
+    assert.match(content, /\.manuscript\/marketing\/QUERY-LETTER\.md/, 'should use QUERY-LETTER.md from marketing/');
+    assert.match(content, /\.manuscript\/marketing\/SYNOPSIS-\*\.md/, 'should use SYNOPSIS-*.md from marketing/');
+  });
 });
 
 // ── EXP-13: export submission-package ────────────────────────────
@@ -325,6 +331,12 @@ describe('EXP-14: publish wizard (D-07)', () => {
   it('shows a readiness checklist', () => {
     const content = fs.readFileSync(filePath, 'utf8');
     assert.match(content, /checklist/i, 'should show a readiness checklist');
+  });
+
+  it('checks marketing outputs for synopsis and query-letter prerequisites', () => {
+    const content = fs.readFileSync(filePath, 'utf8');
+    assert.match(content, /\.manuscript\/marketing\/SYNOPSIS-\*\.md/, 'publish.md should check marketing synopsis outputs');
+    assert.match(content, /\.manuscript\/marketing\/QUERY-LETTER\.md/, 'publish.md should check marketing query letter output');
   });
 });
 
@@ -388,6 +400,12 @@ describe('EXP-16: autopilot-publish (D-09)', () => {
   it('references --preset flag', () => {
     const content = fs.readFileSync(filePath, 'utf8');
     assert.match(content, /--preset/, 'should reference --preset flag');
+  });
+
+  it('checks marketing outputs for synopsis and query-letter prerequisites', () => {
+    const content = fs.readFileSync(filePath, 'utf8');
+    assert.match(content, /\.manuscript\/marketing\/SYNOPSIS-\*\.md/, 'autopilot-publish should check marketing synopsis outputs');
+    assert.match(content, /\.manuscript\/marketing\/QUERY-LETTER\.md/, 'autopilot-publish should check marketing query letter output');
   });
 });
 

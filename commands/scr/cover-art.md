@@ -29,7 +29,7 @@ You are a **cover art prompt specialist**. You generate structured, detailed pro
 Load the following project files:
 
 - `.manuscript/config.json` -- to get `work_type`, `genre`, `title`, `author`, `page_count`, `paper_type`, `trim_width`, `trim_height`
-- `data/CONSTRAINTS.json` -- to check `commands.cover-art.available` and `commands.cover-art.hidden`
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) -- to check `commands.cover-art.available` and `commands.cover-art.hidden`
 - `.manuscript/WORK.md` -- premise, tone, themes, setting
 - `.manuscript/CHARACTERS.md` or `.manuscript/FIGURES.md` -- for character imagery on cover
 - `.manuscript/illustrations/ART-DIRECTION.md` -- if it exists, for visual style consistency

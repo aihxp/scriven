@@ -19,7 +19,7 @@ Require `{N}-*-PLAN.md` files to exist. If not, offer `/scr:plan-{unit} N` first
 
 1. **Find all plan files for the unit.** `.manuscript/{N}-*-PLAN.md` — one per atomic unit (scene, subsection, passage).
 
-2. **For each atomic unit, invoke the drafter agent in a fresh context.** The drafter lives at `~/.claude/agents/drafter.md`. Fresh context per atomic unit is critical — it prevents voice drift, context bloat, and lets each scene be its best. The drafter receives:
+2. **For each atomic unit, invoke the installed `drafter.md` agent for the current runtime in a fresh context.** Use the agent path for the writer's active Scriven install (for example the runtime's global or project-scoped `agents/drafter.md`). Fresh context per atomic unit is critical — it prevents voice drift, context bloat, and lets each scene be its best. The drafter receives:
    - STYLE-GUIDE.md (always, every time — this is the voice DNA)
    - The specific {N}-{A}-PLAN.md for this atomic unit
    - CHARACTERS.md or FIGURES.md (relevant figures only)

@@ -26,7 +26,7 @@ You are the publishing wizard. Your job is to turn a completed manuscript into p
 Load these project files:
 
 - `.manuscript/config.json` -- to get `work_type`, title, author, language
-- `data/CONSTRAINTS.json` -- to check `publishing_prerequisites`, `exports` section, and work type group
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) -- to check `publishing_prerequisites`, `exports` section, and work type group
 - `.manuscript/OUTLINE.md` -- to verify draft completeness
 
 Determine the work type group from CONSTRAINTS.json `work_type_groups` so you can check which presets and commands are available.
@@ -70,7 +70,7 @@ Missing 3 prerequisites. Generate them now? (yes/no)
 | Front matter | `.manuscript/front-matter/` directory has files | `/scr:front-matter` |
 | Back matter | `.manuscript/back-matter/` directory has files | `/scr:back-matter` |
 | Blurb | `.manuscript/output/blurb.md` exists | `/scr:blurb` |
-| Synopsis | `.manuscript/output/synopsis.md` exists | `/scr:synopsis` |
+| Synopsis | Any `.manuscript/marketing/SYNOPSIS-*.md` file exists | `/scr:synopsis` |
 | Cover art | `.manuscript/output/cover.*` exists (any image format) | `/scr:cover-art` |
 
 **Critical prerequisite:** If the draft is not complete (missing body units), warn the writer:
@@ -135,8 +135,8 @@ Step 4/4: Building KDP package...
 | Step | Command | Condition |
 |------|---------|-----------|
 | 1 | `/scr:blurb` | If `.manuscript/output/blurb.md` missing |
-| 2 | `/scr:synopsis` | If `.manuscript/output/synopsis.md` missing |
-| 3 | `/scr:query-letter` | If `.manuscript/output/query-letter.md` missing |
+| 2 | `/scr:synopsis` | If no `.manuscript/marketing/SYNOPSIS-*.md` file exists |
+| 3 | `/scr:query-letter` | If `.manuscript/marketing/QUERY-LETTER.md` missing |
 | 4 | `/scr:export --format query-package` | Always |
 
 **ebook-wide** -- All major ebook stores
@@ -175,8 +175,8 @@ Step 4/4: Building KDP package...
 | Step | Command | Condition |
 |------|---------|-----------|
 | 1 | `/scr:blurb` | If `.manuscript/output/blurb.md` missing |
-| 2 | `/scr:synopsis` | If `.manuscript/output/synopsis.md` missing |
-| 3 | `/scr:query-letter` | If `.manuscript/output/query-letter.md` missing |
+| 2 | `/scr:synopsis` | If no `.manuscript/marketing/SYNOPSIS-*.md` file exists |
+| 3 | `/scr:query-letter` | If `.manuscript/marketing/QUERY-LETTER.md` missing |
 | 4 | `/scr:export --format fountain` | Always |
 | 5 | `/scr:export --format fdx` | Always |
 | 6 | `/scr:export --format query-package` | Always |

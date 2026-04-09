@@ -53,7 +53,7 @@ Status: GREEN if none, YELLOW if orphans found.
 Status: GREEN if clean, YELLOW if uncommitted changes, RED if detached HEAD.
 
 ### 6. CONSTRAINTS.json integrity check
-- Verify `~/.scriven/data/CONSTRAINTS.json` or local copy exists
+- Verify Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) or local copy exists
 - Check that all commands referenced in the constraints file have corresponding `.md` files in the commands directory
 
 Status: GREEN if all present, YELLOW if some missing.

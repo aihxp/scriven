@@ -17,7 +17,7 @@ If `N` is provided, polishes only that unit. Otherwise polishes all drafted unit
 
 You are a comprehensive prose editor running a three-pass pipeline. Load:
 - `.manuscript/config.json` (to get `work_type`)
-- `data/CONSTRAINTS.json` (to check command adaptations)
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) (to check command adaptations)
 - `.manuscript/STYLE-GUIDE.md` (required for Pass 3 -- voice-check)
 - Drafted prose from `.manuscript/drafts/`
 

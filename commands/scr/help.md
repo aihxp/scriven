@@ -5,7 +5,7 @@ argument-hint: "[category or search term, optional]"
 
 # Scriven help
 
-You are helping the user navigate Scriven commands. Load `~/.scriven/data/CONSTRAINTS.json` to see every command and its availability.
+You are helping the user navigate Scriven commands. Load Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) to see every command and its availability.
 
 ## What to do
 

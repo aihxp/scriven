@@ -49,7 +49,7 @@ You are a **publishing specialist** preparing front matter for a manuscript. You
 Load the following project files:
 
 - `.manuscript/config.json` -- to get `work_type`, title, author, and project settings
-- `data/CONSTRAINTS.json` -- to check front-matter availability and adaptations for the current work type
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) -- to check front-matter availability and adaptations for the current work type
 - `.manuscript/WORK.md` -- title, subtitle, author name, ISBN, publisher, series info, copyright year, rights statement, edition info
 - `.manuscript/OUTLINE.md` -- for TOC generation (chapter/section structure)
 - `.manuscript/CHARACTERS.md` -- for cast of characters generation

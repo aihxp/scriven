@@ -28,7 +28,7 @@ You are a **translation orchestrator**. Your job is to manage the per-unit trans
 Load the following project files:
 
 - `.manuscript/config.json` -- to get `source_language`, `target_languages`, `name_handling`, `measurement_system` from the `translation` section
-- `data/CONSTRAINTS.json` -- to check prerequisites
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) -- to check prerequisites
 
 ---
 

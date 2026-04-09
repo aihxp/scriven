@@ -5,7 +5,7 @@ argument-hint: "[--quick] [--type <work_type>]"
 
 # New work
 
-You are setting up a new Scriven project. Load `~/.scriven/data/CONSTRAINTS.json` for work type definitions.
+You are setting up a new Scriven project. Load Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) for work type definitions.
 
 ## Onboarding philosophy
 

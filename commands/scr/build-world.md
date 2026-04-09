@@ -18,7 +18,7 @@ Generate or refine the world document through structured progressive questioning
 
 You are building the world document. Load:
 - `.manuscript/config.json` (to get `work_type`)
-- `data/CONSTRAINTS.json` (to check `file_adaptations` and `commands.build-world.adapted`)
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) (to check `file_adaptations` and `commands.build-world.adapted`)
 - `WORK.md` (genre, tone, setting context)
 - Existing world file from `.manuscript/` if it exists (WORLD.md / COSMOLOGY.md / CONTEXT.md per `file_adaptations`)
 

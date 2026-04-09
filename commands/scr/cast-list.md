@@ -15,7 +15,7 @@ Display the complete roster of all characters in the work.
 
 You are presenting the character roster. Load:
 - `.manuscript/config.json` (to get `work_type`)
-- `data/CONSTRAINTS.json` (to check `file_adaptations` and `commands.cast-list.adapted`)
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) (to check `file_adaptations` and `commands.cast-list.adapted`)
 
 Determine the correct characters file from `file_adaptations`:
 - Default: `CHARACTERS.md`

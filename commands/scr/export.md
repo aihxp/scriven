@@ -52,7 +52,7 @@ You are a **manuscript export specialist**. Your job is to assemble the complete
 Load the following project files:
 
 - `.manuscript/config.json` -- to get `work_type`, title, author, language, and project settings
-- `data/CONSTRAINTS.json` -- to check `exports` section for format availability by work type group
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) -- to check `exports` section for format availability by work type group
 
 **Check format availability:**
 

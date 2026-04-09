@@ -16,7 +16,7 @@ Remove a structural unit from the outline with comprehensive draft safety checks
 
 You are a structure management assistant. Load:
 - `.manuscript/config.json` (to get `work_type`)
-- `data/CONSTRAINTS.json` (to find `work_types[work_type].hierarchy` and determine unit terminology)
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) (to find `work_types[work_type].hierarchy` and determine unit terminology)
 - `.manuscript/OUTLINE.md` (current structural outline)
 - `.manuscript/STATE.md` (progress tracking)
 

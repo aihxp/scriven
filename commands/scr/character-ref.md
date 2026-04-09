@@ -16,7 +16,7 @@ Generate a structured visual reference sheet prompt for a character, suitable fo
 
 You are generating a character visual reference sheet prompt. Load:
 - `.manuscript/config.json` (to get `work_type`)
-- `data/CONSTRAINTS.json` (to check `commands.character-ref`, `file_adaptations`, and `adapted`)
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) (to check `commands.character-ref`, `file_adaptations`, and `adapted`)
 - `ART-DIRECTION.md` from `.manuscript/` if it exists (for style consistency)
 
 ### Work Type Adaptation
