@@ -12,7 +12,11 @@ const {
   collectCommandEntries,
   cleanCodexSkillDirs,
   commandRefToCodexSkillName,
+  commandRefToClaudeInvocation,
   commandRefToCodexInvocation,
+  commandEntryToFlatCommandFileName,
+  generateClaudeCommandContent,
+  cleanFlatCommandFiles,
   generateCodexSkill,
   generateSkillManifest,
   buildFilesystemMcpCommand,
@@ -247,6 +251,8 @@ describe('generateSkillManifest', () => {
 describe('Codex skill helpers', () => {
   it('maps Scriven commands to Codex skill names and invocations', () => {
     assert.equal(commandRefToCodexSkillName('/scr:help'), 'scr-help');
+    assert.equal(commandRefToClaudeInvocation('/scr:help'), '/scr-help');
+    assert.equal(commandRefToClaudeInvocation('/scr:sacred:concordance'), '/scr-sacred-concordance');
     assert.equal(commandRefToCodexSkillName('/scr:sacred:concordance'), 'scr-sacred-concordance');
     assert.equal(commandRefToCodexInvocation('/scr:new-work'), '$scr-new-work');
   });
@@ -271,6 +277,38 @@ describe('Codex skill helpers', () => {
     assert.match(skill, /\$scr-help/);
     assert.match(skill, /\/tmp\/\.codex\/commands\/scr\/help\.md/);
     assert.match(skill, /\/scr:sacred:concordance/);
+  });
+
+  it('maps command entries to Claude flat command file names', () => {
+    assert.equal(
+      commandEntryToFlatCommandFileName({ commandRef: '/scr:help' }),
+      'scr-help.md'
+    );
+    assert.equal(
+      commandEntryToFlatCommandFileName({ commandRef: '/scr:sacred:concordance' }),
+      'scr-sacred-concordance.md'
+    );
+  });
+
+  it('rewrites Claude-installed command content to /scr-* references and stamps the file', () => {
+    const content = `---
+description: "Help"
+---
+Run \`/scr:help\`, then \`/scr:new-work\`, and finally \`/scr:sacred:concordance\`.
+`;
+    const installed = generateClaudeCommandContent(
+      {
+        commandRef: '/scr:help',
+        relativePath: 'help.md',
+      },
+      content
+    );
+
+    assert.match(installed, /scriven-cli-installed-command runtime:claude-code/);
+    assert.match(installed, /`\/scr-help`/);
+    assert.match(installed, /`\/scr-new-work`/);
+    assert.match(installed, /`\/scr-sacred-concordance`/);
+    assert.doesNotMatch(installed, /\/scr:help/);
   });
 });
 
@@ -364,6 +402,36 @@ Installed command file: /tmp/.codex/commands/scr/removed.md
     const removed = cleanCodexSkillDirs(skillsDir, ['scr-help']);
     assert.equal(removed, 1);
     assert.ok(!fs.existsSync(staleDir));
+  });
+});
+
+describe('cleanFlatCommandFiles', () => {
+  it('removes stale Scriven-owned Claude command files and the legacy scr/ directory while preserving unrelated files', () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'scriven-claude-clean-'));
+    const commandsDir = path.join(tmpDir, '.claude', 'commands');
+    fs.mkdirSync(commandsDir, { recursive: true });
+
+    fs.writeFileSync(
+      path.join(commandsDir, 'scr-help.md'),
+      '<!-- scriven-cli-installed-command runtime:claude-code command:/scr-help source:help.md -->\nhelp'
+    );
+    fs.writeFileSync(
+      path.join(commandsDir, 'scr-old-command.md'),
+      '<!-- scriven-cli-installed-command runtime:claude-code command:/scr-old-command source:old-command.md -->\nold'
+    );
+    fs.writeFileSync(path.join(commandsDir, 'custom.md'), '# custom');
+    fs.writeFileSync(path.join(commandsDir, '.scriven-installed.json'), JSON.stringify({
+      files: ['scr-help.md', 'scr-old-command.md'],
+    }, null, 2));
+    fs.mkdirSync(path.join(commandsDir, 'scr'), { recursive: true });
+    fs.writeFileSync(path.join(commandsDir, 'scr', 'next.md'), '# legacy');
+
+    const removed = cleanFlatCommandFiles(commandsDir, ['scr-help.md', 'scr-new-work.md'], ['scr']);
+    assert.equal(removed, 3);
+    assert.ok(!fs.existsSync(path.join(commandsDir, 'scr-help.md')));
+    assert.ok(!fs.existsSync(path.join(commandsDir, 'scr-old-command.md')));
+    assert.ok(!fs.existsSync(path.join(commandsDir, 'scr')));
+    assert.ok(fs.existsSync(path.join(commandsDir, 'custom.md')));
   });
 });
 

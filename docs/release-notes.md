@@ -2,6 +2,32 @@
 
 This document is the public-facing summary of what changed between package releases. For package history, see the root [CHANGELOG](../CHANGELOG.md).
 
+## 1.5.1 - 2026-04-09
+
+### What changed
+
+- Switched Claude Code installs to flat `/scr-*` commands such as `/scr-next` and `/scr-help`
+- Rewrote installed Claude command references so in-command guidance matches the new slash syntax
+- Added safe Claude cleanup so stale Scriven-owned `scr-*.md` files and the old `scr/` folder are removed without touching unrelated commands
+- Updated runtime docs and installer regression coverage around the Claude command surface
+
+### Why it matters
+
+`1.5.1` makes Claude Code feel native instead of carrying forward the older nested `/scr:*` shape. Writers now get one consistent command style in Claude, and reinstalling Scriven stays clean without being destructive in the shared command directory.
+
+### Affected areas
+
+- Claude Code installer path and command layout
+- installed command rewriting for Claude help text
+- runtime-facing docs and onboarding
+- installer and trust-regression tests
+
+### Verification
+
+- `node --check bin/install.js`
+- `node --test test/installer.test.js test/phase14-runtime-credibility.test.js test/phase16-trust-regression.test.js`
+- temporary HOME smoke install for `--runtime claude-code --global --writer --silent`
+
 ## 1.5.0 - 2026-04-09
 
 ### What changed
@@ -14,7 +40,7 @@ This document is the public-facing summary of what changed between package relea
 
 ### Why it matters
 
-`1.5.0` turns the installer into a more dependable real-world surface instead of a prompt-only setup path. Codex users now get native `$scr-*` discovery, Claude Code users keep a clean `/scr:*` command-directory install, and the package ships tests and docs that keep those claims honest.
+`1.5.0` turns the installer into a more dependable real-world surface instead of a prompt-only setup path. Codex users now get native `$scr-*` discovery, Claude Code users keep a clean command-directory install, and the package ships tests and docs that keep those claims honest.
 
 ### Affected areas
 

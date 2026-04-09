@@ -111,10 +111,11 @@ const RUNTIMES = {
   'claude-code': {
     label: 'Claude Code',
     type: 'commands',
-    commands_dir_global: path.join(os.homedir(), '.claude', 'commands', 'scr'),
-    commands_dir_project: '.claude/commands/scr',
+    commands_dir_global: path.join(os.homedir(), '.claude', 'commands'),
+    commands_dir_project: '.claude/commands',
     agents_dir_global: path.join(os.homedir(), '.claude', 'agents'),
     agents_dir_project: '.claude/agents',
+    command_layout: 'flat-prefixed',
     detect: () => fs.existsSync(path.join(os.homedir(), '.claude')),
   },
   'cursor': {
@@ -299,8 +300,16 @@ function commandRefToCodexSkillName(commandRef) {
     .replace(/:/g, '-');
 }
 
+function commandRefToClaudeInvocation(commandRef) {
+  return `/${commandRefToCodexSkillName(commandRef)}`;
+}
+
 function commandRefToCodexInvocation(commandRef) {
   return `$${commandRefToCodexSkillName(commandRef)}`;
+}
+
+function commandEntryToFlatCommandFileName(entry) {
+  return `${commandRefToCodexSkillName(entry.commandRef)}.md`;
 }
 
 function collectCommandEntries(commandsRoot) {
@@ -414,6 +423,89 @@ function removePathIfExists(targetPath) {
   if (!fs.existsSync(targetPath)) return false;
   fs.rmSync(targetPath, { recursive: true, force: true });
   return true;
+}
+
+function insertMarkerComment(content, comment) {
+  if (content.startsWith('---\n')) {
+    const frontmatterEnd = content.indexOf('\n---\n', 4);
+    if (frontmatterEnd !== -1) {
+      const insertAt = frontmatterEnd + '\n---\n'.length;
+      return `${content.slice(0, insertAt)}${comment}\n${content.slice(insertAt)}`;
+    }
+  }
+  return `${comment}\n${content}`;
+}
+
+function rewriteInstalledCommandRefs(content, transform) {
+  return content.replace(/\/scr:[a-z0-9:-]+/gi, (commandRef) => transform(commandRef));
+}
+
+function markInstalledCommand(content, runtimeKey, commandRef, sourcePath) {
+  const marker = `<!-- scriven-cli-installed-command runtime:${runtimeKey} command:${commandRef} source:${sourcePath} -->`;
+  return insertMarkerComment(content, marker);
+}
+
+function generateClaudeCommandContent(entry, sourceContent) {
+  const rewritten = rewriteInstalledCommandRefs(sourceContent, commandRefToClaudeInvocation);
+  return markInstalledCommand(rewritten, 'claude-code', commandRefToClaudeInvocation(entry.commandRef), entry.relativePath);
+}
+
+function isScrivenInstalledCommandFile(filePath) {
+  if (!fs.existsSync(filePath)) return false;
+  const content = fs.readFileSync(filePath, 'utf8');
+  return content.includes('scriven-cli-installed-command');
+}
+
+function cleanFlatCommandFiles(commandsDir, currentFileNames, legacyDirs = []) {
+  if (!fs.existsSync(commandsDir)) return 0;
+
+  const manifestPath = path.join(commandsDir, '.scriven-installed.json');
+  const manifest = readJsonIfExists(manifestPath);
+  const currentFileSet = new Set(currentFileNames);
+  const knownFileNames = new Set(Array.isArray(manifest?.files) ? manifest.files : []);
+  let removed = 0;
+
+  for (const entry of fs.readdirSync(commandsDir, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+    const filePath = path.join(commandsDir, entry.name);
+    if (isScrivenInstalledCommandFile(filePath)) {
+      knownFileNames.add(entry.name);
+    }
+  }
+
+  removePathIfExists(manifestPath);
+
+  for (const legacyDir of legacyDirs) {
+    if (removePathIfExists(path.join(commandsDir, legacyDir))) {
+      removed++;
+    }
+  }
+
+  for (const fileName of knownFileNames) {
+    if (!currentFileSet.has(fileName) && removePathIfExists(path.join(commandsDir, fileName))) {
+      removed++;
+    }
+  }
+
+  for (const fileName of currentFileNames) {
+    if (removePathIfExists(path.join(commandsDir, fileName))) {
+      removed++;
+    }
+  }
+
+  return removed;
+}
+
+function writeInstalledCommandManifest(commandsDir, runtimeKey, fileNames) {
+  const manifestPath = path.join(commandsDir, '.scriven-installed.json');
+  const manifest = {
+    installer: 'scriven-cli',
+    version: VERSION,
+    runtime: runtimeKey,
+    files: fileNames,
+    generated_at: new Date().toISOString(),
+  };
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 }
 
 function printHelp() {
@@ -737,6 +829,32 @@ function installCommandRuntime(runtime, isGlobal, log) {
   log(`  ${c('green', '✓')} ${runtime.label}: ${agentCount} agent prompts → ${c('dim', agentsDir)}${removedAgentFiles ? c('dim', ` (cleaned ${removedAgentFiles} stale files)`) : ''}`);
 }
 
+function installClaudeCommandRuntime(runtime, isGlobal, log) {
+  const commandsDir = isGlobal ? runtime.commands_dir_global : path.resolve(runtime.commands_dir_project);
+  const agentsDir = isGlobal ? runtime.agents_dir_global : path.resolve(runtime.agents_dir_project);
+  const commandsRoot = path.join(PKG_ROOT, 'commands', 'scr');
+  const commandEntries = collectCommandEntries(commandsRoot);
+  const fileNames = commandEntries.map((entry) => commandEntryToFlatCommandFileName(entry));
+
+  fs.mkdirSync(commandsDir, { recursive: true });
+  const removedCommandFiles = cleanFlatCommandFiles(commandsDir, fileNames, ['scr']);
+  const removedAgentFiles = cleanMirroredFiles(path.join(PKG_ROOT, 'agents'), agentsDir);
+
+  for (const entry of commandEntries) {
+    const sourcePath = path.join(commandsRoot, entry.relativePath);
+    const sourceContent = fs.readFileSync(sourcePath, 'utf8');
+    const fileName = commandEntryToFlatCommandFileName(entry);
+    const targetPath = path.join(commandsDir, fileName);
+    fs.writeFileSync(targetPath, generateClaudeCommandContent(entry, sourceContent));
+  }
+
+  writeInstalledCommandManifest(commandsDir, 'claude-code', fileNames);
+  const agentCount = copyDir(path.join(PKG_ROOT, 'agents'), agentsDir);
+
+  log(`  ${c('green', '✓')} ${runtime.label}: ${commandEntries.length} /scr-* command files → ${c('dim', commandsDir)}${removedCommandFiles ? c('dim', ` (cleaned ${removedCommandFiles} stale items)`) : ''}`);
+  log(`  ${c('green', '✓')} ${runtime.label}: ${agentCount} agent prompts → ${c('dim', agentsDir)}${removedAgentFiles ? c('dim', ` (cleaned ${removedAgentFiles} stale files)`) : ''}`);
+}
+
 function installManifestSkillRuntime(runtime, isGlobal, log) {
   const skillsDir = isGlobal ? runtime.skills_dir_global : path.resolve(runtime.skills_dir_project);
   removePathIfExists(skillsDir);
@@ -833,8 +951,12 @@ function printNextSteps(runtimeKeys) {
     console.log(`  ${c('cyan', `${step}.`)} Start with ${c('bold', '$scr-new-work')} or ${c('bold', '$scr-demo')}`);
     step++;
   }
-  if (runtimeKeys.some((key) => key !== 'codex' && RUNTIMES[key].type !== 'guided-mcp')) {
-    console.log(`  ${c('cyan', `${step}.`)} In Claude Code or another command-directory runtime, run ${c('bold', '/scr:help')}`);
+  if (runtimeKeys.includes('claude-code')) {
+    console.log(`  ${c('cyan', `${step}.`)} In Claude Code, run ${c('bold', '/scr-help')}`);
+    step++;
+  }
+  if (runtimeKeys.some((key) => key !== 'codex' && key !== 'claude-code' && RUNTIMES[key].type !== 'guided-mcp')) {
+    console.log(`  ${c('cyan', `${step}.`)} In another command-directory runtime, run ${c('bold', '/scr:help')}`);
     step++;
   }
   if (runtimeKeys.includes('perplexity-desktop')) {
@@ -862,6 +984,8 @@ function runInstall({ runtimeKeys, isGlobal, developerMode, silent, installMode 
     }
     if (runtimeKey === 'codex') {
       installCodexRuntime(runtime, isGlobal, log);
+    } else if (runtime.command_layout === 'flat-prefixed') {
+      installClaudeCommandRuntime(runtime, isGlobal, log);
     } else if (runtime.type === 'skills') {
       installManifestSkillRuntime(runtime, isGlobal, log);
     } else if (runtime.type === 'guided-mcp') {
@@ -899,7 +1023,11 @@ module.exports = {
   collectCommandEntries,
   cleanCodexSkillDirs,
   commandRefToCodexSkillName,
+  commandRefToClaudeInvocation,
   commandRefToCodexInvocation,
+  commandEntryToFlatCommandFileName,
+  generateClaudeCommandContent,
+  cleanFlatCommandFiles,
   generateCodexSkill,
   generateSkillManifest,
   buildFilesystemMcpCommand,

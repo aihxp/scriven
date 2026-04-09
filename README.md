@@ -42,11 +42,15 @@ Everything adapts to your work type. A novel uses `/scr:draft` for chapters. A s
 # Install
 npx scriven-cli@latest
 
-# In Claude Code and other slash-command runtimes:
-/scr:new-work        # Start a fresh project
-/scr:demo            # Explore a pre-built sample first
-/scr:next            # The universal "what should I do now" command
-/scr:help            # See what's available for your work type
+# In Claude Code:
+/scr-new-work        # Start a fresh project
+/scr-demo            # Explore a pre-built sample first
+/scr-next            # The universal "what should I do now" command
+/scr-help            # See what's available for your work type
+
+# Other slash-command runtimes currently keep /scr:*:
+/scr:new-work
+/scr:next
 
 # In Codex, use the generated $scr-* skills:
 $scr-new-work
@@ -55,7 +59,7 @@ $scr-next
 $scr-help
 ```
 
-If you only ever type `/scr:next`, you can complete an entire novel. It always knows what's next.
+If you only ever type `/scr-next` in Claude Code, you can complete an entire novel. It always knows what's next.
 
 If you want the shortest proof-first route, read [Proof Artifacts](docs/proof-artifacts.md) before exploring the rest of the docs.
 
@@ -138,7 +142,7 @@ Scriven is built on five principles:
 
 4. **Tradition-native vocabulary.** A Quran commentary uses surahs and ayahs. A Bible study uses books and verses. A screenplay uses acts and scenes. The tool adapts to the tradition -- the writer never adapts to the tool.
 
-5. **`/scr:next` always works.** The universal interface. A writer who only ever types `/scr:next` can complete an entire novel, from blank page to KDP package.
+5. **`/scr-next` always works in Claude Code.** The universal interface. A writer who only ever types `/scr-next` can complete an entire novel, from blank page to KDP package.
 
 ---
 
@@ -181,17 +185,17 @@ Scriven currently ships installer targets for these AI tooling environments:
 
 **Installer baseline:** `Node.js 20+` for `npx scriven-cli@latest` and `bin/install.js`.
 
-**Support note:** Claude Code is the primary reference runtime. The environments listed above are installer targets, not a claim that every host runtime has verified parity today. Codex currently installs a skill-native `$scr-*` surface, while Perplexity Desktop is a guided local-MCP target rather than a writable command runtime. See the [runtime compatibility matrix](docs/runtime-support.md) for install type, support level, and verification status.
+**Support note:** Claude Code is the primary reference runtime and now installs a flat `/scr-*` command surface. The environments listed above are installer targets, not a claim that every host runtime has verified parity today. Codex currently installs a skill-native `$scr-*` surface, while Perplexity Desktop is a guided local-MCP target rather than a writable command runtime. See the [runtime compatibility matrix](docs/runtime-support.md) for install type, support level, and verification status.
 
 ---
 
 ## Status
 
-**Version:** 1.5.0
+**Version:** 1.5.1
 
 Scriven's core command surface is stable across 101 commands, 50 work types, and 11 installer targets. All six roadmap milestones through `v1.5` (MVP, Generic Platform Support, Documentation, Trust & Proof, Perplexity & Technical Writing, and Runtime Install Reliability) are shipped in the repo. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
 
-Version `1.5.0` packages the shipped `v1.5 Runtime Install Reliability` milestone. It brings the real installer surface in line with how Codex and Claude Code actually work today: silent multi-runtime installs, generated Codex `$scr-*` skills backed by mirrored command markdown, clean Scriven-owned reinstall behavior, and docs/tests that lock that contract in place.
+Version `1.5.1` is a patch release on top of the shipped `v1.5 Runtime Install Reliability` milestone. It refines the Claude Code install surface to use flat `/scr-*` commands, keeps Codex on generated `$scr-*` skills, and extends the installer/tests/docs so that runtime contract stays consistent.
 
 Package history is tracked in [CHANGELOG.md](CHANGELOG.md), and the public-facing summary for this release is in [docs/release-notes.md](docs/release-notes.md).
 

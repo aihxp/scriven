@@ -40,7 +40,7 @@ Node is not a runtime dependency for Scriven's markdown command system itself. O
 
 | Runtime | Install Type | Install Path Shape | Repo Evidence | Support Level | Verification Status |
 |---------|--------------|--------------------|---------------|---------------|---------------------|
-| Claude Code | commands | `~/.claude/commands/scr` + `~/.claude/agents` or `.claude/commands/scr` + `.claude/agents` | Installer registry, registry-tested, repo-documented | Primary reference runtime | Registry-tested; repo-documented; no host-runtime parity verification yet |
+| Claude Code | commands | `~/.claude/commands/scr-*.md` + `~/.claude/agents` or `.claude/commands/scr-*.md` + `.claude/agents` | Installer registry, registry-tested, repo-documented | Primary reference runtime | Registry-tested; repo-documented; no host-runtime parity verification yet |
 | Cursor | commands | `~/.cursor/commands/scr` + `~/.cursor/agents` or `.cursor/commands/scr` + `.cursor/agents` | Installer registry, registry-tested, repo-documented | Standard installer target | Registry-tested; repo-documented; no host-runtime parity verification yet |
 | Gemini CLI | commands | `~/.gemini/commands/scr` + `~/.gemini/agents` or `.gemini/commands/scr` + `.gemini/agents` | Installer registry, registry-tested, repo-documented | Standard installer target | Registry-tested; repo-documented; no host-runtime parity verification yet |
 | Codex | skills | `~/.codex/skills/scr-*` or `.codex/skills/scr-*` (with mirrored command files in `~/.codex/commands/scr` or `.codex/commands/scr`) | Installer registry, registry-tested, repo-documented | Skills installer target | Registry-tested; repo-documented; no host-runtime parity verification yet |

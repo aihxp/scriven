@@ -2,6 +2,15 @@
 
 All notable package-level changes to `scriven-cli` are documented here.
 
+## 1.5.1 - 2026-04-09
+
+This release is a Claude command-surface follow-up to `1.5.0`.
+
+- switched Claude Code installs from nested `/scr:*` command-directory files to flat `/scr-*` command files at `.claude/commands/`
+- rewrote installed Claude command references so help text and cross-command suggestions use the same `/scr-*` surface writers invoke
+- added safe Claude command cleanup so Scriven removes only its own stale `scr-*.md` files and legacy `scr/` installs without touching unrelated user commands
+- updated installer regression coverage and Claude-facing docs to lock the new command contract in place
+
 ## 1.5.0 - 2026-04-09
 
 This release packages the shipped `v1.5 Runtime Install Reliability` milestone.

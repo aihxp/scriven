@@ -22,16 +22,16 @@ npx scriven-cli@latest
 
 This installs Scriven into the runtime you choose. Command-directory and skills targets place files where the runtime expects them. Guided targets like Perplexity Desktop instead write setup assets and show the exact connector steps you need. Takes about 30 seconds.
 
-Once installed, Claude Code and other command-directory runtimes use `/scr:*` commands. Codex uses generated `$scr-*` skills such as `$scr-help` and `$scr-new-work`. Guided targets explain their supported setup path directly in the generated setup files.
+Once installed, Claude Code uses flat `/scr-*` commands such as `/scr-help` and `/scr-new-work`. Other command-directory runtimes currently keep `/scr:*`. Codex uses generated `$scr-*` skills such as `$scr-help` and `$scr-new-work`. Guided targets explain their supported setup path directly in the generated setup files.
 
 ## Step 2: Explore the Demo (Optional)
 
 Not sure what Scriven does? Try the demo before starting your own project:
 
-Command-directory runtimes:
+Claude Code:
 
 ```
-/scr:demo
+/scr-demo
 ```
 
 Codex:
@@ -48,7 +48,7 @@ This creates a pre-built short story project -- a retired watchmaker who receive
 - Editor notes on one scene so you can see the revision workflow
 - 1 planned-but-undrafted scene so you can watch the drafter work
 
-Explore at your own pace. When you're ready to start your own work, run `/scr:demo --clear` to clean up.
+Explore at your own pace. When you're ready to start your own work, run `/scr-demo --clear` to clean up.
 
 If you want a curated reading path instead of jumping straight into the demo files, open [Proof Artifacts](proof-artifacts.md) first. It maps the watchmaker sample to the exact files worth inspecting.
 
@@ -56,10 +56,10 @@ If you want a curated reading path instead of jumping straight into the demo fil
 
 Create a new writing project:
 
-Command-directory runtimes:
+Claude Code:
 
 ```
-/scr:new-work
+/scr-new-work
 ```
 
 Codex:
@@ -90,10 +90,10 @@ Every file adapts to your work type. Writing a screenplay? You get acts and scen
 
 Before you draft anything substantial, turn the STYLE-GUIDE template into a real voice profile:
 
-Command-directory runtimes:
+Claude Code:
 
 ```
-/scr:profile-writer
+/scr-profile-writer
 ```
 
 Codex:
@@ -104,10 +104,10 @@ $scr-profile-writer
 
 This interview builds your Voice DNA from your preferences, reference works, or a writing sample. When it finishes, run:
 
-Command-directory runtimes:
+Claude Code:
 
 ```
-/scr:voice-test
+/scr-voice-test
 ```
 
 Codex:
@@ -122,10 +122,10 @@ That calibration pass writes a short sample and lets you say what sounds right o
 
 Before drafting, shape your ideas:
 
-Command-directory runtimes:
+Claude Code:
 
 ```
-/scr:discuss
+/scr-discuss
 ```
 
 Codex:
@@ -144,10 +144,10 @@ If you already refined your voice profile, you can also skip this step and draft
 
 Draft your first unit:
 
-Command-directory runtimes:
+Claude Code:
 
 ```
-/scr:draft
+/scr-draft
 ```
 
 Codex:
@@ -166,10 +166,10 @@ Your draft files appear in `.manuscript/` ready for you to read and revise.
 
 Not sure what to do? There's one command that always knows:
 
-Command-directory runtimes:
+Claude Code:
 
 ```
-/scr:next
+/scr-next
 ```
 
 Codex:
@@ -178,14 +178,14 @@ Codex:
 $scr-next
 ```
 
-`/scr:next` reads your project state and runs the right next step automatically. A writer who only ever types `/scr:next` can complete an entire manuscript from start to finish.
+`/scr-next` reads your project state and runs the right next step automatically. A writer who only ever types `/scr-next` in Claude Code can complete an entire manuscript from start to finish.
 
 Beyond the core workflow, Scriven offers:
 
-- **Revision** -- `/scr:editor-review`, `/scr:line-edit`, `/scr:continuity-check`
-- **Publishing** -- `/scr:publish`, `/scr:export`, `/scr:cover-art`, `/scr:blurb`
-- **Collaboration** -- `/scr:save`, `/scr:history`, `/scr:compare`
-- **Navigation** -- `/scr:help`, `/scr:next`, `/scr:pause-work`
+- **Revision** -- `/scr-editor-review`, `/scr-line-edit`, `/scr-continuity-check`
+- **Publishing** -- `/scr-publish`, `/scr-export`, `/scr-cover-art`, `/scr-blurb`
+- **Collaboration** -- `/scr-save`, `/scr-history`, `/scr-compare`
+- **Navigation** -- `/scr-help`, `/scr-next`, `/scr-pause-work`
 
 For the full command list, see [Command Reference](command-reference.md).
 
