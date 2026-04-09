@@ -173,7 +173,7 @@ Scriven currently ships installer targets for these AI coding agent environments
 
 ## Status
 
-**Version:** 1.3.3
+**Version:** 1.3.4
 
 Scriven's core command surface is stable across 101 commands, 46 work types, and 10 installer targets. All four milestones (v1.0 MVP, v1.1 Generic Platform Support, v1.2 Documentation, v1.3 Trust & Proof) are shipped, and the full automated test suite is green. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
 
