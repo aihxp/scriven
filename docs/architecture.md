@@ -184,6 +184,7 @@ scriven/
   bin/
     install.js             Multi-platform installer (Node.js)
   docs/
+    proof-artifacts.md     Canonical proof layer and artifact index
     getting-started.md     Install to first draft in 10 minutes
     command-reference.md   Full command listing with usage
     work-types.md          46 work types and how they adapt Scriven
@@ -192,6 +193,9 @@ scriven/
     sacred-texts.md        Sacred work types and voice registers
     translation.md         Translation pipeline guide
     contributing.md        How to extend Scriven (commands, agents, etc.)
+    shipped-assets.md      Canonical shipped-template and trust-file inventory
+    runtime-support.md     Canonical runtime matrix and Node baseline
+    release-notes.md       Public package-release summaries
     architecture.md        This file
   .manuscript/             Per-project working directory (created by commands)
 ```

@@ -165,6 +165,7 @@ Scriven currently ships installer targets for these AI coding agent environments
 - **Windsurf**
 - **Antigravity**
 - **Manus Desktop**
+- **Generic (SKILL.md)** fallback
 
 **Installer baseline:** `Node.js 20+` for `npx scriven-cli@latest` and `bin/install.js`.
 

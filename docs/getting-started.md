@@ -132,3 +132,9 @@ Beyond the core workflow, Scriven offers:
 - **Navigation** -- `/scr:help`, `/scr:next`, `/scr:pause-work`
 
 For the full command list, see [Command Reference](command-reference.md).
+
+If you want the trust surfaces around installation and shipping details, continue with:
+
+- [Runtime Support](runtime-support.md) -- installer targets, support levels, and verification status
+- [Shipped Assets](shipped-assets.md) -- what the npm package actually includes on the trust-critical surface
+- [Release Notes](release-notes.md) -- what changed in the latest package release

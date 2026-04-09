@@ -18,7 +18,7 @@ Node is not a runtime dependency for Scriven's markdown command system itself. O
 
 - **Installer registry**: the runtime appears in `bin/install.js` with a label, install type, detection rule, and install path shapes.
 - **Registry-tested**: `test/installer.test.js` asserts the runtime key exists and that its install properties match the expected `commands` or `skills` strategy.
-- **Repo-documented**: the install strategy and detection behavior are described in project docs such as `docs/architecture.md`.
+- **Repo-documented**: the install strategy and detection behavior are described in project docs such as [Architecture](architecture.md).
 - **Host-runtime parity**: end-to-end proof that the installed command surface behaves equivalently inside the host agent. Scriven does not currently ship this proof for any runtime in the repo.
 
 ## Support Levels
@@ -57,7 +57,7 @@ Scriven currently proves all of the following in-repo:
 - each target has a declared install strategy (`commands` or `skills`)
 - each target has expected install-path properties in the installer registry
 - the runtime registry shape is covered by automated installer tests
-- the high-level install strategies and detection rules are documented in `docs/architecture.md`
+- the high-level install strategies and detection rules are documented in [Architecture](architecture.md)
 
 Scriven does not currently prove:
 
@@ -66,3 +66,9 @@ Scriven does not currently prove:
 - dedicated smoke-test artifacts for each runtime environment
 
 That distinction is intentional. Installer-path coverage is valuable, but it is not the same thing as verified runtime parity.
+
+## See Also
+
+- [Getting Started](getting-started.md) -- install flow and first-run expectations
+- [Shipped Assets](shipped-assets.md) -- trust-critical files that ship with the package
+- [Release Notes](release-notes.md) -- latest package-level summary
