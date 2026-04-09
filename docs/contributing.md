@@ -19,7 +19,7 @@ templates/             9 base project templates + technical/ and sacred/ variant
 templates/technical/   6 technical-writing context variants
 templates/sacred/      6 sacred-specific context templates
 bin/install.js         Multi-platform installer (Node.js)
-docs/                  Documentation suite (13 guides)
+docs/                  Documentation suite (16 guides)
 ```
 
 Key principle: the AI agent reads these files at runtime. There is no compilation, no bundling, no transpilation. If you can write markdown, you can contribute.

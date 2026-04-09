@@ -200,6 +200,9 @@ scriven/
     sacred-texts.md        Sacred work types and voice registers
     translation.md         Translation pipeline guide
     contributing.md        How to extend Scriven (commands, agents, etc.)
+    configuration.md       Package, installer, constraints, and project config surfaces
+    development.md         Contributor workflow for changing Scriven itself
+    testing.md             Test suite coverage and release-safety checks
     shipped-assets.md      Canonical shipped-template and trust-file inventory
     runtime-support.md     Canonical runtime matrix and Node baseline
     release-notes.md       Public package-release summaries

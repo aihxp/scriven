@@ -148,6 +148,9 @@ Scriven is built on five principles:
 - [Translation Guide](docs/translation.md) -- Multi-language pipeline with glossary and cultural adaptation
 - [Contributing](docs/contributing.md) -- How to add commands, agents, work types, and templates
 - [Architecture](docs/architecture.md) -- How Scriven works under the hood
+- [Configuration](docs/configuration.md) -- Package, installer, constraints, and `.manuscript/config.json` surfaces
+- [Development](docs/development.md) -- Contributor workflow for changing commands, templates, installer logic, and docs
+- [Testing](docs/testing.md) -- What the test suite covers and which checks to run before shipping
 - [Release Notes](docs/release-notes.md) -- Public summary of what changed between package releases
 - [Shipped Assets](docs/shipped-assets.md) -- Canonical inventory of bundled export templates and launch-critical files
 - [Runtime Support](docs/runtime-support.md) -- Canonical runtime matrix, Node baseline, and verification-status framing
