@@ -4,6 +4,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 
 const ROOT = path.join(__dirname, '..');
+const pkg = JSON.parse(fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8'));
 const constraints = JSON.parse(
   fs.readFileSync(path.join(ROOT, 'data', 'CONSTRAINTS.json'), 'utf8')
 );
@@ -74,6 +75,7 @@ describe('phase 18 technical-writing scaffolding', () => {
 
   it('teaches new-work to scaffold technical projects with technical-native files and config', () => {
     const newWork = read('commands/scr/new-work.md');
+    const templateConfig = JSON.parse(read('templates/config.json'));
     assert.match(newWork, /Technical guide, Runbook, API reference, Design spec/);
     assert.match(newWork, /DOC-BRIEF\.md/);
     assert.match(newWork, /AUDIENCE\.md/);
@@ -82,6 +84,8 @@ describe('phase 18 technical-writing scaffolding', () => {
     assert.match(newWork, /REFERENCES\.md/);
     assert.match(newWork, /templates\/technical\//);
     assert.match(newWork, /technical` block/);
+    assert.equal(templateConfig.scriven_version, pkg.version);
+    assert.match(newWork, new RegExp(`"scriven_version": "${pkg.version.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
   });
 });
 
