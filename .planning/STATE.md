@@ -1,15 +1,15 @@
 ---
 gsd_state_version: 1.0
-milestone: none
-status: Awaiting next milestone definition
-stopped_at: Milestone summaries generated for v1.0 through v1.4
-last_updated: "2026-04-09T12:42:13.071Z"
+milestone: v1.5
+status: Milestone v1.5 shipped
+stopped_at: Milestone v1.5 summary generated
+last_updated: "2026-04-09T15:48:47Z"
 last_activity: 2026-04-09
 progress:
-  total_phases: 8
-  completed_phases: 4
-  total_plans: 9
-  completed_plans: 9
+  total_phases: 3
+  completed_phases: 3
+  total_plans: 7
+  completed_plans: 7
   percent: 100
 ---
 
@@ -20,16 +20,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-09)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** define the next milestone from a clean planning state
+**Current focus:** milestone complete; waiting for the next roadmap decision
 
 ## Current Position
 
-Phase: None
-Plan: None
-Status: Awaiting next milestone definition
-Last activity: 2026-04-09
+Phase: v1.5 complete
+Plan: 7 of 7 plans completed
+Status: Silent install, Codex skill surface, and runtime docs/verification shipped
+Last activity: 2026-04-09 — Generated v1.5 milestone summary from phases 20-22 artifacts
 
-Progress: [------------] 0%
+Progress: [############] 100%
 
 ## Performance Metrics
 
@@ -82,11 +82,13 @@ Recent decisions affecting current work:
 - [Phase 17]: Guided runtime targets are valid first-class support surfaces when the installer and docs explain the setup model explicitly
 - [Phase 18]: Technical writing should start as a small family of real document types instead of one vague catch-all work type
 - [Phase 19]: New trust surfaces should be locked with targeted tests for counts, packaging, and scope wording
+- [Phase 20]: Silent installer flags should cover runtime selection, scope, mode, help, and version without falling back to readline
+- [Phase 21]: Codex is a skill-native runtime surface and should expose `$scr-*` skills backed by mirrored command markdown
+- [Phase 22]: Runtime docs and tests must describe the same Codex and Claude install model the installer actually writes
 
 ### Pending Todos
 
-- Start the next milestone with /gsd-new-milestone
-- Decide whether to deepen runtime verification, expand proof assets, or broaden technical-writing outputs next
+- Select the next milestone
 
 ### Blockers/Concerns
 
@@ -94,6 +96,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-09T12:42:13.068Z
-Stopped at: Milestone summaries generated for v1.0 through v1.4
-Resume file: .planning/reports/MILESTONE_SUMMARY-v1.4.md
+Last session: 2026-04-09T15:48:47Z
+Stopped at: Milestone v1.5 summary generated
+Resume file: .planning/reports/MILESTONE_SUMMARY-v1.5.md

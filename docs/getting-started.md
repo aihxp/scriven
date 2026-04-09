@@ -22,14 +22,22 @@ npx scriven-cli@latest
 
 This installs Scriven into the runtime you choose. Command-directory and skills targets place files where the runtime expects them. Guided targets like Perplexity Desktop instead write setup assets and show the exact connector steps you need. Takes about 30 seconds.
 
-Once installed, `/scr:` commands are available inside command and skills runtimes. Guided targets explain their supported setup path directly in the generated setup files.
+Once installed, Claude Code and other command-directory runtimes use `/scr:*` commands. Codex uses generated `$scr-*` skills such as `$scr-help` and `$scr-new-work`. Guided targets explain their supported setup path directly in the generated setup files.
 
 ## Step 2: Explore the Demo (Optional)
 
 Not sure what Scriven does? Try the demo before starting your own project:
 
+Command-directory runtimes:
+
 ```
 /scr:demo
+```
+
+Codex:
+
+```
+$scr-demo
 ```
 
 This creates a pre-built short story project -- a retired watchmaker who receives a letter from a daughter he never knew. The demo includes:
@@ -48,8 +56,16 @@ If you want a curated reading path instead of jumping straight into the demo fil
 
 Create a new writing project:
 
+Command-directory runtimes:
+
 ```
 /scr:new-work
+```
+
+Codex:
+
+```
+$scr-new-work
 ```
 
 Scriven asks just 3 questions -- what you're writing, your premise, and whether you have existing material. That's it. No long setup forms, no configuration wizards.
@@ -74,14 +90,30 @@ Every file adapts to your work type. Writing a screenplay? You get acts and scen
 
 Before you draft anything substantial, turn the STYLE-GUIDE template into a real voice profile:
 
+Command-directory runtimes:
+
 ```
 /scr:profile-writer
 ```
 
+Codex:
+
+```
+$scr-profile-writer
+```
+
 This interview builds your Voice DNA from your preferences, reference works, or a writing sample. When it finishes, run:
+
+Command-directory runtimes:
 
 ```
 /scr:voice-test
+```
+
+Codex:
+
+```
+$scr-voice-test
 ```
 
 That calibration pass writes a short sample and lets you say what sounds right or wrong before Scriven starts drafting real units.
@@ -90,8 +122,16 @@ That calibration pass writes a short sample and lets you say what sounds right o
 
 Before drafting, shape your ideas:
 
+Command-directory runtimes:
+
 ```
 /scr:discuss
+```
+
+Codex:
+
+```
+$scr-discuss
 ```
 
 This opens a collaborative conversation where you and the AI work through the creative decisions for your next unit -- pacing, voice, character dynamics, what to include, what to avoid. Scriven picks the 3-4 most relevant questions for your specific scene rather than running through a checklist.
@@ -104,8 +144,16 @@ If you already refined your voice profile, you can also skip this step and draft
 
 Draft your first unit:
 
+Command-directory runtimes:
+
 ```
 /scr:draft
+```
+
+Codex:
+
+```
+$scr-draft
 ```
 
 The drafter loads your Voice DNA (STYLE-GUIDE.md) and writes in your voice, not generic AI prose. Each atomic unit (scene, beat, passage) is drafted in a fresh context to prevent voice drift and keep quality consistent across the entire work.
@@ -118,8 +166,16 @@ Your draft files appear in `.manuscript/` ready for you to read and revise.
 
 Not sure what to do? There's one command that always knows:
 
+Command-directory runtimes:
+
 ```
 /scr:next
+```
+
+Codex:
+
+```
+$scr-next
 ```
 
 `/scr:next` reads your project state and runs the right next step automatically. A writer who only ever types `/scr:next` can complete an entire manuscript from start to finish.

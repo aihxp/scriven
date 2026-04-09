@@ -23,7 +23,7 @@ npx scriven-cli@latest
 
 Scriven is a command system that turns your AI coding agent into a voice-preserving writing studio. It supports 50 work types -- novels, screenplays, research papers, technical guides, runbooks, scripture commentaries, comics, memoirs -- each with its own adaptive vocabulary and toolset.
 
-The wedge comes first: Scriven profiles the writer, loads that voice into every drafting step, and keeps each unit on fresh context so the prose stays specific to the project. From there, it expands into 101 slash commands covering the rest of the pipeline:
+The wedge comes first: Scriven profiles the writer, loads that voice into every drafting step, and keeps each unit on fresh context so the prose stays specific to the project. From there, it expands into 101 writing commands covering the rest of the pipeline:
 
 - **Create** -- Set up a project with tailored context files. Progressive onboarding, never overwhelming.
 - **Write** -- Discuss, plan, draft, and revise one unit at a time. The drafter agent loads your Voice DNA and writes in *your* voice, not generic AI prose.
@@ -42,11 +42,17 @@ Everything adapts to your work type. A novel uses `/scr:draft` for chapters. A s
 # Install
 npx scriven-cli@latest
 
-# In any project directory, open Claude Code (or your preferred agent) and:
+# In Claude Code and other slash-command runtimes:
 /scr:new-work        # Start a fresh project
 /scr:demo            # Explore a pre-built sample first
 /scr:next            # The universal "what should I do now" command
 /scr:help            # See what's available for your work type
+
+# In Codex, use the generated $scr-* skills:
+$scr-new-work
+$scr-demo
+$scr-next
+$scr-help
 ```
 
 If you only ever type `/scr:next`, you can complete an entire novel. It always knows what's next.
@@ -164,7 +170,7 @@ Scriven currently ships installer targets for these AI tooling environments:
 - **Claude Code** (primary reference runtime)
 - **Cursor**
 - **Gemini CLI**
-- **Codex CLI**
+- **Codex**
 - **OpenCode**
 - **GitHub Copilot**
 - **Windsurf**
@@ -175,7 +181,7 @@ Scriven currently ships installer targets for these AI tooling environments:
 
 **Installer baseline:** `Node.js 20+` for `npx scriven-cli@latest` and `bin/install.js`.
 
-**Support note:** Claude Code is the primary reference runtime. The environments listed above are installer targets, not a claim that every host runtime has verified parity today. Perplexity Desktop is a guided local-MCP target rather than a slash-command runtime. See the [runtime compatibility matrix](docs/runtime-support.md) for install type, support level, and verification status.
+**Support note:** Claude Code is the primary reference runtime. The environments listed above are installer targets, not a claim that every host runtime has verified parity today. Codex currently installs a skill-native `$scr-*` surface, while Perplexity Desktop is a guided local-MCP target rather than a writable command runtime. See the [runtime compatibility matrix](docs/runtime-support.md) for install type, support level, and verification status.
 
 ---
 

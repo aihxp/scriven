@@ -313,7 +313,7 @@ The installer detects which AI agents are available by checking for their config
 | Claude Code | `~/.claude` exists | commands |
 | Cursor | `~/.cursor` exists | commands |
 | Gemini CLI | `~/.gemini` exists | commands |
-| Codex CLI | `~/.codex` exists | commands |
+| Codex | `~/.codex` exists | skills |
 | OpenCode | `~/.config/opencode` exists | commands |
 | GitHub Copilot | `~/.github` exists | commands |
 | Windsurf | `~/.windsurf` exists | commands |
@@ -327,6 +327,8 @@ The installer detects which AI agents are available by checking for their config
 **Command-directory (type: `commands`).** Copies individual command markdown files into the agent's command directory (e.g., `~/.claude/commands/scr/`). Each file becomes a slash command. Also copies agent files to the agent directory. This is the native approach for agents that support file-based commands.
 
 **Skill-file (type: `skills`).** Generates a single `SKILL.md` manifest file that lists all commands in a table. For platforms that do not support file-based command directories (like Manus), the SKILL.md acts as a command index that the agent reads to discover available commands. The agent then reads individual command files from the package directory.
+
+Codex uses a skill-native variation of this strategy. The installer generates one `$scr-*` skill per Scriven command under `.codex/skills/`, while also mirroring the underlying command markdown into `.codex/commands/scr/` so the generated skills can read the installed command files as their source of truth.
 
 **Guided local-MCP (type: `guided-mcp`).** Writes setup assets and connector recipes for runtimes that expose a documented local-MCP surface instead of a writable slash-command directory. Perplexity Desktop currently fits this model: Scriven writes a setup guide and filesystem-server command recipe under `.scriven/perplexity/`, and the user adds that command inside Perplexity Desktop's Connectors UI.
 

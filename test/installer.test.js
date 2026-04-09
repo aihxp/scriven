@@ -4,7 +4,20 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 
-const { copyDir, RUNTIMES, generateSkillManifest, buildFilesystemMcpCommand, generatePerplexitySetupGuide } = require('../bin/install.js');
+const {
+  copyDir,
+  RUNTIMES,
+  parseArgs,
+  resolveInstallRequest,
+  collectCommandEntries,
+  cleanCodexSkillDirs,
+  commandRefToCodexSkillName,
+  commandRefToCodexInvocation,
+  generateCodexSkill,
+  generateSkillManifest,
+  buildFilesystemMcpCommand,
+  generatePerplexitySetupGuide,
+} = require('../bin/install.js');
 
 const ROOT = path.join(__dirname, '..');
 
@@ -109,7 +122,7 @@ describe('RUNTIMES type classification', () => {
 
   it('command-directory runtimes have type commands', () => {
     const commandRuntimes = [
-      'claude-code', 'cursor', 'gemini-cli', 'codex',
+      'claude-code', 'cursor', 'gemini-cli',
       'opencode', 'copilot', 'windsurf', 'antigravity',
     ];
     for (const name of commandRuntimes) {
@@ -123,13 +136,22 @@ describe('RUNTIMES type classification', () => {
   });
 
   it('skill-file runtimes have type skills with skills_dir properties', () => {
-    const skillRuntimes = ['manus', 'generic'];
+    const skillRuntimes = ['codex', 'manus', 'generic'];
     for (const name of skillRuntimes) {
       assert.ok(name in RUNTIMES, `missing runtime "${name}"`);
       assert.equal(RUNTIMES[name].type, 'skills', `runtime "${name}" should have type "skills"`);
       assert.ok('skills_dir_global' in RUNTIMES[name], `runtime "${name}" missing skills_dir_global`);
       assert.ok('skills_dir_project' in RUNTIMES[name], `runtime "${name}" missing skills_dir_project`);
     }
+  });
+
+  it('codex runtime keeps command and agent mirror paths alongside skills', () => {
+    assert.equal(RUNTIMES.codex.type, 'skills');
+    assert.ok('commands_dir_global' in RUNTIMES.codex);
+    assert.ok('commands_dir_project' in RUNTIMES.codex);
+    assert.ok('agents_dir_global' in RUNTIMES.codex);
+    assert.ok('agents_dir_project' in RUNTIMES.codex);
+    assert.equal(RUNTIMES.codex.skill_style, 'per-command');
   });
 
   it('guided runtimes have guide_dir properties', () => {
@@ -219,6 +241,129 @@ describe('generateSkillManifest', () => {
         `manifest should include category "${cat}"`
       );
     }
+  });
+});
+
+describe('Codex skill helpers', () => {
+  it('maps Scriven commands to Codex skill names and invocations', () => {
+    assert.equal(commandRefToCodexSkillName('/scr:help'), 'scr-help');
+    assert.equal(commandRefToCodexSkillName('/scr:sacred:concordance'), 'scr-sacred-concordance');
+    assert.equal(commandRefToCodexInvocation('/scr:new-work'), '$scr-new-work');
+  });
+
+  it('collects command entries from the Scriven command tree', () => {
+    const entries = collectCommandEntries(path.join(ROOT, 'commands', 'scr'));
+    assert.ok(entries.length >= 90, `expected at least 90 command entries, got ${entries.length}`);
+    assert.ok(entries.some((entry) => entry.commandRef === '/scr:help'));
+    assert.ok(entries.some((entry) => entry.commandRef === '/scr:sacred:concordance'));
+  });
+
+  it('generates a Codex skill wrapper that points at the installed command file', () => {
+    const entry = {
+      commandRef: '/scr:help',
+      skillName: 'scr-help',
+      description: 'Show Scriven commands grouped by workflow stage',
+      argumentHint: '[category or search term, optional]',
+      relativePath: 'help.md',
+    };
+    const skill = generateCodexSkill(entry, '/tmp/.codex/commands/scr/help.md');
+    assert.match(skill, /name: "scr-help"/);
+    assert.match(skill, /\$scr-help/);
+    assert.match(skill, /\/tmp\/\.codex\/commands\/scr\/help\.md/);
+    assert.match(skill, /\/scr:sacred:concordance/);
+  });
+});
+
+describe('parseArgs', () => {
+  it('parses multi-runtime silent install flags', () => {
+    const parsed = parseArgs(['--runtimes', 'codex,claude-code', '--project', '--developer', '--silent']);
+    assert.deepEqual(parsed.runtimeKeys, ['codex', 'claude-code']);
+    assert.equal(parsed.isGlobal, false);
+    assert.equal(parsed.developerMode, true);
+    assert.equal(parsed.silent, true);
+  });
+
+  it('supports repeated runtime flags and detected mode', () => {
+    const parsed = parseArgs(['--runtime', 'codex', '--runtime=claude-code', '--detected']);
+    assert.deepEqual(parsed.runtimeKeys, ['codex', 'claude-code']);
+    assert.equal(parsed.installDetected, true);
+  });
+
+  it('rejects unknown runtimes', () => {
+    assert.throws(() => parseArgs(['--runtime', 'unknown-runtime']), /Unknown runtime/);
+  });
+});
+
+describe('resolveInstallRequest', () => {
+  it('keeps modifier-only interactive runs interactive', () => {
+    const parsed = parseArgs(['--project', '--developer']);
+    const resolved = resolveInstallRequest(parsed, ['codex'], { isTTY: true });
+    assert.equal(resolved.action, 'interactive');
+    assert.equal(resolved.isGlobal, false);
+    assert.equal(resolved.developerMode, true);
+  });
+
+  it('rejects silent installs without an explicit runtime directive', () => {
+    const parsed = parseArgs(['--project', '--developer', '--silent']);
+    const resolved = resolveInstallRequest(parsed, ['claude-code'], { isTTY: true });
+    assert.equal(resolved.action, 'usage_error');
+    assert.match(resolved.message, /Silent installs require/);
+  });
+
+  it('resolves explicit runtime installs non-interactively', () => {
+    const parsed = parseArgs(['--runtime', 'codex', '--project', '--developer', '--silent']);
+    const resolved = resolveInstallRequest(parsed, ['claude-code'], { isTTY: true });
+    assert.equal(resolved.action, 'install');
+    assert.deepEqual(resolved.runtimeKeys, ['codex']);
+    assert.equal(resolved.isGlobal, false);
+    assert.equal(resolved.developerMode, true);
+    assert.equal(resolved.silent, true);
+  });
+});
+
+describe('cleanCodexSkillDirs', () => {
+  it('removes stale Scriven-owned skills from the manifest while preserving unrelated directories', () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'scriven-codex-clean-'));
+    const skillsDir = path.join(tmpDir, '.codex', 'skills');
+    fs.mkdirSync(skillsDir, { recursive: true });
+
+    fs.mkdirSync(path.join(skillsDir, 'scr-help'), { recursive: true });
+    fs.writeFileSync(path.join(skillsDir, 'scr-help', 'SKILL.md'), '# old help');
+    fs.mkdirSync(path.join(skillsDir, 'scr-old-command'), { recursive: true });
+    fs.writeFileSync(path.join(skillsDir, 'scr-old-command', 'SKILL.md'), '# old stale');
+    fs.mkdirSync(path.join(skillsDir, 'custom-skill'), { recursive: true });
+    fs.writeFileSync(path.join(skillsDir, 'custom-skill', 'SKILL.md'), '# custom');
+    fs.writeFileSync(path.join(skillsDir, '.scriven-installed.json'), JSON.stringify({
+      skills: ['scr-help', 'scr-old-command'],
+    }, null, 2));
+
+    const removed = cleanCodexSkillDirs(skillsDir, ['scr-help', 'scr-new-work']);
+    assert.equal(removed, 2);
+    assert.ok(!fs.existsSync(path.join(skillsDir, 'scr-help')));
+    assert.ok(!fs.existsSync(path.join(skillsDir, 'scr-old-command')));
+    assert.ok(fs.existsSync(path.join(skillsDir, 'custom-skill')));
+  });
+
+  it('removes stale Scriven-owned skill directories detected by wrapper signature', () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'scriven-codex-sig-'));
+    const skillsDir = path.join(tmpDir, '.codex', 'skills');
+    const staleDir = path.join(skillsDir, 'scr-removed');
+    fs.mkdirSync(staleDir, { recursive: true });
+    fs.writeFileSync(path.join(staleDir, 'SKILL.md'), `---
+name: "scr-removed"
+---
+<codex_skill_adapter>
+</codex_skill_adapter>
+<objective>
+Execute Scriven's \`/scr:removed\` command inside Codex by reading the installed Scriven command file below as the source of truth.
+</objective>
+<context>
+Installed command file: /tmp/.codex/commands/scr/removed.md
+</context>`);
+
+    const removed = cleanCodexSkillDirs(skillsDir, ['scr-help']);
+    assert.equal(removed, 1);
+    assert.ok(!fs.existsSync(staleDir));
   });
 });
 

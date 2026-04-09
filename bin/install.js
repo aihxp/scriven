@@ -45,7 +45,7 @@ This setup target prepares Scriven for **Perplexity Desktop on macOS** using Per
 
 - Guided setup assets for Perplexity Desktop
 - Local filesystem access to a Scriven project and Scriven's shared data
-- Honest runtime framing: this is **not** slash-command parity with Claude Code, Codex CLI, Cursor, or Gemini CLI
+- Honest runtime framing: this is **not** slash-command parity with Claude Code, Codex, Cursor, or Gemini CLI
 
 ## Prerequisites
 
@@ -136,12 +136,15 @@ const RUNTIMES = {
     detect: () => fs.existsSync(path.join(os.homedir(), '.gemini')),
   },
   'codex': {
-    label: 'Codex CLI',
-    type: 'commands',
+    label: 'Codex',
+    type: 'skills',
+    skills_dir_global: path.join(os.homedir(), '.codex', 'skills'),
+    skills_dir_project: '.codex/skills',
     commands_dir_global: path.join(os.homedir(), '.codex', 'commands', 'scr'),
     commands_dir_project: '.codex/commands/scr',
     agents_dir_global: path.join(os.homedir(), '.codex', 'agents'),
     agents_dir_project: '.codex/agents',
+    skill_style: 'per-command',
     detect: () => fs.existsSync(path.join(os.homedir(), '.codex')),
   },
   'opencode': {
@@ -276,6 +279,267 @@ To use a command, read the corresponding \`.md\` file and follow its instruction
 `;
 }
 
+function stripWrappingQuotes(value) {
+  if (!value) return '';
+  const trimmed = value.trim();
+  if ((trimmed.startsWith('"') && trimmed.endsWith('"')) || (trimmed.startsWith('\'') && trimmed.endsWith('\''))) {
+    return trimmed.slice(1, -1);
+  }
+  return trimmed;
+}
+
+function readFrontmatterValue(content, key) {
+  const match = content.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
+  return match ? stripWrappingQuotes(match[1]) : '';
+}
+
+function commandRefToCodexSkillName(commandRef) {
+  return commandRef
+    .replace(/^\/scr:/, 'scr-')
+    .replace(/:/g, '-');
+}
+
+function commandRefToCodexInvocation(commandRef) {
+  return `$${commandRefToCodexSkillName(commandRef)}`;
+}
+
+function collectCommandEntries(commandsRoot) {
+  const entries = [];
+
+  function walk(dir, segments = []) {
+    if (!fs.existsSync(dir)) return;
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.isDirectory()) {
+        walk(path.join(dir, entry.name), segments.concat(entry.name));
+        continue;
+      }
+      if (!entry.name.endsWith('.md')) continue;
+
+      const relSegments = segments.concat(entry.name.replace(/\.md$/, ''));
+      const relPath = path.join(...segments, entry.name);
+      const filePath = path.join(dir, entry.name);
+      const content = fs.readFileSync(filePath, 'utf8');
+      const commandTail = relSegments.join(':');
+      const commandRef = `/scr:${commandTail}`;
+      const description = readFrontmatterValue(content, 'description') || commandTail.replace(/[:\-]/g, ' ');
+      const argumentHint = readFrontmatterValue(content, 'argument-hint');
+
+      entries.push({
+        commandRef,
+        skillName: commandRefToCodexSkillName(commandRef),
+        description,
+        argumentHint,
+        relativePath: relPath,
+      });
+    }
+  }
+
+  walk(commandsRoot);
+  entries.sort((a, b) => a.commandRef.localeCompare(b.commandRef));
+  return entries;
+}
+
+function generateCodexSkill(entry, commandPath) {
+  const invocation = commandRefToCodexInvocation(entry.commandRef);
+  const shortDescription = entry.description.length > 120
+    ? `${entry.description.slice(0, 117)}...`
+    : entry.description;
+  const argumentsLine = entry.argumentHint
+    ? `- Treat any text after \`${invocation}\` as the arguments for the underlying Scriven command ${entry.argumentHint}.`
+    : `- Treat any text after \`${invocation}\` as the arguments for the underlying Scriven command.`;
+
+  return `---
+name: "${entry.skillName}"
+description: "${entry.description.replace(/"/g, '\\"')}"
+metadata:
+  short-description: "${shortDescription.replace(/"/g, '\\"')}"
+---
+
+<codex_skill_adapter>
+## Invocation
+- This skill is invoked by mentioning \`${invocation}\`.
+${argumentsLine}
+- When the installed Scriven command file mentions \`/scr:...\`, rewrite that command surface for Codex users as \`$scr-...\`.
+  - Example: \`/scr:help\` becomes \`$scr-help\`
+  - Example: \`/scr:new-work\` becomes \`$scr-new-work\`
+  - Example: \`/scr:sacred:concordance\` becomes \`$scr-sacred-concordance\`
+</codex_skill_adapter>
+
+<objective>
+Execute Scriven's \`${entry.commandRef}\` command inside Codex by reading the installed Scriven command file below as the source of truth.
+</objective>
+
+<context>
+Installed command file: ${commandPath}
+</context>
+
+<process>
+1. Read \`${commandPath}\`.
+2. Execute that command file exactly as written.
+3. Treat text after \`${invocation}\` as the command arguments.
+4. When suggesting other Scriven commands to Codex users, translate \`/scr:...\` references to the \`$scr-...\` surface.
+</process>
+`;
+}
+
+function listRelativeFiles(dir, prefix = '') {
+  if (!fs.existsSync(dir)) return [];
+  const files = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const rel = path.join(prefix, entry.name);
+    const abs = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...listRelativeFiles(abs, rel));
+    } else {
+      files.push(rel);
+    }
+  }
+  return files;
+}
+
+function cleanMirroredFiles(srcDir, destDir) {
+  if (!fs.existsSync(srcDir) || !fs.existsSync(destDir)) return 0;
+  let removed = 0;
+  for (const relPath of listRelativeFiles(srcDir)) {
+    const destPath = path.join(destDir, relPath);
+    if (fs.existsSync(destPath)) {
+      fs.rmSync(destPath, { force: true });
+      removed++;
+    }
+  }
+  return removed;
+}
+
+function removePathIfExists(targetPath) {
+  if (!fs.existsSync(targetPath)) return false;
+  fs.rmSync(targetPath, { recursive: true, force: true });
+  return true;
+}
+
+function printHelp() {
+  console.log(BANNER);
+  console.log(`Usage:
+  scriven
+  scriven --runtimes codex,claude-code --global --writer --silent
+
+Options:
+  --runtimes <list>   Comma-separated runtime keys to install (for example: codex,claude-code)
+  --runtime <key>     Repeatable single-runtime selector
+  --detected          Install to every detected runtime
+  --global            Install for all projects (default)
+  --project           Install only in the current directory
+  --writer            Use writer mode (default)
+  --developer         Use developer mode
+  --silent            Skip prompts and reduce output
+  --help              Show this help text
+  --version           Show the Scriven package version
+
+Runtime keys:
+  ${Object.keys(RUNTIMES).join(', ')}
+`);
+}
+
+function parseArgs(argv) {
+  const options = {
+    runtimeKeys: [],
+    installDetected: false,
+    isGlobal: null,
+    developerMode: null,
+    silent: false,
+    showHelp: false,
+    showVersion: false,
+  };
+
+  function addRuntimeList(value) {
+    for (const key of String(value).split(',').map((item) => item.trim()).filter(Boolean)) {
+      if (!Object.prototype.hasOwnProperty.call(RUNTIMES, key)) {
+        throw new Error(`Unknown runtime "${key}". Expected one of: ${Object.keys(RUNTIMES).join(', ')}`);
+      }
+      if (!options.runtimeKeys.includes(key)) {
+        options.runtimeKeys.push(key);
+      }
+    }
+  }
+
+  for (let i = 0; i < argv.length; i++) {
+    const arg = argv[i];
+    if (arg === '--help' || arg === '-h') {
+      options.showHelp = true;
+    } else if (arg === '--version' || arg === '-v') {
+      options.showVersion = true;
+    } else if (arg === '--silent' || arg === '--yes') {
+      options.silent = true;
+    } else if (arg === '--detected') {
+      options.installDetected = true;
+    } else if (arg === '--global') {
+      options.isGlobal = true;
+    } else if (arg === '--project') {
+      options.isGlobal = false;
+    } else if (arg === '--writer') {
+      options.developerMode = false;
+    } else if (arg === '--developer') {
+      options.developerMode = true;
+    } else if (arg === '--runtime') {
+      const value = argv[i + 1];
+      if (!value) throw new Error('--runtime requires a value');
+      addRuntimeList(value);
+      i++;
+    } else if (arg.startsWith('--runtime=')) {
+      addRuntimeList(arg.slice('--runtime='.length));
+    } else if (arg === '--runtimes') {
+      const value = argv[i + 1];
+      if (!value) throw new Error('--runtimes requires a value');
+      addRuntimeList(value);
+      i++;
+    } else if (arg.startsWith('--runtimes=')) {
+      addRuntimeList(arg.slice('--runtimes='.length));
+    } else {
+      throw new Error(`Unknown argument "${arg}"`);
+    }
+  }
+
+  return options;
+}
+
+function resolveInstallRequest(parsed, detectedRuntimeKeys, { isTTY }) {
+  const hasRuntimeDirective = parsed.runtimeKeys.length > 0 || parsed.installDetected;
+  const hasModifierOverrides = parsed.isGlobal !== null || parsed.developerMode !== null;
+
+  if (!isTTY && !hasRuntimeDirective) {
+    return {
+      action: 'usage_error',
+      message: 'Non-interactive use requires --runtimes <list> or --detected.',
+    };
+  }
+
+  if (parsed.silent && !hasRuntimeDirective) {
+    return {
+      action: 'usage_error',
+      message: 'Silent installs require --runtimes <list>, --runtime <key>, or --detected.',
+    };
+  }
+
+  if (hasRuntimeDirective) {
+    return {
+      action: 'install',
+      runtimeKeys: parsed.runtimeKeys.length > 0
+        ? parsed.runtimeKeys
+        : detectedRuntimeKeys,
+      isGlobal: parsed.isGlobal ?? true,
+      developerMode: parsed.developerMode ?? false,
+      silent: parsed.silent,
+      installMode: 'non-interactive',
+    };
+  }
+
+  return {
+    action: 'interactive',
+    isGlobal: parsed.isGlobal,
+    developerMode: parsed.developerMode,
+    hasModifierOverrides,
+  };
+}
+
 function ask(rl, question) {
   return new Promise((resolve) => rl.question(question, resolve));
 }
@@ -306,19 +570,108 @@ function copyDir(src, dest) {
   return count;
 }
 
+function readJsonIfExists(filePath) {
+  if (!fs.existsSync(filePath)) return null;
+  try {
+    return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+  } catch {
+    return null;
+  }
+}
+
+function isScrivenCodexSkillDir(skillDir) {
+  const skillFile = path.join(skillDir, 'SKILL.md');
+  if (!fs.existsSync(skillFile)) return false;
+  const content = fs.readFileSync(skillFile, 'utf8');
+  return content.includes('<codex_skill_adapter>')
+    && content.includes("Execute Scriven's `")
+    && content.includes('Installed command file:');
+}
+
+function cleanCodexSkillDirs(skillsDir, currentSkillNames) {
+  if (!fs.existsSync(skillsDir)) return 0;
+
+  const manifestPath = path.join(skillsDir, '.scriven-installed.json');
+  const manifest = readJsonIfExists(manifestPath);
+  const currentSkillSet = new Set(currentSkillNames);
+  const knownScrivenSkillNames = new Set(Array.isArray(manifest?.skills) ? manifest.skills : []);
+
+  for (const entry of fs.readdirSync(skillsDir, { withFileTypes: true })) {
+    if (!entry.isDirectory()) continue;
+    const skillDir = path.join(skillsDir, entry.name);
+    if (isScrivenCodexSkillDir(skillDir)) {
+      knownScrivenSkillNames.add(entry.name);
+    }
+  }
+
+  let removed = 0;
+  removePathIfExists(path.join(skillsDir, 'scriven'));
+  removePathIfExists(manifestPath);
+
+  for (const skillName of knownScrivenSkillNames) {
+    if (!currentSkillSet.has(skillName)) {
+      if (removePathIfExists(path.join(skillsDir, skillName))) {
+        removed++;
+      }
+    }
+  }
+
+  for (const skillName of currentSkillNames) {
+    if (removePathIfExists(path.join(skillsDir, skillName))) {
+      removed++;
+    }
+  }
+
+  return removed;
+}
+
+function writeCodexSkillManifest(skillsDir, skillNames) {
+  const manifestPath = path.join(skillsDir, '.scriven-installed.json');
+  const manifest = {
+    installer: 'scriven-cli',
+    version: VERSION,
+    skills: skillNames,
+    generated_at: new Date().toISOString(),
+  };
+  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+}
+
 async function main() {
+  const parsed = parseArgs(process.argv.slice(2));
+  if (parsed.showHelp) {
+    printHelp();
+    return;
+  }
+  if (parsed.showVersion) {
+    console.log(VERSION);
+    return;
+  }
+
+  const detectedRuntimeKeys = Object.entries(RUNTIMES).filter(([, runtime]) => runtime.detect()).map(([key]) => key);
+  const installRequest = resolveInstallRequest(parsed, detectedRuntimeKeys, { isTTY: Boolean(process.stdin.isTTY) });
+
+  if (installRequest.action === 'usage_error') {
+    printHelp();
+    console.log(c('yellow', `\n${installRequest.message}`));
+    process.exitCode = 1;
+    return;
+  }
+
+  if (installRequest.action === 'install') {
+    runInstall(installRequest);
+    return;
+  }
+
   console.log(BANNER);
   console.log(RUNTIME_SUPPORT_NOTE + '\n');
 
   const rl = readline.createInterface({ input: process.stdin, output: process.stdout });
-
-  const detected = Object.entries(RUNTIMES).filter(([, r]) => r.detect()).map(([k]) => k);
   const runtimeKeys = Object.keys(RUNTIMES);
 
   console.log(c('bold', 'Select your AI coding agent:'));
   runtimeKeys.forEach((key, i) => {
     const label = RUNTIMES[key].label;
-    const badge = detected.includes(key) ? c('green', ' (detected)') : '';
+    const badge = detectedRuntimeKeys.includes(key) ? c('green', ' (detected)') : '';
     console.log(`  ${c('cyan', (i + 1) + '.')} ${label}${badge}`);
   });
 
@@ -333,118 +686,200 @@ async function main() {
   const runtimeKey = runtimeKeys[validRuntimeChoice ? parsedRuntimeChoice - 1 : 0];
   const runtime = RUNTIMES[runtimeKey];
 
-  console.log('\n' + c('bold', 'Install scope:'));
-  console.log(`  ${c('cyan', '1.')} Global — available in all your projects`);
-  console.log(`  ${c('cyan', '2.')} Project — just this directory`);
-  if (runtime.type === 'guided-mcp') {
-    console.log(c('dim', '  Note: Perplexity Desktop connectors still point at specific project paths even when you choose Global scope.'));
+  let isGlobal;
+  if (installRequest.isGlobal !== null) {
+    isGlobal = installRequest.isGlobal;
+    console.log('\n' + c('bold', 'Install scope:'));
+    console.log(`  ${c('green', '✓')} Preset via CLI flag: ${isGlobal ? 'Global' : 'Project'}`);
+  } else {
+    console.log('\n' + c('bold', 'Install scope:'));
+    console.log(`  ${c('cyan', '1.')} Global — available in all your projects`);
+    console.log(`  ${c('cyan', '2.')} Project — just this directory`);
+    if (runtime.type === 'guided-mcp') {
+      console.log(c('dim', '  Note: Perplexity Desktop connectors still point at specific project paths even when you choose Global scope.'));
+    }
+    const scopeChoice = await ask(rl, `\n${c('dim', 'Choice [1]: ')}`);
+    isGlobal = (scopeChoice || '1').trim() === '1';
   }
-  const scopeChoice = await ask(rl, `\n${c('dim', 'Choice [1]: ')}`);
-  const isGlobal = (scopeChoice || '1').trim() === '1';
 
-  console.log('\n' + c('bold', 'Mode:'));
-  console.log(`  ${c('cyan', '1.')} ${c('bold', 'Writer mode')} — git terminology hidden, friendly errors (default for non-developers)`);
-  console.log(`  ${c('cyan', '2.')} ${c('bold', 'Developer mode')} — full git access, technical output`);
-  const modeChoice = await ask(rl, `\n${c('dim', 'Choice [1]: ')}`);
-  const developerMode = (modeChoice || '1').trim() === '2';
-
+  let developerMode;
+  if (installRequest.developerMode !== null) {
+    developerMode = installRequest.developerMode;
+    console.log('\n' + c('bold', 'Mode:'));
+    console.log(`  ${c('green', '✓')} Preset via CLI flag: ${developerMode ? 'Developer mode' : 'Writer mode'}`);
+  } else {
+    console.log('\n' + c('bold', 'Mode:'));
+    console.log(`  ${c('cyan', '1.')} ${c('bold', 'Writer mode')} — git terminology hidden, friendly errors (default for non-developers)`);
+    console.log(`  ${c('cyan', '2.')} ${c('bold', 'Developer mode')} — full git access, technical output`);
+    const modeChoice = await ask(rl, `\n${c('dim', 'Choice [1]: ')}`);
+    developerMode = (modeChoice || '1').trim() === '2';
+  }
   rl.close();
 
-  const dataDir = isGlobal ? path.join(os.homedir(), '.scriven') : path.resolve('.scriven');
+  runInstall({
+    runtimeKeys: [runtimeKey],
+    isGlobal,
+    developerMode,
+    silent: false,
+    detectedRuntimeKeys,
+    installMode: 'interactive',
+  });
+}
 
-  console.log('\n' + c('bold', 'Installing...'));
+function installCommandRuntime(runtime, isGlobal, log) {
+  const commandsDir = isGlobal ? runtime.commands_dir_global : path.resolve(runtime.commands_dir_project);
+  const agentsDir = isGlobal ? runtime.agents_dir_global : path.resolve(runtime.agents_dir_project);
+  removePathIfExists(commandsDir);
+  const removedAgentFiles = cleanMirroredFiles(path.join(PKG_ROOT, 'agents'), agentsDir);
+  const commandCount = copyDir(path.join(PKG_ROOT, 'commands', 'scr'), commandsDir);
+  const agentCount = copyDir(path.join(PKG_ROOT, 'agents'), agentsDir);
+  log(`  ${c('green', '✓')} ${runtime.label}: ${commandCount} command files → ${c('dim', commandsDir)}`);
+  log(`  ${c('green', '✓')} ${runtime.label}: ${agentCount} agent prompts → ${c('dim', agentsDir)}${removedAgentFiles ? c('dim', ` (cleaned ${removedAgentFiles} stale files)`) : ''}`);
+}
 
-  if (runtime.type === 'skills') {
-    // Skill-file install path: SKILL.md manifest + command files in skills subdirectory
-    const skillsDir = isGlobal ? runtime.skills_dir_global : path.resolve(runtime.skills_dir_project);
+function installManifestSkillRuntime(runtime, isGlobal, log) {
+  const skillsDir = isGlobal ? runtime.skills_dir_global : path.resolve(runtime.skills_dir_project);
+  removePathIfExists(skillsDir);
+  const manifest = generateSkillManifest(path.join(PKG_ROOT, 'data', 'CONSTRAINTS.json'));
+  fs.mkdirSync(skillsDir, { recursive: true });
+  fs.writeFileSync(path.join(skillsDir, 'SKILL.md'), manifest);
+  const commandCount = copyDir(path.join(PKG_ROOT, 'commands', 'scr'), path.join(skillsDir, 'commands', 'scr'));
+  const agentCount = copyDir(path.join(PKG_ROOT, 'agents'), path.join(skillsDir, 'agents'));
+  log(`  ${c('green', '✓')} ${runtime.label}: SKILL.md manifest → ${c('dim', path.join(skillsDir, 'SKILL.md'))}`);
+  log(`  ${c('green', '✓')} ${runtime.label}: ${commandCount} command files → ${c('dim', path.join(skillsDir, 'commands', 'scr'))}`);
+  log(`  ${c('green', '✓')} ${runtime.label}: ${agentCount} agent prompts → ${c('dim', path.join(skillsDir, 'agents'))}`);
+}
 
-    // Generate and write SKILL.md manifest
-    const manifest = generateSkillManifest(path.join(PKG_ROOT, 'data', 'CONSTRAINTS.json'));
-    fs.mkdirSync(skillsDir, { recursive: true });
-    fs.writeFileSync(path.join(skillsDir, 'SKILL.md'), manifest);
-    console.log(`  ${c('green', '✓')} SKILL.md manifest → ${c('dim', path.join(skillsDir, 'SKILL.md'))}`);
+function installCodexRuntime(runtime, isGlobal, log) {
+  const skillsDir = isGlobal ? runtime.skills_dir_global : path.resolve(runtime.skills_dir_project);
+  const commandsDir = isGlobal ? runtime.commands_dir_global : path.resolve(runtime.commands_dir_project);
+  const agentsDir = isGlobal ? runtime.agents_dir_global : path.resolve(runtime.agents_dir_project);
+  const commandEntries = collectCommandEntries(path.join(PKG_ROOT, 'commands', 'scr'));
+  const skillNames = commandEntries.map((entry) => entry.skillName);
 
-    // Copy command files alongside the manifest
-    const commandCount = copyDir(path.join(PKG_ROOT, 'commands', 'scr'), path.join(skillsDir, 'commands', 'scr'));
-    console.log(`  ${c('green', '✓')} ${commandCount} command files → ${c('dim', path.join(skillsDir, 'commands', 'scr'))}`);
+  removePathIfExists(commandsDir);
+  fs.mkdirSync(skillsDir, { recursive: true });
+  const removedSkillDirs = cleanCodexSkillDirs(skillsDir, skillNames);
+  const removedAgentFiles = cleanMirroredFiles(path.join(PKG_ROOT, 'agents'), agentsDir);
+  const commandCount = copyDir(path.join(PKG_ROOT, 'commands', 'scr'), commandsDir);
+  const agentCount = copyDir(path.join(PKG_ROOT, 'agents'), agentsDir);
 
-    // Copy agent prompts
-    const agentCount = copyDir(path.join(PKG_ROOT, 'agents'), path.join(skillsDir, 'agents'));
-    console.log(`  ${c('green', '✓')} ${agentCount} agent prompts → ${c('dim', path.join(skillsDir, 'agents'))}`);
-  } else if (runtime.type === 'guided-mcp') {
-    const guideDir = isGlobal ? runtime.guide_dir_global : path.resolve(runtime.guide_dir_project);
-    const currentProjectDir = path.resolve('.');
-    const setupGuide = generatePerplexitySetupGuide({
-      isGlobal,
-      guideDir,
-      dataDir,
-      currentProjectDir,
-    });
-    const connectorCommand = isGlobal
-      ? buildFilesystemMcpCommand(['/absolute/path/to/project', dataDir])
-      : buildFilesystemMcpCommand([currentProjectDir, dataDir]);
-    const currentProjectCommand = buildFilesystemMcpCommand([currentProjectDir, dataDir]);
-
-    fs.mkdirSync(guideDir, { recursive: true });
-    fs.writeFileSync(path.join(guideDir, 'SETUP.md'), setupGuide);
-    fs.writeFileSync(path.join(guideDir, 'connector-command.txt'), connectorCommand + '\n');
-    fs.writeFileSync(path.join(guideDir, 'connector-command.current-project.txt'), currentProjectCommand + '\n');
-
-    console.log(`  ${c('green', '✓')} setup guide → ${c('dim', path.join(guideDir, 'SETUP.md'))}`);
-    console.log(`  ${c('green', '✓')} connector recipe → ${c('dim', path.join(guideDir, 'connector-command.txt'))}`);
-    console.log(`  ${c('green', '✓')} current-project connector recipe → ${c('dim', path.join(guideDir, 'connector-command.current-project.txt'))}`);
-  } else {
-    // Command-directory install path (existing behavior for type === 'commands' or undefined)
-    const commandsDir = isGlobal ? runtime.commands_dir_global : path.resolve(runtime.commands_dir_project);
-    const agentsDir = isGlobal ? runtime.agents_dir_global : path.resolve(runtime.agents_dir_project);
-
-    const commandCount = copyDir(path.join(PKG_ROOT, 'commands', 'scr'), commandsDir);
-    console.log(`  ${c('green', '✓')} ${commandCount} command files → ${c('dim', commandsDir)}`);
-
-    const agentCount = copyDir(path.join(PKG_ROOT, 'agents'), agentsDir);
-    console.log(`  ${c('green', '✓')} ${agentCount} agent prompts → ${c('dim', agentsDir)}`);
+  for (const entry of commandEntries) {
+    const skillDir = path.join(skillsDir, entry.skillName);
+    fs.mkdirSync(skillDir, { recursive: true });
+    const commandPath = path.join(commandsDir, entry.relativePath);
+    fs.writeFileSync(path.join(skillDir, 'SKILL.md'), generateCodexSkill(entry, commandPath));
   }
+  writeCodexSkillManifest(skillsDir, skillNames);
 
-  // Templates and data — shared by both install paths
+  log(`  ${c('green', '✓')} ${runtime.label}: ${commandEntries.length} \$scr-* skills → ${c('dim', skillsDir)}${removedSkillDirs ? c('dim', ` (cleaned ${removedSkillDirs} stale dirs)`) : ''}`);
+  log(`  ${c('green', '✓')} ${runtime.label}: ${commandCount} command files → ${c('dim', commandsDir)}`);
+  log(`  ${c('green', '✓')} ${runtime.label}: ${agentCount} agent prompts → ${c('dim', agentsDir)}${removedAgentFiles ? c('dim', ` (cleaned ${removedAgentFiles} stale files)`) : ''}`);
+}
+
+function installGuidedRuntime(runtime, isGlobal, dataDir, log) {
+  const guideDir = isGlobal ? runtime.guide_dir_global : path.resolve(runtime.guide_dir_project);
+  const currentProjectDir = path.resolve('.');
+  const setupGuide = generatePerplexitySetupGuide({
+    isGlobal,
+    guideDir,
+    dataDir,
+    currentProjectDir,
+  });
+  const connectorCommand = isGlobal
+    ? buildFilesystemMcpCommand(['/absolute/path/to/project', dataDir])
+    : buildFilesystemMcpCommand([currentProjectDir, dataDir]);
+  const currentProjectCommand = buildFilesystemMcpCommand([currentProjectDir, dataDir]);
+
+  removePathIfExists(guideDir);
+  fs.mkdirSync(guideDir, { recursive: true });
+  fs.writeFileSync(path.join(guideDir, 'SETUP.md'), setupGuide);
+  fs.writeFileSync(path.join(guideDir, 'connector-command.txt'), connectorCommand + '\n');
+  fs.writeFileSync(path.join(guideDir, 'connector-command.current-project.txt'), currentProjectCommand + '\n');
+
+  log(`  ${c('green', '✓')} ${runtime.label}: setup guide → ${c('dim', path.join(guideDir, 'SETUP.md'))}`);
+  log(`  ${c('green', '✓')} ${runtime.label}: connector recipe → ${c('dim', path.join(guideDir, 'connector-command.txt'))}`);
+}
+
+function writeSharedAssets(dataDir, runtimeKeys, isGlobal, developerMode, installMode, log) {
+  removePathIfExists(path.join(dataDir, 'templates'));
+  removePathIfExists(path.join(dataDir, 'data'));
   fs.mkdirSync(path.join(dataDir, 'templates'), { recursive: true });
   fs.mkdirSync(path.join(dataDir, 'data'), { recursive: true });
   const templateCount = copyDir(path.join(PKG_ROOT, 'templates'), path.join(dataDir, 'templates'));
   const dataCount = copyDir(path.join(PKG_ROOT, 'data'), path.join(dataDir, 'data'));
-  console.log(`  ${c('green', '✓')} ${templateCount} templates + ${dataCount} data files → ${c('dim', dataDir)}`);
+  log(`  ${c('green', '✓')} ${templateCount} templates + ${dataCount} data files → ${c('dim', dataDir)}`);
 
   const settings = {
     version: VERSION,
-    runtime: runtimeKey,
+    runtime: runtimeKeys[0],
+    runtimes: runtimeKeys,
     scope: isGlobal ? 'global' : 'project',
     developer_mode: developerMode,
     data_dir: dataDir,
+    install_mode: installMode,
     installed_at: new Date().toISOString(),
   };
   fs.writeFileSync(path.join(dataDir, 'settings.json'), JSON.stringify(settings, null, 2));
-  console.log(`  ${c('green', '✓')} settings.json → ${c('dim', path.join(dataDir, 'settings.json'))}`);
+  log(`  ${c('green', '✓')} settings.json → ${c('dim', path.join(dataDir, 'settings.json'))}`);
+}
 
-  console.log('\n' + c('bold', c('green', 'Installation complete!')));
+function printNextSteps(runtimeKeys) {
   console.log('\n' + c('bold', 'Next steps:'));
-  if (runtime.type === 'skills') {
-    const skillsDir = isGlobal ? runtime.skills_dir_global : path.resolve(runtime.skills_dir_project);
-    console.log(`  ${c('cyan', '1.')} Point ${runtime.label} at ${c('dim', path.join(skillsDir, 'SKILL.md'))}`);
-    console.log(`  ${c('cyan', '2.')} Read the SKILL.md to discover available /scr:* commands`);
-    console.log(`  ${c('cyan', '3.')} Run ${c('bold', '/scr:new-work')} to start a new project`);
-    console.log(`     or ${c('bold', '/scr:demo')} to explore a sample project first`);
-  } else if (runtime.type === 'guided-mcp') {
-    const guideDir = isGlobal ? runtime.guide_dir_global : path.resolve(runtime.guide_dir_project);
-    console.log(`  ${c('cyan', '1.')} Open ${runtime.label} on macOS and go to ${c('bold', 'Settings -> Connectors')}`);
-    console.log(`  ${c('cyan', '2.')} Install ${c('bold', 'PerplexityXPC')} if prompted`);
-    console.log(`  ${c('cyan', '3.')} Paste the connector command from ${c('dim', path.join(guideDir, 'connector-command.txt'))}`);
-    console.log(`  ${c('cyan', '4.')} Toggle the connector on from ${c('bold', 'Sources')} when you want Perplexity to access this project`);
-    console.log(`     Full guide: ${c('dim', path.join(guideDir, 'SETUP.md'))}`);
-  } else {
-    console.log(`  ${c('cyan', '1.')} Open ${runtime.label} in any directory`);
-    console.log(`  ${c('cyan', '2.')} Run ${c('bold', '/scr:help')} to see available commands`);
-    console.log(`  ${c('cyan', '3.')} Run ${c('bold', '/scr:new-work')} to start a new project`);
-    console.log(`     or ${c('bold', '/scr:demo')} to explore a sample project first`);
+  let step = 1;
+  if (runtimeKeys.includes('codex')) {
+    console.log(`  ${c('cyan', `${step}.`)} In Codex, run ${c('bold', '$scr-help')} to see available commands`);
+    step++;
+    console.log(`  ${c('cyan', `${step}.`)} Start with ${c('bold', '$scr-new-work')} or ${c('bold', '$scr-demo')}`);
+    step++;
+  }
+  if (runtimeKeys.some((key) => key !== 'codex' && RUNTIMES[key].type !== 'guided-mcp')) {
+    console.log(`  ${c('cyan', `${step}.`)} In Claude Code or another command-directory runtime, run ${c('bold', '/scr:help')}`);
+    step++;
+  }
+  if (runtimeKeys.includes('perplexity-desktop')) {
+    console.log(`  ${c('cyan', `${step}.`)} Open the generated Perplexity Desktop setup guide and add the connector recipe`);
   }
   console.log('\n' + c('dim', `Docs: ${DOCS_URL}\n`));
+}
+
+function runInstall({ runtimeKeys, isGlobal, developerMode, silent, installMode }) {
+  const dataDir = isGlobal ? path.join(os.homedir(), '.scriven') : path.resolve('.scriven');
+  const log = silent ? () => {} : (message) => console.log(message);
+
+  if (!runtimeKeys.length) {
+    throw new Error('No runtimes selected for installation');
+  }
+
+  if (!silent) {
+    console.log('\n' + c('bold', 'Installing...'));
+  }
+
+  for (const runtimeKey of runtimeKeys) {
+    const runtime = RUNTIMES[runtimeKey];
+    if (!runtime) {
+      throw new Error(`Unknown runtime "${runtimeKey}"`);
+    }
+    if (runtimeKey === 'codex') {
+      installCodexRuntime(runtime, isGlobal, log);
+    } else if (runtime.type === 'skills') {
+      installManifestSkillRuntime(runtime, isGlobal, log);
+    } else if (runtime.type === 'guided-mcp') {
+      installGuidedRuntime(runtime, isGlobal, dataDir, log);
+    } else {
+      installCommandRuntime(runtime, isGlobal, log);
+    }
+  }
+
+  writeSharedAssets(dataDir, runtimeKeys, isGlobal, developerMode, installMode, log);
+
+  if (silent) {
+    console.log(`Installed Scriven ${VERSION} to ${runtimeKeys.join(', ')} (${isGlobal ? 'global' : 'project'}, ${developerMode ? 'developer' : 'writer'} mode).`);
+    return;
+  }
+
+  console.log('\n' + c('bold', c('green', 'Installation complete!')));
+  printNextSteps(runtimeKeys);
 }
 
 // Only run interactive installer when executed directly
@@ -456,4 +891,17 @@ if (require.main === module) {
   });
 }
 
-module.exports = { copyDir, RUNTIMES, generateSkillManifest, buildFilesystemMcpCommand, generatePerplexitySetupGuide };
+module.exports = {
+  copyDir,
+  RUNTIMES,
+  parseArgs,
+  resolveInstallRequest,
+  collectCommandEntries,
+  cleanCodexSkillDirs,
+  commandRefToCodexSkillName,
+  commandRefToCodexInvocation,
+  generateCodexSkill,
+  generateSkillManifest,
+  buildFilesystemMcpCommand,
+  generatePerplexitySetupGuide,
+};

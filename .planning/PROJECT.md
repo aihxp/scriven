@@ -43,10 +43,13 @@ Scriven is a spec-driven writing, publishing, and translation pipeline that runs
 - ✓ Perplexity Desktop ships as a guided local-MCP runtime target with explicit support framing — v1.4 Phase 17
 - ✓ Technical-writing family adds guide, runbook, API reference, and design spec work types with technical-native scaffolding — v1.4 Phase 18
 - ✓ Perplexity and technical-writing trust surfaces now have count and packaging regression coverage — v1.4 Phase 19
+- ✓ Silent multi-runtime installer flags shipped for Codex and Claude Code without prompt-only fallback — v1.5 Phase 20
+- ✓ Codex installs now expose native `$scr-*` skills backed by mirrored installed command markdown — v1.5 Phase 21
+- ✓ Runtime docs and regression coverage now describe the same Codex and Claude install surfaces the installer writes — v1.5 Phase 22
 
 ### Active
 
-- None — v1.4 shipped on 2026-04-09 and no new milestone is defined yet.
+- None. Milestone v1.5 shipped on 2026-04-09.
 
 ### Out of Scope
 
@@ -75,19 +78,31 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 
 ## Current State
 
-**Latest shipped milestone:** v1.4 Perplexity & Technical Writing  
-**Status:** Shipped 2026-04-09; no active milestone is currently defined
+**Latest shipped milestone:** v1.5 Runtime Install Reliability  
+**Status:** Milestone v1.5 shipped 2026-04-09; awaiting next milestone selection
 
 **Current product surface:**
-- Perplexity Desktop is supported as a guided local-MCP runtime target with explicit trust framing
-- Technical writing is a first-pass family with four work types and technical-native scaffolding
-- Release-time tests protect packaging, counts, runtime wording, and technical-writing scope against drift
+- Silent, non-interactive installer flags cover runtime selection, scope, mode, help, and version output
+- Codex installs now surface Scriven through generated `$scr-*` skills backed by mirrored command markdown
+- Claude Code installs cleanly refresh Scriven-owned command files while preserving unrelated runtime content
+- Runtime docs and regression tests are aligned to the real Codex and Claude installer contract
+
+## Latest Milestone: v1.5 Runtime Install Reliability
+
+**Goal:** Make Scriven installation feel dependable in real host agents by adding silent multi-runtime installs, Codex-native `$` skill discovery, and clean Claude Code command deployment.
+
+**Outcome shipped:**
+- Silent, non-interactive installer flags for runtime selection, scope, and mode
+- Multi-runtime install flow that can target Codex and Claude Code in one run
+- Codex-specific generated `$scr-*` skills backed by the installed Scriven command files
+- Clean install behavior that removes stale Scriven-owned runtime files before copying the current package contents
+- Runtime docs and regression tests updated to match the new Codex and Claude install model
 
 ## Next Milestone Goals
 
-- Choose the next product focus and define a fresh milestone with `/gsd-new-milestone`
-- Decide whether the next expansion should deepen runtime verification, broaden public proof assets, or expand technical-writing outputs
-- Keep the trust-first standard: new support claims should stay source-backed, narrow, and testable
+- Deliver a silent install path that works for the real Codex and Claude host surfaces without manual prompt choreography
+- Keep runtime claims narrow and test-backed while adjusting Codex support to the skill-native surface users actually see
+- Preserve the trust-first standard: new support claims should stay source-backed, narrow, and testable
 
 <details>
 <summary>Archived milestone context: v1.4 Perplexity & Technical Writing</summary>
@@ -120,6 +135,8 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 | Trust beats breadth on the launch surface | Narrow, provable claims create more confidence than ambitious but weakly evidenced breadth | ✓ Good |
 | Guided runtime targets can be first-class when their setup model is explicit | Some host surfaces are real but do not expose writable command registries; guided setup is better than fake parity | ✓ Good |
 | Technical writing should start as a small, domain-native family | A narrow set of real document types produces better adaptive behavior than one vague catch-all type | ✓ Good |
+| Codex should be treated as a skill-native runtime, not a slash-command clone | Match the host's real discovery surface while keeping installed command markdown as the behavior source of truth | ✓ Good |
+| Silent installs must clean only Scriven-owned runtime outputs | Reliability gains are not worth risking user-managed host files | ✓ Good |
 
 ## Evolution
 
@@ -139,4 +156,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-09 after shipping milestone v1.4*
+*Last updated: 2026-04-09 after shipping milestone v1.5*

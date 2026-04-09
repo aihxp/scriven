@@ -7,6 +7,7 @@
 - [x] **v1.2 Documentation** - Phases 10-12 (shipped 2026-04-07)
 - [x] **v1.3 Trust & Proof** - Phases 13-16 (shipped 2026-04-09)
 - [x] **v1.4 Perplexity & Technical Writing** - Phases 17-19 (shipped 2026-04-09)
+- [x] **v1.5 Runtime Install Reliability** - Phases 20-22 (shipped 2026-04-09)
 
 ## Phases
 
@@ -205,6 +206,14 @@ Plans:
 
 **Milestone Goal:** Extend Scriven's runtime surface to Perplexity Desktop and define a research-backed technical-writing family without weakening the current trust and adaptive-workflow model. Archived details: `.planning/milestones/v1.4-ROADMAP.md`
 
+### v1.5 Runtime Install Reliability (Shipped 2026-04-09)
+
+**Milestone Goal:** Make Scriven install cleanly across the real Codex and Claude surfaces by adding silent multi-runtime automation, Codex-native `$` skills, and test-backed runtime documentation.
+
+- [x] **Phase 20: Silent Multi-Runtime Installer** - Non-interactive flags, runtime selection, and clean install semantics
+- [x] **Phase 21: Codex Skill-Native Surface** - `$scr-*` skill generation backed by installed Scriven command files
+- [x] **Phase 22: Runtime Docs & Verification** - Runtime matrix updates, onboarding guidance, and regression coverage
+
 ## Phase Details
 
 ### Phase 9: Generic Platform Support
@@ -258,6 +267,49 @@ Plans:
 **Requirements**: DOC-09, DOC-10, DOC-11
 **Success Criteria** (what must be TRUE):
   1. A contributor can follow the contributor guide to add a new command, agent, work type, or export format by following documented patterns with examples
+
+### Phase 20: Silent Multi-Runtime Installer
+**Goal**: Users can install Scriven into one or more detected runtimes without interactive prompts and without stale Scriven files lingering from prior installs
+**Depends on**: Phase 19
+**Requirements**: RUNTIME-08, RUNTIME-10, RUNTIME-11
+**Success Criteria** (what must be TRUE):
+  1. Running the installer with explicit runtime flags completes without waiting for `readline` prompts
+  2. One installer run can target both Codex and Claude Code when both runtimes are requested or detected
+  3. Scriven-owned command/skill directories are cleaned before fresh copies are written, while unrelated user files remain untouched
+**Plans**: 2 plans
+
+Plans:
+- [x] 20-01-PLAN.md -- Add CLI argument parsing, runtime selection, and silent install flow
+- [x] 20-02-PLAN.md -- Add clean install helpers for runtime-owned command, skill, and agent outputs
+
+### Phase 21: Codex Skill-Native Surface
+**Goal**: Codex users can discover and invoke Scriven through native `$scr-*` skills while keeping the installed markdown command files as the execution source of truth
+**Depends on**: Phase 20
+**Requirements**: RUNTIME-09, RUNTIME-11
+**Success Criteria** (what must be TRUE):
+  1. Codex installs generate one skill per Scriven command with stable `$scr-*` names and descriptions
+  2. Generated Codex skills instruct the runtime to read and execute the installed Scriven command files rather than duplicating command logic
+  3. Command references shown to Codex users are translated to the `$scr-*` surface instead of `/scr:*`
+**Plans**: 3 plans
+
+Plans:
+- [x] 21-01-PLAN.md -- Generate Codex skill wrappers from Scriven command metadata
+- [x] 21-02-PLAN.md -- Wire Codex install output into the installer and keep command-file compatibility assets aligned
+- [x] 21-03-PLAN.md -- Update command-surface guidance for Codex-facing help and discovery text
+
+### Phase 22: Runtime Docs & Verification
+**Goal**: Maintainers and users can trust the new install behavior because runtime docs, examples, and tests describe the same Codex and Claude surfaces the installer actually writes
+**Depends on**: Phase 20, Phase 21
+**Requirements**: QA-04
+**Success Criteria** (what must be TRUE):
+  1. Runtime support docs explain Codex’s skill-native install surface and Claude Code’s command-directory surface without overstating parity
+  2. README and onboarding docs show a truthful quick-start path for Codex `$` skills and Claude `/scr:*` commands
+  3. Automated tests fail if runtime types, install paths, generated Codex skills, or silent install behavior drift from the documented contract
+**Plans**: 2 plans
+
+Plans:
+- [x] 22-01-PLAN.md -- Update runtime support and install docs for Codex skills plus silent multi-runtime install
+- [x] 22-02-PLAN.md -- Add regression tests for runtime registry, Codex skill generation, and non-interactive installer behavior
   2. A developer can read the architecture overview and understand the skill system design, CONSTRAINTS.json schema, file structure, agent orchestration, and fresh-context-per-unit pattern
   3. Every documentation file has been verified against the live codebase -- no references to nonexistent commands, flags, files, or stale information
 **Plans**: 2 plans
