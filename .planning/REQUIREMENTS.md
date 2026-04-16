@@ -1,24 +1,80 @@
-# Requirements: Scriven v1.5 Runtime Install Reliability
+# Requirements: Scriven v1.6 Installer Hardening
 
-**Status:** Milestone shipped on 2026-04-09.
-**Last archived milestone:** [v1.4 requirements archive](/Users/hprincivil/Projects/scriven/.planning/milestones/v1.4-REQUIREMENTS.md)
+**Status:** Active
+**Last archived milestone:** [v1.5 requirements](/Users/hprincivil/Projects/scriven/.planning/milestones/v1.5-REQUIREMENTS.md)
+
+## Milestone Goal
+
+Fix bugs and fragilities in Scriven's installer identified by cross-referencing GSD releases v1.33–v1.36 against the Scriven codebase. No new features — reliability and correctness pass on the existing installer.
 
 ## Active Requirements
 
-- [x] **RUNTIME-08**: User can install Scriven non-interactively by selecting runtimes, scope, and writer/developer mode through CLI flags instead of prompts
-- [x] **RUNTIME-09**: Codex installs generate native `$scr-*` skills that map to Scriven commands and route users through the installed command files
-- [x] **RUNTIME-10**: Claude Code installs cleanly replace stale Scriven command files while preserving unrelated user files in the host runtime directories
-- [x] **RUNTIME-11**: Runtime path handling and prerequisite guidance remain OS-agnostic and avoid hard-coded shell or platform assumptions
-- [x] **QA-04**: Automated tests cover silent install parsing, Codex skill generation, and runtime support documentation for the new install surface
+### File Safety
+
+- [ ] **SAFE-01**: Installer writes all generated files (settings.json, manifests, SKILL.md, skill wrappers) atomically via temp-file-then-rename so an interrupted install never leaves a truncated file
+- [ ] **SAFE-02**: Installer detects and cleans orphaned `.tmp.*` files from previous interrupted installs on startup before writing new files
+
+### Frontmatter Parsing
+
+- [ ] **PARSE-01**: `readFrontmatterValue` correctly extracts values containing colons (e.g., `description: "Step 1: Do this"`) by splitting only on the first colon
+- [ ] **PARSE-02**: Frontmatter parser scopes extraction to the `---` delimited block only, ignoring matches in the command body
+- [ ] **PARSE-03**: Frontmatter parser handles multiline values and array values if present in command files
+
+### Config Preservation
+
+- [ ] **PRES-01**: User's `settings.json` fields survive reinstallation via field-level merge (installer-owned fields update, user-set fields preserved)
+- [ ] **PRES-02**: User-customized templates are backed up before overwrite using content-hash comparison against the shipped version
+
+### Schema Validation
+
+- [ ] **SCHEMA-01**: Settings read from `settings.json` are validated against a hand-written schema with clear error messages for type mismatches, unknown fields, and missing required fields
+- [ ] **SCHEMA-02**: Schema validation runs after migration so old-format settings are upgraded before being rejected
+
+### Command-Ref Rewriting
+
+- [ ] **REWRITE-01**: Installed command files for all runtimes contain correct invocation syntax for cross-references (not just Claude Code)
+- [ ] **REWRITE-02**: Command-ref rewriting preserves references inside fenced code blocks unchanged
+
+### Test Coverage
+
+- [ ] **QA-05**: All hardening features have regression tests that fail if atomic writes, frontmatter parsing, settings preservation, schema validation, or command-ref rewriting behavior drifts
 
 ## Notes
 
-- Keep new support claims source-backed, narrow, and testable
-- Preserve the zero-runtime-dependency installer architecture
+- Zero-dependency installer architecture must be preserved
+- All hardening features use Node.js 20+ built-ins exclusively
+- These are bugs or fragilities that GSD already shipped fixes for in v1.33–v1.36
 - Preserve Voice DNA as the non-negotiable drafting anchor
-- Preserve existing `/scr:*` command files and other runtime installers while expanding Codex-specific delivery
-- Favor clean install semantics for Scriven-owned files only; never wipe unrelated runtime content
+- Preserve existing `/scr:*` command files and runtime installer behavior
+
+## Future Requirements
+
+- Lockfile for concurrent install protection (deferred to v1.7 if needed)
+- Template manifest with per-file ownership tracking (deferred — content-hash sufficient for now)
+- `_user_overrides` sub-object in settings for explicit user/installer field boundary (deferred)
+
+## Out of Scope
+
+- Adding npm runtime dependencies — zero-dependency constraint preserved
+- New installer features or runtime targets — this milestone is correctness-only
+- Breaking changes to settings.json format — migration handles old formats
+
+## Traceability
+
+| Requirement | Phase | Plan |
+|-------------|-------|------|
+| SAFE-01 | — | — |
+| SAFE-02 | — | — |
+| PARSE-01 | — | — |
+| PARSE-02 | — | — |
+| PARSE-03 | — | — |
+| PRES-01 | — | — |
+| PRES-02 | — | — |
+| SCHEMA-01 | — | — |
+| SCHEMA-02 | — | — |
+| REWRITE-01 | — | — |
+| REWRITE-02 | — | — |
+| QA-05 | — | — |
 
 ---
-*Defined: 2026-04-09 for milestone v1.5*
-*Completed: 2026-04-09*
+*Defined: 2026-04-16 for milestone v1.6*
