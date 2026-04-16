@@ -1,281 +1,340 @@
-# Technology Stack
+# Stack Research — Installer Hardening (v1.6)
 
-**Project:** Scriven -- Creative Writing, Publishing, and Translation Pipeline
-**Researched:** 2026-04-06
+**Domain:** Node.js CLI installer hardening — atomic writes, YAML frontmatter parsing, settings schema validation, template preservation
+**Researched:** 2026-04-16
+**Confidence:** HIGH
 
-## Architecture Constraint
-
-Scriven is a **pure markdown skill system** with no runtime dependencies. The AI agent (Claude Code, Cursor, Gemini CLI) reads command markdown and executes shell commands. This means:
-
-- Export tools are **external CLI binaries** the agent invokes via shell, not npm dependencies
-- The agent generates intermediate files (markdown, HTML, Typst) then calls converters
-- Scriven's `package.json` stays dependency-free; tools are prerequisites the user installs
-- The installer (`bin/install.js`) should detect and guide installation of prerequisites
-
-This stack document therefore describes **what the agent's command markdown should invoke**, not what to `npm install`.
+**Constraint:** Zero npm dependencies. Everything must use Node.js 20+ built-ins (`fs`, `path`, `os`, `crypto`).
 
 ---
 
 ## Recommended Stack
 
-### Document Conversion Engine
+### Core Technologies (All Node.js Built-ins)
 
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| **Pandoc** | 3.9.x (current: 3.9.0.2) | Universal document converter | De facto standard for markdown-to-anything. Handles EPUB, DOCX, PDF, LaTeX, Typst, HTML. One tool covers 80% of export needs. Actively maintained, massive ecosystem of filters and templates. | HIGH |
+| Technology | Version | Purpose | Why Recommended |
+|------------|---------|---------|-----------------|
+| **`node:fs`** (writeFileSync + renameSync) | Node 20+ | Atomic file writes | POSIX `rename()` is atomic within the same filesystem. Write to a temp file in the same directory, then `fs.renameSync()` to the target. No npm package needed — `write-file-atomic` does the same thing but adds a dependency. |
+| **`node:crypto`** (randomUUID) | Node 20+ | Unique temp file names | `crypto.randomUUID()` is available since Node 14.17. Generates collision-free temp file names like `.target.tmp.${uuid}`. No need for `mkdtempSync` since temp files should live in the same directory as the target (same-filesystem rename requirement). |
+| **Custom frontmatter parser** | N/A | YAML frontmatter extraction | Node.js has no built-in YAML parser. But Scriven's frontmatter is trivial (2-3 keys: `description`, `argument-hint`). A targeted regex-free line parser handles colon-in-value correctly where the current regex fails. No need for `gray-matter`, `js-yaml`, or any npm package. |
+| **Custom schema validator** | N/A | Settings.json validation | Node.js has no built-in JSON Schema validator. Ajv is overkill for validating a 10-field settings object. A hand-written validator with explicit field checks, type assertions, and human-readable error messages is clearer, smaller, and dependency-free. |
 
-**Installation:** `brew install pandoc` (macOS), `apt install pandoc` (Linux), `choco install pandoc` (Windows), or download from pandoc.org.
+### Supporting Patterns
 
-Pandoc is the backbone. Every export command should check for `pandoc --version` and guide installation if missing.
-
-### PDF Generation
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| **Typst** | 0.14.x | PDF engine for Pandoc | 27x faster than XeLaTeX. Clean syntax. Generates accessible PDF/UA-1 by default (critical for 2025 EAA and 2026 ADA compliance). No massive TeX Live installation required. Pandoc supports `--pdf-engine=typst` natively. | HIGH |
-| **XeLaTeX** (fallback) | TeX Live 2025 | Academic/math-heavy PDF | Only needed if Typst cannot handle specialized mathematical notation or journal-specific LaTeX templates. Most creative writing does not need this. | MEDIUM |
-
-**Primary command:** `pandoc manuscript.md --pdf-engine=typst -o manuscript.pdf --template=scriven-book.typst`
-
-**Why Typst over LaTeX:** LaTeX requires a 4-6 GB TeX Live installation. Typst is a single ~30 MB binary. For a tool targeting writers (not academics), the install burden matters enormously. Typst 0.14 added accessibility compliance, removing the last major gap.
-
-**Why not WeasyPrint/wkhtmltopdf:** HTML-to-PDF tools produce web-quality output, not print-quality typesetting. Books need proper kerning, ligatures, widow/orphan control, and gutter margins. Typst handles all of these.
-
-### EPUB Generation
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| **Pandoc** (built-in) | 3.9.x | EPUB 3 generation | Pandoc's EPUB output is production-quality. Supports custom CSS, metadata, cover images, table of contents. Used by published authors and small presses. No additional tool needed. | HIGH |
-
-**Command:** `pandoc manuscript.md -o book.epub --epub-cover-image=cover.jpg --css=scriven-epub.css --toc --metadata-file=metadata.yaml`
-
-**Why not epub-gen-memory (npm):** It generates EPUB from HTML fragments -- workable but inferior to Pandoc's native EPUB pipeline which handles metadata, TOC, accessibility, and KDP validation requirements out of the box. Adding an npm dependency violates Scriven's architecture constraint.
-
-### DOCX Generation
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| **Pandoc** (built-in) | 3.9.x | Manuscript DOCX and formatted DOCX | Supports reference documents (`.docx` templates) for both standard manuscript format (12pt Courier, double-spaced) and formatted/designed output. | HIGH |
-
-**Manuscript format:** `pandoc manuscript.md -o manuscript.docx --reference-doc=scriven-manuscript.docx`
-**Formatted:** `pandoc manuscript.md -o formatted.docx --reference-doc=scriven-formatted.docx`
-
-Scriven should ship two reference `.docx` templates: one for standard manuscript submission format, one for designed/formatted output.
-
-### Screenplay Formats (Fountain + FDX)
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| **Afterwriting CLI** | 1.8.x | Fountain to PDF | Node.js-based, npm-installable (`npm i -g afterwriting`). Generates industry-standard screenplay PDFs with page numbers, scene headers, proper formatting. Also provides screenplay statistics. | MEDIUM |
-| **Screenplain** | 0.9.x | Fountain to FDX + HTML | Python-based (`pip install screenplain`). Only reliable open-source Fountain-to-FDX converter. FDX is Final Draft's XML format -- essential for screenplay submission. | MEDIUM |
-
-**Fountain to PDF:** `afterwriting --source screenplay.fountain --pdf screenplay.pdf`
-**Fountain to FDX:** `screenplain --format fdx screenplay.fountain screenplay.fdx`
-
-**Why two tools:** No single tool handles both PDF and FDX well. Afterwriting produces better PDFs; Screenplain is the only reliable FDX converter. Both are MIT-licensed.
-
-**Why MEDIUM confidence:** Both projects have sporadic maintenance. Afterwriting's last npm publish was 2020 (v1.8.0), though the GitHub repo has more recent commits. Screenplain is similarly quiet. They work, but monitor for breakage. If either dies, the fallback is Pandoc with custom Lua filters for basic screenplay formatting.
-
-### LaTeX Output
-
-| Technology | Version | Purpose | Why | Confidence |
-|------------|---------|---------|-----|------------|
-| **Pandoc** (built-in) | 3.9.x | Markdown to LaTeX source | For academic writers who need `.tex` files to submit to journals or further edit in Overleaf. Pandoc generates clean LaTeX with customizable templates. | HIGH |
-
-**Command:** `pandoc manuscript.md -o manuscript.tex --template=scriven-academic.latex`
-
-This outputs `.tex` source, not compiled PDF. Academic users compile it themselves or upload to Overleaf.
-
-### Publishing Platform Packages
-
-| Platform | Format Required | How Scriven Produces It | Confidence |
-|----------|----------------|------------------------|------------|
-| **KDP (ebook)** | EPUB or DOCX | Pandoc EPUB with KDP-specific CSS (alt text on all images, embedded fonts) | HIGH |
-| **KDP (print)** | PDF (no marks, embedded fonts, 300dpi images) | Pandoc + Typst with KDP trim size template (e.g., 6x9, 5.5x8.5), 0.25" extra height, 0.125" extra width for bleed | HIGH |
-| **IngramSpark** | PDF/X-1a (CMYK, bleeds, full-wrap cover) | Pandoc + Typst for interior; cover requires separate full-wrap PDF. CMYK conversion via ImageMagick or Ghostscript. | MEDIUM |
-| **Submission/Query** | DOCX (standard manuscript format) | Pandoc with manuscript reference doc | HIGH |
-
-**IngramSpark caveat:** PDF/X-1a with CMYK is harder to automate than KDP's simpler requirements. Ghostscript can convert RGB PDF to CMYK PDF/X-1a: `gs -dPDFA -dBATCH -dNOPAUSE -sColorConversionStrategy=CMYK -sDEVICE=pdfwrite -o output.pdf input.pdf`. This needs testing. MEDIUM confidence.
+| Pattern | Purpose | When to Use |
+|---------|---------|-------------|
+| **Write-to-temp-then-rename** | Atomic file creation | Every `fs.writeFileSync` call in the installer that writes to a user-facing path (settings.json, command files, manifests, SKILL.md) |
+| **First-colon split** | Frontmatter value parsing | Replace `readFrontmatterValue` regex with a parser that splits only on the first colon, preserving colons in values like `"Generate a plan: outline your story's structure"` |
+| **Merge-on-write settings** | Settings preservation across reinstalls | Read existing settings.json, deep-merge user-modified fields (like custom paths or preferences) with installer-written fields, write merged result |
+| **File-hash comparison** | Template preservation | Before overwriting a template, compare SHA-256 hash of source vs installed. If installed differs from both current and previous source hashes, the user modified it — skip or back up. |
 
 ---
 
-## Illustration Generation (AI Image APIs)
+## Atomic File Writes
 
-| Technology | Purpose | Why | Confidence |
-|------------|---------|-----|------------|
-| **OpenAI GPT Image 1.5 API** | Primary illustration engine | Best text instruction following of any image API. Natively multimodal (understands story context). $0.02-0.08 per image at medium quality. Available via standard OpenAI API key that Claude Code users likely already have. | HIGH |
-| **GPT Image 1 Mini** | Budget/draft illustrations | $0.005/image. Good for concept art, character reference sheets, storyboard thumbnails. Use for iteration before final quality. | HIGH |
-| **Stable Diffusion (via API)** | Style-consistent illustration sets | Open-source. LoRA fine-tuning allows training on a specific art style for consistent illustration across a book. Best for children's books / comics needing visual consistency. Requires more setup. | MEDIUM |
+### The Problem
 
-**Why not Midjourney:** No public API as of April 2026. Midjourney is Discord-bot or web-only. Cannot be invoked programmatically from a CLI tool. Explicitly excluded.
+The current installer uses bare `fs.writeFileSync()` and `fs.copyFileSync()` everywhere (lines 509, 658, 849, 863-864, 889, 913-916, 942). If the process is interrupted (Ctrl+C, crash, disk full), files can be left half-written or empty, corrupting the installation.
 
-**Why not DALL-E 3:** Deprecated. DALL-E 2 and 3 APIs sunset May 2026. GPT Image 1.5 is the replacement.
+### The Solution: Write-Temp-Rename
 
-### Illustration Pipeline Architecture
+```javascript
+const crypto = require('crypto');
 
-The agent should:
-1. Generate art direction from manuscript context (character descriptions, scene details)
-2. Create structured prompts with style parameters (medium, palette, composition)
-3. Call the image API via `curl` or the OpenAI CLI
-4. Save images with metadata (prompt used, chapter reference, character depicted)
-5. Offer revision workflow (refine prompt, regenerate, select from variants)
+function atomicWriteFileSync(targetPath, content, options) {
+  const tmpPath = `${targetPath}.tmp.${crypto.randomUUID()}`;
+  try {
+    fs.writeFileSync(tmpPath, content, options);
+    fs.renameSync(tmpPath, targetPath);
+  } catch (err) {
+    try { fs.unlinkSync(tmpPath); } catch {}
+    throw err;
+  }
+}
 
-**API invocation** (agent runs this):
-```bash
-curl https://api.openai.com/v1/images/generations \
-  -H "Authorization: Bearer $OPENAI_API_KEY" \
-  -H "Content-Type: application/json" \
-  -d '{"model":"gpt-image-1.5","prompt":"...","size":"1024x1536","quality":"medium"}'
-```
-
-The command markdown describes the workflow; the AI agent constructs and executes the API call.
-
----
-
-## Translation Pipeline
-
-| Technology | Purpose | Why | Confidence |
-|------------|---------|-----|------------|
-| **DeepL API Pro** | Primary translation engine for European languages | Higher quality than Google for EN/FR/DE/ES/IT/PT/NL/PL/JA/ZH/KO. GDPR-compliant, content not stored or used for training. $5.49/mo + $25/M chars. | HIGH |
-| **Google Cloud Translation (v3)** | Broad language coverage, RTL/CJK | 130+ languages vs DeepL's 33. Required for Arabic, Hebrew, Hindi, Swahili, and other languages DeepL doesn't cover. NMT at $20/M chars, LLM mode at $10+$10/M chars. | HIGH |
-| **AI Agent (Claude/GPT)** | Cultural adaptation, sacred text translation | Machine translation APIs don't handle literary nuance, sacred registers, or cultural adaptation. The AI agent itself is the best tool for these -- it can apply voice profiles, maintain glossaries, and do formal/dynamic equivalence translation. | HIGH |
-
-### Translation Strategy
-
-**Tier 1 -- Literary translation (recommended):** Use the AI agent itself. Load source text + voice profile + glossary + cultural notes. The agent translates with literary quality. Slow but high quality. Best for novels, poetry, sacred texts.
-
-**Tier 2 -- Accelerated translation:** Use DeepL/Google API for first pass, then AI agent for literary polish and cultural adaptation. 3-5x faster than pure AI translation. Good for non-fiction, technical content.
-
-**Tier 3 -- Volume translation:** API-only for large volumes (documentation, metadata, marketing materials). Quick, cheap, acceptable quality.
-
-**Back-translation verification:** Translate the translated text back to the source language (using a different engine than the forward translation), then AI agent compares source and back-translation to flag divergences. This is standard practice in professional translation QA.
-
-### Translation Memory
-
-Store translation pairs in a local JSON/SQLite database per project. When translating new content, check for previously translated phrases. This is especially critical for:
-- Sacred texts (canonical terms must be consistent)
-- Series (character names, place names, invented terms)
-- Technical writing (terminology consistency)
-
-No external TM tool needed -- the agent manages a simple JSON file.
-
----
-
-## npm Publishing Configuration
-
-| Concern | Recommendation | Why | Confidence |
-|---------|---------------|-----|------------|
-| **Authentication** | Granular Access Tokens (not classic) | Classic tokens deprecated; all classic tokens revoked by Feb 2026. Write-access tokens now max 90-day lifespan. | HIGH |
-| **Publishing method** | `npm publish` with 2FA from local machine | Most secure for small-team projects. Trusted publishing (OIDC via GitHub Actions) is overkill until Scriven has CI/CD. | HIGH |
-| **Prepublish check** | `npm pack --dry-run` before every publish | Verify no secrets, no unnecessary files leaked. The `"files"` field in package.json already scopes what's included. | HIGH |
-| **Versioning** | `npm version patch/minor/major` with git tags | Auto-creates git tag, bumps version. Pair with GitHub releases for changelog. | HIGH |
-| **npx support** | Already configured (`"bin": {"scriven": "./bin/install.js"}`) | `npx scriven@latest` will download and run the installer. Current setup is correct. | HIGH |
-| **Lockfile** | Commit `package-lock.json` but since there are zero dependencies, it's effectively empty | Standard practice. Will matter when/if dev dependencies are added for testing. | HIGH |
-| **Node version** | `"engines": {"node": ">=18.0.0"}` (already set) | Node 18 is LTS until April 2025 (EOL). Consider bumping to `>=20.0.0` (LTS until April 2026) or `>=22.0.0` (current LTS, April 2027 EOL). Recommend `>=20.0.0` as minimum. | HIGH |
-
-### npm Publish Readiness Checklist
-
-Current `package.json` is nearly ready. Needed additions:
-
-```json
-{
-  "type": "commonjs",
-  "homepage": "https://github.com/scriven/scriven#readme",
-  "bugs": "https://github.com/scriven/scriven/issues",
-  "funding": "https://github.com/sponsors/scriven",
-  "publishConfig": {
-    "access": "public"
-  },
-  "engines": {
-    "node": ">=20.0.0"
+function atomicCopyFileSync(srcPath, destPath) {
+  const tmpPath = `${destPath}.tmp.${crypto.randomUUID()}`;
+  try {
+    fs.copyFileSync(srcPath, tmpPath);
+    fs.renameSync(tmpPath, destPath);
+  } catch (err) {
+    try { fs.unlinkSync(tmpPath); } catch {}
+    throw err;
   }
 }
 ```
 
-Also add a `.npmignore` or rely on the existing `"files"` field (which is already correctly scoped).
+### Why This Works
+
+- **POSIX guarantee:** `rename()` within the same filesystem is atomic. The temp file is in the same directory as the target, so it is on the same filesystem.
+- **Failure safety:** If `writeFileSync` fails (disk full, permissions), the temp file is cleaned up and the original file is untouched.
+- **Interrupt safety:** If the process is killed between write and rename, only a `.tmp.{uuid}` file is left behind — the target is untouched. Stale temp files can be cleaned on next install.
+- **No cross-device risk:** Temp file is adjacent to target (`${targetPath}.tmp.{uuid}`), never in `/tmp` or `os.tmpdir()`. This avoids the EXDEV error that occurs when renaming across filesystems.
+
+### Where to Apply
+
+Replace every `fs.writeFileSync` and `fs.copyFileSync` in the installer with the atomic versions. The `copyDir` function (line 648) should use `atomicCopyFileSync` internally.
 
 ---
 
-## Supporting Tools (Prerequisites for Users)
+## Frontmatter Parsing Fix
 
-| Tool | Purpose | Install | Required For |
-|------|---------|---------|-------------|
-| **Pandoc** | Document conversion | `brew install pandoc` | All export commands |
-| **Typst** | PDF generation | `brew install typst` | PDF export |
-| **Ghostscript** | CMYK conversion, PDF/X-1a | `brew install ghostscript` | IngramSpark package only |
-| **ImageMagick** | Image processing (resize, format conversion) | `brew install imagemagick` | Cover art processing, illustration pipeline |
-| **Afterwriting** | Fountain to PDF | `npm i -g afterwriting` | Screenplay PDF export only |
-| **Screenplain** | Fountain to FDX | `pip install screenplain` | FDX export only |
+### The Problem
 
-**Prerequisite detection:** The installer or export commands should check for these tools and provide clear installation instructions. Not all users need all tools -- a novelist needs only Pandoc + Typst. A screenwriter needs Afterwriting + Screenplain. The commands should fail gracefully with helpful messages.
+The current `readFrontmatterValue` function (line 292-295) uses a regex:
+
+```javascript
+const match = content.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
+return match ? stripWrappingQuotes(match[1]) : '';
+```
+
+This works for simple values but **truncates values containing colons** because `(.+)` captures everything after the first colon correctly — the actual bug is likely in how values with colons interact with `stripWrappingQuotes` or in edge cases with multi-line values. The regex itself captures the full line after `key:`, but if the YAML value is quoted and contains colons, the parsing can fail.
+
+### The Solution: Line-Based Frontmatter Parser
+
+```javascript
+function parseFrontmatter(content) {
+  if (!content.startsWith('---\n')) return {};
+  const endIndex = content.indexOf('\n---', 4);
+  if (endIndex === -1) return {};
+
+  const frontmatterBlock = content.slice(4, endIndex);
+  const result = {};
+
+  for (const line of frontmatterBlock.split('\n')) {
+    const colonIndex = line.indexOf(':');
+    if (colonIndex === -1) continue;
+
+    const key = line.slice(0, colonIndex).trim();
+    const rawValue = line.slice(colonIndex + 1).trim();
+    result[key] = stripWrappingQuotes(rawValue);
+  }
+
+  return result;
+}
+```
+
+### Why This Approach
+
+- **First-colon split:** `line.indexOf(':')` finds the first colon only. Everything after it is the value, regardless of how many colons appear in the value.
+- **No regex:** Simpler to reason about, no backtracking edge cases.
+- **Returns all fields at once:** Parse frontmatter once per file, access fields by key. More efficient than running a regex per field.
+- **Handles the actual bug:** A description like `"Generate a plan: outline structure"` is correctly preserved because we split on the first colon only.
+
+### Migration Path
+
+Replace `readFrontmatterValue(content, key)` calls (line 333-334) with:
+```javascript
+const meta = parseFrontmatter(content);
+const description = meta.description || commandTail.replace(/[:\-]/g, ' ');
+const argumentHint = meta['argument-hint'] || '';
+```
+
+---
+
+## Settings Schema Validation
+
+### The Problem
+
+The current installer writes `settings.json` (line 931-943) but never validates it on read. If a user manually edits settings.json with invalid values (wrong types, missing required fields, unknown keys), the installer silently proceeds with bad state.
+
+### The Solution: Hand-Written Validator
+
+```javascript
+const SETTINGS_SCHEMA = {
+  version: { type: 'string', required: true },
+  runtime: { type: 'string', required: true, enum: Object.keys(RUNTIMES) },
+  runtimes: { type: 'array', required: true, itemType: 'string' },
+  scope: { type: 'string', required: true, enum: ['global', 'project'] },
+  developer_mode: { type: 'boolean', required: true },
+  data_dir: { type: 'string', required: true },
+  install_mode: { type: 'string', required: false },
+  installed_at: { type: 'string', required: true },
+};
+
+function validateSettings(settings) {
+  const errors = [];
+  if (!settings || typeof settings !== 'object') {
+    return { valid: false, errors: ['Settings must be a JSON object'] };
+  }
+
+  for (const [key, rule] of Object.entries(SETTINGS_SCHEMA)) {
+    const value = settings[key];
+    if (value === undefined || value === null) {
+      if (rule.required) errors.push(`Missing required field: "${key}"`);
+      continue;
+    }
+    if (rule.type === 'array') {
+      if (!Array.isArray(value)) {
+        errors.push(`"${key}" must be an array, got ${typeof value}`);
+      } else if (rule.itemType) {
+        for (let i = 0; i < value.length; i++) {
+          if (typeof value[i] !== rule.itemType) {
+            errors.push(`"${key}[${i}]" must be ${rule.itemType}, got ${typeof value[i]}`);
+          }
+        }
+      }
+    } else if (typeof value !== rule.type) {
+      errors.push(`"${key}" must be ${rule.type}, got ${typeof value}`);
+    }
+    if (rule.enum && !rule.enum.includes(value)) {
+      errors.push(`"${key}" must be one of [${rule.enum.join(', ')}], got "${value}"`);
+    }
+  }
+
+  return { valid: errors.length === 0, errors };
+}
+```
+
+### Why Not Ajv or JSON Schema
+
+- **Zero dependencies:** Ajv is 150 KB+ and brings transitive dependencies. The settings object has 8 fields.
+- **Human-readable errors:** A hand-written validator produces messages like `"scope" must be one of [global, project], got "both"` — clearer than JSON Schema validation errors.
+- **Exact fit:** The validator checks exactly what Scriven needs. No unused spec surface area.
+
+### When to Validate
+
+1. **On read:** When the installer reads an existing settings.json to preserve user settings during reinstall.
+2. **On write:** Before writing the merged settings object, validate it to catch bugs in the merge logic.
+3. **Fail loudly:** Print validation errors with `c('yellow', ...)` warnings and describe what will be reset to defaults.
+
+---
+
+## Template and Settings Preservation
+
+### The Problem
+
+The current `writeSharedAssets` function (line 922-943) does `removePathIfExists` on the templates and data directories, then copies fresh versions. This wipes any user customizations to templates. Settings.json is overwritten entirely.
+
+### The Solution: Hash-Based Template Preservation
+
+```javascript
+function fileHash(filePath) {
+  const content = fs.readFileSync(filePath);
+  return crypto.createHash('sha256').update(content).digest('hex');
+}
+
+function safeCopyFile(srcPath, destPath) {
+  if (!fs.existsSync(destPath)) {
+    atomicCopyFileSync(srcPath, destPath);
+    return 'created';
+  }
+
+  const srcHash = fileHash(srcPath);
+  const destHash = fileHash(destPath);
+
+  if (srcHash === destHash) {
+    return 'unchanged';  // Already up to date
+  }
+
+  // Destination differs from source — user may have customized it
+  // Back up and replace
+  const backupPath = `${destPath}.backup.${Date.now()}`;
+  fs.copyFileSync(destPath, backupPath);
+  atomicCopyFileSync(srcPath, destPath);
+  return 'updated-with-backup';
+}
+```
+
+### Settings Merge Strategy
+
+```javascript
+function mergeSettings(existing, incoming) {
+  // Installer-controlled fields: always overwrite
+  const merged = {
+    ...incoming,
+  };
+
+  // User-controlled fields: preserve from existing if present
+  const USER_FIELDS = ['developer_mode'];
+  for (const field of USER_FIELDS) {
+    if (existing && existing[field] !== undefined) {
+      merged[field] = existing[field];
+    }
+  }
+
+  return merged;
+}
+```
+
+### Which Fields Are User-Controlled
+
+| Field | Owner | Rationale |
+|-------|-------|-----------|
+| `version` | Installer | Must match installed version |
+| `runtime` | Installer | Set at install time |
+| `runtimes` | Installer | Set at install time |
+| `scope` | Installer | Set at install time |
+| `developer_mode` | **User** | User preference, survive reinstall |
+| `data_dir` | Installer | Derived from scope |
+| `install_mode` | Installer | Set at install time |
+| `installed_at` | Installer | Timestamp of current install |
 
 ---
 
 ## Alternatives Considered
 
-| Category | Recommended | Alternative | Why Not |
-|----------|-------------|-------------|---------|
-| PDF engine | Typst | XeLaTeX (TeX Live) | 4-6 GB install, 27x slower compilation, worse error messages. Reserve for academic edge cases. |
-| PDF engine | Typst | WeasyPrint | HTML-to-PDF, not print-quality typesetting. No proper widow/orphan control, gutter margins. |
-| PDF engine | Typst | Prince XML | Commercial ($3,800 license). Overkill for CLI tool targeting indie authors. |
-| EPUB | Pandoc | epub-gen-memory (npm) | Would add runtime dependency. Pandoc's EPUB is more mature, handles accessibility, KDP validation. |
-| EPUB | Pandoc | Calibre CLI | Calibre is massive (200+ MB). Pandoc is lighter and sufficient. |
-| Document conversion | Pandoc | Asciidoctor | Scriven manuscripts are markdown. Asciidoctor is AsciiDoc-native. Adding a format is unnecessary complexity. |
-| Illustration | OpenAI GPT Image 1.5 | Midjourney | No API. Cannot automate from CLI. |
-| Illustration | OpenAI GPT Image 1.5 | DALL-E 3 | Sunset May 2026. Dead end. |
-| Illustration | OpenAI GPT Image 1.5 | Replicate (Flux/SD) | Additional API signup. OpenAI key is already likely available to users of AI coding agents. |
-| Translation | DeepL + Google + AI agent | Amazon Translate | Lower quality for literary content. No advantage over Google for broad coverage. |
-| Translation | DeepL + Google + AI agent | LibreTranslate | Self-hosted, lower quality, limited languages. Not practical for a CLI tool. |
-| Screenplay | Afterwriting + Screenplain | Highland (Mac app) | Not a CLI tool. Cannot automate. |
-| Screenplay | Afterwriting + Screenplain | Pandoc Lua filter | Could work but would need significant custom development. Afterwriting/Screenplain already exist. |
-
----
+| Recommended | Alternative | When to Use Alternative |
+|-------------|-------------|-------------------------|
+| Hand-rolled atomic write | `write-file-atomic` (npm) | Never — it does the same temp+rename but adds a dependency. Scriven's zero-dep constraint rules it out. |
+| Line-based frontmatter parser | `gray-matter` (npm) | Never — gray-matter pulls in `js-yaml` which is 60 KB. Scriven's frontmatter is 2-3 simple key-value pairs. |
+| Hand-rolled schema validator | Ajv (npm) | Never — 150 KB+ with transitive deps. Settings has 8 fields. |
+| `crypto.randomUUID()` | `Date.now()` for temp file names | Never — `Date.now()` can collide if two installs run in the same millisecond. UUID is collision-proof. |
+| Same-directory temp files | `os.tmpdir()` temp files | Never — `rename()` across filesystems fails with EXDEV. Same-directory guarantees same filesystem. |
+| Hash-based template preservation | Timestamp-based comparison | Never — timestamps are unreliable across git clones, npm installs, and different filesystems. Content hash is the only reliable comparison. |
 
 ## What NOT to Use
 
-| Technology | Why Not |
-|------------|---------|
-| **npm runtime dependencies** | Scriven is a pure skill system. Adding npm deps means adding a build step, version conflicts, and breaking the zero-dependency architecture. |
-| **Calibre** | 200+ MB desktop app. Pandoc does everything Scriven needs at 1/10th the size. |
-| **DALL-E 2/3 API** | Sunset May 2026. Use GPT Image 1.5 instead. |
-| **Midjourney** | No API. Cannot be automated. |
-| **wkhtmltopdf** | Deprecated, security issues, poor print quality. |
-| **Classic npm tokens** | Revoked Feb 2026. Use granular access tokens only. |
-| **Node.js < 20** | Node 18 EOL April 2025. Node 20 LTS until April 2026. Bump minimum. |
-| **WeasyPrint for books** | Fine for reports, not for book typesetting. No proper ligatures, optical margins, or page-level layout control. |
-| **Custom EPUB generator** | Reinventing what Pandoc already does well. Waste of effort. |
+| Avoid | Why | Use Instead |
+|-------|-----|-------------|
+| **`write-file-atomic` (npm)** | Adds a runtime dependency to a zero-dependency project | `writeFileSync` + `renameSync` in same directory |
+| **`gray-matter` / `js-yaml` (npm)** | 60 KB+ dependency for parsing 2 YAML fields | Line-based first-colon-split parser (20 lines of code) |
+| **Ajv / `jsonschema` (npm)** | 150 KB+ for validating an 8-field object | Hand-written validator with human-readable errors |
+| **`os.tmpdir()` for temp files** | Cross-filesystem rename fails with EXDEV | Temp files adjacent to target: `${targetPath}.tmp.${uuid}` |
+| **`fs.mkdtempSync()`** | Creates temp directories in system temp dir (cross-filesystem risk) | UUID-named temp files in the target directory |
+| **Full YAML parser** | Scriven frontmatter is `key: value` pairs only — no arrays, nesting, or anchors | Simple line parser with first-colon split |
+| **JSON Schema (the spec)** | Spec is complex, implementations are heavy, error messages are cryptic | Imperative validation with explicit field checks |
 
 ---
 
-## Template Files Scriven Should Ship
+## Version Compatibility
 
-These are not code -- they're document templates the agent uses when invoking Pandoc/Typst:
+| API | Available Since | Notes |
+|-----|-----------------|-------|
+| `crypto.randomUUID()` | Node 14.17 / 19.0 (stable) | Safe for Node 20+ baseline. Synchronous, no callback needed. |
+| `fs.renameSync()` | Node 0.x | Stable since forever. POSIX atomic on macOS/Linux. |
+| `fs.copyFileSync()` | Node 8.5 | Used in `atomicCopyFileSync`. |
+| `crypto.createHash('sha256')` | Node 0.x | For file content hashing in template preservation. |
+| `fs.rmSync()` | Node 14.14 | Already used in the installer. |
 
-| Template | Format | Purpose |
-|----------|--------|---------|
-| `scriven-book.typst` | Typst template | Book interior PDF (trim sizes, margins, headers, page numbers) |
-| `scriven-manuscript.docx` | DOCX reference doc | Standard manuscript format (12pt Courier, double-spaced, 1" margins) |
-| `scriven-formatted.docx` | DOCX reference doc | Designed/formatted DOCX for review copies |
-| `scriven-epub.css` | CSS | EPUB styling (clean, readable, KDP-compatible) |
-| `scriven-academic.latex` | LaTeX template | Academic paper/thesis formatting |
-| `scriven-kdp-cover.typst` | Typst template | KDP cover with calculated spine width |
-| `scriven-ingram-cover.typst` | Typst template | IngramSpark full-wrap cover |
+All APIs are well within the Node 20+ baseline. No version risk.
+
+---
+
+## Integration Points with Existing Installer
+
+| Current Function | Change Needed | Impact |
+|------------------|---------------|--------|
+| `copyDir()` (line 648) | Use `atomicCopyFileSync` internally instead of `fs.copyFileSync` | All runtime installers get atomic writes automatically |
+| `readFrontmatterValue()` (line 292) | Replace with `parseFrontmatter()` returning all fields | `collectCommandEntries()` calls this — update to use parsed object |
+| `writeSharedAssets()` (line 922) | Add settings merge logic and template preservation | Existing settings and user-modified templates survive reinstall |
+| `writeInstalledCommandManifest()` (line 499) | Use `atomicWriteFileSync` | Manifest corruption on interrupt is prevented |
+| `writeCodexSkillManifest()` (line 720) | Use `atomicWriteFileSync` | Same |
+| `installClaudeCommandRuntime()` (line 833) | Use `atomicWriteFileSync` for each command file | Partial command file writes are prevented |
+| `generateClaudeCommandContent()` (line 448) | No change — this generates content, doesn't write | N/A |
+| `rewriteInstalledCommandRefs()` (line 439) | Extend to support all runtime invocation styles, not just Claude | Command-ref rewriting becomes runtime-aware |
 
 ---
 
 ## Sources
 
-- [Pandoc Official Site](https://pandoc.org/) -- Version 3.9.0.2 confirmed
-- [Typst Blog: Typst 0.14](https://typst.app/blog/2025/typst-0.14) -- Accessibility features confirmed
-- [Pandoc + Typst Tutorial](https://slhck.info/software/2025/10/25/typst-pdf-generation-xelatex-alternative.html) -- 27x speed improvement verified
-- [Afterwriting GitHub](https://github.com/ifrost/afterwriting-labs) -- Fountain CLI tool
-- [Screenplain GitHub](https://github.com/vilcans/screenplain) -- Fountain to FDX converter
-- [OpenAI API Pricing](https://platform.openai.com/docs/pricing) -- GPT Image 1.5 pricing
-- [GPT Image 1.5 Pricing Analysis](https://www.aifreeapi.com/en/posts/openai-image-generation-api-pricing) -- Model comparison
-- [DeepL vs Google vs Microsoft 2026](https://taia.io/resources/blog/deepl-vs-google-translate-vs-microsoft-translator/) -- Translation API comparison
-- [Translation API Pricing 2026](https://www.buildmvpfast.com/api-costs/translation) -- Cost comparison
-- [npm Trusted Publishing](https://docs.npmjs.com/trusted-publishers/) -- Token deprecation timeline
-- [Snyk npm Best Practices](https://snyk.io/blog/best-practices-create-modern-npm-package/) -- Security guidance
-- [KDP Formatting Requirements](https://kdp.amazon.com/en_US/help/topic/G201857950) -- Print submission specs
-- [IngramSpark File Requirements](https://www.ingramspark.com/blog/file-requirements-for-print-books) -- PDF/X-1a specs
-- [Best AI Image Generation APIs 2026](https://crazyrouter.com/en/blog/best-ai-image-generation-apis-2026) -- Midjourney no-API confirmed
+- [Node.js fs documentation](https://nodejs.org/api/fs.html) — renameSync, writeFileSync, copyFileSync APIs
+- [POSIX rename() specification](https://pubs.opengroup.org/onlinepubs/9699919799/functions/rename.html) — atomic rename guarantee within same filesystem
+- [write-file-atomic (npm)](https://github.com/npm/write-file-atomic) — reference implementation of the same temp+rename pattern Scriven should use natively
+- [Node.js crypto.randomUUID](https://nodejs.org/api/crypto.html#cryptorandomuuidoptions) — available since Node 14.17
+- [gray-matter](https://github.com/jonschlinkert/gray-matter) — evaluated and rejected due to dependency chain
+- [Ajv](https://ajv.js.org/) — evaluated and rejected due to size and zero-dep constraint
+
+---
+*Stack research for: Scriven v1.6 Installer Hardening*
+*Researched: 2026-04-16*

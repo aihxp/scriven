@@ -1,273 +1,330 @@
-# Domain Pitfalls
+# Pitfalls Research
 
-**Domain:** Creative writing CLI tool / AI agent skill system with export, illustration, translation, and npm publishing
-**Project:** Scriven
-**Researched:** 2026-04-06
-
----
+**Domain:** Installer hardening for Node.js CLI (atomic writes, YAML parsing, config preservation, command-ref rewriting, schema validation)
+**Researched:** 2026-04-16
+**Confidence:** HIGH
 
 ## Critical Pitfalls
 
-Mistakes that cause rewrites, broken releases, or fundamental trust loss.
+### Pitfall 1: Frontmatter regex matches body content, not just the frontmatter block
 
-### Pitfall 1: npm Package That Doesn't Work on First `npx` Run
-
-**What goes wrong:** User runs `npx scriven@latest` and it fails silently, throws a shebang error, or installs but doesn't copy files correctly. First impression is destroyed. CLI tools have near-zero second-chance tolerance -- if the first run fails, the user moves on.
-
-**Why it happens:**
-- Missing or malformed shebang (`#!/usr/bin/env node`) in `bin/install.js` -- npx compares the shebang string exactly, and even extra spaces break detection
-- The `files` field in package.json omits directories that the installer needs (commands/, agents/, templates/, data/)
-- The `bin` field points to a file that assumes a working directory or relative path that doesn't hold when invoked via npx
-- npm classic tokens were permanently revoked in December 2025; CI/CD publishing pipelines using old tokens silently fail
-
-**Consequences:** Zero adoption. npm packages get one shot at a first install experience. A broken `npx` command means the user never sees Voice DNA, never sees the writing pipeline, never returns.
-
-**Prevention:**
-1. Run `npm pack --dry-run` before every publish to verify the tarball includes all needed files
-2. Test the exact `npx scriven@latest` flow in a clean directory with no local node_modules
-3. Ensure shebang is exactly `#!/usr/bin/env node\n` with no variations
-4. Use OIDC Trusted Publishing for CI/CD (npm's new standard post-2025 token deprecation)
-5. Add a `postinstall` or startup self-test that verifies all expected directories were copied
-6. Pin `engines.node` to `>=20.0.0` and test on Node 20 and 22
-
-**Detection:** Warning signs include: installer works locally but not via npx; works on macOS but not Linux/Windows; `npm pack` output doesn't list all files; CI publish succeeds but `npx` install fails.
-
-**Phase:** Pre-Phase 5 (npm readiness is listed as Active in PROJECT.md and should be addressed before export features ship)
-
----
-
-### Pitfall 2: Export Formats That Look Right in Preview but Fail on Platform Upload
-
-**What goes wrong:** Generated EPUB fails EPUBCheck validation and gets rejected by Apple Books, Kobo, or Draft2Digital. DOCX manuscript lacks proper Shunn formatting and looks amateur when agents/editors open it. KDP package gets rejected for cover dimension mismatches.
+**What goes wrong:**
+`readFrontmatterValue` (line 292) uses `content.match(new RegExp('^${key}:\\s*(.+)$', 'm'))` against the *entire* file content, not just the YAML frontmatter block. A command markdown file that mentions `description:` in its body text (instructions, examples, code blocks) could return that body match instead of the frontmatter value. This is currently latent because no command body lines happen to start with `description:` at column zero, but it will break as content grows or if future commands include YAML examples.
 
 **Why it happens:**
-- EPUB requires strict W3C compliance (EPUBCheck is the gold standard validator). Common failures: missing manifest items, duplicate IDs, incomplete table of contents, unembedded fonts, missing metadata fields
-- DOCX export via Pandoc uses default styling unless you provide a custom reference.docx -- the default is NOT manuscript format (double-spaced, Courier/Times, 1-inch margins, header with author/title/page)
-- KDP cover dimensions depend on interior page count and paper type (white: 0.002252"/page, cream: 0.0025"/page). Spine width = (page count x paper thickness) + 0.06". Being off by 0.1" causes rejection
-- Platform-specific requirements differ: KDP wants PDF/X-1a for print, Apple Books has its own EPUB metadata requirements, IngramSpark needs different bleed settings than KDP
+The regex approach skips proper frontmatter boundary detection. `insertMarkerComment` (line 429) correctly finds the `---\n...\n---` boundaries, but `readFrontmatterValue` does not. The two functions were written independently and never reconciled.
 
-**Consequences:** Writer completes their book in Scriven, tries to publish, gets a cryptic rejection. They blame Scriven, not the platform. Trust in the entire pipeline collapses at the finish line -- the worst possible moment.
+**How to avoid:**
+Extract the frontmatter block first (between opening `---\n` and closing `\n---\n`), then apply the key-value regex only within that extracted block. Reuse the boundary logic already present in `insertMarkerComment`. A shared `extractFrontmatter(content)` function used by both paths eliminates the divergence.
 
-**Prevention:**
-1. Run EPUBCheck programmatically as a validation step before declaring export complete
-2. Ship a custom Pandoc reference.docx that implements Shunn's Proper Manuscript Format (there's an open-source template at prosegrinder/pandoc-templates)
-3. Implement the exact KDP spine formula with page-count-dependent calculation, not a static value
-4. Enforce the 79-page minimum before adding spine text to covers
-5. Build platform-specific validation checklists that run automatically (KDP package checker, EPUB validator, IngramSpark spec checker)
-6. Include 0.125" bleed on all sides for KDP covers as a non-negotiable default
+**Warning signs:**
+- A command file with `description:` or `argument-hint:` appearing in its body text at column zero
+- Test assertions on `description` returning body text instead of the frontmatter metadata
+- Codex skill descriptions containing long prose instead of a short description string
 
-**Detection:** Export commands that produce output without validation steps. Any export that doesn't have a corresponding "check" step is a ticking time bomb.
-
-**Phase:** Phase 5 (Front/Back Matter + Publishing Pipeline). Every export format must ship with its validator.
+**Phase to address:**
+Phase 1 (frontmatter parsing hardening). This is the foundation that command-ref rewriting and skill generation depend on. Every downstream consumer of parsed frontmatter inherits this bug.
 
 ---
 
-### Pitfall 3: Voice DNA Drift During Multi-Format Export
+### Pitfall 2: Colon handling is a generation bug, not just a parsing bug
 
-**What goes wrong:** The voice fidelity that Scriven promises through its Voice DNA system degrades when AI generates front matter, back matter, blurbs, synopses, and query letters. These generated pieces sound generic and AI-ish because they don't load STYLE-GUIDE.md.
-
-**Why it happens:** Export-adjacent generation (blurbs, author bios, acknowledgments, synopses) feels like "utility text" so developers skip loading the voice profile. But readers encounter these texts first -- the blurb sells the book, the author bio builds trust. If these sound like ChatGPT wrote them, the entire product's promise is undermined.
-
-**Consequences:** The core value proposition ("Drafted prose sounds like the writer, not like AI") is violated in the most visible parts of the book. A generic-sounding blurb on Amazon kills sales regardless of how good the interior prose is.
-
-**Prevention:**
-1. Enforce the same "fresh context per atomic unit with STYLE-GUIDE.md loaded" pattern for ALL generated text, including front/back matter, blurbs, synopses, and query letters
-2. Add voice-check validation as a post-generation step for every publishable text
-3. Mark the blurb/synopsis generators in CONSTRAINTS.json as requiring voice profile loading
-4. Include voice fidelity in the publishing wizard checklist: "Does your blurb sound like you?"
-
-**Detection:** Any generation command that doesn't reference STYLE-GUIDE.md loading in its agent prompt. Grep agent prompts for style guide references -- missing ones are bugs.
-
-**Phase:** Phase 5 (blurb/synopsis generators) and should be a constraint checked at code review for every new generation command.
-
----
-
-### Pitfall 4: Illustration Pipeline That Generates Inconsistent Characters
-
-**What goes wrong:** AI-generated illustrations show the protagonist with different hair color, clothing, or features across chapters. Character reference sheets exist but aren't loaded into each illustration prompt. Cover art doesn't match interior illustrations.
+**What goes wrong:**
+While the current regex `(.+)` does capture everything after `key:\s*` correctly for most values, the real colon problem surfaces in *generated* YAML output. `generateCodexSkill` (line 361) emits `description: "${value.replace(/"/g, '\\"')}"` -- but this escaping is incomplete. Values containing backslashes, newlines, or YAML flow indicators (`{`, `[`, `>`, `|`) can produce malformed YAML in the generated SKILL.md. Additionally, if a description contains a literal `\"` sequence, the double-escaping produces `\\\\"` which renders incorrectly.
 
 **Why it happens:**
-- AI image generation models don't maintain state between calls -- each generation is independent
-- Character reference sheets (CHARACTERS.md visual descriptions) aren't systematically included in every image prompt
-- Different illustration types (cover, interior, chapter headers) use different prompt structures and may omit character details
-- AI models still struggle with anatomical consistency, text rendering, and maintaining specific visual details across multiple generations
+Hand-rolled YAML generation without a proper escaping function. The `readFrontmatterValue` + `stripWrappingQuotes` pipeline handles simple cases but the read and write escaping rules are different. Reading strips quotes; writing must add them with correct internal escaping. These two paths were built separately.
 
-**Consequences:** Visual inconsistency breaks immersion, especially in children's books and comics where illustrations are the primary content. A character who looks different on every page is unshippable.
+**How to avoid:**
+1. For *reading*: extract the frontmatter block, then parse key-value pairs aware of YAML quoting rules. Do NOT add a full YAML library (violates zero-dependency constraint). A focused parser covering the three value forms Scriven actually uses (plain scalars, single-quoted, double-quoted) is sufficient and can be under 40 lines.
+2. For *writing*: build a single `yamlQuote(value)` utility that always double-quotes and properly escapes `\`, `"`, and newlines within the value. Use this in `generateCodexSkill` and `markInstalledCommand`.
+3. Fix both read and write paths together so the round-trip is tested end-to-end.
 
-**Prevention:**
-1. Build a visual consistency system: every illustration prompt must include the character reference sheet for all depicted characters
-2. Generate character reference sheets FIRST (front view, side view, key details) and require approval before any scene illustrations
-3. Include a "visual continuity check" step that shows all illustrations of a character side-by-side before finalizing
-4. For children's books/comics, enforce a strict art direction document that locks visual style, color palette, and character models before any illustration work begins
-5. Always include human review in the illustration pipeline -- never auto-approve generated images
+**Warning signs:**
+- Codex skill SKILL.md files with unbalanced quotes in frontmatter
+- `npm pack --dry-run` reveals SKILL.md files that a YAML parser rejects
+- Descriptions containing colons or quotes render incorrectly in skill discovery
 
-**Detection:** Illustration commands that don't load character visual descriptions. Art generation without a prior approved reference sheet step.
-
-**Phase:** Phase 6 (Illustration & Cover Art). Character reference sheets must be the FIRST feature built, not an afterthought.
+**Phase to address:**
+Phase 1 (frontmatter parsing hardening). Must fix both read and write paths together since they share escaping assumptions.
 
 ---
 
-## Moderate Pitfalls
+### Pitfall 3: Settings overwrite destroys user customizations on every reinstall
 
-### Pitfall 5: Translation That Flattens Creative Voice
+**What goes wrong:**
+`writeSharedAssets` (line 922) does `removePathIfExists(path.join(dataDir, 'templates'))` and `removePathIfExists(path.join(dataDir, 'data'))` followed by a fresh copy. Then it writes `settings.json` with a fresh object (lines 931-942). If a user has customized templates, added their own files to the data directory, or modified settings.json with personal preferences, all of it is destroyed on every reinstall or upgrade.
 
-**What goes wrong:** AI translation produces grammatically correct but creatively dead text. Wordplay, idioms, cultural references, and the writer's distinctive voice are lost. A punchy English slogan becomes flat and literal in French. Research shows up to 47% of contextual meaning is lost in machine translation due to cultural misinterpretation.
+**Why it happens:**
+The current installer treats every install as a clean install. There is no concept of "Scriven-owned files" vs "user-owned files" in the templates and data directories. The settings.json is always overwritten wholesale with no merge logic.
 
-**Why it happens:** AI translation models predict the most common way something has been said, not the best way. They aren't creative -- they optimize for statistical likelihood, which produces bland, safe translations. Creative writing relies heavily on voice, rhythm, and cultural resonance that don't transfer literally.
+**How to avoid:**
+1. **Templates and data**: Use the same manifest-based ownership tracking already implemented for commands (`.scriven-installed.json`). Before replacing the templates directory, compare against the manifest. Files not in the manifest are user-owned and must be preserved. Files in the manifest can be safely updated.
+2. **Settings**: Read the existing settings.json first, deep-merge Scriven-managed keys (`version`, `runtime`, `runtimes`, `scope`, `install_mode`, `installed_at`) while preserving any user-added keys. Never delete keys that Scriven did not create.
+3. **Defensive merge**: Use a whitelist of Scriven-owned keys rather than a blacklist of user keys. New Scriven keys get added; unknown keys pass through untouched.
 
-**Prevention:**
-1. Frame translation as a two-step process: AI draft + human review (89% of companies using AI translation still require human review)
-2. Build translation memory that preserves approved translations of recurring phrases, character names, and invented terms
-3. Implement back-translation verification: translate back to source language and flag passages where meaning drifts significantly
-4. Cultural adaptation must be a separate explicit step, not folded into translation -- different markets need different references
-5. Load STYLE-GUIDE.md into translation prompts so the AI attempts to preserve voice characteristics
-6. For sacred/historical texts: implement formal vs. dynamic equivalence as explicit modes, not a single approach
+**Warning signs:**
+- Users reporting lost customizations after running `npx scriven-cli@latest`
+- Settings reverting to defaults after upgrade
+- Custom templates disappearing after reinstall
 
-**Detection:** Translation output that reads like Google Translate -- technically correct, creatively empty. Back-translation that diverges significantly from the source.
-
-**Phase:** Phase 7 (Translation & Multi-Language). Back-translation verification should be built alongside the primary translation, not as a later addition.
-
----
-
-### Pitfall 6: RTL and CJK Support Treated as a Styling Afterthought
-
-**What goes wrong:** Arabic, Hebrew, Farsi, and CJK (Chinese/Japanese/Korean) text renders incorrectly in exports. RTL text appears mirrored, bidirectional text mixing (e.g., Arabic with embedded English) breaks word order, CJK line breaks occur mid-character. PDFKit doesn't support RTL at all. jsPDF's BiDi implementation is partial.
-
-**Why it happens:** RTL/CJK support is fundamentally different from LTR text handling, not just a CSS `direction: rtl` toggle. It requires: proper BiDi algorithm implementation, different page layouts (binding on the right), different pagination direction, font embedding with full Unicode support, and different line-breaking rules. Most JavaScript PDF/EPUB libraries have incomplete or broken RTL support.
-
-**Prevention:**
-1. Choose export libraries with verified RTL support from the start -- don't assume libraries handle it
-2. Test with real Arabic/Hebrew/CJK content early, not as a Phase 7 afterthought
-3. For EPUB: use proper `dir="rtl"` and `writing-mode` CSS properties, and validate with EPUBCheck
-4. For PDF: evaluate libraries specifically for BiDi support before committing (pdfkit has an open issue since 2015 with no resolution)
-5. Sacred text templates (Quranic, Torah, etc.) MUST have RTL support -- this isn't optional for those work types
-6. Build RTL test fixtures as part of the test suite, not manual testing
-
-**Detection:** No RTL test content in the test suite. Export libraries chosen without checking BiDi support status. Sacred text work types that don't flag RTL as a requirement.
-
-**Phase:** Phase 7, but library selection in Phase 5 must account for RTL needs. Choosing a PDF library in Phase 5 that can't do RTL means a rewrite in Phase 7.
+**Phase to address:**
+Phase 3 (settings preservation). But the manifest pattern must be designed in Phase 2 alongside atomic writes, since both need file-ownership tracking to work correctly.
 
 ---
 
-### Pitfall 7: Pandoc as a Hidden System Dependency
+### Pitfall 4: Schema validation rejects valid old configs on upgrade
 
-**What goes wrong:** Export commands silently fail or produce errors because the user doesn't have Pandoc installed. Scriven's architecture is "no runtime dependencies beyond Node.js" but multi-format export almost certainly requires Pandoc (or LibreOffice for DOCX-to-PDF).
+**What goes wrong:**
+Adding strict schema validation to settings.json means that settings files written by older Scriven versions (which lack newly added fields, or have fields in old formats) fail validation on read. The user upgrades Scriven from v1.5 to v1.6, and their existing installation breaks because the old settings.json does not conform to the new schema.
 
-**Why it happens:** Pandoc is the standard tool for Markdown-to-DOCX/PDF/EPUB conversion and is extremely capable. But it's a system-level binary, not an npm package. Installing it requires Homebrew (macOS), apt (Linux), or Chocolatey (Windows) -- all outside npm's control.
+**Why it happens:**
+Validation is implemented as "reject if schema does not match" rather than "migrate then validate." The schema is treated as a gate rather than a contract with versioned evolution.
 
-**Consequences:** Non-technical writers (a primary persona) hit "pandoc: command not found" and have no idea what to do. This directly contradicts the "writer-friendly" design principle.
+**How to avoid:**
+1. Schema validation must include a migration step that runs *before* validation. Read the `version` field from settings.json, apply migrations for each version gap, then validate the migrated result.
+2. New fields must have defaults. Validation should add missing fields with defaults rather than rejecting their absence.
+3. Unknown fields must be preserved (open schema), not rejected (closed schema). Users may add custom keys.
+4. Validation errors should be warnings that fall back to defaults, not hard failures that prevent installation. A corrupted settings.json should not block a fresh install.
 
-**Prevention:**
-1. Detect Pandoc at export time and provide clear installation instructions per platform
-2. Consider pure-JS alternatives for simple conversions (docx library for DOCX generation, epubjs for EPUB) to avoid the Pandoc dependency for common cases
-3. If Pandoc is required, add it to `/scr:publish` prerequisite checklist with a one-command install suggestion
-4. Document the dependency explicitly -- don't let users discover it at export time
-5. Explore whether the AI agent itself can generate DOCX/EPUB structure directly (it's XML under the hood) for simple cases
+**Warning signs:**
+- Upgrade from v1.5 to v1.6 causes "invalid settings" errors
+- `--detected` reinstalls break on machines with older Scriven data
+- CI pipelines installing Scriven over an existing installation fail unexpectedly
 
-**Detection:** Export commands that shell out to `pandoc` without checking if it's installed first. No mention of system dependencies in installation docs.
-
-**Phase:** Phase 5 (Export pipeline). Decision on Pandoc vs. pure-JS must be made at the start of Phase 5, not discovered mid-implementation.
-
----
-
-### Pitfall 8: Publishing Wizard That Overwhelms Non-Technical Writers
-
-**What goes wrong:** The publish command exposes too many options (KDP, IngramSpark, D2D, Apple Books, submission packages, query packages) and the writer freezes. Or worse, the wizard asks questions the writer can't answer ("What trim size? What paper type? What DPI for your cover?").
-
-**Why it happens:** Self-publishing has genuinely complex requirements, and developers tend to expose all options rather than curating sensible defaults. The product plan already identifies "publishing pipeline overwhelm" as a medium risk.
-
-**Prevention:**
-1. Implement publishing presets as the PRIMARY interface (`--preset kdp-paperback`, `--preset ebook-wide`, `--preset query-submission`) with sane defaults for every option
-2. The bare `/scr:publish` command should ask ONE question: "Where do you want to publish?" and derive everything else
-3. Hide advanced options behind `--advanced` flag, not in the default flow
-4. Pre-fill everything derivable: trim size from genre conventions, paper type defaults to white, cover dimensions calculated from page count
-5. Show a checklist of what's ready vs. what's missing BEFORE starting the pipeline
-
-**Detection:** Publish wizard that asks more than 3 questions in the default flow. Export options that require publishing industry knowledge to answer.
-
-**Phase:** Phase 5. Preset system must be designed before individual export formats are built.
+**Phase to address:**
+Phase 4 (schema validation). Must be implemented after settings preservation (Phase 3) since the migration logic depends on understanding what fields are Scriven-owned vs user-added.
 
 ---
 
-## Minor Pitfalls
+### Pitfall 5: Atomic write with orphaned temp files on crash
 
-### Pitfall 9: Cover Art Spine Width Calculated at Generation Time, Not Dynamically
+**What goes wrong:**
+The standard atomic-write pattern is: write to a temp file in the same directory, then `fs.renameSync` to the target path. If the process is killed between creating the temp file and renaming it, the temp file persists. On repeated installs, these accumulate as orphan files in user-visible directories like `~/.claude/commands/` or `~/.scriven/`.
 
-**What goes wrong:** Cover art is generated early (Phase 6) but the interior page count changes during editing. The spine width is now wrong, and the cover must be regenerated.
+**Why it happens:**
+`fs.renameSync` is atomic on the same filesystem, but nothing cleans up temp files from prior failed runs. The current installer (line 658) uses bare `fs.copyFileSync` and `fs.writeFileSync` with no temp-file intermediary, so adding atomic writes introduces a new failure mode that did not previously exist.
 
-**Prevention:** Never bake spine width into cover art until final export. Store cover art as front/back panels + spine separately. Calculate spine width at export time from the actual page count. Display a warning if page count changes after cover generation.
+**How to avoid:**
+1. Use a deterministic temp file naming scheme based on target path (e.g., `${targetPath}.scriven-tmp`) so the next install run can detect and clean orphans before writing.
+2. Add a cleanup step at the start of each install function that removes any `*.scriven-tmp` files in the target directory.
+3. Use `try/finally` around the write+rename to clean up on caught exceptions (does not help with SIGKILL, but covers most cases).
+4. The cleanup-on-next-run pattern handles the SIGKILL case.
 
-**Phase:** Phase 6 (Illustration). Architecture decision: cover components must be modular, not a single fused image.
+**Warning signs:**
+- `.scriven-tmp` files appearing in command directories after interrupted installs
+- Users reporting "extra files" in their `.claude/commands/` directory
+- Disk space accumulation in `.scriven/` from repeated failed installs
 
----
-
-### Pitfall 10: Translation Memory Without Version Tracking
-
-**What goes wrong:** Source text is revised after translation. Translation memory still maps to old source segments. Translator (human or AI) doesn't know which segments are stale.
-
-**Prevention:** Link translation memory entries to source text hashes. When source text changes, flag affected translations as "needs review" automatically. Never silently serve stale translations.
-
-**Phase:** Phase 7 (Translation). Translation memory design must include version awareness from day one.
-
----
-
-### Pitfall 11: EPUB/DOCX Export Without Front/Back Matter Integration
-
-**What goes wrong:** Export produces the manuscript body but omits or misorders front matter (title page, copyright, dedication, table of contents) and back matter (author bio, also-by, acknowledgments). The exported file looks incomplete.
-
-**Prevention:** Export commands must assemble the full book, not just the manuscript body. The export pipeline should check which front/back matter files exist and include them in the correct order per publishing conventions. Missing required elements (title page, copyright page) should trigger warnings.
-
-**Phase:** Phase 5. Front/back matter templates must be built before export commands, and export must be designed to consume them.
+**Phase to address:**
+Phase 2 (atomic file writes). Orphan cleanup must be part of the atomic write implementation, not a separate phase.
 
 ---
 
-### Pitfall 12: Multi-Runtime Installer Fragility
+### Pitfall 6: Atomic rename fails across filesystem boundaries
 
-**What goes wrong:** The installer works for Claude Code but breaks for Cursor, Gemini CLI, or future runtimes because each has different skill/command installation paths, directory structures, and configuration formats.
+**What goes wrong:**
+`fs.renameSync` fails with `EXDEV` when source and target are on different filesystems. This is rare on macOS but common on Linux where `/tmp` is often a tmpfs mount. If the temp file is written to `os.tmpdir()` instead of the target directory, the rename will throw.
 
-**Prevention:** Abstract the runtime-specific installation logic behind a clean interface. Test the installer on every supported runtime before each release. Use a runtime detection + adapter pattern rather than if/else chains. Keep runtime-specific code isolated so adding a new runtime is a mechanical task.
+**Why it happens:**
+Developers test on macOS where `/tmp` is a symlink to `/private/tmp` on the same volume. They write temp files to `os.tmpdir()` for "cleanliness" without realizing it breaks cross-filesystem rename.
 
-**Phase:** Already partially addressed (installer exists for 3 runtimes). Must be regression-tested when new commands are added in any phase.
+**How to avoid:**
+Always write the temp file in the *same directory* as the target file. Never use `os.tmpdir()` for atomic-write temp files. The temp file path should be `path.join(path.dirname(targetPath), '.scriven-tmp-' + path.basename(targetPath))`.
+
+**Warning signs:**
+- `EXDEV: cross-device link not permitted` errors in CI or on Linux
+- Tests pass on macOS, fail on Linux Docker containers
+
+**Phase to address:**
+Phase 2 (atomic file writes). Bake into the atomic write utility from the start.
+
+---
+
+### Pitfall 7: Command-ref rewriting is too greedy across content boundaries
+
+**What goes wrong:**
+`rewriteInstalledCommandRefs` (line 439) uses `/\/scr:[a-z0-9:-]+/gi` to find command references and rewrites every match. This regex has two problems:
+1. **Rewrites inside code blocks and examples**: A command file that documents "the original command is `/scr:help`" in a fenced code block would have that reference rewritten, making documentation about the canonical command format incorrect.
+2. **Case-insensitive flag**: The `gi` flag means it would match `/SCR:HELP` which is not a valid command reference.
+
+For multi-runtime rewriting (extending beyond Claude Code to Cursor, Gemini, Codex), each runtime has a different invocation style. A single-pass rewrite works, but applying the wrong transform produces commands the user cannot execute.
+
+**Why it happens:**
+The regex was written for the Claude Code case where all `/scr:` references become `/scr-` references. It worked because the transformation was structurally similar. Extending to Codex (`$scr-help`) or preserving the original format for Cursor (`/scr:help`) requires context-awareness the regex approach does not have.
+
+**How to avoid:**
+1. Remove the case-insensitive flag. Command references are lowercase by convention.
+2. Consider whether references inside fenced code blocks (triple backtick sections) should be rewritten. If a code block demonstrates the runtime-specific invocation, it should be rewritten. If it documents the canonical format, it should not. The safest default is to rewrite everywhere but add an escape hatch (e.g., `\\/scr:help` is not rewritten).
+3. The existing `commandRefToClaudeInvocation` and `commandRefToCodexInvocation` pattern is correct. Extend it to Cursor/Gemini/etc. with per-runtime transforms. The key is ensuring the correct transform is applied for the target runtime.
+
+**Warning signs:**
+- Command help text shows wrong invocation syntax for the installed runtime
+- Users copy command references from help text and they do not work
+- Codex skills suggest `/scr-help` (Claude format) instead of `$scr-help` (Codex format)
+
+**Phase to address:**
+Phase 3 (command-ref rewriting). After frontmatter parsing is solid, since command-ref rewriting reads frontmatter to determine which commands exist.
 
 ---
 
-## Phase-Specific Warnings
+### Pitfall 8: Migration-validation bootstrap deadlock
 
-| Phase Topic | Likely Pitfall | Mitigation |
-|-------------|---------------|------------|
-| npm publish readiness | Broken `npx` first-run experience | Test in clean environments; `npm pack --dry-run` before every publish |
-| Demo sample project | Demo content feels generic, doesn't showcase Voice DNA | Use a distinctive voice in the demo story; include before/after voice comparison |
-| Export: DOCX | Default Pandoc output isn't manuscript format | Ship custom reference.docx with Shunn formatting |
-| Export: EPUB | Fails EPUBCheck validation | Run EPUBCheck programmatically as part of export |
-| Export: PDF | System dependency on Pandoc or LibreOffice | Detect dependencies; provide clear install instructions; explore pure-JS alternatives |
-| Export: KDP package | Cover dimensions wrong for page count | Calculate spine dynamically; validate against KDP formula |
-| Illustration | Inconsistent character appearance across images | Character reference sheets required before scene illustrations |
-| Cover art | Spine width baked in too early | Modular cover components; recalculate at export time |
-| Translation | Creative voice lost in translation | Two-step process; back-translation verification; voice profile in prompts |
-| RTL/CJK support | Export libraries don't support bidirectional text | Verify library BiDi support BEFORE committing to a library in Phase 5 |
-| Sacred texts | Doctrinal sensitivity in translation | Formal/dynamic equivalence as explicit modes; human review gates |
-| Multi-format export | Front/back matter omitted or misordered | Export assembles full book; checks for required elements |
-| Publishing wizard | Too many options overwhelm writers | Presets as primary interface; one question to start |
+**What goes wrong:**
+If the installer reads settings.json to determine install behavior (e.g., preserving user preferences from a previous install), and the schema validator rejects the old settings before migration runs, the installer cannot read the data it needs to perform the migration. You need valid settings to run, but you need to run to make settings valid.
+
+**Why it happens:**
+Validation is added as a middleware on the read path without thinking about the bootstrap case where the file exists but predates the current schema.
+
+**How to avoid:**
+Separate "raw read" from "validated read." The migration path should:
+1. Raw-read settings.json (`JSON.parse` only, no schema check)
+2. Check the `version` field
+3. Apply migrations for each version gap
+4. Validate the migrated result
+5. Write back the migrated settings if anything changed
+
+The existing `readJsonIfExists` function (line 665) already does a raw read with a catch. This is the right foundation. Do NOT add validation inside `readJsonIfExists`. Add a separate `readAndMigrateSettings` function that calls `readJsonIfExists` then applies migration then validation.
+
+**Warning signs:**
+- Installer crashes on first run after upgrade with "invalid settings" before it can fix them
+- Settings migration code is unreachable because validation throws first
+- Test suite does not test the upgrade path (fresh install only)
+
+**Phase to address:**
+Phase 4 (schema validation). Design the read pipeline so migration always precedes validation.
 
 ---
+
+### Pitfall 9: removePathIfExists + copyDir creates a visibility gap
+
+**What goes wrong:**
+The current installer pattern is: `removePathIfExists(dir)` then `copyDir(src, dir)`. Between these two calls, the directory does not exist. If a concurrent reader (the AI agent runtime reading command files) accesses the directory during this window, it gets `ENOENT` and shows the user an error or missing commands. The window is typically milliseconds, but on slow I/O or large command sets, it can be noticeable.
+
+**Why it happens:**
+The delete-then-recreate pattern is the simplest way to ensure a clean state. It works for single-process batch operations but fails when readers are concurrent (which they always are -- the AI agent is running while the user reinstalls Scriven).
+
+**How to avoid:**
+Two options:
+1. **Atomic directory swap**: Write new files to a temp directory in the same parent, then rename the temp directory to the target name (after renaming the old directory to a backup name first). This is the clean approach but more complex.
+2. **Overwrite in place**: Instead of deleting the directory, walk the source and overwrite files individually, then delete files that exist in the target but not in the source (stale files). This is what `cleanFlatCommandFiles` already does for Claude commands -- extend this pattern to other install functions.
+
+The existing `cleanFlatCommandFiles` + individual `writeFileSync` pattern used in `installClaudeCommandRuntime` (line 833) is already better than the `removePathIfExists` + `copyDir` pattern used in `installCommandRuntime` (line 822). Standardize on the better pattern.
+
+**Warning signs:**
+- Brief flashes of "command not found" during reinstall
+- Race conditions in tests that install and then immediately read commands
+- The fact that `installClaudeCommandRuntime` already avoids this problem while other install functions do not
+
+**Phase to address:**
+Phase 2 (atomic file writes). This is a natural consequence of making writes atomic -- the directory-level operation needs the same treatment as individual files.
+
+---
+
+### Pitfall 10: Manifest drift between code and disk
+
+**What goes wrong:**
+The `.scriven-installed.json` manifest tracks which files Scriven owns. If a bug in the installer writes a file but fails to record it in the manifest, that file becomes an orphan that no future install will clean up. Conversely, if the manifest lists a file that was never written (crash between manifest write and file write), the cleanup logic will try to delete a nonexistent file (harmless) but will also skip cleaning up the actual stale file (harmful).
+
+**Why it happens:**
+The manifest is written as a separate step from the file writes. The order matters: if the manifest is written first (before files), a crash leaves a manifest claiming files that do not exist. If files are written first (before manifest), a crash leaves files that no future manifest will track.
+
+**How to avoid:**
+1. Write all files first, manifest last. This ensures that a crash before manifest write means the next install sees no manifest, treats all Scriven-marker files as candidates for cleanup (the `isScrivenInstalledCommandFile` check already handles this), and writes a fresh manifest.
+2. On read, treat manifest entries for missing files as stale (silently ignore), not as errors.
+3. The existing code already does this correctly for Claude commands (writes files, then calls `writeInstalledCommandManifest`). Ensure all new manifest-tracked directories follow the same order.
+
+**Warning signs:**
+- Stale files accumulating across upgrades that are never cleaned up
+- Manifest listing files that do not exist on disk
+- Orphan files in runtime directories that do not have the `scriven-cli-installed-command` marker
+
+**Phase to address:**
+Phase 3 (settings preservation). The manifest pattern is extended to templates and data in this phase; getting the write order right is critical.
+
+---
+
+## Technical Debt Patterns
+
+| Shortcut | Immediate Benefit | Long-term Cost | When Acceptable |
+|----------|-------------------|----------------|-----------------|
+| Hand-rolled YAML parser for 3 value forms only | Zero dependencies, small code surface | Every YAML edge case not covered is a potential bug (multiline values, comments, anchors) | Acceptable permanently if the parser explicitly rejects unsupported forms rather than silently mishandling them |
+| Overwriting settings.json wholesale | Simple code, no merge logic needed | Users lose customizations every upgrade; erodes trust in the upgrade path | Never acceptable once users start customizing settings (must fix in v1.6) |
+| Regex-based command-ref rewriting without markdown AST | Works for simple files, fast, no dependency | Rewrites inside code blocks, URLs, and documentation strings where rewriting is incorrect | Acceptable if code-block exclusion logic is added |
+| No lockfile for concurrent installs | Simpler code, no lock management | Rare but possible data corruption on concurrent runs | Acceptable for v1.6 if documented; consider for v1.7 |
+| `removePathIfExists` + `copyDir` instead of in-place update | Simple, guarantees clean state | Creates visibility gap for concurrent readers | Should be replaced in v1.6 as part of atomic writes work |
+
+## Integration Gotchas
+
+| Integration Point | Common Mistake | Correct Approach |
+|-------------------|----------------|------------------|
+| `readFrontmatterValue` to `generateCodexSkill` | Assuming the parsed value is safe to embed in YAML without re-escaping | Always re-escape when generating YAML output; the read and write escaping rules differ |
+| `cleanFlatCommandFiles` to `writeInstalledCommandManifest` | Writing the manifest before writing all files, so a crash leaves a manifest claiming files that do not exist | Write all files first, manifest last. On read, silently ignore manifest entries for missing files |
+| `removePathIfExists` to `copyDir` | Nuking the entire directory then re-copying, creating a window where the directory does not exist | Write new files alongside old ones, then remove stale files (the Claude install path already does this correctly) |
+| Settings read to schema validation to install behavior | Validation rejecting old settings before migration can run | Raw read then migrate then validate then use. Never validate before migrating |
+| Atomic write temp files to directory cleanup | Cleanup logic treating `.scriven-tmp-*` files as real content | Exclude temp file name patterns from all directory-walking and cleanup functions |
+
+## UX Pitfalls
+
+| Pitfall | User Impact | Better Approach |
+|---------|-------------|-----------------|
+| Silent schema validation failure | User installs, it appears to succeed, but settings are invalid and commands behave unexpectedly | Validation errors should print a clear warning with the specific field and value that failed, and the default being used instead |
+| Destroying user templates without warning | User customized templates, reinstalls, customizations vanish with no notice | Before overwriting user-modified files, print a count of preserved vs updated files so the user knows their work was respected |
+| Atomic write errors surfacing as cryptic Node.js messages | User sees `EXDEV: cross-device link not permitted` and has no idea what happened | Catch known atomic-write errors and surface them as "Installation interrupted. Run the installer again to retry." |
+| Schema migration silently changing user-set values | User set `developer_mode: true`, upgrade migration resets it to `false` | Migration must only add or transform fields whose schema shape changed between versions. Never touch fields whose schema did not change |
+
+## "Looks Done But Isn't" Checklist
+
+- [ ] **Frontmatter parsing:** Parses only the YAML frontmatter block, not body content -- verify with a command file that has `description:` in its body text at column zero
+- [ ] **Frontmatter colon handling:** Correctly reads `description: "Voice profiling: 15+ dimensions"` -- verify with a value containing a colon after the key's colon
+- [ ] **YAML generation round-trip:** A description read from frontmatter and written into a Codex SKILL.md produces valid YAML -- verify by parsing the generated SKILL.md with a YAML parser
+- [ ] **Atomic writes:** Cleans up orphaned temp files from prior crashed installs -- verify by creating a `.scriven-tmp-*` file in target dir and running install
+- [ ] **Atomic writes:** Temp files are written in the same directory as the target, not in `os.tmpdir()` -- verify by checking the temp file path construction
+- [ ] **Settings preservation:** Preserves user-added keys in settings.json -- verify by adding a custom key, reinstalling, and checking it survives
+- [ ] **Settings preservation:** Preserves user-modified templates -- verify by modifying a template, reinstalling, and checking the modification survives
+- [ ] **Schema validation:** Accepts settings.json from the previous Scriven version without error -- verify by writing a v1.5-era settings.json and running v1.6 install over it
+- [ ] **Schema validation:** Preserves unknown keys (open schema) -- verify by adding `"my_custom_key": true` to settings.json and checking it survives validation
+- [ ] **Schema validation:** Migration runs before validation, not after -- verify by checking the function call order in the read pipeline
+- [ ] **Command-ref rewriting:** Produces correct invocations for each runtime -- verify by installing to Claude Code, Codex, Cursor, and Gemini CLI and checking help output
+- [ ] **No visibility gap:** Install does not delete command directories before recreating them -- verify that concurrent reads during install do not get ENOENT
+
+## Recovery Strategies
+
+| Pitfall | Recovery Cost | Recovery Steps |
+|---------|---------------|----------------|
+| Orphaned temp files | LOW | Add a cleanup sweep at install start that removes `*.scriven-tmp` files from all target directories |
+| Corrupted settings.json | LOW | Delete settings.json and re-run installer; it regenerates fresh settings |
+| Lost user customizations | HIGH | No automatic recovery. User must redo customizations from memory or version control. Prevention is the only strategy |
+| Malformed Codex SKILL.md | MEDIUM | Re-run installer; all SKILL.md files are regenerated. But users may not realize the skill is broken until they try to use it |
+| Wrong command-ref invocations | LOW | Re-run installer with the correct `--runtimes` flag; all command files are regenerated |
+| Schema validation blocking install | LOW | If designed correctly (warnings not errors), user can proceed. If designed incorrectly (hard errors), user must manually delete settings.json |
+| Manifest drift (orphan files) | LOW | Re-run installer; cleanup logic detects Scriven-marker files even without a manifest |
+
+## Pitfall-to-Phase Mapping
+
+| Pitfall | Prevention Phase | Verification |
+|---------|------------------|--------------|
+| Frontmatter regex matches body | Phase 1: Frontmatter hardening | Test with command file containing `description:` in body text |
+| Colon/quote escaping in YAML generation | Phase 1: Frontmatter hardening | Round-trip test: read frontmatter, generate SKILL.md, parse generated YAML |
+| Orphaned temp files on crash | Phase 2: Atomic writes | Kill installer mid-write, verify no orphans after next install |
+| Cross-filesystem rename failure (EXDEV) | Phase 2: Atomic writes | Verify temp files are in same directory as target, not in os.tmpdir() |
+| Visibility gap from delete+recreate | Phase 2: Atomic writes | Verify in-place update pattern, not delete-then-copy |
+| Settings overwrite destroying customizations | Phase 3: Settings preservation | Add custom key to settings.json, reinstall, verify it persists |
+| Template destruction on reinstall | Phase 3: Settings preservation | Modify a template, reinstall, verify modification persists |
+| Manifest drift between code and disk | Phase 3: Settings preservation | Write files then manifest (never reverse), handle missing files gracefully |
+| Command-ref rewriting too greedy | Phase 3: Command-ref rewriting | Install to each runtime, verify invocation syntax in help text |
+| Schema rejects old config on upgrade | Phase 4: Schema validation | Write v1.5 settings.json, run v1.6 install, verify no errors |
+| Migration-validation bootstrap deadlock | Phase 4: Schema validation | Remove `version` key from settings.json, verify graceful handling |
 
 ## Sources
 
-- [Publishing Your First NPM Package (DEV Community)](https://dev.to/mir_mursalin_ankur/publishing-your-first-npm-package-a-real-world-guide-that-actually-helps-4l4)
-- [Best practices for building CLI and publishing to NPM](https://webbylab.com/blog/best-practices-for-building-cli-and-publishing-it-to-npm/)
-- [npm Classic Tokens to OIDC Trusted Publishing](https://dev.to/zhangjintao/from-deprecated-npm-classic-tokens-to-oidc-trusted-publishing-a-cicd-troubleshooting-journey-4h8b)
-- [npm publish bin field issues (GitHub #7302)](https://github.com/npm/cli/issues/7302)
-- [Top 10 eBook Validation Errors (Foglio)](https://www.foglioprint.com/blog/top-10-ebook-validation-errors-and-how-we-fix-them/)
-- [EPUB Validation Fix Common Errors (WP Author Box)](https://wpauthorbox.com/epub-validation-fix-common-errors-fast/)
-- [How to Validate EPUB Before Upload (ebookpbook)](https://www.ebookpbook.com/2026/03/22/validate-epub-before-upload/)
-- [KDP Spine Width Calculator Guide](https://www.kdpeasy.com/blog/spine-width-calculator-guide)
-- [KDP Cover Templates & Bleed (bookcoverslab)](https://bookcoverslab.com/kdp-cover-templates)
-- [Convert Markdown to Manuscript Format with Pandoc](https://www.autodidacts.io/convert-markdown-to-standard-manuscript-format-odts-docs-and-pdfs-with-pandoc/)
-- [Pandoc Manuscript Templates (prosegrinder)](https://github.com/prosegrinder/pandoc-templates)
-- [AI Translation: The Markup on Literary Translation](https://themarkup.org/artificial-intelligence/2025/04/02/are-ai-models-advanced-enough-to-translate-literature-the-debate-is-roiling-publishing)
-- [AI Translation Quality Gaps 2025 (Avantpage)](https://avantpage.com/blog/ai-language-translation-gaps/)
-- [Acolad 2025 Translators Survey on AI](https://www.acolad.com/en/services/translation/ai-translation-impact)
-- [PDFKit RTL Support Issue #219](https://github.com/foliojs/pdfkit/issues/219)
-- [RTL EPUB Export Issues (Adobe Community)](https://community.adobe.com/t5/indesign-discussions/two-major-issues-with-exporting-arabic-farsi-books-into-epub/td-p/12800308)
-- [AI Image Generation Mistakes (God of Prompt)](https://www.godofprompt.ai/blog/10-ai-image-generation-mistakes-99percent-of-people-make-and-how-to-fix-them)
-- [6 AI Image Generator Mistakes 2025 (AllAboutAI)](https://www.allaboutai.com/resources/ai-image-generator-mistakes/)
+- Direct analysis of `bin/install.js` (1036 lines, current Scriven codebase)
+- `.planning/PROJECT.md` v1.6 milestone requirements and active bugs list
+- Node.js `fs.renameSync` documentation: EXDEV behavior is POSIX-specified, occurs when source and target are on different mount points
+- Node.js `fs.writeFileSync` with `{ flag: 'wx' }`: exclusive-create semantics for lockfile patterns
+- YAML 1.2 specification: colon-space as mapping indicator, quoting rules for special characters in scalar values
+- Existing installer patterns: `cleanFlatCommandFiles` (line 459) and `installClaudeCommandRuntime` (line 833) demonstrate the correct in-place update pattern already used for Claude Code but not yet applied to other runtimes
+
+---
+*Pitfalls research for: Scriven v1.6 installer hardening*
+*Researched: 2026-04-16*

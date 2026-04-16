@@ -1,585 +1,606 @@
 # Architecture Patterns
 
-**Domain:** CLI creative writing tool — export, illustration, translation, and collaboration pipelines
-**Researched:** 2026-04-06
+**Domain:** Installer hardening for a single-file Node.js CLI installer
+**Researched:** 2026-04-16
+**Confidence:** HIGH (all patterns are well-understood Node.js filesystem operations applied to known code)
 
-## Existing Architecture Summary
+---
 
-Scriven is a **pure markdown skill system** — no compiled code, no runtime dependencies beyond Node.js for the installer. Each command is a markdown file in `commands/scr/` with frontmatter and instructions. The AI agent (Claude Code, Cursor, Gemini CLI) reads the markdown and executes accordingly. Five agents (drafter, researcher, continuity-checker, voice-checker, plan-checker) live in `agents/`. The drafter uses fresh-context-per-atomic-unit to prevent voice drift. `CONSTRAINTS.json` is the single source of truth for command availability, work type adaptations, and gating.
+## Current Architecture Summary
 
-**Key constraint:** All new architecture must remain within this pattern. No compiled code. No runtime library. The AI agent is the runtime.
+`bin/install.js` is a single 1035-line Node.js file with zero npm dependencies. It:
 
-## Recommended Architecture
+1. Parses CLI args or runs interactive prompts to select runtime(s), scope, and mode
+2. Dispatches to runtime-specific install functions (`installClaudeCommandRuntime`, `installCodexRuntime`, `installCommandRuntime`, `installManifestSkillRuntime`, `installGuidedRuntime`)
+3. Calls `writeSharedAssets()` to copy templates, data files, and write `settings.json`
+4. All file I/O uses `fs.writeFileSync`, `fs.copyFileSync`, `fs.rmSync`, and `fs.mkdirSync`
 
-### The Orchestrator-Delegate Pattern
+**Key functions affected by hardening:**
 
-Every new pipeline (export, illustration, translation, collaboration) follows the same structural pattern that already works for drafting:
+| Function | Lines | Role | Hardening Features Affected |
+|----------|-------|------|-----------------------------|
+| `readFrontmatterValue()` | 292-295 | Parses YAML frontmatter via regex | Frontmatter parsing |
+| `writeSharedAssets()` | 922-943 | Copies templates/data, writes settings.json | Atomic writes, settings preservation |
+| `copyDir()` | 648-663 | Recursive directory copy | Atomic writes |
+| `rewriteInstalledCommandRefs()` | 439-441 | Replaces `/scr:` refs in installed command content | Multi-runtime command-ref rewriting |
+| `generateClaudeCommandContent()` | 448-451 | Rewrites content for Claude Code only | Multi-runtime command-ref rewriting |
+| `installCommandRuntime()` | 821-830 | Generic runtime install (Cursor, Gemini, etc.) | Multi-runtime rewriting, atomic writes |
+| `removePathIfExists()` | 422-425 | Destructive delete before copy | Settings preservation |
+| `writeInstalledCommandManifest()` | 499-509 | Writes `.scriven-installed.json` | Atomic writes |
+| `writeCodexSkillManifest()` | 720-729 | Writes Codex skill manifest | Atomic writes |
 
-```
-Command markdown (orchestrator)
-  -> Reads context files (.manuscript/*)
-  -> Determines what to do based on CONSTRAINTS.json + config.json
-  -> Delegates to either:
-     a) An agent markdown file (for AI-generated content)
-     b) A shell command via the AI agent's Bash tool (for external tools)
-     c) Another command markdown file (for sub-pipelines)
-```
+---
 
-This is how `publish.md` already works — it wraps multiple lower-level commands into a single pipeline. The new pipelines extend this pattern.
+## Recommended Architecture: Integration Plan for 5 Hardening Features
 
-### System Architecture Diagram
+All 5 features are modifications to existing functions in `bin/install.js`. No new files are needed. The installer remains a single file with zero dependencies.
 
-```
-                          .manuscript/
-                    (canonical data layer)
-                              |
-            +-----------------+-----------------+
-            |                 |                 |
-     Context Files      config.json      CONSTRAINTS.json
-     (WORK.md, etc)    (project cfg)    (command gating)
-            |                 |                 |
-            +--------+--------+---------+-------+
-                     |                  |
-              Command Layer          Agent Layer
-           (commands/scr/*.md)    (agents/*.md)
-                     |                  |
-         +-----------+-----------+      |
-         |           |           |      |
-      Export      Illustrate  Translate |
-      Pipeline    Pipeline    Pipeline  |
-         |           |           |      |
-         v           v           v      v
-    External      Prompt       Glossary  Drafter
-    Tools         Files        + TM      (existing)
-    (pandoc,      (.manuscript  (.manuscript
-     wkhtmltopdf)  /art/)       /translations/)
-         |
-         v
-    .manuscript/output/
-    (final deliverables)
-```
+### Component Boundaries (Post-Hardening)
 
-### Component Boundaries
+| Component | Responsibility | Changed By |
+|-----------|---------------|------------|
+| **Utility layer** (top of file) | `atomicWriteFileSync()`, `parseFrontmatter()`, `validateSettings()` | Features 1, 2, 5 |
+| **Command-ref transform registry** | Maps runtime keys to transform functions | Feature 4 |
+| **Settings merge logic** | Reads existing settings, merges with new, validates | Features 3, 5 |
+| **Install dispatch functions** | Runtime-specific install logic | Features 1, 3, 4 |
+| **Shared assets writer** | `writeSharedAssets()` with preservation | Features 1, 3, 5 |
 
-| Component | Responsibility | Communicates With | Files It Owns |
-|-----------|---------------|-------------------|---------------|
-| **Export Pipeline** | Assembles manuscript from drafts, converts to target format via external tools | Context files, config.json, CONSTRAINTS.json, external CLI tools (pandoc) | `.manuscript/output/*` |
-| **Illustration Pipeline** | Generates detailed image prompts, manages art direction, organizes visual assets | Context files (CHARACTERS.md, WORLD.md), ART-DIRECTION.md | `.manuscript/art/*` |
-| **Translation Pipeline** | Translates manuscript unit-by-unit preserving voice, manages glossary and TM | Context files, STYLE-GUIDE.md, GLOSSARY-{lang}.md, translation-memory.json | `.manuscript/translations/{lang}/*` |
-| **Collaboration System** | Wraps git operations in writer-friendly abstractions, manages revision tracks | Git CLI, STATE.md, config.json (developer_mode flag) | Git branches, `.manuscript/reviews/*` |
-| **Publish Orchestrator** | Coordinates multi-step publishing workflows using presets or wizard | All pipelines above, CONSTRAINTS.json for preset availability | `.manuscript/output/*` (final packages) |
+---
 
-### Critical Boundary Rule
+## Feature 1: Atomic File Writes
 
-**The AI agent is the runtime. Commands are instructions, not code.** Every command markdown file tells the AI agent what to do. When external tools are needed (pandoc, git), the command instructs the AI to invoke them via the Bash tool. This means:
+### Problem
 
-- Export commands do NOT contain Node.js code that calls pandoc
-- Export commands contain instructions that tell the AI agent to run `pandoc` via Bash
-- The AI agent reads the command, understands the intent, runs the shell commands, and reports results
-- This preserves the "no compiled code" constraint completely
+Every `fs.writeFileSync()` call (9 total) writes directly to the target path. If the process is interrupted mid-write (Ctrl-C, power loss, disk full), the file is left truncated or empty. For manifest files (`.scriven-installed.json`) and settings (`settings.json`), this means a corrupted install state that the installer cannot recover from.
 
-## Pipeline Architectures
+### Integration
 
-### 1. Export Pipeline
+**New function:** `atomicWriteFileSync(targetPath, content)`
 
-**Data Flow:**
-
-```
-.manuscript/drafts/body/*.md
-  + .manuscript/drafts/front-matter/*.md
-  + .manuscript/drafts/back-matter/*.md
-       |
-       v
-  [Assembly Step]
-  Command: export.md reads config.json for work_type,
-  determines document order from OUTLINE.md + FRONT-MATTER.md + BACK-MATTER.md,
-  concatenates drafts into single manuscript markdown
-       |
-       v
-  .manuscript/output/manuscript-assembled.md
-       |
-       +---> [Markdown export] copy as-is
-       |
-       +---> [DOCX export] pandoc --to docx with reference-doc for styling
-       |          (manuscript format: 12pt TNR, double-spaced, 1" margins)
-       |          (formatted: custom styles, headers, page numbers)
-       |
-       +---> [PDF export] pandoc --to pdf via LaTeX engine (xelatex)
-       |          (manuscript: same as DOCX manuscript styling)
-       |          (print-ready: trim size, bleed, embedded fonts, CMYK)
-       |
-       +---> [EPUB export] pandoc --to epub3 with metadata.yaml + cover image
-       |          (reflowable, TOC, CSS for typography)
-       |
-       +---> [LaTeX export] pandoc --to latex with template
-       |          (journal templates, thesis templates)
-       |
-       +---> [Fountain export] custom markdown-to-fountain transform
-       |          (screenplay-specific, simpler than pandoc)
-       |
-       +---> [FDX export] fountain-to-fdx XML transform
-       |
-       +---> [Package exports] combine interior + cover + metadata
-                (KDP, IngramSpark, D2D, submission, query packages)
+```javascript
+function atomicWriteFileSync(targetPath, content) {
+  const tmpPath = `${targetPath}.tmp.${process.pid}`;
+  fs.writeFileSync(tmpPath, content);
+  fs.renameSync(tmpPath, targetPath);
+}
 ```
 
-**Assembly is the hard part, not conversion.** Pandoc handles format conversion well. The real complexity is:
-1. Knowing the correct document order (front matter elements vary by work type and tradition)
-2. Applying the right styling per format (manuscript vs. formatted vs. print-ready)
-3. Handling platform-specific requirements (KDP spine width calculation, IngramSpark bleed specs)
-4. Generating metadata files (OPF for EPUB, metadata.yaml for pandoc)
+**Why `rename` is atomic:** On POSIX filesystems (macOS, Linux), `rename()` within the same directory is an atomic kernel operation. The target path either has the old content or the new content, never a partial write. On Windows NTFS, `rename` is also atomic for same-volume renames.
 
-**External tool dependency: Pandoc.** This is the only external tool the export pipeline needs. It handles markdown-to-DOCX, markdown-to-PDF (via LaTeX), markdown-to-EPUB, and markdown-to-LaTeX. The command markdown instructs the AI agent to check for pandoc availability and guide installation if missing.
+**Modification points:** Replace all 9 `fs.writeFileSync()` calls with `atomicWriteFileSync()`:
+- Line 508: `writeInstalledCommandManifest()` -- manifest JSON
+- Line 728: `writeCodexSkillManifest()` -- manifest JSON
+- Line 848: Claude command content in `installClaudeCommandRuntime()`
+- Line 863: SKILL.md in `installManifestSkillRuntime()`
+- Line 889: SKILL.md in `installCodexRuntime()`
+- Line 914: SETUP.md in `installGuidedRuntime()`
+- Line 915: connector-command.txt in `installGuidedRuntime()`
+- Line 916: connector-command.current-project.txt in `installGuidedRuntime()`
+- Line 941: settings.json in `writeSharedAssets()`
 
-**Pandoc is not a compiled dependency of Scriven** — it is a system tool the AI agent invokes via Bash, the same way it invokes `git`. The export command markdown contains the pandoc invocation patterns. If pandoc is not installed, the command tells the user how to install it (brew install pandoc, apt install pandoc, etc.).
+**`copyDir()` modification:** `copyDir()` uses `fs.copyFileSync()` which is not atomic. Replace with read-then-atomicWrite:
 
-**For PDF print-ready output**, pandoc needs a LaTeX engine (xelatex or lualatex). The command should detect this and guide installation. For simpler PDF needs, wkhtmltopdf or weasyprint are lighter alternatives, but pandoc+xelatex produces publication-quality output with proper typesetting.
-
-**Suggested command structure:**
-
-```
-commands/scr/
-  export.md              # Main export router (reads --format flag, dispatches)
-  export/
-    _assemble.md         # Internal: assembles manuscript from drafts (shared step)
-    _metadata.md         # Internal: generates metadata for target format
-    docx.md              # DOCX-specific pandoc options and reference-doc
-    pdf.md               # PDF-specific: manuscript vs. print-ready
-    epub.md              # EPUB-specific: metadata, CSS, cover
-    latex.md             # LaTeX-specific: journal/thesis templates
-    fountain.md          # Screenplay: markdown-to-fountain rules
-    fdx.md               # Final Draft XML generation
-    kdp-package.md       # KDP assembly: interior + cover template + metadata
-    ingram-package.md    # IngramSpark assembly
-    query-package.md     # Agent query: letter + synopsis + chapters
-    submission-package.md # Full publisher submission
-```
-
-Prefixing internal commands with `_` signals they are not user-facing — they are invoked by other commands.
-
-### 2. Illustration Pipeline
-
-**Data Flow:**
-
-```
-CHARACTERS.md / FIGURES.md    (character descriptions)
-WORLD.md / COSMOLOGY.md       (setting descriptions)
-STYLE-GUIDE.md                (tone, aesthetic sensibility)
-ART-DIRECTION.md              (visual style guide — generated or manual)
-       |
-       v
-  [Prompt Generation Step]
-  Agent: illustrator.md generates detailed image prompts
-  from character/setting/scene data + art direction
-       |
-       v
-  .manuscript/art/
-    cover/
-      front-cover-prompt.md      # Detailed prompt for front cover
-      spine-specs.md             # Calculated dimensions, text placement
-      back-cover-prompt.md       # Blurb layout + imagery prompt
-      full-wrap-prompt.md        # Combined template prompt
-    interior/
-      {unit}-{N}-illustration-prompt.md
-    character-refs/
-      {character-name}-ref-prompt.md
-    maps/
-      {location}-map-prompt.md
+```javascript
+function copyDir(src, dest) {
+  if (!fs.existsSync(src)) return 0;
+  fs.mkdirSync(dest, { recursive: true });
+  let count = 0;
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      count += copyDir(srcPath, destPath);
+    } else {
+      atomicWriteFileSync(destPath, fs.readFileSync(srcPath));
+      count++;
+    }
+  }
+  return count;
+}
 ```
 
-**This pipeline generates prompts, not images.** Scriven is a CLI tool running inside AI coding agents. It does not call image generation APIs directly (that would require API keys, billing, compiled dependencies). Instead, it generates richly detailed prompts that the writer can use with:
+**Export:** Add `atomicWriteFileSync` to `module.exports`.
 
-- The AI agent's built-in image generation (Claude, Gemini have native image capabilities)
-- External tools (Midjourney, DALL-E, Stable Diffusion, Flux)
-- Human illustrators (the prompts serve as detailed art briefs)
+**Test strategy:** Write file via `atomicWriteFileSync`, verify content. Verify `.tmp.{pid}` file does not persist after success. Verify target directory must exist (rename fails across mount points -- not a concern here since tmp is in same dir).
 
-The `--prompt-only` flag on `cover-art` already signals this design intent in the product plan.
+### What NOT to do
 
-**The illustrator agent** is a new agent (`agents/illustrator.md`) that understands:
-- Visual composition (rule of thirds, focal points, color theory)
-- Genre conventions for cover art (thriller = dark tones, romance = warm tones, etc.)
-- Platform specs (KDP cover dimensions, EPUB thumbnail requirements)
-- Character visual consistency across multiple prompts (reference sheets anchor this)
+Do not introduce a rollback/transaction system. The installer is idempotent -- if it fails mid-run, the user runs it again. Atomic writes prevent corruption; they do not need to prevent incomplete installs.
 
-**ART-DIRECTION.md is the visual equivalent of STYLE-GUIDE.md.** It anchors visual consistency the same way STYLE-GUIDE.md anchors voice consistency. It should be generated once via `/scr:art-direction` and loaded into every illustration prompt generation.
+---
 
-**Cover art has a calculated component:** KDP spine width = page count x paper factor (0.0025" white, 0.002" cream). The cover command must read STATE.md for page count, config.json for paper type, and compute dimensions. This is arithmetic the AI agent can do — no compiled code needed.
+## Feature 2: Robust Frontmatter Parsing
 
-### 3. Translation Pipeline
+### Problem
 
-**Data Flow:**
+`readFrontmatterValue()` uses regex `^key:\s*(.+)$` which:
+1. Grabs everything after the first colon, including YAML values that themselves contain colons (e.g., `description: "Run quality gate (voice-check + continuity-check)."` works, but `description: "Phase 1: Setup"` would also work because `.+` is greedy)
+2. Actually, the current regex works for values with colons because `.+` matches the rest of the line. The real bug is that it does NOT handle YAML multiline values, and it does NOT properly handle quoted strings containing the key pattern on a later line.
 
-```
-.manuscript/drafts/body/{unit}-{N}-DRAFT.md   (source text, unit by unit)
-STYLE-GUIDE.md                                 (voice DNA for source)
-CHARACTERS.md / FIGURES.md                     (names, speech patterns)
-       |
-       v
-  [Glossary Build Step]
-  Command: translation-glossary.md
-  Scans manuscript for proper nouns, invented terms,
-  recurring phrases. Writer approves translations.
-       |
-       v
-  .manuscript/translations/GLOSSARY-{lang}.md
-  .manuscript/translations/translation-memory.json
-       |
-       v
-  [Translation Step — per atomic unit]
-  Agent: translator.md (new agent)
-  Fresh context per unit (same pattern as drafter)
-  Receives: source unit + glossary + TM + cultural adaptation notes
-       |
-       v
-  .manuscript/translations/{lang}/drafts/{unit}-{N}-DRAFT.md
-       |
-       v
-  [Cultural Adaptation Step]
-  Command: cultural-adaptation.md
-  Flags idioms, humor, measurements, customs for review
-       |
-       v
-  [Back-Translation Verification]
-  Agent: translator.md in reverse mode
-  Translates back to source language for meaning verification
-       |
-       v
-  [Quality Review]
-  Command: translation-review.md
-  Consistency check, style guide compliance, glossary adherence
-       |
-       v
-  [Multi-Language Export]
-  Export pipeline runs per-language with localized metadata
-  .manuscript/output/translations/{lang}/
+Wait -- re-reading the milestone requirements: "Fix frontmatter parsing that breaks on values containing colons." Let me verify the actual bug.
+
+The regex is `^${key}:\s*(.+)$` with flag `m`. The `.+` is greedy and matches the rest of the line including colons. So `description: Run full pipeline: draft, edit, publish` would capture `Run full pipeline: draft, edit, publish`. This is correct.
+
+But `stripWrappingQuotes()` is called on the result. If the value is `"Run: pipeline"`, it strips quotes correctly. The actual breakage would be if a YAML value is split across keys or if the regex matches a non-frontmatter line. However, since it uses `m` flag and searches the entire content (not just frontmatter), it could match a line inside the command body like `description: something` in a markdown table or instruction.
+
+**The real fix:** Parse only within the `---` frontmatter block, not the entire file content.
+
+### Integration
+
+**Replace `readFrontmatterValue()`:**
+
+```javascript
+function parseFrontmatter(content) {
+  if (!content.startsWith('---\n') && !content.startsWith('---\r\n')) return {};
+  const endMarker = content.indexOf('\n---', 4);
+  if (endMarker === -1) return {};
+  const frontmatterBlock = content.slice(4, endMarker);
+  const result = {};
+  for (const line of frontmatterBlock.split('\n')) {
+    const colonIndex = line.indexOf(':');
+    if (colonIndex === -1) continue;
+    const key = line.slice(0, colonIndex).trim();
+    const value = line.slice(colonIndex + 1).trim();
+    result[key] = stripWrappingQuotes(value);
+  }
+  return result;
+}
 ```
 
-**The translator agent follows the drafter pattern exactly:** fresh context per atomic unit, loaded with the source unit text + glossary + translation memory + target language style notes. This prevents the same problems the drafter avoids — drift, context bloat, inconsistency.
+**Modification points:**
+- Line 333: `readFrontmatterValue(content, 'description')` becomes `parseFrontmatter(content).description`
+- Line 334: `readFrontmatterValue(content, 'argument-hint')` becomes `parseFrontmatter(content)['argument-hint']`
+- Both calls are in `collectCommandEntries()`. Parse once, use twice:
 
-**Translation memory (TM)** is a JSON file mapping source phrases to approved target-language phrases. It grows over the project lifetime. Each translated unit's approved segments get added to the TM. This is standard practice in professional translation (tools like SDL Trados and MemoQ use this pattern).
-
-**Sacred text translation adds a register layer.** The translator agent must respect the translation philosophy (formal equivalence, dynamic equivalence, paraphrase) configured per language, and preserve liturgical phrases marked as "preserve in source" in the glossary.
-
-**RTL and CJK support** is primarily an export concern, not a translation concern. The translator produces markdown. The export pipeline must apply correct directionality (HTML `dir="rtl"` for EPUB, appropriate LaTeX packages for PDF). This is handled in export templates, not in the translation agent.
-
-### 4. Collaboration System
-
-**Data Flow:**
-
-```
-Writer issues /scr:track create "editor-pass"
-       |
-       v
-  [Git Branch Operation]
-  Command: track.md instructs AI to run:
-  git checkout -b scriven/editor-pass
-  (scriven/ prefix namespaces branches)
-       |
-       v
-  Writer/editor works normally (all commands work on current branch)
-       |
-       v
-  Writer issues /scr:track compare main
-       |
-       v
-  [Diff Generation]
-  Command reads git diff, formats as side-by-side passage comparison
-  In writer mode: shows prose passages, not diff hunks
-  In developer mode: shows standard diff output
-       |
-       v
-  Writer issues /scr:track merge editor-pass
-       |
-       v
-  [Pre-Merge Continuity Check]
-  Runs continuity-checker agent on merged result
-  Flags contradictions as "continuity conflicts"
-       |
-       v
-  [Git Merge]
-  If clean: git merge scriven/editor-pass
-  If conflicts: present as side-by-side passages for human resolution
-       |
-       v
-  [Post-Merge State Update]
-  STATE.md updated with merge record
+```javascript
+const frontmatter = parseFrontmatter(content);
+const description = frontmatter.description || commandTail.replace(/[:\-]/g, ' ');
+const argumentHint = frontmatter['argument-hint'] || '';
 ```
 
-**Git is the engine, Scriven is the dashboard.** The collaboration system does not reinvent version control — it wraps git with writer-friendly terminology and presentation. The `developer_mode` flag in config.json determines whether the writer sees git terminology or Scriven abstractions.
+**Key improvement:** Uses `indexOf(':')` for first-colon splitting instead of regex. A value like `"Phase 1: Setup: Details"` correctly captures `Phase 1: Setup: Details` as the value.
 
-**Branch naming convention:** `scriven/{track-name}` keeps Scriven branches visually separate from any development branches in the same repo.
+**Backward compatibility:** `readFrontmatterValue()` is exported (currently used in tests). Keep it as a deprecated wrapper or update tests to use `parseFrontmatter()`.
 
-**The writer-mode git abstractions** (`/scr:save`, `/scr:history`, `/scr:compare`, `/scr:undo`, `/scr:versions`) are thin wrappers:
+**Export:** Add `parseFrontmatter` to `module.exports`. Remove or deprecate `readFrontmatterValue`.
 
-| Writer Command | Git Operation |
-|----------------|---------------|
-| `/scr:save "finished ch3"` | `git add .manuscript/ && git commit -m "finished ch3"` |
-| `/scr:history` | `git log --oneline .manuscript/` formatted as timeline |
-| `/scr:compare draft-1 draft-2` | `git diff draft-1..draft-2 -- .manuscript/` formatted as passages |
-| `/scr:undo` | `git revert HEAD` (safe, creates new commit) |
-| `/scr:versions` | `git tag -l "draft-*"` formatted as version list |
+**Test cases:**
+- Value with colons: `description: "Phase 1: Setup"` -> `Phase 1: Setup`
+- Value with quotes: `description: "quoted value"` -> `quoted value`
+- Value without quotes: `description: plain value` -> `plain value`
+- Body line matching key pattern should NOT be returned (only frontmatter block parsed)
+- Missing frontmatter returns empty object
+- Empty value: `description:` -> `''`
 
-**Conflict resolution in writer mode** must NEVER show raw diff markers (`<<<<<<<`, `=======`, `>>>>>>>`). The command formats conflicts as:
+---
 
-```
-Continuity conflict in Chapter 3, Scene 2:
+## Feature 3: Settings and Template Preservation on Reinstall
 
-  VERSION A (your edit):
-  "Marcus set the letter on the kitchen table and poured himself coffee."
+### Problem
 
-  VERSION B (editor's edit):
-  "Marcus crumpled the letter and dropped it in the wastebasket."
+`writeSharedAssets()` (line 922-943) does `removePathIfExists(path.join(dataDir, 'templates'))` then `copyDir()`. This nukes any user-customized templates. Similarly, `settings.json` is overwritten with fresh defaults, losing user preferences.
 
-  Which version do you prefer? (a/b/edit)
-```
+The same pattern exists in runtime-specific installers: `removePathIfExists(commandsDir)` in `installCommandRuntime()` (line 824) and `installManifestSkillRuntime()` (line 860) destroy everything before copying.
 
-## Component Dependencies (Build Order)
+### Integration
 
-```
-                    [Writer-Mode Git Abstractions]
-                              |
-                    (depends on git being initialized)
-                              |
-              +---------------+---------------+
-              |                               |
-    [Collaboration System]          [Export Pipeline]
-              |                          |
-              |                    (depends on assembly)
-              |                          |
-              |               [Assembly Command]
-              |                    |         |
-              |              [Front Matter] [Back Matter]
-              |                               |
-              |                    [Illustration Pipeline]
-              |                    (cover art for packages)
-              |                               |
-              +-------------------------------+
-                              |
-                    [Translation Pipeline]
-                    (translates assembled + exported content)
-                              |
-                    [Multi-Language Export]
-                    (export pipeline per language)
-```
+**Settings preservation in `writeSharedAssets()`:**
 
-### Suggested Build Order
+```javascript
+function writeSharedAssets(dataDir, runtimeKeys, isGlobal, developerMode, installMode, log) {
+  // Preserve existing settings before overwriting
+  const settingsPath = path.join(dataDir, 'settings.json');
+  const existingSettings = readJsonIfExists(settingsPath);
+  
+  // Templates and data: overwrite Scriven-owned files, but preserve user additions
+  // Instead of removePathIfExists, use selective copy that only overwrites source-owned files
+  fs.mkdirSync(path.join(dataDir, 'templates'), { recursive: true });
+  fs.mkdirSync(path.join(dataDir, 'data'), { recursive: true });
+  const templateCount = copyDir(path.join(PKG_ROOT, 'templates'), path.join(dataDir, 'templates'));
+  const dataCount = copyDir(path.join(PKG_ROOT, 'data'), path.join(dataDir, 'data'));
+  log(`  ${c('green', '✓')} ${templateCount} templates + ${dataCount} data files → ${c('dim', dataDir)}`);
 
-**Phase A: Export Foundation** (build first — everything else depends on output)
-
-1. Assembly command (`_assemble.md`) — concatenates drafts into single manuscript
-2. Metadata generation (`_metadata.md`) — creates pandoc metadata.yaml
-3. Markdown export — trivial (copy assembled file)
-4. DOCX export — pandoc with reference-doc templates
-5. PDF export — pandoc via xelatex with templates
-6. EPUB export — pandoc with CSS and cover placeholder
-
-**Rationale:** Export is the foundation. Publishing presets, illustration (cover for packages), translation (multi-language export), and collaboration (comparing versions) all need export to exist. Start here.
-
-**Phase B: Illustration Pipeline** (build second — covers needed for export packages)
-
-1. Art direction command (`art-direction.md`) + ART-DIRECTION.md template
-2. Illustrator agent (`agents/illustrator.md`)
-3. Cover art command with KDP dimension calculations
-4. Character reference sheet command
-5. Interior illustration prompt command
-6. Children's book / comic specific tools
-
-**Rationale:** Cover art prompts are needed before KDP/IngramSpark package exports can be complete. Art direction document anchors visual consistency for all subsequent illustration work.
-
-**Phase C: Export Packages** (build third — now covers exist)
-
-1. KDP package export (interior PDF + cover + metadata)
-2. IngramSpark package
-3. Query package (letter + synopsis + chapters)
-4. Submission package
-5. D2D package
-6. Screenplay exports (Fountain, FDX)
-7. Academic exports (LaTeX templates, BibTeX)
-
-**Rationale:** Packages combine export + illustration + front/back matter. All dependencies now exist.
-
-**Phase D: Collaboration System** (build fourth — independent of export)
-
-1. Writer-mode git abstractions (`save`, `history`, `compare`, `undo`, `versions`)
-2. Track commands (create, list, switch, compare, merge)
-3. Writer-mode conflict resolution (prose-formatted, not diff-formatted)
-4. Revision proposal workflow (propose, review, accept/reject)
-5. Co-writing parallel track support
-
-**Rationale:** Collaboration requires git fluency in the command layer but no dependency on export or illustration. It can be built in parallel with Phase C if resources allow, but sequentially it makes sense after export since it is lower priority for solo writers.
-
-**Phase E: Translation Pipeline** (build fifth — depends on export + potentially illustration)
-
-1. Translation glossary command + GLOSSARY-{lang}.md template
-2. Translator agent (`agents/translator.md`) — fresh context per unit
-3. Cultural adaptation command
-4. Translation review command
-5. Back-translation verification
-6. Translation memory system
-7. Multi-language export (runs export pipeline per language)
-8. Sacred text translation extensions (formal/dynamic equivalence, canonical alignment)
-
-**Rationale:** Translation is the most complex pipeline and depends on both export (for multi-language output) and potentially illustration (for localized cover text). It also has the smallest initial user base. Build last.
-
-**Phase F: Multi-Runtime Expansion** (build alongside any phase)
-
-Multi-runtime support is an installer concern, not an architecture concern. The markdown commands are runtime-agnostic. The installer (`bin/install.js`) already supports Claude Code, Cursor, and Gemini CLI. Adding Codex, OpenCode, Copilot, Windsurf, and Antigravity means adding entries to the `RUNTIMES` object in the installer with the correct directory paths for each platform. No command or agent files need to change.
-
-**The only risk:** Some runtimes may have different Bash tool names, different agent invocation patterns, or different file system conventions. Each new runtime needs a compatibility check against the command patterns (does it support `Read`, `Write`, `Bash`? Does it support agent delegation?).
-
-## Patterns to Follow
-
-### Pattern 1: Fresh Context Per Unit (extend to translation)
-
-**What:** Each atomic unit gets its own agent invocation with clean context. No carryover between units.
-
-**When:** Any time the AI agent generates creative content that must be consistent with a style reference (drafting, translating, illustrating).
-
-**Why it works for translation:** Translation drift is analogous to voice drift. A translator working on chapter 20 should not be influenced by phrasing decisions from chapter 3 that were not captured in the glossary/TM. Fresh context + glossary + TM gives the translator exactly what it needs, nothing more.
-
-### Pattern 2: Prompt-Not-Product (illustration pipeline)
-
-**What:** Generate detailed, structured prompts rather than calling image generation APIs directly.
-
-**When:** Any visual asset generation (covers, illustrations, character refs, maps).
-
-**Why:** Keeps Scriven dependency-free. Works with any image generation tool (including human illustrators). Prompt files are version-controllable, reviewable, and editable. The writer retains full control over the visual direction.
-
-### Pattern 3: External Tool as Optional Dependency
-
-**What:** Commands instruct the AI agent to invoke external CLI tools (pandoc, git) but gracefully handle their absence.
-
-**When:** Export (pandoc), collaboration (git), PDF generation (xelatex).
-
-**How:**
-```
-Step 1: Check if tool exists (which pandoc / git --version)
-Step 2: If missing, explain what it does and how to install it
-Step 3: If present, invoke it with the correct flags
-Step 4: Verify output (check file exists, non-zero size)
+  // Merge settings: installer-managed fields are overwritten, user fields are preserved
+  const installerFields = {
+    version: VERSION,
+    runtime: runtimeKeys[0],
+    runtimes: runtimeKeys,
+    scope: isGlobal ? 'global' : 'project',
+    developer_mode: developerMode,
+    data_dir: dataDir,
+    install_mode: installMode,
+    installed_at: new Date().toISOString(),
+  };
+  const mergedSettings = existingSettings
+    ? { ...existingSettings, ...installerFields }
+    : installerFields;
+  
+  atomicWriteFileSync(settingsPath, JSON.stringify(mergedSettings, null, 2));
+  log(`  ${c('green', '✓')} settings.json → ${c('dim', settingsPath)}`);
+}
 ```
 
-**This is NOT a compiled dependency.** The command markdown contains the instructions. The AI agent executes them. If pandoc is not installed, the export command explains the situation and offers alternatives (e.g., "I can export to clean markdown now, and you can convert to DOCX/PDF once pandoc is installed").
+**Key change:** Remove the two `removePathIfExists()` calls for `templates/` and `data/`. Instead, `copyDir()` overwrites files that exist in the source package and leaves user-added files untouched. This is safe because `copyDir()` already creates directories and writes files -- it just needs to not delete first.
 
-### Pattern 4: Namespace Prefixing (collaboration branches)
+**Template preservation detail:** If a user has customized `templates/WORK.md`, the reinstall will overwrite it with the package version. To prevent this, we would need a manifest of user-modified files. For v1.6, the simpler approach is: remove the `removePathIfExists()` calls so user-added files survive, but accept that Scriven-shipped templates get refreshed. This matches the command file behavior (Scriven-owned files are refreshed, non-Scriven files are preserved).
 
-**What:** All Scriven-managed git branches use `scriven/` prefix.
+**Settings merge rule:** The installer owns these fields and always overwrites them: `version`, `runtime`, `runtimes`, `scope`, `developer_mode`, `data_dir`, `install_mode`, `installed_at`. Any other keys in the existing settings (user customizations) are preserved via spread.
 
-**When:** Any branch created by track commands.
+### What about runtime-specific install functions?
 
-**Why:** Prevents collision with development branches. Makes it trivial to list all Scriven tracks (`git branch --list "scriven/*"`). Signals to the writer that these are manuscript branches, not code branches.
+- `installCommandRuntime()` line 824: `removePathIfExists(commandsDir)` -- this is the Scriven-owned commands subdirectory (e.g., `.cursor/commands/scr/`). The `scr/` suffix scopes it to Scriven content only. This is safe to keep as-is.
+- `installManifestSkillRuntime()` line 860: `removePathIfExists(skillsDir)` -- this removes `~/.scriven/skills/` or `~/.manus/skills/scriven/`. Again, Scriven-scoped. Safe.
+- `installCodexRuntime()` line 878: `removePathIfExists(commandsDir)` -- Scriven-scoped. Safe.
+- `installGuidedRuntime()` line 912: `removePathIfExists(guideDir)` -- Scriven-scoped. Safe.
 
-### Pattern 5: Config-Driven Behavior (developer mode vs. writer mode)
+The preservation problem is specifically in `writeSharedAssets()` where `removePathIfExists(path.join(dataDir, 'templates'))` removes ALL templates including user-added ones, and settings.json is fully overwritten.
 
-**What:** `config.json.developer_mode` (boolean) controls terminology, visibility, and abstraction level across all commands.
+---
 
-**When:** Collaboration commands, history commands, any command that touches git or filesystem concepts.
+## Feature 4: Multi-Runtime Command-Ref Rewriting
 
-**Why:** Writers should never see `git checkout -b`, `merge conflict`, or `.manuscript/drafts/body/`. They should see "create a revision track", "continuity conflict", and "your chapters". Developers can opt into the raw view.
+### Problem
+
+`rewriteInstalledCommandRefs()` is only called from `generateClaudeCommandContent()` (line 449) with the Claude-specific transform `commandRefToClaudeInvocation`. The function itself is generic -- it takes any transform function. But only Claude Code uses it.
+
+Non-Claude runtimes copy command files verbatim via `copyDir()` (lines 826, 864, 882), leaving `/scr:help` references intact. This means:
+- **Cursor/Gemini/Windsurf/OpenCode/Copilot/Antigravity** users see `/scr:help` in installed commands, which works because those runtimes use the `/scr:` prefix natively (commands are in a `scr/` subdirectory).
+- **Codex** generates skill wrappers that tell the agent to rewrite `/scr:` to `$scr-` (line 373-375 in `generateCodexSkill()`), but the underlying command files in `.codex/commands/scr/` still contain raw `/scr:` references.
+
+So the actual gap is:
+1. **Codex command files** (`.codex/commands/scr/*.md`) are copied raw without rewriting. The SKILL.md wrapper tells the agent to rewrite, but the source-of-truth command file has wrong invocations.
+2. **Manus/Generic skill runtimes** copy raw command files that reference `/scr:` which may not be the correct invocation surface.
+
+### Integration
+
+**Add transform functions for each runtime type:**
+
+```javascript
+function commandRefToDirectInvocation(commandRef) {
+  // For Cursor, Gemini, Windsurf, OpenCode, Copilot, Antigravity
+  // /scr:help stays as /scr:help (these runtimes use subdirectory-based command discovery)
+  return commandRef;
+}
+```
+
+The existing transforms cover Claude and Codex. For subdirectory runtimes, `/scr:` is already correct. The gap is specifically in Codex's command files.
+
+**Modify `installCodexRuntime()`:** After `copyDir()` copies command files to `.codex/commands/scr/`, walk those files and rewrite `/scr:` references to `$scr-` using `rewriteInstalledCommandRefs()` with `commandRefToCodexInvocation`:
+
+```javascript
+function installCodexRuntime(runtime, isGlobal, log) {
+  // ... existing setup ...
+  const commandCount = copyDir(path.join(PKG_ROOT, 'commands', 'scr'), commandsDir);
+  
+  // Rewrite command refs in all installed command files
+  rewriteCommandFilesInDir(commandsDir, commandRefToCodexInvocation);
+  
+  // ... rest of function ...
+}
+
+function rewriteCommandFilesInDir(dir, transform) {
+  if (!fs.existsSync(dir)) return;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const fullPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      rewriteCommandFilesInDir(fullPath, transform);
+    } else if (entry.name.endsWith('.md')) {
+      const content = fs.readFileSync(fullPath, 'utf8');
+      const rewritten = rewriteInstalledCommandRefs(content, transform);
+      if (rewritten !== content) {
+        atomicWriteFileSync(fullPath, rewritten);
+      }
+    }
+  }
+}
+```
+
+**Modification points:**
+- Add `rewriteCommandFilesInDir()` utility function
+- Modify `installCodexRuntime()` to call it after `copyDir()`
+- Consider whether `installCommandRuntime()` needs it -- for subdirectory runtimes, `/scr:` is already correct, so no transform needed
+- For `installManifestSkillRuntime()` (Manus/Generic), the commands are inside the skills directory. These should also get rewritten if the runtime has a different invocation surface. Currently Manus/Generic don't define a transform, so this is a future consideration.
+
+**Export:** Add `rewriteCommandFilesInDir` to `module.exports`.
+
+**Test strategy:** Install Codex runtime to temp dir, verify command files contain `$scr-` instead of `/scr:`. Verify subdirectory runtimes still contain `/scr:`.
+
+---
+
+## Feature 5: Settings Schema Validation
+
+### Problem
+
+`settings.json` is read by `readJsonIfExists()` which silently returns `null` on parse errors. No validation of field types or required fields. A misconfigured settings file (wrong types, missing fields, extra fields from a future version) is silently accepted or silently ignored.
+
+### Integration
+
+**New function:** `validateSettings(settings)`
+
+```javascript
+const SETTINGS_SCHEMA = {
+  required: ['version', 'runtime', 'runtimes', 'scope', 'developer_mode', 'data_dir', 'install_mode', 'installed_at'],
+  types: {
+    version: 'string',
+    runtime: 'string',
+    runtimes: 'array',
+    scope: 'string',
+    developer_mode: 'boolean',
+    data_dir: 'string',
+    install_mode: 'string',
+    installed_at: 'string',
+  },
+  enums: {
+    scope: ['global', 'project'],
+    install_mode: ['interactive', 'non-interactive'],
+  },
+  arrayItemTypes: {
+    runtimes: 'string',
+  },
+};
+
+function validateSettings(settings) {
+  const errors = [];
+  if (!settings || typeof settings !== 'object') {
+    return { valid: false, errors: ['Settings must be a non-null object'] };
+  }
+  for (const field of SETTINGS_SCHEMA.required) {
+    if (!(field in settings)) {
+      errors.push(`Missing required field: ${field}`);
+    }
+  }
+  for (const [field, expectedType] of Object.entries(SETTINGS_SCHEMA.types)) {
+    if (field in settings) {
+      const value = settings[field];
+      if (expectedType === 'array') {
+        if (!Array.isArray(value)) {
+          errors.push(`Field "${field}" must be an array, got ${typeof value}`);
+        } else if (SETTINGS_SCHEMA.arrayItemTypes[field]) {
+          const itemType = SETTINGS_SCHEMA.arrayItemTypes[field];
+          for (let i = 0; i < value.length; i++) {
+            if (typeof value[i] !== itemType) {
+              errors.push(`Field "${field}[${i}]" must be ${itemType}, got ${typeof value[i]}`);
+            }
+          }
+        }
+      } else if (typeof value !== expectedType) {
+        errors.push(`Field "${field}" must be ${expectedType}, got ${typeof value}`);
+      }
+    }
+  }
+  for (const [field, allowed] of Object.entries(SETTINGS_SCHEMA.enums)) {
+    if (field in settings && !allowed.includes(settings[field])) {
+      errors.push(`Field "${field}" must be one of [${allowed.join(', ')}], got "${settings[field]}"`);
+    }
+  }
+  // Validate runtime keys
+  if (Array.isArray(settings.runtimes)) {
+    for (const rt of settings.runtimes) {
+      if (typeof rt === 'string' && !Object.prototype.hasOwnProperty.call(RUNTIMES, rt)) {
+        errors.push(`Unknown runtime in runtimes array: "${rt}"`);
+      }
+    }
+  }
+  return { valid: errors.length === 0, errors };
+}
+```
+
+**Integration points:**
+
+1. **After writing settings** (in `writeSharedAssets()`): Validate the merged settings before writing. If validation fails, log warnings but still write (the installer should not refuse to install because of a schema issue in user-preserved fields).
+
+2. **When reading existing settings** (in the preservation flow from Feature 3): Validate before merging. If existing settings are invalid, log a warning and start fresh instead of merging garbage.
+
+```javascript
+const existingSettings = readJsonIfExists(settingsPath);
+if (existingSettings) {
+  const { valid, errors } = validateSettings(existingSettings);
+  if (!valid) {
+    log(`  ${c('yellow', '!')} Existing settings.json has issues: ${errors.join(', ')}`);
+    log(`  ${c('yellow', '!')} User customizations in settings.json will be reset.`);
+    // Don't merge invalid settings -- use fresh
+  }
+}
+```
+
+3. **Post-write verification**: After writing merged settings, validate the result. This catches bugs in the merge logic itself.
+
+**Export:** Add `validateSettings` and `SETTINGS_SCHEMA` to `module.exports`.
+
+**Test strategy:**
+- Valid settings object passes validation
+- Missing required field detected
+- Wrong type detected
+- Invalid enum value detected
+- Unknown runtime key detected
+- Extra user fields (not in schema) do NOT cause validation failure (forward compatibility)
+
+---
+
+## Data Flow Changes
+
+### Before Hardening
+
+```
+Source package files
+  |
+  v
+removePathIfExists(target)  <-- destructive, total wipe
+  |
+  v
+copyDir / writeFileSync     <-- non-atomic, corruptible
+  |
+  v
+settings.json overwritten   <-- user prefs lost
+  |
+  v
+/scr: refs left raw         <-- wrong invocations for Codex
+```
+
+### After Hardening
+
+```
+Source package files
+  |
+  v
+Read existing settings.json
+  |
+  v
+validateSettings(existing)  <-- catch corruption early
+  |
+  v
+copyDir (NO pre-delete)     <-- overwrites Scriven files, preserves user additions
+  |
+  v
+atomicWriteFileSync()       <-- write-to-tmp + rename
+  |
+  v
+Merge installer fields + user fields into settings
+  |
+  v
+validateSettings(merged)    <-- verify merge correctness
+  |
+  v
+atomicWriteFileSync(settings.json)
+  |
+  v
+rewriteCommandFilesInDir()  <-- runtime-appropriate invocations
+  |
+  v
+parseFrontmatter()          <-- correct colon handling, scoped to frontmatter block
+```
+
+---
+
+## Suggested Build Order
+
+Features have dependencies that constrain the order.
+
+### Phase 1: Atomic Writes (build first)
+
+**Why first:** Every other feature writes files. If atomic writes exist first, all subsequent features automatically get atomic safety. Building atomic writes last means retrofitting every write call added by other features.
+
+**Scope:**
+- Add `atomicWriteFileSync()` function
+- Replace all 9 `fs.writeFileSync()` calls
+- Modify `copyDir()` to use atomic writes
+- Add tests for atomic write behavior
+- Export the function
+
+**No dependencies on other features.** Self-contained.
+
+### Phase 2: Frontmatter Parsing (build second)
+
+**Why second:** Independent of other features, but should land early because it changes a function signature (`readFrontmatterValue` -> `parseFrontmatter`) that tests depend on. Getting this merged early avoids test conflicts with later phases.
+
+**Scope:**
+- Add `parseFrontmatter()` function
+- Update `collectCommandEntries()` to use it
+- Update or deprecate `readFrontmatterValue()`
+- Update `module.exports`
+- Add tests for colon-containing values, quoted values, body-line false matches
+
+**No dependencies on other features.** Self-contained.
+
+### Phase 3: Settings Schema Validation (build third)
+
+**Why third:** Feature 5 (schema validation) must exist before Feature 3 (settings preservation) because the preservation logic needs to validate existing settings before deciding whether to merge them. Building validation first gives preservation a clean integration point.
+
+**Scope:**
+- Add `SETTINGS_SCHEMA` constant
+- Add `validateSettings()` function
+- Wire into `writeSharedAssets()` for post-write verification
+- Export schema and validator
+- Add tests for each validation rule
+
+**Depends on:** Phase 1 (atomic writes) for the settings write path.
+
+### Phase 4: Settings Preservation (build fourth)
+
+**Why fourth:** Depends on both atomic writes (Phase 1) and schema validation (Phase 3). The merge logic reads existing settings, validates them, merges, validates again, and writes atomically.
+
+**Scope:**
+- Remove `removePathIfExists()` calls for `templates/` and `data/` in `writeSharedAssets()`
+- Add settings merge logic (read existing -> validate -> merge -> validate -> atomic write)
+- Add warning output for invalid existing settings
+- Add tests: fresh install, reinstall with user customizations, reinstall with corrupted settings
+
+**Depends on:** Phase 1 (atomic writes), Phase 3 (schema validation).
+
+### Phase 5: Multi-Runtime Command-Ref Rewriting (build last)
+
+**Why last:** This is the most runtime-specific change and touches the most install functions. It benefits from all prior changes being stable. It also has the narrowest bug surface (currently only Codex command files are wrong; subdirectory runtimes work correctly with `/scr:`).
+
+**Scope:**
+- Add `rewriteCommandFilesInDir()` utility
+- Modify `installCodexRuntime()` to rewrite command files after copy
+- Verify subdirectory runtimes don't need rewriting
+- Add tests: Codex command files contain `$scr-`, Claude files contain `/scr-`, Cursor files contain `/scr:`
+
+**Depends on:** Phase 1 (atomic writes, since rewritten files use `atomicWriteFileSync`).
+
+---
 
 ## Anti-Patterns to Avoid
 
-### Anti-Pattern 1: Compiling Markdown to JavaScript
+### Anti-Pattern 1: Transaction/Rollback System
 
-**What:** Creating a build step that compiles command markdown files into executable JavaScript.
+**What:** Building a multi-file transaction system that rolls back all writes if any single write fails.
 
-**Why bad:** Destroys the core value proposition. Commands must remain human-readable markdown that any AI agent can interpret. A build step adds complexity, breaks portability, and makes contributions harder.
+**Why bad:** The installer is idempotent. Running it again fixes any partial install. A rollback system adds hundreds of lines of complexity for a scenario (partial write failure) that atomic writes already handle at the single-file level.
 
-**Instead:** Keep commands as pure markdown instructions. The AI agent is the interpreter.
+**Instead:** Atomic writes per file. If the install fails, the user runs it again.
 
-### Anti-Pattern 2: Embedding API Keys in Commands
+### Anti-Pattern 2: Deep-Merge Settings
 
-**What:** Having illustration or translation commands call external APIs directly (OpenAI image API, Google Translate API, etc.).
+**What:** Recursively merging nested objects in settings.json.
 
-**Why bad:** Requires API key management, billing, network dependencies, error handling for rate limits/failures. Violates "no runtime dependencies beyond Node.js for the installer."
+**Why bad:** Settings.json is flat (no nested objects today). Deep merge adds complexity for a structure that doesn't exist. If nested settings are added later, deep merge can silently merge incompatible sub-objects.
 
-**Instead:** Generate prompts (illustration) or use the AI agent's native capabilities (translation). The AI agent already has API access — Scriven does not need its own.
+**Instead:** Shallow spread merge. Installer-owned top-level keys overwrite. User-added top-level keys survive. No nesting.
 
-### Anti-Pattern 3: Monolithic Export Command
+### Anti-Pattern 3: Full YAML Parser for Frontmatter
 
-**What:** One massive `export.md` that handles every format in a single file.
+**What:** Adding a YAML parser dependency (e.g., `js-yaml`) for frontmatter parsing.
 
-**Why bad:** Becomes unreadable at 500+ lines. Different formats have different concerns. Changes to EPUB export should not risk breaking PDF export.
+**Why bad:** Scriven's architecture constraint is zero npm dependencies. The frontmatter is simple key-value pairs, never YAML sequences or nested objects.
 
-**Instead:** Use the router pattern — `export.md` reads the `--format` flag and delegates to format-specific sub-commands in `commands/scr/export/`.
+**Instead:** First-colon split within the `---` block. Handles every frontmatter pattern actually used in Scriven command files.
 
-### Anti-Pattern 4: Storing Binary Assets in Git
+### Anti-Pattern 4: Runtime-Specific Install Files
 
-**What:** Committing generated images, PDFs, EPUBs to the git repository.
+**What:** Splitting each runtime's install logic into a separate file (e.g., `install-claude.js`, `install-codex.js`).
 
-**Why bad:** Bloats the repository. Binary diffs are meaningless. Merge conflicts on binaries are irrecoverable.
+**Why bad:** The installer is deliberately a single file. Splitting increases the module surface, complicates the npm package, and adds `require()` chains for no benefit.
 
-**Instead:** Add `.manuscript/output/` and `.manuscript/art/*.png` (etc.) to `.gitignore`. Store only the prompts, templates, and source markdown. Generated outputs are reproducible from source.
+**Instead:** Keep everything in `bin/install.js`. Functions are already well-separated by runtime. The file grows from ~1035 to ~1150 lines -- still manageable.
 
-### Anti-Pattern 5: Real-Time Translation (Translate-As-You-Draft)
+### Anti-Pattern 5: Backup-Before-Overwrite for Templates
 
-**What:** Automatically translating each unit as it is drafted, before the full manuscript is stable.
+**What:** Creating `.bak` copies of templates before overwriting.
 
-**Why bad:** Translations become stale as the manuscript undergoes editor review, continuity fixes, voice adjustments. The writer ends up with N languages worth of drift to manage during revision.
+**Why bad:** Backup files accumulate. Users don't know they exist. Restore is manual. The `.scriven/` directory fills with `.bak` debris.
 
-**Instead:** Translation happens after the manuscript is finalized (post-editor-review, post-beta-reader). The product plan already positions translation in Phase 7, after quality review (Phase 4) and export foundation (Phase 5).
+**Instead:** Stop deleting the directory before copying. `copyDir()` already overwrites individual files. User-added files that don't exist in the source package survive naturally.
+
+---
 
 ## Scalability Considerations
 
-| Concern | Solo Writer | Small Team (2-4) | Translation Team (5+) |
-|---------|-------------|-------------------|----------------------|
-| File system | Single .manuscript/ | Same repo, branch-per-person | Same repo OR fork-per-language |
-| Git history | Linear, simple | Branching, periodic merges | Heavy branching, managed merges |
-| Export | Run once per format | Same | Per-language, potentially automated |
-| Conflict resolution | Rare (single author) | Occasional (passage-level) | Frequent (terminology alignment) |
-| Translation memory | N/A | N/A | Critical — must be shared and up-to-date |
-| Performance concern | None | None | Glossary/TM lookup at scale (1000+ entries) |
+Not a concern for this milestone. The installer runs once per install/upgrade. Performance is not a bottleneck.
 
-For the solo writer (primary user), this architecture adds zero overhead. For teams, the git-based collaboration system scales naturally. The only scaling concern is translation memory at very large document sizes, which is managed by the per-unit fresh context pattern (load only relevant TM entries per unit, not the full TM).
+| Concern | Current (1035 lines) | Post-Hardening (~1150 lines) | Future |
+|---------|---------------------|------|--------|
+| File size | Manageable | Still manageable | Consider splitting at ~2000 lines |
+| Test coverage | installer.test.js exists | Add tests for all 5 features | Maintain per-feature test blocks |
+| Runtime count | 11 runtimes | Same 11 | New runtimes add ~20 lines each |
+| Settings fields | 8 fields | Same 8 + user fields | Schema grows linearly |
 
-## New Files and Agents Summary
-
-### New Agents
-
-| Agent | Purpose | Pattern |
-|-------|---------|---------|
-| `agents/illustrator.md` | Generates image prompts from character/setting/scene data + art direction | Like drafter: receives context files, produces structured output |
-| `agents/translator.md` | Translates one atomic unit in target language preserving voice | Exactly like drafter: fresh context per unit, glossary replaces STYLE-GUIDE as anchor |
-| `agents/assembler.md` | Assembles manuscript from drafts in correct document order | New pattern: reads OUTLINE.md + front/back matter config, produces single file |
-
-### New Command Directories
-
-| Path | Purpose |
-|------|---------|
-| `commands/scr/export/` | Format-specific export sub-commands |
-| `commands/scr/track.md` | Collaboration: revision track management |
-| `commands/scr/save.md` | Writer-mode: git commit abstraction |
-| `commands/scr/history.md` | Writer-mode: visual timeline |
-| `commands/scr/compare.md` | Writer-mode: passage comparison |
-| `commands/scr/undo.md` | Writer-mode: safe revert |
-| `commands/scr/versions.md` | Writer-mode: draft version list |
-| `commands/scr/translate.md` | Translation pipeline entry point |
-| `commands/scr/translation-glossary.md` | Glossary build and manage |
-| `commands/scr/cultural-adaptation.md` | Flag cultural references for review |
-| `commands/scr/back-translate.md` | Verification via back-translation |
-| `commands/scr/translation-review.md` | Quality review of translated text |
-| `commands/scr/multi-publish.md` | Multi-language simultaneous export |
-| `commands/scr/cover-art.md` | Cover generation prompt pipeline |
-| `commands/scr/art-direction.md` | Visual style guide generation |
-| `commands/scr/illustrate-scene.md` | Scene illustration prompts |
-| `commands/scr/character-ref.md` | Character reference sheet prompts |
-
-### New Templates
-
-| Template | Purpose |
-|----------|---------|
-| `templates/ART-DIRECTION.md` | Visual style guide template |
-| `templates/GLOSSARY-{lang}.md` | Translation glossary template |
-| `templates/export/reference.docx` | Pandoc reference doc for DOCX styling |
-| `templates/export/epub.css` | EPUB typography stylesheet |
-| `templates/export/metadata.yaml` | Pandoc metadata template |
+---
 
 ## Sources
 
-- [Pandoc User's Guide](https://pandoc.org/MANUAL.html) — universal document converter, handles md-to-DOCX/PDF/EPUB/LaTeX
-- [Pandoc EPUB documentation](https://pandoc.org/epub.html) — EPUB-specific options and metadata
-- [node-pandoc npm package](https://www.npmjs.com/package/node-pandoc) — Node.js wrapper (reference only; Scriven invokes pandoc directly via Bash)
-- [Git for Authors](https://d.moonfire.us/garden/git-for-authors/) — patterns for using git with creative writing
-- [Upwelling: Real-time collaboration with version control for writers](https://www.inkandswitch.com/upwelling/) — research on writer-friendly version control
-- [OpenAI Image Generation API](https://developers.openai.com/api/docs/guides/image-generation) — reference for prompt structure (Scriven generates prompts, not API calls)
-- [@lesjoursfr/html-to-epub](https://www.npmjs.com/package/@lesjoursfr/html-to-epub) — actively maintained EPUB generation (alternative reference if pandoc is unavailable)
+- [Node.js fs.renameSync](https://nodejs.org/api/fs.html#fsrenamesyncoldpath-newpath) -- Atomic rename semantics on POSIX
+- Scriven `bin/install.js` -- Primary source, 1035 lines analyzed line-by-line
+- Scriven `test/installer.test.js` -- Existing test patterns
+- Scriven `.planning/PROJECT.md` -- Milestone v1.6 requirements
