@@ -1,33 +1,33 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.5
-status: Milestone v1.5 shipped
-stopped_at: Milestone v1.5 summary generated
-last_updated: "2026-04-09T15:48:47Z"
-last_activity: 2026-04-09
+milestone: v1.6
+status: Defining requirements
+stopped_at: Milestone v1.6 started
+last_updated: "2026-04-16"
+last_activity: 2026-04-16
 progress:
-  total_phases: 3
-  completed_phases: 3
-  total_plans: 7
-  completed_plans: 7
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-09)
+See: .planning/PROJECT.md (updated 2026-04-16)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** milestone complete; waiting for the next roadmap decision
+**Current focus:** Installer hardening — fixing bugs identified from GSD v1.33–v1.36 audit
 
 ## Current Position
 
-Phase: v1.5 complete
-Plan: 7 of 7 plans completed
-Status: Silent install, Codex skill surface, and runtime docs/verification shipped
-Last activity: 2026-04-09 — Generated v1.5 milestone summary from phases 20-22 artifacts
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-16 — Milestone v1.6 started
 
 Progress: [############] 100%
 
@@ -96,6 +96,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-09T15:48:47Z
-Stopped at: Milestone v1.5 summary generated
-Resume file: .planning/reports/MILESTONE_SUMMARY-v1.5.md
+Last session: 2026-04-09T16:18:59Z
+Stopped at: Targeted docs update completed
+Resume file: .planning/tmp/docs-work-manifest.json

@@ -49,7 +49,11 @@ Scriven is a spec-driven writing, publishing, and translation pipeline that runs
 
 ### Active
 
-- None. Milestone v1.5 shipped on 2026-04-09.
+- Frontmatter parsing must handle values containing colons without truncation — v1.6
+- User-customized templates and settings must survive reinstallation without being wiped — v1.6
+- Installer file writes must be atomic to prevent corruption on interrupt — v1.6
+- Command-ref rewriting must produce correct invocations for all runtimes, not just Claude Code — v1.6
+- Settings schema must be validated on read so misconfigurations fail loudly — v1.6
 
 ### Out of Scope
 
@@ -79,7 +83,8 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 ## Current State
 
 **Latest shipped milestone:** v1.5 Runtime Install Reliability  
-**Status:** Milestone v1.5 shipped 2026-04-09; awaiting next milestone selection
+**Current milestone:** v1.6 Installer Hardening
+**Status:** Defining requirements
 
 **Current product surface:**
 - Silent, non-interactive installer flags cover runtime selection, scope, mode, help, and version output
@@ -87,22 +92,21 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - Claude Code installs cleanly refresh Scriven-owned command files while preserving unrelated runtime content
 - Runtime docs and regression tests are aligned to the real Codex and Claude installer contract
 
-## Latest Milestone: v1.5 Runtime Install Reliability
+## Current Milestone: v1.6 Installer Hardening
 
-**Goal:** Make Scriven installation feel dependable in real host agents by adding silent multi-runtime installs, Codex-native `$` skill discovery, and clean Claude Code command deployment.
+**Goal:** Fix bugs and fragilities in Scriven's installer identified by cross-referencing GSD releases v1.33–v1.36 against the Scriven codebase.
 
-**Outcome shipped:**
-- Silent, non-interactive installer flags for runtime selection, scope, and mode
-- Multi-runtime install flow that can target Codex and Claude Code in one run
-- Codex-specific generated `$scr-*` skills backed by the installed Scriven command files
-- Clean install behavior that removes stale Scriven-owned runtime files before copying the current package contents
-- Runtime docs and regression tests updated to match the new Codex and Claude install model
+**Target features:**
+- Fix frontmatter parsing that breaks on values containing colons
+- Preserve user-customized templates and settings on reinstall
+- Add atomic file writes to prevent corruption on interrupt
+- Extend command-ref rewriting to all runtimes (not just Claude Code)
+- Add settings schema validation so misconfigurations fail loudly
 
-## Next Milestone Goals
-
-- Deliver a silent install path that works for the real Codex and Claude host surfaces without manual prompt choreography
-- Keep runtime claims narrow and test-backed while adjusting Codex support to the skill-native surface users actually see
-- Preserve the trust-first standard: new support claims should stay source-backed, narrow, and testable
+**Key context:**
+- These are bugs or fragilities that GSD already shipped fixes for in v1.33–v1.36
+- Scriven shares the same installer architecture patterns
+- No new features — this is a reliability and correctness pass on the existing installer
 
 <details>
 <summary>Archived milestone context: v1.4 Perplexity & Technical Writing</summary>
@@ -156,4 +160,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-09 after shipping milestone v1.5*
+*Last updated: 2026-04-16 after starting milestone v1.6*
