@@ -1426,6 +1426,87 @@
     }
   },
 
+  "architectural_profiles": {
+    "_description": "Phase 29 v1.7: valid values + work-type defaults for the project-spec tradition and platform keys. The runtime validator cross-checks these values against the templates/sacred/ and templates/platforms/ directory listings — the intersection is the accepted set, so new contributor-dropped manifests are picked up at load time without editing this file.",
+    "_render_variants": {
+      "_note": "How templates/WORK.md {{PROFILE_BLOCK}} is rendered per work-type group by /scr:new-work. Wiring of new-work substitution lands in a later phase.",
+      "sacred": "- **Tradition:** {{TRADITION}}\n- **Platform:** {{PLATFORM}}",
+      "prose": "- **Platform:** {{PLATFORM}}",
+      "visual": "- **Platform:** {{PLATFORM}}",
+      "poetry": "- **Platform:** {{PLATFORM}}",
+      "script": "Not applicable for this work type.",
+      "academic": "Not applicable for this work type.",
+      "technical": "Not applicable for this work type.",
+      "interactive": "Not applicable for this work type.",
+      "speech_song": "Not applicable for this work type."
+    },
+    "traditions": {
+      "_seeded": ["catholic", "orthodox", "tewahedo", "protestant", "jewish", "islamic-hafs", "islamic-warsh", "pali", "tibetan", "sanskrit"],
+      "_note": "This array seeds the initial set. The authoritative runtime value list is the intersection of _seeded with directory names under templates/sacred/ that contain a manifest.yaml. A contributor dropping templates/sacred/<new-tradition>/manifest.yaml extends the accepted set without editing this file."
+    },
+    "platforms": {
+      "_seeded": ["kdp", "ingram", "d2d", "apple", "kobo", "google", "bn", "smashwords"],
+      "_note": "This array seeds the initial set. The authoritative runtime value list is the intersection of _seeded with directory names under templates/platforms/ that contain a manifest.yaml. A contributor dropping templates/platforms/<new-platform>/manifest.yaml extends the accepted set without editing this file."
+    },
+    "applies_to_groups": {
+      "tradition": ["sacred"],
+      "platform": ["prose", "visual", "poetry", "sacred"]
+    },
+    "defaults_by_work_type": {
+      "_description": "Per-work-type defaults applied by the runtime when the project spec omits the key. The value MUST be one of the seeded traditions/platforms above. An unlisted work type MUST NOT receive a default (runtime returns null).",
+      "tradition": {
+        "scripture_biblical": "catholic",
+        "scripture_quranic": "islamic-hafs",
+        "scripture_torah": "jewish",
+        "scripture_buddhist": "pali",
+        "scripture_vedic": "sanskrit",
+        "scripture_generic": null,
+        "commentary": null,
+        "devotional": null,
+        "liturgical": null,
+        "historical_chronicle": null,
+        "historical_account": null,
+        "mythological_collection": null,
+        "religious_epic": null,
+        "sermon": null,
+        "homiletic_collection": null
+      },
+      "platform": {
+        "novel": "kdp",
+        "novella": "kdp",
+        "short_story": "kdp",
+        "flash_fiction": "kdp",
+        "memoir": "kdp",
+        "creative_nonfiction": "kdp",
+        "biography": "kdp",
+        "essay": "kdp",
+        "essay_collection": "kdp",
+        "poetry_collection": "kdp",
+        "single_poem": "kdp",
+        "song_lyric": "kdp",
+        "comic": "kdp",
+        "graphic_novel": "kdp",
+        "childrens_book": "kdp",
+        "picture_book": "kdp",
+        "scripture_biblical": "kdp",
+        "scripture_quranic": "kdp",
+        "scripture_torah": "kdp",
+        "scripture_vedic": "kdp",
+        "scripture_buddhist": "kdp",
+        "scripture_generic": "kdp",
+        "commentary": "kdp",
+        "devotional": "kdp",
+        "liturgical": "kdp",
+        "historical_chronicle": "kdp",
+        "historical_account": "kdp",
+        "mythological_collection": "kdp",
+        "religious_epic": "kdp",
+        "sermon": "kdp",
+        "homiletic_collection": "kdp"
+      }
+    }
+  },
+
   "messages": {
     "command_hidden": "The `{command}` command is designed for {available_groups}. Your {work_type} uses `{alternative}` instead.",
     "prerequisite_missing": "You need to run `{prerequisite}` before `{command}`. Want me to run it now?",
