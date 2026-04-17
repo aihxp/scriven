@@ -1,6 +1,6 @@
 ---
 description: Build a print-ready PDF from the manuscript for a target publishing platform.
-argument-hint: "[--platform <platform>] [--trim <size>] [--strict] [--skip-validate]"
+argument-hint: "[--platform <platform>] [--trim <size>] [--strict] [--hardcover] [--skip-validate]"
 ---
 
 # /scr:build-print -- Print PDF Build Pipeline
@@ -10,8 +10,11 @@ Assemble the manuscript and produce a print-ready PDF for the selected publishin
 ## Usage
 
 ```
-/scr:build-print [--platform <platform>] [--trim <size>] [--strict] [--skip-validate]
+/scr:build-print [--platform <platform>] [--trim <size>] [--strict] [--hardcover] [--skip-validate]
 ```
+
+**Flags:**
+  `--hardcover`    Use hardcover page limit for KDP (550pp) instead of paperback (828pp)
 
 **Platform values:** `kdp | ingram | apple | bn | d2d | kobo | google | smashwords` (default: kdp)
 
@@ -198,9 +201,10 @@ Then **stop**.
 - If `--platform` was passed, use that value.
 - If not passed, default to `kdp`.
 
-**Validate the platform slug** using `lib/architectural-profiles.js` `validatePlatform(slug)` logic (check that slug is in the list returned by `listPlatforms()`).
+**Validate the platform slug:**
 
-Valid platforms: `kdp, ingram, apple, bn, d2d, kobo, google, smashwords`
+Check that the slug is one of the following allowed values:
+`kdp`, `ingram`, `apple`, `bn`, `d2d`, `kobo`, `google`, `smashwords`
 
 If the platform slug is invalid:
 > **Platform "{slug}" is not recognised.**

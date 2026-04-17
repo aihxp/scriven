@@ -145,6 +145,16 @@ If Pandoc is not found:
 
 Then **stop** -- do not attempt the build without the required tool.
 
+Check for the EPUB stylesheet:
+
+If `data/export-templates/scriven-epub.css` does not exist:
+
+> **EPUB stylesheet is missing at `data/export-templates/scriven-epub.css`.**
+> This file is required for properly styled EPUB output.
+> Re-install Scriven or restore the file from the repository.
+
+Then **stop** -- do not attempt the build without the stylesheet.
+
 ---
 
 ### STEP 3: ASSEMBLE MANUSCRIPT
@@ -212,7 +222,7 @@ title: "[title from config.json]"
 subtitle: "[subtitle if available]"
 author:
   - name: "[author from config.json]"
-language: "[language from config.json, default en-US]"
+lang: "[language from config.json, default en-US]"
 rights: "Copyright [year] [author]. All rights reserved."
 date: "[current year]"
 description: "[description if available]"
@@ -242,8 +252,7 @@ pandoc .manuscript/output/assembled-manuscript.md \
   --css=data/export-templates/scriven-epub.css \
   --toc \
   --toc-depth=2 \
-  --split-level=1 \
-  -V lang={language}
+  --split-level=1
 ```
 
 If `.manuscript/output/cover.jpg` does not exist, omit the `--epub-cover-image` flag and note:
