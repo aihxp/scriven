@@ -136,7 +136,7 @@ Proceed to STEP 2.
 
 Read `tradition:` from `.manuscript/config.json`.
 
-If absent or null: skip this step silently and proceed to STEP 2.
+If absent or null: skip this step silently and proceed to STEP 1.8.
 
 Validate the tradition slug against the accepted list:
 `catholic`, `orthodox`, `tewahedo`, `protestant`, `jewish`, `islamic-hafs`, `islamic-warsh`, `pali`, `tibetan`, `sanskrit`

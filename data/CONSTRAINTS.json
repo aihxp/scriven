@@ -1065,7 +1065,7 @@
     },
     "build-print": {
       "category": "publishing",
-      "available": ["prose", "visual", "poetry", "sacred", "academic"],
+      "available": ["prose", "visual", "poetry", "sacred", "academic", "script"],
       "description": "Build print-ready PDF with platform trim sizes and page-count guardrails (Pandoc + Typst), and academic publisher class wrappers for IEEE, ACM, Springer LNCS, Elsevier, and APA7 (Pandoc + LaTeX).",
       "requires": ["complete-draft"]
     },
@@ -1260,7 +1260,7 @@
     "latex": { "available": ["academic", "sacred"], "note_for_sacred": "critical editions" },
     "epub": { "available": ["prose", "visual", "poetry", "interactive", "sacred"] },
     "build_ebook": { "available": ["prose", "visual", "poetry", "interactive", "sacred"] },
-    "build_print": { "available": ["prose", "visual", "poetry", "sacred", "academic"] },
+    "build_print": { "available": ["prose", "visual", "poetry", "sacred", "academic", "script"] },
     "mobi": { "available": ["prose", "visual", "sacred"] },
     "kdp_package": { "available": ["prose", "visual", "poetry", "sacred"] },
     "ingram_package": { "available": ["prose", "visual", "poetry", "sacred"] },
