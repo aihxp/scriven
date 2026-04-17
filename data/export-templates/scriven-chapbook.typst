@@ -1,0 +1,121 @@
+// Scriven Chapbook Template — 5.5x8.5 saddle-stitch
+//
+// SADDLE-STITCH CONSTRAINT: Page count must be a multiple of 4.
+// If your poem count produces a non-multiple-of-4 page total,
+// add blank filler pages (mod 4) at the back before printing.
+// Formula: padding_pages = (4 - (total_pages mod 4)) mod 4
+//
+// Usage: pandoc ... --pdf-engine=typst --template=data/export-templates/scriven-chapbook.typst
+
+// Page dimensions (Pandoc -V variables with defaults)
+#let page-width  = $if(paperwidth)$$paperwidth$$else$5.5in$endif$
+#let page-height = $if(paperheight)$$paperheight$$else$8.5in$endif$
+#let margin-top    = $if(margin-top)$$margin-top$$else$0.875in$endif$
+#let margin-bottom = $if(margin-bottom)$$margin-bottom$$else$0.875in$endif$
+#let margin-inside = $if(margin-inside)$$margin-inside$$else$0.75in$endif$
+#let margin-outside = $if(margin-outside)$$margin-outside$$else$0.625in$endif$
+
+// Text direction
+#let text-dir = $if(text-direction)$$text-direction$$else$ltr$endif$
+
+// Font configuration — chapbooks default to a clean readable serif
+#let body-font = $if(mainfont)$"$mainfont$"$else$"Libertinus Serif"$endif$
+#let body-font-size = $if(fontsize)$$fontsize$$else$11pt$endif$
+
+// Metadata
+#let book-title  = $if(title)$"$title$"$else$"Untitled Chapbook"$endif$
+#let book-author = $if(author)$"$for(author)$$it.name$$sep$, $endfor$"$else$""$endif$
+
+#set document(
+  title: book-title,
+  author: book-author,
+)
+
+// Page setup — no running header (chapbooks typically use only page numbers)
+#set page(
+  width: page-width,
+  height: page-height,
+  margin: (
+    inside: margin-inside,
+    outside: margin-outside,
+    top: margin-top,
+    bottom: margin-bottom,
+  ),
+  footer: context {
+    let page-num = counter(page).get().first()
+    if page-num > 1 {
+      align(center, text(size: 9pt, str(page-num)))
+    }
+  },
+)
+
+// Text settings: 11pt serif, 1.4 leading
+// No first-line indent for poetry — poems use stanza breaks (blank lines)
+#set text(font: body-font, size: body-font-size, dir: text-dir)
+#set par(leading: 1.4 * 0.65em, first-line-indent: 0em, justify: false)
+
+// Collection title (H1): title page only, centered
+#show heading.where(level: 1): it => {
+  pagebreak(weak: true)
+  v(3em)
+  align(center)[#text(size: 18pt, weight: "bold")[#it.body]]
+  v(2em)
+}
+
+// Poem title (H2): centered, moderate spacing, starts new page
+#show heading.where(level: 2): it => {
+  pagebreak(weak: true)
+  v(1.5em)
+  align(center)[#text(size: 13pt, weight: "bold")[#it.body]]
+  v(1em)
+}
+
+// Section (H3): centered, smaller
+#show heading.where(level: 3): it => {
+  v(1em)
+  align(center)[#text(size: 11pt, weight: "bold")[#it.body]]
+  v(0.8em)
+}
+
+// Blockquotes: indented
+#set quote(block: true)
+#show quote: it => {
+  pad(left: 2em, right: 1em)[
+    #set text(style: "italic")
+    #it.body
+  ]
+}
+
+// Links: no color change in print
+#show link: it => it
+
+// Title page
+$if(title)$
+#align(center + horizon)[
+  #text(size: 22pt, weight: "bold")[#book-title]
+  $if(subtitle)$
+  #v(0.5em)
+  #text(size: 14pt, style: "italic")[$subtitle$]
+  $endif$
+  #v(2em)
+  #text(size: 13pt)[#book-author]
+  $if(publisher)$
+  #v(3em)
+  #text(size: 10pt)[$publisher$]
+  $endif$
+]
+#pagebreak()
+$endif$
+
+// Table of Contents (optional for chapbooks)
+$if(toc)$
+#outline(
+  title: "Contents",
+  depth: $if(toc-depth)$$toc-depth$$else$2$endif$,
+  indent: 1em,
+)
+#pagebreak()
+$endif$
+
+// Body content
+$body$
