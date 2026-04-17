@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.7
 milestone_name: Last Mile
 status: executing
-stopped_at: Completed Phase 30 (Export Cleanup & Validation Gate)
-last_updated: "2026-04-17T14:10:22.438Z"
-last_activity: 2026-04-17 -- Phase 31 execution started
+stopped_at: Completed Phase 31 (Staged Front-Matter Generation)
+last_updated: "2026-04-17T14:35:00.000Z"
+last_activity: 2026-04-17
 progress:
   total_phases: 7
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 10
-  completed_plans: 7
-  percent: 70
+  completed_plans: 10
+  percent: 100
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-17)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** Phase 31 — Staged Front-Matter Generation
+**Current focus:** Phase 32 — Build Pipelines & Platform Awareness
 
 ## Current Position
 
-Phase: 31 (Staged Front-Matter Generation) — EXECUTING
-Plan: 1 of 3
-Status: Executing Phase 31
-Last activity: 2026-04-17 -- Phase 31 execution started
+Phase: 32
+Plan: Not started
+Status: Ready to execute Phase 32
+Last activity: 2026-04-17
 
-Progress: [██         ] 29%
+Progress: [███        ] 43%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 82 (37 from v1.0, 2 from v1.1, 8 from v1.2, 9 from v1.3, 7 from v1.4, 2 unrecorded from v1.5, 6 from v1.6, 7 from v1.7 so far)
-- Milestone v1.7 so far: 2 phases, 7 plans, 15 new Phase 30 tests + 54 Phase 29 tests, zero new dependencies
+- Total plans completed: 88 (37 from v1.0, 2 from v1.1, 8 from v1.2, 9 from v1.3, 7 from v1.4, 2 unrecorded from v1.5, 6 from v1.6, 10 from v1.7 so far)
+- Milestone v1.7 so far: 3 phases, 10 plans, 17 new Phase 31 tests + 15 Phase 30 tests + 54 Phase 29 tests, zero new dependencies
 
 *Updated after each plan completion*
 
@@ -63,6 +63,9 @@ Recent decisions affecting current work:
 - [Phase 30]: Validate blocking markers: [Fill in + Alternate N only (not {{VAR}}); file:line output; explicit pass confirmation
 - [Phase 30]: Export gate injected as STEP 1.5 in export.md and publish.md; fail-fast before tool detection; --skip-validate with visible warning
 - [Phase 30]: Alternate block boundary: any blank line stops the block (not just blank lines before another Alternate header)
+- [Phase 31]: 5 personalization elements (dedication, epigraph, foreword, preface, acknowledgments) get scaffold: true YAML frontmatter; 4 GENERATE elements (half-title, title-page, copyright, TOC) do not
+- [Phase 31]: Export/publish STEP 1.6 silently excludes scaffold:true files + shows note; STEP 1.6b auto-refreshes GENERATE elements when WORK.md is newer
+- [Phase 31]: 1.6b guards against missing front-matter/ directory before attempting timestamp comparison
 
 ### Pending Todos
 

@@ -74,7 +74,7 @@
 
 - [x] **Phase 29: Architectural Foundation** - `templates/sacred/` + `templates/platforms/` directories and `tradition:` / `platform:` spec keys with clean default-inference migration (completed 2026-04-17)
 - [x] **Phase 30: Export Cleanup & Validation Gate** - `/scr:cleanup` scaffold-stripping and `/scr:validate` pre-flight gate blocking export when unresolved markers remain (completed 2026-04-17)
-- [ ] **Phase 31: Staged Front-Matter Generation** - Auto-computable front matter regenerates on metadata change; personalization elements ship as explicit scaffolds excluded from export
+- [x] **Phase 31: Staged Front-Matter Generation** - Auto-computable front matter regenerates on metadata change; personalization elements ship as explicit scaffolds excluded from export (completed 2026-04-17)
 - [ ] **Phase 32: Build Pipelines & Platform Awareness** - `/scr:build-ebook` + `/scr:build-print` with per-platform trim/page guardrails, prerequisite detection, and EPUBCheck/EAA compliance
 - [ ] **Phase 33: Sacred Tradition Profiles** - Ten tradition profiles (catholic, orthodox, tewahedo, protestant, jewish, islamic-hafs/warsh, pali, tibetan, sanskrit) with approval blocks, font stacks, RTL, and numbering macros
 - [ ] **Phase 34: Cross-Domain Narrative & Poetry Templates** - Stage play, picture book, fixed-layout EPUB + OPF stub, Smashwords DOCX, chapbook, and poetry-submission templates
@@ -121,9 +121,9 @@
   3. A writer exporting a manuscript whose preface still has `scaffold: true` sees that file excluded from the build; flipping to `scaffold: false` or opting in includes it on the next build
   4. A writer updating title, author, copyright year, or ISBN in project metadata sees the auto-computable front-matter files refresh on the next export without rerunning `/scr:front-matter`
 **Plans**: 3 plans
-  - [ ] 31-01-PLAN.md — Phase 31 regression test suite in RED state (FM-01, FM-02, FM-03, FM-04)
-  - [ ] 31-02-PLAN.md — Update front-matter.md: prepend scaffold: true YAML to 5 personalization elements (FM-01, FM-02)
-  - [ ] 31-03-PLAN.md — Inject STEP 1.6 into export.md and publish.md + update STEP 3b (FM-03, FM-04)
+  - [x] 31-01-PLAN.md — Phase 31 regression test suite in RED state (FM-01, FM-02, FM-03, FM-04)
+  - [x] 31-02-PLAN.md — Update front-matter.md: prepend scaffold: true YAML to 5 personalization elements (FM-01, FM-02)
+  - [x] 31-03-PLAN.md — Inject STEP 1.6 into export.md and publish.md + update STEP 3b (FM-03, FM-04)
 
 ### Phase 32: Build Pipelines & Platform Awareness
 **Goal**: Writers can produce EPUB and print-ready PDF output from the current manuscript for a selected publishing platform, with guardrails that warn before they build something the platform will reject
@@ -219,7 +219,7 @@ Phases execute in numeric order: 29 -> 30 -> 31 -> 32 -> 33 -> 34 -> 35
 | 28. Hardening Regression Coverage | v1.6 | 1/1 | Complete | 2026-04-16 |
 | 29. Architectural Foundation | v1.7 | 4/4 | Complete    | 2026-04-17 |
 | 30. Export Cleanup & Validation Gate | v1.7 | 3/3 | Complete   | 2026-04-17 |
-| 31. Staged Front-Matter Generation | v1.7 | 0/3 | Not started | - |
+| 31. Staged Front-Matter Generation | v1.7 | 3/3 | Complete    | 2026-04-17 |
 | 32. Build Pipelines & Platform Awareness | v1.7 | 0/3 | Not started | - |
 | 33. Sacred Tradition Profiles | v1.7 | 0/3 | Not started | - |
 | 34. Cross-Domain Narrative & Poetry Templates | v1.7 | 0/3 | Not started | - |
