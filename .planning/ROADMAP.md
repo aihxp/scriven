@@ -108,7 +108,7 @@
   4. A writer running `/scr:validate` on a clean manuscript sees an explicit pass confirmation and exits zero
 **Plans**: 3 plans
   - [x] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
-  - [ ] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
+  - [x] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
   - [ ] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
 
 ### Phase 31: Staged Front-Matter Generation
@@ -121,7 +121,7 @@
   3. A writer exporting a manuscript whose preface still has `scaffold: true` sees that file excluded from the build; flipping to `scaffold: false` or opting in includes it on the next build
   4. A writer updating title, author, copyright year, or ISBN in project metadata sees the auto-computable front-matter files refresh on the next export without rerunning `/scr:front-matter`
 **Plans**: 3 plans
-  - [ ] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
+  - [x] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
   - [ ] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
   - [ ] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
 
@@ -218,7 +218,7 @@ Phases execute in numeric order: 29 -> 30 -> 31 -> 32 -> 33 -> 34 -> 35
 | 27. Multi-Runtime Command-Ref Rewriting | v1.6 | 1/1 | Complete | 2026-04-16 |
 | 28. Hardening Regression Coverage | v1.6 | 1/1 | Complete | 2026-04-16 |
 | 29. Architectural Foundation | v1.7 | 4/4 | Complete    | 2026-04-17 |
-| 30. Export Cleanup & Validation Gate | v1.7 | 1/3 | In Progress|  |
+| 30. Export Cleanup & Validation Gate | v1.7 | 2/3 | In Progress|  |
 | 31. Staged Front-Matter Generation | v1.7 | 0/? | Not started | - |
 | 32. Build Pipelines & Platform Awareness | v1.7 | 0/? | Not started | - |
 | 33. Sacred Tradition Profiles | v1.7 | 0/? | Not started | - |
