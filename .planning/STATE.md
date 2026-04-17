@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.2
-milestone_name: Documentation
+milestone: v1.7
+milestone_name: Last Mile
 status: executing
-stopped_at: Completed 29-04-PLAN.md (Phase 29 complete)
-last_updated: "2026-04-17T13:26:35.083Z"
-last_activity: 2026-04-17 -- Phase 30 execution started
+stopped_at: Completed Phase 30 (Export Cleanup & Validation Gate)
+last_updated: "2026-04-17T14:00:00.000Z"
+last_activity: 2026-04-17 -- Phase 30 complete, Phase 31 next
 progress:
-  total_phases: 2
-  completed_phases: 1
-  total_plans: 7
-  completed_plans: 4
-  percent: 57
+  total_phases: 7
+  completed_phases: 2
+  total_plans: 10
+  completed_plans: 7
+  percent: 29
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-17)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** Phase 30 — Export Cleanup & Validation Gate
+**Current focus:** Phase 31 — Staged Front-Matter Generation
 
 ## Current Position
 
-Phase: 30 (Export Cleanup & Validation Gate) — EXECUTING
-Plan: 1 of 3
-Status: Executing Phase 30
-Last activity: 2026-04-17 -- Phase 30 execution started
+Phase: 31 (Staged Front-Matter Generation) — PENDING
+Plan: 0 of TBD
+Status: Phase 30 complete, beginning Phase 31
+Last activity: 2026-04-17 -- Phase 30 complete, Phase 31 next
 
-Progress: [          ] 0%
+Progress: [██         ] 29%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 75 (37 from v1.0, 2 from v1.1, 8 from v1.2, 9 from v1.3, 7 from v1.4, 2 unrecorded from v1.5, 6 from v1.6)
-- Milestone v1.6: 6 phases, 6 plans, 88 new tests, zero new dependencies
+- Total plans completed: 82 (37 from v1.0, 2 from v1.1, 8 from v1.2, 9 from v1.3, 7 from v1.4, 2 unrecorded from v1.5, 6 from v1.6, 7 from v1.7 so far)
+- Milestone v1.7 so far: 2 phases, 7 plans, 15 new Phase 30 tests + 54 Phase 29 tests, zero new dependencies
 
 *Updated after each plan completion*
 
@@ -59,11 +59,14 @@ Recent decisions affecting current work:
 - [Phase 29]: Plan 29-03: lib/architectural-profiles.js uses directory-listing intersection with manifest.yaml presence (not _seeded whitelist) — contributor drop-ins extend accepted tradition/platform set at runtime with zero code/data edit
 - [Phase 29]: Plan 29-04: Fixture slugs use 'zzz-test-' prefix (not '__test-...__') to satisfy SLUG_PATTERN ^[a-z][a-z0-9-]*$ from Plan 03 — Rule 1 auto-fix documented in SUMMARY
 - [Phase 29]: Plan 29-04: 54-test regression suite locks ARCH-01..ARCH-05 as machine-executable contracts; downstream Phases 30-35 can only break Phase 29 by failing npm test
+- [Phase 30]: Cleanup dry-run by default; `--apply` for in-place; whole .manuscript/drafts/ scope; in-session diff summary
+- [Phase 30]: Validate blocking markers: [Fill in + Alternate N only (not {{VAR}}); file:line output; explicit pass confirmation
+- [Phase 30]: Export gate injected as STEP 1.5 in export.md and publish.md; fail-fast before tool detection; --skip-validate with visible warning
+- [Phase 30]: Alternate block boundary: any blank line stops the block (not just blank lines before another Alternate header)
 
 ### Pending Todos
 
-- Plan Phase 29 (Architectural Foundation) — `templates/sacred/` + `templates/platforms/` directories and `tradition:` / `platform:` spec keys
-- Plans for Phases 30-35 will be authored in sequence
+- Plans for Phases 31-35 will be authored in sequence
 
 ### Blockers/Concerns
 
@@ -71,6 +74,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-17T12:34:08.879Z
-Stopped at: Completed 29-04-PLAN.md (Phase 29 complete)
+Last session: 2026-04-17T14:00:00.000Z
+Stopped at: Completed Phase 30 (Export Cleanup & Validation Gate)
 Resume file: None

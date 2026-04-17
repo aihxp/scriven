@@ -73,7 +73,7 @@
 **Milestone Goal:** Close the production edge — ship real build pipelines, cross-domain templates, and per-platform awareness so Scriven reaches publication-ready output for any supported work type, not just book prose.
 
 - [x] **Phase 29: Architectural Foundation** - `templates/sacred/` + `templates/platforms/` directories and `tradition:` / `platform:` spec keys with clean default-inference migration (completed 2026-04-17)
-- [ ] **Phase 30: Export Cleanup & Validation Gate** - `/scr:cleanup` scaffold-stripping and `/scr:validate` pre-flight gate blocking export when unresolved markers remain
+- [x] **Phase 30: Export Cleanup & Validation Gate** - `/scr:cleanup` scaffold-stripping and `/scr:validate` pre-flight gate blocking export when unresolved markers remain (completed 2026-04-17)
 - [ ] **Phase 31: Staged Front-Matter Generation** - Auto-computable front matter regenerates on metadata change; personalization elements ship as explicit scaffolds excluded from export
 - [ ] **Phase 32: Build Pipelines & Platform Awareness** - `/scr:build-ebook` + `/scr:build-print` with per-platform trim/page guardrails, prerequisite detection, and EPUBCheck/EAA compliance
 - [ ] **Phase 33: Sacred Tradition Profiles** - Ten tradition profiles (catholic, orthodox, tewahedo, protestant, jewish, islamic-hafs/warsh, pali, tibetan, sanskrit) with approval blocks, font stacks, RTL, and numbering macros
@@ -109,7 +109,7 @@
 **Plans**: 3 plans
   - [x] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
   - [x] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
-  - [ ] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
+  - [x] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
 
 ### Phase 31: Staged Front-Matter Generation
 **Goal**: Front-matter elements split cleanly into auto-computable vs writer-personalized, so the writer never sees scaffolding leak into published output and auto elements stay fresh as metadata changes
