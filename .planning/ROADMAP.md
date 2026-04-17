@@ -78,7 +78,7 @@
 - [x] **Phase 32: Build Pipelines & Platform Awareness** - `/scr:build-ebook` + `/scr:build-print` with per-platform trim/page guardrails, prerequisite detection, and EPUBCheck/EAA compliance (completed 2026-04-17)
 - [x] **Phase 33: Sacred Tradition Profiles** - Ten tradition profiles (catholic, orthodox, tewahedo, protestant, jewish, islamic-hafs/warsh, pali, tibetan, sanskrit) with approval blocks, font stacks, RTL, and numbering macros (completed 2026-04-17)
 - [x] **Phase 34: Cross-Domain Narrative & Poetry Templates** - Stage play, picture book, fixed-layout EPUB + OPF stub, Smashwords DOCX, chapbook, and poetry-submission templates (completed 2026-04-17)
-- [ ] **Phase 35: Academic LaTeX Wrappers** - Thin IEEE / ACM / LNCS / Elsevier / APA7 wrappers that reference user-installed publisher classes
+- [x] **Phase 35: Academic LaTeX Wrappers** - Thin IEEE / ACM / LNCS / Elsevier / APA7 wrappers that reference user-installed publisher classes (completed 2026-04-17)
 
 ## Phase Details
 
@@ -178,9 +178,9 @@
   2. The same writer can re-target ACM, Springer LNCS, Elsevier, or APA7 simply by switching the wrapper — each wrapper references the user-installed class
   3. A writer missing the publisher class gets a clear install-guidance error naming the class (e.g. "Install `acmart.cls` via TeX Live or CTAN") rather than a LaTeX compile failure mid-build
 **Plans**: 3 plans
-  - [ ] 35-01-PLAN.md — Phase 35 regression test suite (TPL-07)
-  - [ ] 35-02-PLAN.md — Five LaTeX wrapper templates (IEEEtran, acmart, llncs, elsarticle, apa7) (TPL-07)
-  - [ ] 35-03-PLAN.md — build-print LaTeX route + missing-class error guidance (TPL-07)
+  - [x] 35-01-PLAN.md — Phase 35 regression test suite (TPL-07)
+  - [x] 35-02-PLAN.md — Five LaTeX wrapper templates (IEEEtran, acmart, llncs, elsarticle, apa7) (TPL-07)
+  - [x] 35-03-PLAN.md — build-print LaTeX route + missing-class error guidance (TPL-07)
 
 ## Progress
 
@@ -223,4 +223,4 @@ Phases execute in numeric order: 29 -> 30 -> 31 -> 32 -> 33 -> 34 -> 35
 | 32. Build Pipelines & Platform Awareness | v1.7 | 3/3 | Complete    | 2026-04-17 |
 | 33. Sacred Tradition Profiles | v1.7 | 4/4 | Complete    | 2026-04-17 |
 | 34. Cross-Domain Narrative & Poetry Templates | v1.7 | 3/3 | Complete    | 2026-04-17 |
-| 35. Academic LaTeX Wrappers | v1.7 | 0/3 | Not started | - |
+| 35. Academic LaTeX Wrappers | v1.7 | 3/3 | Complete   | 2026-04-17 |
