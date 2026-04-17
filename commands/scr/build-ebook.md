@@ -1,0 +1,269 @@
+---
+description: Build a publication-ready EPUB from the manuscript for a target platform.
+argument-hint: "[--platform <platform>] [--skip-validate]"
+---
+
+# /scr:build-ebook -- EPUB Build Pipeline
+
+Assemble the manuscript and produce an accessible EPUB for the selected publishing platform. Includes validate gate, scaffold-exclusion, accessibility (EAA-compliant lang tags, alt text, semantic nav), and platform-aware Pandoc invocation.
+
+## Usage
+
+```
+/scr:build-ebook [--platform <platform>] [--skip-validate]
+```
+
+**Platform values:** `kdp | ingram | apple | bn | d2d | kobo | google | smashwords` (default: kdp)
+
+## Instruction
+
+You are a **manuscript build specialist** for EPUB output.
+
+---
+
+### STEP 1: LOAD CONTEXT
+
+Load the following project files:
+
+- `.manuscript/config.json` -- to get `work_type`, title, author, language, and project settings
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) -- to check `exports` section for format availability by work type group
+
+**Check format availability:**
+
+Look up `build_ebook` in `CONSTRAINTS.json` under the `exports` section. Find the current work type's group in `CONSTRAINTS.json` under `work_type_groups`. Check if the group is in the `build_ebook.available` list.
+
+Available for: `["prose", "visual", "poetry", "interactive", "sacred"]`
+
+If the work type group is **not available**:
+> This command is not available for [work_type] projects. The EPUB build is available for: prose, visual, poetry, interactive, and sacred work types.
+
+Then **stop**.
+
+---
+
+### STEP 1.5: VALIDATE MANUSCRIPT
+
+**Check for scaffold markers in `.manuscript/drafts/`.**
+
+Scan all `.md` files in `.manuscript/drafts/` for:
+- Lines containing `[Fill in` (covers `[Fill in:]`, `[Fill in or delete:]`)
+- Lines containing `[Delete if not applicable:]`
+- Lines containing `Alternate 1:` or `Alternate 2:`
+- Files with more than one `# ` (top-level H1) heading
+
+**Note:** `{{VAR}}` tokens are NOT scaffold markers and must not be flagged. They are writer content placeholders, out of scope for this gate.
+
+**If `--skip-validate` was passed:**
+
+> **Warning: Validate gate skipped (`--skip-validate`). Your manuscript may contain
+> unresolved scaffold markers. Run `/scr:validate` to check before submitting.**
+
+Proceed to STEP 2.
+
+**If markers are found** (and `--skip-validate` was not passed):
+
+> **Build blocked: unresolved scaffold markers found.**
+>
+> [list each as: `path/to/file.md:LINE_NUMBER: marker text`]
+>
+> **Fix:** Run `/scr:cleanup --apply` to remove scaffold markers, or manually
+> edit the listed files, then re-run this build command.
+
+Then **stop** -- do not proceed to STEP 2.
+
+If no markers found: proceed to STEP 2.
+
+---
+
+### STEP 1.6: FRONT-MATTER GATE
+
+**1.6a — Scaffold exclusion**
+
+Check if `.manuscript/front-matter/` exists.
+
+If the directory does not exist:
+> **Note:** No front matter found — run `/scr:front-matter` first if you want publication front matter included.
+
+Proceed to 1.6b.
+
+If the directory exists, scan all `.md` files in `.manuscript/front-matter/`. For each file, check the first 10 lines for a YAML block containing `scaffold: true`. Build a scaffold exclusion list of the paths of all files where `scaffold: true` is found.
+
+If any files were added to the scaffold exclusion list, note them for the assembly step (STEP 3b) and show:
+> **Note:** [N] scaffold front-matter element(s) will be excluded from this export:
+>   - `.manuscript/front-matter/12-preface.md` (scaffold: true — edit and set scaffold: false to include)
+>
+> To include a scaffold element, open the file and change `scaffold: true` to `scaffold: false`.
+
+If no scaffold files were found, show no note.
+
+**1.6b — GENERATE element auto-refresh**
+
+If `.manuscript/front-matter/` does not exist, skip auto-refresh and proceed to STEP 2.
+
+If `.manuscript/WORK.md` does not exist, skip auto-refresh and proceed to STEP 2.
+
+Compare the modification timestamp of `.manuscript/WORK.md` against each of the following GENERATE front-matter files:
+- `.manuscript/front-matter/01-half-title.md`
+- `.manuscript/front-matter/03-title-page.md`
+- `.manuscript/front-matter/04-copyright.md`
+- `.manuscript/front-matter/07-toc.md`
+
+To compare timestamps, use the appropriate command for the platform:
+- macOS: `stat -f %m <file>`
+- Linux: `stat -c %Y <file>`
+- Windows: `(Get-Item '<file>').LastWriteTimeUtc.Ticks`
+- If timestamp comparison is not possible, assume WORK.md is newer and regenerate.
+
+If WORK.md is newer than ANY of those 4 files, or if ANY of those 4 files do not exist:
+Re-run the GENERATE step from `/scr:front-matter` for elements 1, 3, 4, and 7 only (half-title, title page, copyright page, TOC) using current WORK.md metadata. Regenerate all four even if only one triggered the condition. Do NOT regenerate scaffold elements (5, 6, 11, 12, 13) or any other elements.
+
+If WORK.md is not newer than all 4 files and all 4 files exist: skip regeneration silently.
+
+Proceed to STEP 2.
+
+---
+
+### STEP 2: CHECK PREREQUISITES
+
+Check for Pandoc:
+
+```bash
+command -v pandoc >/dev/null 2>&1
+```
+
+If Pandoc is not found:
+
+> **Pandoc is required for EPUB build but is not installed.**
+>
+> **Install Pandoc:**
+> - macOS: `brew install pandoc`
+> - Linux: `sudo apt install pandoc`
+> - Windows: `choco install pandoc`
+> - Or download from https://pandoc.org/installing.html
+>
+> After installing, run this build command again.
+
+Then **stop** -- do not attempt the build without the required tool.
+
+---
+
+### STEP 3: ASSEMBLE MANUSCRIPT
+
+This step builds the complete manuscript from its component files.
+
+**3a. Read OUTLINE.md for document order:**
+
+Read `.manuscript/OUTLINE.md` and parse the scene/chapter list. Extract the ordered list of body units (scenes, chapters, sections) with their file paths in `.manuscript/drafts/body/`.
+
+**3b. Scan front matter:**
+
+Read all files in `.manuscript/front-matter/` directory. Sort by numeric prefix to maintain Chicago Manual of Style order:
+
+```
+01-half-title.md
+02-series-title.md
+03-title-page.md
+04-copyright.md
+...
+```
+
+**Scaffold exclusion:** Omit any files whose path appears in the scaffold exclusion list from STEP 1.6a. These files have `scaffold: true` in their frontmatter and are not yet ready for publication.
+
+If no front matter files exist:
+> **Note:** No front matter found. Consider running `/scr:front-matter` to generate title page, copyright, and other publishing elements.
+
+Proceed with body content only.
+
+**3c. Read body drafts:**
+
+For each unit listed in OUTLINE.md, look for the corresponding draft file in `.manuscript/drafts/body/`. Read in OUTLINE.md order.
+
+For any unit listed in OUTLINE.md that has no draft file:
+> **Warning:** Missing draft for "[unit name]" -- skipping. Expected file: `.manuscript/drafts/body/[filename]`
+
+**3d. Scan back matter:**
+
+Read all files in `.manuscript/back-matter/` directory. Sort alphabetically. If no back matter exists, proceed without -- back matter is optional.
+
+**3e. Concatenate and write:**
+
+Assemble the full manuscript in this order:
+1. Front matter files (sorted by numeric prefix)
+2. Body draft files (ordered by OUTLINE.md)
+3. Back matter files (sorted alphabetically)
+
+Insert `\newpage` page break markers between major sections.
+
+Create output directory and write assembled file:
+
+```bash
+mkdir -p .manuscript/output
+```
+
+Write assembled content to `.manuscript/output/assembled-manuscript.md`.
+
+**3f. Generate metadata.yaml:**
+
+Read `.manuscript/config.json` and `.manuscript/WORK.md` (if it exists) to generate Pandoc metadata:
+
+```yaml
+---
+title: "[title from config.json]"
+subtitle: "[subtitle if available]"
+author:
+  - name: "[author from config.json]"
+language: "[language from config.json, default en-US]"
+rights: "Copyright [year] [author]. All rights reserved."
+date: "[current year]"
+description: "[description if available]"
+---
+```
+
+Write to `.manuscript/output/metadata.yaml`.
+
+---
+
+### STEP 4: BUILD EPUB
+
+**4a — Accessibility pre-check:**
+
+Before invoking Pandoc, verify:
+
+- All images referenced in the assembled manuscript have alt text in their Markdown syntax (`![alt text](path)`). For any image missing alt text, add a placeholder: `![Illustration: [describe the image]](path)`.
+- The project language (`lang`) is set — if absent from config.json, default to `en`.
+
+**4b — Pandoc invocation:**
+
+```bash
+pandoc .manuscript/output/assembled-manuscript.md \
+  -o .manuscript/output/ebook.epub \
+  --metadata-file=.manuscript/output/metadata.yaml \
+  --epub-cover-image=.manuscript/output/cover.jpg \
+  --css=data/export-templates/scriven-epub.css \
+  --toc \
+  --toc-depth=2 \
+  --split-level=1 \
+  -V lang={language}
+```
+
+If `.manuscript/output/cover.jpg` does not exist, omit the `--epub-cover-image` flag and note:
+> **Note:** No cover image found at `.manuscript/output/cover.jpg`. EPUB will be generated without a cover. To add a cover, place your cover image at `.manuscript/output/cover.jpg` and re-run this build command.
+
+**4c — Semantic nav note:**
+
+The `--toc` flag causes Pandoc to emit an `epub:type="toc"` nav document (EPUB3 semantic navigation). This satisfies EU EAA June 2025 requirement for machine-readable navigation.
+
+---
+
+### STEP 5: REPORT
+
+Show:
+
+```
+✓ EPUB built → .manuscript/output/ebook.epub ({file_size})
+```
+
+Get file size with:
+```bash
+ls -lh .manuscript/output/ebook.epub | awk '{print $5}'
+```
