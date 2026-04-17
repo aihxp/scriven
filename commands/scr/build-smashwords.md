@@ -66,6 +66,13 @@ Then **stop**.
 
 ---
 
+### STEP 1.6: FRONT-MATTER GATE
+
+Follow /scr:build-ebook STEP 1.6a–1.6b (scaffold exclusion and GENERATE auto-refresh).
+Use the resulting scaffold exclusion list in STEP 3 assembly.
+
+---
+
 ### STEP 2: CHECK PREREQUISITES
 
 Check for Pandoc:
