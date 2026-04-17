@@ -55,7 +55,7 @@ Scriven is a spec-driven writing, publishing, and translation pipeline that runs
 
 ### Active
 
-- v1.7 Last Mile — 1 phase remaining (35). Phase 34 Cross-Domain Templates shipped 2026-04-17.
+- v1.8+ TBD — all v1.7 Last Mile phases complete as of 2026-04-17. Planning pending.
 
 ### Validated (v1.7 so far)
 
@@ -82,6 +82,9 @@ Scriven is a spec-driven writing, publishing, and translation pipeline that runs
 - ✓ Poetry submission DOCX reference doc + companion style spec + `/scr:build-poetry-submission` command (title page, conditional TOC for 5+ poems) — v1.7 Phase 34 (TPL-06)
 - ✓ STEP 1.8 (work-type template routing) added to build-print.md; `--fixed-layout` flag added to build-ebook.md — v1.7 Phase 34
 - ✓ Phase 34 locked by 44 regression tests (1471 total) — zero new dependencies
+- ✓ Five academic LaTeX wrapper templates (IEEEtran, acmart, llncs, elsarticle, apa7) as minimal publisher-class routing wrappers — v1.7 Phase 35 (TPL-07)
+- ✓ `--platform ieee|acm|lncs|elsevier|apa7` route in build-print producing `.tex` output with two-level kpsewhich pre-flight detection and per-class tlmgr guidance — v1.7 Phase 35 (TPL-07)
+- ✓ Phase 35 locked by 39 regression tests (1510 total) — zero new dependencies
 
 ### Out of Scope
 
@@ -133,8 +136,8 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 
 ## Current State
 
-**Latest shipped milestone:** v1.6 Installer Hardening
-**Status:** Milestone v1.7 Last Mile in progress — Phase 34 complete, 1 phase remaining (35: Academic LaTeX Wrappers)
+**Latest shipped milestone:** v1.7 Last Mile (complete 2026-04-17)
+**Status:** All 7 v1.7 phases complete. 1510 regression tests passing. Zero new dependencies introduced.
 
 **Current product surface:**
 - Installer writes are crash-safe via atomic temp-file-then-rename with orphan cleanup on startup
@@ -142,21 +145,28 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - Settings validated against hand-written schema with migration-before-validation to avoid bootstrap deadlocks
 - User customizations to settings.json and templates survive reinstall via field-level merge and SHA-256 content-hash backup
 - Codex command files now use `$scr-*` invocation syntax, code blocks preserved unchanged
-- 1067 regression tests lock installer behavior with requirement-to-test traceability
+- Full export stack: EPUB (Pandoc, accessible), print PDF (Pandoc+Typst, KDP/Ingram trim sizes), academic LaTeX (.tex via 5 publisher wrapper templates), Smashwords DOCX, poetry submission DOCX
+- Sacred tradition profiles for 10 traditions with book-order, approval-block, font stack, RTL, numbering
+- Cross-domain templates: stage play, picture book, fixed-layout EPUB, chapbook, poetry submission, academic (IEEE/ACM/LNCS/Elsevier/APA7)
+- 1510 regression tests lock all behavior with requirement-to-test traceability
 
-## Latest Milestone: v1.6 Installer Hardening
+## Latest Milestone: v1.7 Last Mile
 
-**Goal:** Fix bugs and fragilities in Scriven's installer identified by cross-referencing GSD releases v1.33–v1.36 against the Scriven codebase.
+**Goal:** Close the production edge — ship real build pipelines, cross-domain templates, and per-platform awareness so Scriven reaches publication-ready output for any supported work type, not just book prose.
 
 **Outcome shipped:**
-- `atomicWriteFileSync` + `cleanOrphanedTempFiles` helpers with fd-based durability
-- Line-based frontmatter parser scoped to `---` block with first-colon splitting
-- `SETTINGS_SCHEMA` + `validateSettings` + `migrateSettings` + `readSettings` infrastructure
-- `sha256File` + `copyDirWithPreservation` + `mergeSettings` for non-destructive reinstall
-- Code-block-aware `rewriteInstalledCommandRefs` + `generateCodexCommandContent` for per-runtime syntax
-- End-to-end integration smoke test + 12-row requirement-to-test traceability matrix
+- `/scr:cleanup` + validate gate — scaffold bracket stripping and placeholder lint before export
+- `/scr:build-ebook` — Pandoc EPUB 3 pipeline with accessibility (lang, alt, nav), platform manifests for 8 retailers
+- `/scr:build-print` — Pandoc+Typst PDF pipeline with KDP/IngramSpark trim sizes and page-count guardrail
+- Staged front-matter generation (auto vs scaffold-only vs personalize) with STEP 1.6 gate
+- Sacred tradition profiles for 10 traditions (Catholic, Orthodox, Tewahedo, Protestant, Jewish, Islamic-Hafs, Islamic-Warsh, Pali, Tibetan, Sanskrit)
+- Stage play Typst template (Samuel French), picture book Typst template (8.75×8.75 with bleed)
+- Fixed-layout EPUB CSS + OPF stub, Smashwords DOCX reference doc, chapbook Typst template
+- Poetry submission DOCX reference doc with title page and conditional TOC
+- Five academic LaTeX wrapper templates (IEEEtran, acmart, llncs, elsarticle, apa7) with kpsewhich pre-flight detection
+- Architectural extension points: `templates/sacred/<tradition>/` + `templates/platforms/<platform>/`
 
-**Stats:** 6 phases, 6 plans, 12 requirements, 88 new tests, zero new dependencies
+**Stats:** 7 phases, 18 plans, 39 new tests in Phase 35 alone (1510 total), zero new dependencies
 
 ## Next Milestone Goals
 
@@ -214,4 +224,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-17 — v1.7 Phase 34 (Cross-Domain Narrative & Poetry Templates) shipped; 1 phase remaining (35)*
+*Last updated: 2026-04-17 — v1.7 Last Mile complete; all 7 phases shipped, 1510 tests passing*
