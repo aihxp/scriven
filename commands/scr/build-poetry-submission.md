@@ -126,7 +126,7 @@ Write to `.manuscript/output/assembled-poetry.md`.
 title: "[title from config.json]"
 author:
   - name: "[author from config.json]"
-lang: "en"
+lang: "[language from config.json, default en]"
 ---
 ```
 
@@ -135,6 +135,10 @@ Write to `.manuscript/output/poetry-metadata.yaml`.
 ---
 
 ### STEP 4: BUILD POETRY SUBMISSION DOCX
+
+Count the number of poem units parsed from OUTLINE.md in STEP 3b. Per the `scriven-poetry-submission-styles.md` style guide, a TOC is required for collections of 5 or more poems only.
+
+If poem count >= 5, include `--toc --toc-depth=2`:
 
 ```bash
 pandoc .manuscript/output/assembled-poetry.md \
@@ -145,11 +149,20 @@ pandoc .manuscript/output/assembled-poetry.md \
   --toc-depth=2
 ```
 
+If poem count < 5, omit `--toc` and `--toc-depth`:
+
+```bash
+pandoc .manuscript/output/assembled-poetry.md \
+  -o .manuscript/output/poetry-submission.docx \
+  --reference-doc=data/export-templates/scriven-poetry-submission.docx \
+  --metadata-file=.manuscript/output/poetry-metadata.yaml
+```
+
 **Format applied by reference doc:**
 - 12pt Times New Roman body text (Normal style)
 - 1-inch margins all sides
 - Single-spaced within poems; blank line between stanzas
-- Auto-generated TOC field (poem titles become TOC entries via Heading 2 style)
+- Auto-generated TOC field (poem titles become TOC entries via Heading 2 style) — only emitted for collections of 5+ poems
 
 ---
 
