@@ -526,6 +526,53 @@ When `--all` is used for sacred works, include these tradition-specific elements
 
 ---
 
+### STEP 3.5: TRADITION APPROVAL BLOCK (CONDITIONAL)
+
+After completing all front-matter elements, check if `tradition:` is set in `.manuscript/config.json`.
+
+If `tradition:` is absent or null: skip this step silently.
+
+If `tradition:` is set, load `templates/sacred/{tradition}/manifest.yaml` and read `approval_block.required`.
+
+If `approval_block.required` is `false`: skip this step silently.
+
+If `approval_block.required` is `true`: offer to create an approval block page:
+
+> **Tradition notice:** The **{approval_block.label}** (tradition approval) is required before publication for this tradition. Would you like to create the approval block scaffold?
+
+If the writer confirms, create `.manuscript/front-matter/00-approval-block.md` with the following content:
+
+```markdown
+---
+scaffold: true
+element: approval-block
+tradition: {tradition}
+---
+
+# {approval_block.label}
+
+<!-- AUTHORIZATION REQUIRED -->
+<!-- This page must be completed by a recognized authority in the {tradition} tradition. -->
+<!-- Do not publish without proper authorization. -->
+
+## For the Authorizing Authority
+
+This work requires a {approval_block.label} — a formal declaration that the content
+is doctrinally sound according to the {tradition} tradition.
+
+**Work:** [Title from WORK.md]
+**Author:** [Author from WORK.md]
+**Scope:** {approval_block.scope}
+
+[Space for the authorizing authority's declaration, name, title, and date]
+```
+
+Save to `.manuscript/front-matter/00-approval-block.md`.
+
+The `00-` prefix ensures this page precedes the half-title in any file listing.
+
+---
+
 ### STEP 4: SKIPPED ELEMENTS REPORT
 
 When running without `--element`, after generating all applicable elements, list any elements that were skipped:
