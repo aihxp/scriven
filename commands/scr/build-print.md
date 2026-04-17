@@ -239,7 +239,7 @@ If Pandoc is not found:
 
 Then **stop** -- do not attempt the build without the required tool.
 
-Check for Typst:
+**If `--platform` is NOT one of `ieee`, `acm`, `lncs`, `elsevier`, `apa7`, check for Typst:**
 
 ```bash
 command -v typst >/dev/null 2>&1
