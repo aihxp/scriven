@@ -162,6 +162,11 @@ Save to `.manuscript/front-matter/04-copyright.md`
 Provide a dedication template with guidance:
 
 ```markdown
+---
+scaffold: true
+element: dedication
+---
+
 # Dedication
 
 <!-- WRITER ACTION REQUIRED -->
@@ -186,6 +191,11 @@ Offer 3 thematically appropriate epigraph suggestions from public domain works. 
 Present as:
 
 ```markdown
+---
+scaffold: true
+element: epigraph
+---
+
 # Epigraph
 
 <!-- WRITER ACTION REQUIRED -->
@@ -259,6 +269,11 @@ Save to `.manuscript/front-matter/10-abbreviations.md`
 **Do NOT generate AI content pretending to be from another person.** A foreword is written by someone other than the author. This scaffold provides structure and guidance for the foreword writer.
 
 ```markdown
+---
+scaffold: true
+element: foreword
+---
+
 # Foreword
 
 <!-- IMPORTANT: A foreword is written by someone other than the author. -->
@@ -287,6 +302,11 @@ Save to `.manuscript/front-matter/11-foreword.md`
 **Load STYLE-GUIDE.md for voice.**
 
 ```markdown
+---
+scaffold: true
+element: preface
+---
+
 # Preface
 
 <!-- WRITER ACTION REQUIRED -->
@@ -319,6 +339,11 @@ Generate a draft acknowledgments section from project context -- collaborators, 
 Mark clearly as a draft:
 
 ```markdown
+---
+scaffold: true
+element: acknowledgments
+---
+
 # Acknowledgments
 
 <!-- DRAFT -- Personalize with your own thanks. -->
