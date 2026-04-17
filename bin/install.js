@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const os = require('os');
 const readline = require('readline');
+const crypto = require('crypto');
 
 const PKG_ROOT = path.join(__dirname, '..');
 const PKG = require('../package.json');
@@ -423,6 +424,34 @@ function removePathIfExists(targetPath) {
   if (!fs.existsSync(targetPath)) return false;
   fs.rmSync(targetPath, { recursive: true, force: true });
   return true;
+}
+
+function atomicWriteFileSync(targetPath, content) {
+  const dir = path.dirname(targetPath);
+  fs.mkdirSync(dir, { recursive: true });
+  const tmpPath = `${targetPath}.tmp.${crypto.randomUUID()}`;
+  try {
+    fs.writeFileSync(tmpPath, content);
+    fs.renameSync(tmpPath, targetPath);
+  } catch (err) {
+    try { fs.unlinkSync(tmpPath); } catch { /* best effort */ }
+    throw err;
+  }
+}
+
+function cleanOrphanedTempFiles(dir) {
+  if (!fs.existsSync(dir)) return 0;
+  const TMP_PATTERN = /\.tmp\.[0-9a-f-]{36}$/i;
+  let removed = 0;
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    if (!entry.isFile()) continue;
+    if (!TMP_PATTERN.test(entry.name)) continue;
+    try {
+      fs.unlinkSync(path.join(dir, entry.name));
+      removed++;
+    } catch { /* best effort */ }
+  }
+  return removed;
 }
 
 function insertMarkerComment(content, comment) {
@@ -1032,4 +1061,6 @@ module.exports = {
   generateSkillManifest,
   buildFilesystemMcpCommand,
   generatePerplexitySetupGuide,
+  atomicWriteFileSync,
+  cleanOrphanedTempFiles,
 };
