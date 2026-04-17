@@ -766,6 +766,127 @@ function readJsonIfExists(filePath) {
   }
 }
 
+const SETTINGS_SCHEMA = [
+  { name: 'version', type: 'string', required: true },
+  { name: 'runtime', type: 'string', required: true, allow_empty: true },
+  { name: 'runtimes', type: 'array-of-string', required: true },
+  { name: 'scope', type: 'string', required: true, enum: ['global', 'project'] },
+  { name: 'developer_mode', type: 'boolean', required: true },
+  { name: 'data_dir', type: 'string', required: true },
+  { name: 'install_mode', type: 'string', required: true, enum: ['interactive', 'non-interactive'] },
+  { name: 'installed_at', type: 'string', required: true },
+];
+
+function migrateSettings(raw) {
+  if (raw == null) return null;
+  const out = { ...raw };
+  if (!Object.prototype.hasOwnProperty.call(out, 'runtimes') || out.runtimes === undefined) {
+    if (typeof out.runtime === 'string' && out.runtime.length > 0) {
+      out.runtimes = [out.runtime];
+    } else {
+      out.runtimes = [];
+    }
+  }
+  if (!Object.prototype.hasOwnProperty.call(out, 'scope') || out.scope === undefined) {
+    out.scope = 'global';
+  }
+  if (!Object.prototype.hasOwnProperty.call(out, 'install_mode') || out.install_mode === undefined) {
+    out.install_mode = 'interactive';
+  }
+  return out;
+}
+
+function describeActualType(value) {
+  if (value === null) return 'null';
+  if (Array.isArray(value)) return 'array';
+  return typeof value;
+}
+
+function validateSettings(settings) {
+  const errors = [];
+  if (settings === null || typeof settings !== 'object' || Array.isArray(settings)) {
+    return {
+      valid: false,
+      errors: [`settings: expected object, received ${describeActualType(settings)}`],
+    };
+  }
+
+  const schemaFieldNames = new Set(SETTINGS_SCHEMA.map((f) => f.name));
+  let hardErrorCount = 0;
+
+  for (const field of SETTINGS_SCHEMA) {
+    const hasKey = Object.prototype.hasOwnProperty.call(settings, field.name);
+    if (!hasKey) {
+      if (field.required) {
+        errors.push(`${field.name}: required field is missing`);
+        hardErrorCount++;
+      }
+      continue;
+    }
+    const value = settings[field.name];
+    const actual = describeActualType(value);
+
+    if (field.type === 'string') {
+      if (typeof value !== 'string') {
+        errors.push(`${field.name}: expected string, received ${actual}`);
+        hardErrorCount++;
+        continue;
+      }
+      if (!field.allow_empty && value === '') {
+        errors.push(`${field.name}: expected non-empty string, received empty string`);
+        hardErrorCount++;
+        continue;
+      }
+    } else if (field.type === 'boolean') {
+      if (typeof value !== 'boolean') {
+        errors.push(`${field.name}: expected boolean, received ${actual}`);
+        hardErrorCount++;
+        continue;
+      }
+    } else if (field.type === 'array-of-string') {
+      if (!Array.isArray(value)) {
+        errors.push(`${field.name}: expected array, received ${actual}`);
+        hardErrorCount++;
+        continue;
+      }
+      const badIdx = value.findIndex((el) => typeof el !== 'string');
+      if (badIdx !== -1) {
+        errors.push(`${field.name}: expected array of string, received ${describeActualType(value[badIdx])} at index ${badIdx}`);
+        hardErrorCount++;
+        continue;
+      }
+    }
+
+    if (Array.isArray(field.enum) && !field.enum.includes(value)) {
+      errors.push(`${field.name}: expected one of [${field.enum.join(', ')}], received ${value}`);
+      hardErrorCount++;
+    }
+  }
+
+  for (const key of Object.keys(settings)) {
+    if (!schemaFieldNames.has(key)) {
+      errors.push(`${key}: unknown field (warning)`);
+    }
+  }
+
+  return { valid: hardErrorCount === 0, errors };
+}
+
+function readSettings(dataDir) {
+  const settingsPath = path.join(dataDir, 'settings.json');
+  const raw = readJsonIfExists(settingsPath);
+  if (raw === null) {
+    throw new Error(`settings.json not found at ${settingsPath}`);
+  }
+  const migrated = migrateSettings(raw);
+  const result = validateSettings(migrated);
+  if (!result.valid) {
+    const hardErrors = result.errors.filter((e) => !/\(warning\)\s*$/.test(e));
+    throw new Error(`Invalid settings: ${hardErrors.join('; ')}`);
+  }
+  return migrated;
+}
+
 function isScrivenCodexSkillDir(skillDir) {
   const skillFile = path.join(skillDir, 'SKILL.md');
   if (!fs.existsSync(skillFile)) return false;
@@ -1166,4 +1287,8 @@ module.exports = {
   collectTargetDirsForSweep,
   readFrontmatterValue,
   readFrontmatterValues,
+  SETTINGS_SCHEMA,
+  validateSettings,
+  migrateSettings,
+  readSettings,
 };
