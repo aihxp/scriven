@@ -1153,6 +1153,16 @@
       "available": ["all"],
       "description": "Diagnose and repair common project state issues"
     },
+    "cleanup": {
+      "category": "utility",
+      "available": ["all"],
+      "description": "Strip template scaffold markers from draft files"
+    },
+    "validate": {
+      "category": "utility",
+      "available": ["all"],
+      "description": "Scan manuscript for unresolved scaffold markers before export"
+    },
     "fast": {
       "category": "utility",
       "available": ["all"],
