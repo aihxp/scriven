@@ -349,8 +349,21 @@ The `--toc` flag causes Pandoc to emit an `epub:type="toc"` nav document (EPUB3 
 
 ### STEP 5: REPORT
 
-Show:
+If `--fixed-layout` is active:
 
+Show:
+```
+✓ EPUB built → .manuscript/output/ebook-fixed-layout.epub ({file_size})
+```
+
+Get file size with:
+```bash
+ls -lh .manuscript/output/ebook-fixed-layout.epub | awk '{print $5}'
+```
+
+Otherwise:
+
+Show:
 ```
 ✓ EPUB built → .manuscript/output/ebook.epub ({file_size})
 ```
