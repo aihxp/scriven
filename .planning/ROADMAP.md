@@ -8,7 +8,7 @@
 - [x] **v1.3 Trust & Proof** - Phases 13-16 (shipped 2026-04-09)
 - [x] **v1.4 Perplexity & Technical Writing** - Phases 17-19 (shipped 2026-04-09)
 - [x] **v1.5 Runtime Install Reliability** - Phases 20-22 (shipped 2026-04-09)
-- [ ] **v1.6 Installer Hardening** - Phases 23-28 (in progress)
+- [x] **v1.6 Installer Hardening** - Phases 23-28 (shipped 2026-04-16) — [archive](milestones/v1.6-ROADMAP.md)
 
 ## Phases
 
@@ -484,9 +484,9 @@ Phases execute in numeric order: 23 -> 24 -> 25 -> 26 -> 27 -> 28
 | 20. Silent Multi-Runtime Installer | v1.5 | 2/2 | Complete | 2026-04-09 |
 | 21. Codex Skill-Native Surface | v1.5 | 3/3 | Complete | 2026-04-09 |
 | 22. Runtime Docs & Verification | v1.5 | 2/2 | Complete | 2026-04-09 |
-| 23. Atomic File Writes | v1.6 | 0/0 | Not started | - |
-| 24. Frontmatter Parsing | v1.6 | 0/0 | Not started | - |
-| 25. Schema Validation | v1.6 | 0/0 | Not started | - |
-| 26. Settings & Template Preservation | v1.6 | 0/0 | Not started | - |
-| 27. Multi-Runtime Command-Ref Rewriting | v1.6 | 0/0 | Not started | - |
-| 28. Hardening Regression Coverage | v1.6 | 0/0 | Not started | - |
+| 23. Atomic File Writes | v1.6 | 1/1 | Complete | 2026-04-16 |
+| 24. Frontmatter Parsing | v1.6 | 1/1 | Complete | 2026-04-16 |
+| 25. Schema Validation | v1.6 | 1/1 | Complete | 2026-04-16 |
+| 26. Settings & Template Preservation | v1.6 | 1/1 | Complete | 2026-04-16 |
+| 27. Multi-Runtime Command-Ref Rewriting | v1.6 | 1/1 | Complete | 2026-04-16 |
+| 28. Hardening Regression Coverage | v1.6 | 1/1 | Complete | 2026-04-16 |

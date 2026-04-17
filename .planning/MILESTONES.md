@@ -1,5 +1,31 @@
 # Project Milestones: Scriven
 
+## v1.6 Installer Hardening (Shipped: 2026-04-16)
+
+**Delivered:** Correctness pass on the Scriven installer based on cross-referencing GSD releases v1.33–v1.36. Fixed frontmatter parsing fragility, non-atomic writes, destructive reinstall behavior, incomplete command-ref rewriting, and lack of settings validation — all while preserving the zero-dependency architecture.
+
+**Phases completed:** 23-28 (6 plans total)
+
+**Key accomplishments:**
+- Shipped `atomicWriteFileSync` + `cleanOrphanedTempFiles` with fsync durability — no more truncated files on SIGKILL
+- Rewrote `readFrontmatterValue` as a line-based parser scoped to the `---` block with first-colon splitting
+- Built settings schema infrastructure (`SETTINGS_SCHEMA`, `validateSettings`, `migrateSettings`, `readSettings`) with migration-before-validation ordering
+- Replaced destructive template/settings wipe with `sha256File` + `copyDirWithPreservation` + `mergeSettings` — user customizations survive reinstall
+- Added code-block-aware rewriter and `generateCodexCommandContent` — Codex command files now use `$scr-*` with code blocks preserved
+- Locked all hardening behaviors with 88 new regression tests + end-to-end smoke test + 12-row traceability matrix
+
+**Stats:**
+- 38 files changed, 6049 insertions, 1211 deletions
+- 6 phases, 6 plans, 12 milestone requirements
+- Full test suite: 1067/1067 passing
+- Zero new npm dependencies
+
+**Git range:** `55caac8` → `3f4daff`
+
+**What's next:** No new milestone is defined yet. The next step is to choose the next product focus and start a fresh milestone.
+
+---
+
 ## v1.4 Perplexity & Technical Writing (Shipped: 2026-04-09)
 
 **Delivered:** A trust-first expansion that added Perplexity Desktop as a guided runtime target, introduced a first-pass technical-writing family, and locked both surfaces into docs, packaging, and regression coverage.

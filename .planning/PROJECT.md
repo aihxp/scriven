@@ -46,14 +46,16 @@ Scriven is a spec-driven writing, publishing, and translation pipeline that runs
 - ✓ Silent multi-runtime installer flags shipped for Codex and Claude Code without prompt-only fallback — v1.5 Phase 20
 - ✓ Codex installs now expose native `$scr-*` skills backed by mirrored installed command markdown — v1.5 Phase 21
 - ✓ Runtime docs and regression coverage now describe the same Codex and Claude install surfaces the installer writes — v1.5 Phase 22
+- ✓ Installer file writes are crash-safe via temp-file-then-rename with orphan cleanup — v1.6 Phase 23
+- ✓ Frontmatter parser handles colons in values and scopes extraction to the `---` block — v1.6 Phase 24
+- ✓ Settings validated against hand-written schema with migration-before-validation — v1.6 Phase 25
+- ✓ User-customized settings and templates survive reinstall via field-level merge and content-hash backup — v1.6 Phase 26
+- ✓ Installed command files use correct invocation syntax per runtime with code-block preservation — v1.6 Phase 27
+- ✓ All v1.6 hardening behaviors locked by 88 regression tests with requirement-to-test traceability — v1.6 Phase 28
 
 ### Active
 
-- Frontmatter parsing must handle values containing colons without truncation — v1.6
-- User-customized templates and settings must survive reinstallation without being wiped — v1.6
-- Installer file writes must be atomic to prevent corruption on interrupt — v1.6
-- Command-ref rewriting must produce correct invocations for all runtimes, not just Claude Code — v1.6
-- Settings schema must be validated on read so misconfigurations fail loudly — v1.6
+- None. Milestone v1.6 shipped on 2026-04-16.
 
 ### Out of Scope
 
@@ -82,31 +84,34 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 
 ## Current State
 
-**Latest shipped milestone:** v1.5 Runtime Install Reliability  
-**Current milestone:** v1.6 Installer Hardening
-**Status:** Defining requirements
+**Latest shipped milestone:** v1.6 Installer Hardening
+**Status:** Milestone v1.6 shipped 2026-04-16; awaiting next milestone selection
 
 **Current product surface:**
-- Silent, non-interactive installer flags cover runtime selection, scope, mode, help, and version output
-- Codex installs now surface Scriven through generated `$scr-*` skills backed by mirrored command markdown
-- Claude Code installs cleanly refresh Scriven-owned command files while preserving unrelated runtime content
-- Runtime docs and regression tests are aligned to the real Codex and Claude installer contract
+- Installer writes are crash-safe via atomic temp-file-then-rename with orphan cleanup on startup
+- Frontmatter parser handles real-world content correctly (colons in values, body content isolation, multiline/array)
+- Settings validated against hand-written schema with migration-before-validation to avoid bootstrap deadlocks
+- User customizations to settings.json and templates survive reinstall via field-level merge and SHA-256 content-hash backup
+- Codex command files now use `$scr-*` invocation syntax, code blocks preserved unchanged
+- 1067 regression tests lock installer behavior with requirement-to-test traceability
 
-## Current Milestone: v1.6 Installer Hardening
+## Latest Milestone: v1.6 Installer Hardening
 
 **Goal:** Fix bugs and fragilities in Scriven's installer identified by cross-referencing GSD releases v1.33–v1.36 against the Scriven codebase.
 
-**Target features:**
-- Fix frontmatter parsing that breaks on values containing colons
-- Preserve user-customized templates and settings on reinstall
-- Add atomic file writes to prevent corruption on interrupt
-- Extend command-ref rewriting to all runtimes (not just Claude Code)
-- Add settings schema validation so misconfigurations fail loudly
+**Outcome shipped:**
+- `atomicWriteFileSync` + `cleanOrphanedTempFiles` helpers with fd-based durability
+- Line-based frontmatter parser scoped to `---` block with first-colon splitting
+- `SETTINGS_SCHEMA` + `validateSettings` + `migrateSettings` + `readSettings` infrastructure
+- `sha256File` + `copyDirWithPreservation` + `mergeSettings` for non-destructive reinstall
+- Code-block-aware `rewriteInstalledCommandRefs` + `generateCodexCommandContent` for per-runtime syntax
+- End-to-end integration smoke test + 12-row requirement-to-test traceability matrix
 
-**Key context:**
-- These are bugs or fragilities that GSD already shipped fixes for in v1.33–v1.36
-- Scriven shares the same installer architecture patterns
-- No new features — this is a reliability and correctness pass on the existing installer
+**Stats:** 6 phases, 6 plans, 12 requirements, 88 new tests, zero new dependencies
+
+## Next Milestone Goals
+
+- TBD — next product focus not yet selected
 
 <details>
 <summary>Archived milestone context: v1.4 Perplexity & Technical Writing</summary>
@@ -160,4 +165,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-16 after starting milestone v1.6*
+*Last updated: 2026-04-16 after shipping milestone v1.6*

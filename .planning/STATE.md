@@ -1,16 +1,17 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.6
-status: Ready to plan
-stopped_at: Roadmap created for v1.6 Installer Hardening
+milestone_name: Installer Hardening
+status: Milestone v1.6 shipped
+stopped_at: Milestone v1.6 Installer Hardening shipped
 last_updated: "2026-04-16"
 last_activity: 2026-04-16
 progress:
   total_phases: 6
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  completed_phases: 6
+  total_plans: 6
+  completed_plans: 6
+  percent: 100
 ---
 
 # Project State
@@ -20,29 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-16)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** Phase 23 - Atomic File Writes (v1.6 Installer Hardening)
+**Current focus:** milestone complete; waiting for the next roadmap decision
 
 ## Current Position
 
-Phase: 23 of 28 (Atomic File Writes)
-Plan: 0 of 0 in current phase
-Status: Ready to plan
-Last activity: 2026-04-16 — Roadmap created for v1.6
+Phase: v1.6 complete
+Plan: 6 of 6 plans completed
+Status: Installer hardening shipped — atomic writes, frontmatter parsing, schema validation, preservation, rewriting, regression coverage
+Last activity: 2026-04-16 — Milestone v1.6 complete
 
-Progress: [░░░░░░░░░░] 0%
+Progress: [##########] 100%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 65 (37 from v1.0, 2 from v1.1, 8 from v1.2, 9 from v1.3, 7 from v1.4)
-- Average duration: ~3 min
-- Total execution time: ~2.0 hours
-
-**Recent Trend:**
-
-- Last 5 plans: 4min, 3min, 7min, 7min, 4min
-- Trend: Stable
+- Total plans completed: 71 (37 from v1.0, 2 from v1.1, 8 from v1.2, 9 from v1.3, 7 from v1.4, 2 unrecorded from v1.5, 6 from v1.6)
+- Milestone v1.6: 6 phases, 6 plans, 88 new tests, zero new dependencies
 
 *Updated after each plan completion*
 
@@ -57,10 +52,16 @@ Recent decisions affecting current work:
 - [Phase 21]: Codex is a skill-native runtime surface and should expose `$scr-*` skills backed by mirrored command markdown
 - [Phase 22]: Runtime docs and tests must describe the same Codex and Claude install model the installer actually writes
 - [Milestone v1.6]: Hardening features use Node.js 20+ built-ins exclusively -- zero-dependency constraint preserved
+- [Phase 23]: Atomic writes use POSIX rename + crypto.randomUUID() temp suffix; orphan sweep at startup is anchored to strict UUID regex to avoid user-file collateral
+- [Phase 24]: Frontmatter parser is line-based, scoped to `---` block, splits on first colon only
+- [Phase 25]: Migration must run before validation to avoid bootstrap deadlock on old-format settings
+- [Phase 26]: Installer-owned fields (version, runtime, runtimes, scope, data_dir, install_mode, installed_at) overwrite; user-owned fields (developer_mode, unknown keys) preserve
+- [Phase 27]: Only `installCodexRuntime` command-file copy needed rewriting; subdirectory runtimes (Cursor, Gemini, etc.) keep `/scr:` native
+- [Phase 28]: Integration smoke test must use os.mkdtempSync + project-scope to avoid touching real ~/.claude / ~/.codex / ~/.scriven
 
 ### Pending Todos
 
-None.
+- Select the next milestone
 
 ### Blockers/Concerns
 
@@ -69,5 +70,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-04-16
-Stopped at: Roadmap created for v1.6 Installer Hardening (6 phases, 12 requirements)
+Stopped at: Milestone v1.6 shipped
 Resume file: None
