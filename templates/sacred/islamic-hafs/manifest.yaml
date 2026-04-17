@@ -1,0 +1,14 @@
+# Sacred tradition profile — placeholder manifest.
+# Real content (book_order, approval_block, font_stack, rtl, numbering, script)
+# lands in Phase 33 (Sacred Tradition Profiles).
+# DO NOT remove this file — Phase 29's validator (Plan 03) reads the
+# directory listing to populate the allowed tradition values.
+tradition: islamic-hafs
+label: "Islamic (Hafs ʿan ʿĀsim)"
+book_order: null
+approval_block: null
+font_stack: null
+rtl: null
+numbering: null
+script: null
+status: placeholder
