@@ -91,7 +91,11 @@
   2. A writer can set `tradition:` and `platform:` keys in their project spec and `data/CONSTRAINTS.json` validates the values, rejecting unknown profiles with a clear error
   3. An existing sacred work type (e.g. Bible, Quran commentary) opens cleanly in v1.7 with the correct default tradition inferred — the writer takes no action
   4. An existing book work type without a `platform:` key exports with KDP defaults — no writer action required for backwards compatibility
-**Plans**: TBD
+**Plans**:
+  - [ ] 29-01-PLAN.md — Seed templates/sacred/ and templates/platforms/ directories with 18 placeholder manifests + 2 READMEs (ARCH-01, ARCH-02)
+  - [ ] 29-02-PLAN.md — Add tradition/platform spec keys to templates/WORK.md + architectural_profiles schema to data/CONSTRAINTS.json (ARCH-03)
+  - [ ] 29-03-PLAN.md — Implement lib/architectural-profiles.js validator + default-inference module and re-export from bin/install.js (ARCH-04, ARCH-05)
+  - [ ] 29-04-PLAN.md — Regression test suite locking ARCH-01..ARCH-05 behavior (all 5 requirements)
 
 ### Phase 30: Export Cleanup & Validation Gate
 **Goal**: Writers can strip template scaffolding from their manuscript and are blocked from exporting a manuscript that still contains unresolved scaffold markers
@@ -195,7 +199,7 @@ Phases execute in numeric order: 29 -> 30 -> 31 -> 32 -> 33 -> 34 -> 35
 | 26. Settings & Template Preservation | v1.6 | 1/1 | Complete | 2026-04-16 |
 | 27. Multi-Runtime Command-Ref Rewriting | v1.6 | 1/1 | Complete | 2026-04-16 |
 | 28. Hardening Regression Coverage | v1.6 | 1/1 | Complete | 2026-04-16 |
-| 29. Architectural Foundation | v1.7 | 0/? | Not started | - |
+| 29. Architectural Foundation | v1.7 | 0/4 | Not started | - |
 | 30. Export Cleanup & Validation Gate | v1.7 | 0/? | Not started | - |
 | 31. Staged Front-Matter Generation | v1.7 | 0/? | Not started | - |
 | 32. Build Pipelines & Platform Awareness | v1.7 | 0/? | Not started | - |
