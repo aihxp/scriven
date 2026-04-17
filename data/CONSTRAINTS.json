@@ -1144,6 +1144,11 @@
       "hidden": ["prose", "script", "academic", "visual", "poetry", "interactive", "speech_song"],
       "requires": ["draft_exists"]
     },
+    "sacred-verse-numbering": {
+      "category": "sacred_exclusive",
+      "available": ["sacred"],
+      "hidden": ["prose", "script", "academic", "visual", "poetry", "interactive", "speech_song"]
+    },
     "source-tracking": {
       "category": "sacred_exclusive",
       "available": ["sacred"],
