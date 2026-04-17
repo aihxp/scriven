@@ -69,6 +69,11 @@ Scriven is a spec-driven writing, publishing, and translation pipeline that runs
 - ✓ `/scr:build-print` print PDF pipeline (Pandoc+Typst, KDP/Ingram trim sizes, page-count guardrail) — v1.7 Phase 32 (BUILD-04, BUILD-05)
 - ✓ Platform manifests (KDP, IngramSpark, Apple, B&N, D2D, Kobo, Google, Smashwords) — v1.7 Phase 32 (PLATFORM-01..PLATFORM-03)
 - ✓ Phase 32 locked by 90 regression tests (1266 total) — zero new dependencies
+- ✓ All 10 sacred tradition manifests populated with book_order, approval_block, font_stack, rtl, numbering, script — v1.7 Phase 33 (TRAD-01..TRAD-04)
+- ✓ STEP 1.7 (TRADITION LOADING) added to build-ebook.md and build-print.md — v1.7 Phase 33 (TRAD-05)
+- ✓ front-matter.md STEP 3.5 approval block scaffold for traditions requiring ecclesiastical approval — v1.7 Phase 33 (TRAD-03-behavioral)
+- ✓ `/scr:sacred-verse-numbering` command for tradition verse citation reference — v1.7 Phase 33 (TRAD-04-behavioral)
+- ✓ Phase 33 locked by 161 regression tests (1427 total) — zero new dependencies
 
 ### Out of Scope
 
