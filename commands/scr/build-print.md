@@ -16,7 +16,9 @@ Assemble the manuscript and produce a print-ready PDF for the selected publishin
 **Flags:**
   `--hardcover`    Use hardcover page limit for KDP (550pp) instead of paperback (828pp)
 
-**Platform values:** `kdp | ingram | apple | bn | d2d | kobo | google | smashwords` (default: kdp)
+**Platform values:** `kdp | ingram | apple | bn | d2d | kobo | google | smashwords | ieee | acm | lncs | elsevier | apa7` (default: kdp)
+
+**Academic platforms** (`ieee | acm | lncs | elsevier | apa7`): produce `.tex` source only — no `--trim` applies, no `--hardcover` applies. Writer compiles with their own TeX distribution.
 
 **Trim values (KDP/Ingram):** `5x8 | 5.25x8 | 5.5x8.5 | 6x9 | 7x10` (default: 6x9)
 
@@ -39,10 +41,10 @@ Load the following project files:
 
 Look up `build_print` in `CONSTRAINTS.json` under the `exports` section. Find the current work type's group in `CONSTRAINTS.json` under `work_type_groups`. Check if the group is in the `build_print.available` list.
 
-Available for: `["prose", "visual", "poetry", "sacred"]`
+Available for: `["prose", "visual", "poetry", "sacred", "academic"]`
 
 If the work type group is **not available**:
-> This command is not available for [work_type] projects. The print PDF build is available for: prose, visual, poetry, and sacred work types.
+> This command is not available for [work_type] projects. The print PDF build is available for: prose, visual, poetry, sacred, and academic work types.
 
 Then **stop**.
 
@@ -169,6 +171,30 @@ Proceed to STEP 1.8.
 
 Read `work_type` from `.manuscript/config.json`.
 
+**If `--platform` is one of `ieee`, `acm`, `lncs`, `elsevier`, `apa7` (academic publisher platforms):**
+
+Map the platform to its LaTeX wrapper template:
+
+| Platform | LATEX_TEMPLATE |
+|----------|----------------|
+| `ieee` | `data/export-templates/scriven-ieee.latex` |
+| `acm` | `data/export-templates/scriven-acm.latex` |
+| `lncs` | `data/export-templates/scriven-lncs.latex` |
+| `elsevier` | `data/export-templates/scriven-elsevier.latex` |
+| `apa7` | `data/export-templates/scriven-apa7.latex` |
+
+Set `LATEX_TEMPLATE` to the resolved path.
+
+If the template file does not exist at that path:
+> **Build template missing: `data/export-templates/scriven-{platform}.latex` not found.**
+> Re-install Scriven or restore the file from the repository.
+
+Then **stop**.
+
+Set `TYPST_TEMPLATE` to null (Typst path is not used for academic platforms). Proceed to STEP 2.
+
+---
+
 Map `work_type` to the appropriate Typst template:
 
 | work_type | Template |
@@ -253,6 +279,72 @@ If Ghostscript is not found:
 
 Then **stop**.
 
+**If `--platform` is one of `ieee`, `acm`, `lncs`, `elsevier`, `apa7`, check for kpsewhich (TeX distribution presence):**
+
+```bash
+command -v kpsewhich >/dev/null 2>&1
+```
+
+If kpsewhich is not found:
+
+> **No TeX distribution found. kpsewhich is required to verify LaTeX class availability.**
+>
+> **Install a TeX distribution:**
+> - macOS: `brew install basictex` (BasicTeX, ~100 MB) or `brew install mactex` (full TeX Live, ~4 GB)
+> - Linux: `sudo apt install texlive-base` or download TeX Live from https://tug.org/texlive/
+> - Windows: Download MiKTeX from https://miktex.org/ or TeX Live from https://tug.org/texlive/
+>
+> After installing, run this build command again.
+
+Then **stop**.
+
+Map the platform to its publisher class file and `tlmgr` package:
+
+| Platform | Class file | tlmgr package |
+|----------|-----------|---------------|
+| `ieee` | `IEEEtran.cls` | `ieeetran` |
+| `acm` | `acmart.cls` | `acmart` |
+| `lncs` | `llncs.cls` | `llncs` |
+| `elsevier` | `elsarticle.cls` | `elsarticle` |
+| `apa7` | `apa7.cls` | `apa7` |
+
+Check for the publisher class:
+
+```bash
+kpsewhich <CLASS_FILE> >/dev/null 2>&1
+```
+
+If the class is not found, show the platform-specific install command:
+
+- For `ieee` (IEEEtran.cls not found):
+  > **`IEEEtran.cls` is not installed in your TeX distribution.**
+  > Install it: `tlmgr install ieeetran`
+  > After installing, run this build command again.
+
+- For `acm` (acmart.cls not found):
+  > **`acmart.cls` is not installed in your TeX distribution.**
+  > Install it: `tlmgr install acmart`
+  > After installing, run this build command again.
+
+- For `lncs` (llncs.cls not found):
+  > **`llncs.cls` is not installed in your TeX distribution.**
+  > Install it: `tlmgr install llncs`
+  > If `tlmgr` is unavailable, download `llncs.cls` from Springer's author resources:
+  > https://www.springer.com/gp/computer-science/lncs/conference-proceedings-guidelines
+  > After installing, run this build command again.
+
+- For `elsevier` (elsarticle.cls not found):
+  > **`elsarticle.cls` is not installed in your TeX distribution.**
+  > Install it: `tlmgr install elsarticle`
+  > After installing, run this build command again.
+
+- For `apa7` (apa7.cls not found):
+  > **`apa7.cls` is not installed in your TeX distribution.**
+  > Install it: `tlmgr install apa7`
+  > After installing, run this build command again.
+
+Then **stop**.
+
 ---
 
 ### STEP 2.5: VALIDATE PLATFORM AND TRIM SIZE
@@ -265,12 +357,12 @@ Then **stop**.
 **Validate the platform slug:**
 
 Check that the slug is one of the following allowed values:
-`kdp`, `ingram`, `apple`, `bn`, `d2d`, `kobo`, `google`, `smashwords`
+`kdp`, `ingram`, `apple`, `bn`, `d2d`, `kobo`, `google`, `smashwords`, `ieee`, `acm`, `lncs`, `elsevier`, `apa7`
 
 If the platform slug is invalid:
 > **Platform "{slug}" is not recognised.**
 >
-> Valid platforms: kdp, ingram, apple, bn, d2d, kobo, google, smashwords
+> Valid platforms: kdp, ingram, apple, bn, d2d, kobo, google, smashwords, ieee, acm, lncs, elsevier, apa7
 >
 > Example: `/scr:build-print --platform kdp`
 
@@ -282,6 +374,14 @@ Then **stop**.
 > To build an EPUB for this platform, run: `/scr:build-ebook --platform {slug}`
 
 Then **stop**.
+
+**If platform is an academic publisher platform** (`ieee`, `acm`, `lncs`, `elsevier`, `apa7`):
+
+Skip trim-size validation and page-count guardrail — these are not applicable to `.tex` output. Academic platforms have no trim size or page limit.
+
+Proceed directly to STEP 3.
+
+---
 
 **Load manifest for selected platform:**
 
@@ -381,6 +481,29 @@ Read `.manuscript/config.json` and `.manuscript/WORK.md` (if it exists) to gener
 
 ### STEP 4: BUILD PDF
 
+**If `--platform` is one of `ieee`, `acm`, `lncs`, `elsevier`, `apa7` (academic LaTeX route):**
+
+```bash
+pandoc .manuscript/output/assembled-manuscript.md \
+  -o .manuscript/output/paper-{platform}.tex \
+  --template=data/export-templates/scriven-{platform}.latex \
+  --metadata-file=.manuscript/output/metadata.yaml
+```
+
+Note: No `--pdf-engine` flag is used. Pandoc produces LaTeX source (`.tex`) only. To compile to PDF, run in `.manuscript/output/`:
+
+```bash
+# Typical pdflatex compilation workflow:
+pdflatex paper-{platform}.tex
+bibtex paper-{platform}
+pdflatex paper-{platform}.tex
+pdflatex paper-{platform}.tex
+```
+
+Proceed to STEP 5.
+
+---
+
 Look up trim dimensions from manifest:
 - `width_in` from `manifest.trim_sizes[trim].width_in`
 - `height_in` from `manifest.trim_sizes[trim].height_in`
@@ -426,4 +549,16 @@ Show:
 Get file size with:
 ```bash
 ls -lh .manuscript/output/print-{platform}.pdf | awk '{print $5}'
+```
+
+For academic platforms (`ieee`, `acm`, `lncs`, `elsevier`, `apa7`), show instead:
+
+```
+✓ LaTeX source built → .manuscript/output/paper-{platform}.tex ({file_size})
+  Compile with pdflatex or xelatex using your TeX distribution.
+```
+
+Get file size with:
+```bash
+ls -lh .manuscript/output/paper-{platform}.tex | awk '{print $5}'
 ```
