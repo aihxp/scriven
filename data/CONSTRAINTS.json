@@ -1069,6 +1069,18 @@
       "description": "Build print-ready PDF with platform trim sizes and page-count guardrails (Pandoc + Typst)",
       "requires": ["complete-draft"]
     },
+    "build-smashwords": {
+      "category": "publishing",
+      "available": ["prose", "visual"],
+      "description": "Build Smashwords/D2D-compliant DOCX via Pandoc --reference-doc (no tabs, first-line indent via style, auto-TOC)",
+      "requires": ["complete-draft"]
+    },
+    "build-poetry-submission": {
+      "category": "publishing",
+      "available": ["poetry"],
+      "description": "Build poetry submission manuscript DOCX (one poem per page, 12pt Times/Garamond, title page, TOC)",
+      "requires": ["complete-draft"]
+    },
     "translate": {
       "category": "translation",
       "available": ["all"],
