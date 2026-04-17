@@ -430,10 +430,19 @@ function atomicWriteFileSync(targetPath, content) {
   const dir = path.dirname(targetPath);
   fs.mkdirSync(dir, { recursive: true });
   const tmpPath = `${targetPath}.tmp.${crypto.randomUUID()}`;
+  const buffer = Buffer.isBuffer(content) ? content : Buffer.from(String(content));
+  let fd;
   try {
-    fs.writeFileSync(tmpPath, content);
+    fd = fs.openSync(tmpPath, 'w');
+    fs.writeSync(fd, buffer, 0, buffer.length, 0);
+    fs.fsyncSync(fd);
+    fs.closeSync(fd);
+    fd = undefined;
     fs.renameSync(tmpPath, targetPath);
   } catch (err) {
+    if (fd !== undefined) {
+      try { fs.closeSync(fd); } catch { /* best effort */ }
+    }
     try { fs.unlinkSync(tmpPath); } catch { /* best effort */ }
     throw err;
   }
@@ -534,7 +543,7 @@ function writeInstalledCommandManifest(commandsDir, runtimeKey, fileNames) {
     files: fileNames,
     generated_at: new Date().toISOString(),
   };
-  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+  atomicWriteFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 }
 
 function printHelp() {
@@ -754,7 +763,7 @@ function writeCodexSkillManifest(skillsDir, skillNames) {
     skills: skillNames,
     generated_at: new Date().toISOString(),
   };
-  fs.writeFileSync(manifestPath, JSON.stringify(manifest, null, 2));
+  atomicWriteFileSync(manifestPath, JSON.stringify(manifest, null, 2));
 }
 
 async function main() {
@@ -874,7 +883,7 @@ function installClaudeCommandRuntime(runtime, isGlobal, log) {
     const sourceContent = fs.readFileSync(sourcePath, 'utf8');
     const fileName = commandEntryToFlatCommandFileName(entry);
     const targetPath = path.join(commandsDir, fileName);
-    fs.writeFileSync(targetPath, generateClaudeCommandContent(entry, sourceContent));
+    atomicWriteFileSync(targetPath, generateClaudeCommandContent(entry, sourceContent));
   }
 
   writeInstalledCommandManifest(commandsDir, 'claude-code', fileNames);
@@ -889,7 +898,7 @@ function installManifestSkillRuntime(runtime, isGlobal, log) {
   removePathIfExists(skillsDir);
   const manifest = generateSkillManifest(path.join(PKG_ROOT, 'data', 'CONSTRAINTS.json'));
   fs.mkdirSync(skillsDir, { recursive: true });
-  fs.writeFileSync(path.join(skillsDir, 'SKILL.md'), manifest);
+  atomicWriteFileSync(path.join(skillsDir, 'SKILL.md'), manifest);
   const commandCount = copyDir(path.join(PKG_ROOT, 'commands', 'scr'), path.join(skillsDir, 'commands', 'scr'));
   const agentCount = copyDir(path.join(PKG_ROOT, 'agents'), path.join(skillsDir, 'agents'));
   log(`  ${c('green', '✓')} ${runtime.label}: SKILL.md manifest → ${c('dim', path.join(skillsDir, 'SKILL.md'))}`);
@@ -915,7 +924,7 @@ function installCodexRuntime(runtime, isGlobal, log) {
     const skillDir = path.join(skillsDir, entry.skillName);
     fs.mkdirSync(skillDir, { recursive: true });
     const commandPath = path.join(commandsDir, entry.relativePath);
-    fs.writeFileSync(path.join(skillDir, 'SKILL.md'), generateCodexSkill(entry, commandPath));
+    atomicWriteFileSync(path.join(skillDir, 'SKILL.md'), generateCodexSkill(entry, commandPath));
   }
   writeCodexSkillManifest(skillsDir, skillNames);
 
@@ -940,9 +949,9 @@ function installGuidedRuntime(runtime, isGlobal, dataDir, log) {
 
   removePathIfExists(guideDir);
   fs.mkdirSync(guideDir, { recursive: true });
-  fs.writeFileSync(path.join(guideDir, 'SETUP.md'), setupGuide);
-  fs.writeFileSync(path.join(guideDir, 'connector-command.txt'), connectorCommand + '\n');
-  fs.writeFileSync(path.join(guideDir, 'connector-command.current-project.txt'), currentProjectCommand + '\n');
+  atomicWriteFileSync(path.join(guideDir, 'SETUP.md'), setupGuide);
+  atomicWriteFileSync(path.join(guideDir, 'connector-command.txt'), connectorCommand + '\n');
+  atomicWriteFileSync(path.join(guideDir, 'connector-command.current-project.txt'), currentProjectCommand + '\n');
 
   log(`  ${c('green', '✓')} ${runtime.label}: setup guide → ${c('dim', path.join(guideDir, 'SETUP.md'))}`);
   log(`  ${c('green', '✓')} ${runtime.label}: connector recipe → ${c('dim', path.join(guideDir, 'connector-command.txt'))}`);
@@ -967,7 +976,7 @@ function writeSharedAssets(dataDir, runtimeKeys, isGlobal, developerMode, instal
     install_mode: installMode,
     installed_at: new Date().toISOString(),
   };
-  fs.writeFileSync(path.join(dataDir, 'settings.json'), JSON.stringify(settings, null, 2));
+  atomicWriteFileSync(path.join(dataDir, 'settings.json'), JSON.stringify(settings, null, 2));
   log(`  ${c('green', '✓')} settings.json → ${c('dim', path.join(dataDir, 'settings.json'))}`);
 }
 
@@ -994,12 +1003,46 @@ function printNextSteps(runtimeKeys) {
   console.log('\n' + c('dim', `Docs: ${DOCS_URL}\n`));
 }
 
+function collectTargetDirsForSweep(runtimeKeys, isGlobal, dataDir) {
+  const dirs = new Set([dataDir]);
+  for (const runtimeKey of runtimeKeys) {
+    const runtime = RUNTIMES[runtimeKey];
+    if (!runtime) continue;
+    const resolve = (g, p) => isGlobal ? g : (p ? path.resolve(p) : null);
+    if (runtime.commands_dir_global || runtime.commands_dir_project) {
+      const d = resolve(runtime.commands_dir_global, runtime.commands_dir_project);
+      if (d) dirs.add(d);
+    }
+    if (runtime.skills_dir_global || runtime.skills_dir_project) {
+      const d = resolve(runtime.skills_dir_global, runtime.skills_dir_project);
+      if (d) dirs.add(d);
+    }
+    if (runtime.agents_dir_global || runtime.agents_dir_project) {
+      const d = resolve(runtime.agents_dir_global, runtime.agents_dir_project);
+      if (d) dirs.add(d);
+    }
+    if (runtime.guide_dir_global || runtime.guide_dir_project) {
+      const d = resolve(runtime.guide_dir_global, runtime.guide_dir_project);
+      if (d) dirs.add(d);
+    }
+  }
+  return Array.from(dirs);
+}
+
 function runInstall({ runtimeKeys, isGlobal, developerMode, silent, installMode }) {
   const dataDir = isGlobal ? path.join(os.homedir(), '.scriven') : path.resolve('.scriven');
   const log = silent ? () => {} : (message) => console.log(message);
 
   if (!runtimeKeys.length) {
     throw new Error('No runtimes selected for installation');
+  }
+
+  let totalOrphansRemoved = 0;
+  for (const dir of collectTargetDirsForSweep(runtimeKeys, isGlobal, dataDir)) {
+    totalOrphansRemoved += cleanOrphanedTempFiles(dir);
+  }
+  if (totalOrphansRemoved > 0) {
+    log(c('dim', `  Cleaned ${totalOrphansRemoved} orphaned temp file(s) from prior interrupted install`));
   }
 
   if (!silent) {
@@ -1063,4 +1106,5 @@ module.exports = {
   generatePerplexitySetupGuide,
   atomicWriteFileSync,
   cleanOrphanedTempFiles,
+  collectTargetDirsForSweep,
 };
