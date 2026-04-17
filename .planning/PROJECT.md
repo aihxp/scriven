@@ -55,7 +55,7 @@ Scriven is a spec-driven writing, publishing, and translation pipeline that runs
 
 ### Active
 
-- v1.7 Last Mile — 6 phases remaining (30-35). Phase 29 Architectural Foundation shipped 2026-04-17.
+- v1.7 Last Mile — 1 phase remaining (35). Phase 34 Cross-Domain Templates shipped 2026-04-17.
 
 ### Validated (v1.7 so far)
 
@@ -74,6 +74,14 @@ Scriven is a spec-driven writing, publishing, and translation pipeline that runs
 - ✓ front-matter.md STEP 3.5 approval block scaffold for traditions requiring ecclesiastical approval — v1.7 Phase 33 (TRAD-03-behavioral)
 - ✓ `/scr:sacred-verse-numbering` command for tradition verse citation reference — v1.7 Phase 33 (TRAD-04-behavioral)
 - ✓ Phase 33 locked by 161 regression tests (1427 total) — zero new dependencies
+- ✓ Stage play Typst template (Samuel French format, 8.5×11, centered ALLCAPS character names, italic stage directions) — v1.7 Phase 34 (TPL-01)
+- ✓ Picture book Typst template (8.75×8.75 with 0.125" bleed + 0.25" safe zone, spread pagination) — v1.7 Phase 34 (TPL-02)
+- ✓ Fixed-layout EPUB CSS + OPF stub (`-epub-layout: pre-paginated`, `rendition:layout`, auto-detect for picture_book) — v1.7 Phase 34 (TPL-03)
+- ✓ Smashwords DOCX reference doc + companion style spec + `/scr:build-smashwords` command — v1.7 Phase 34 (TPL-04)
+- ✓ Chapbook Typst template (5.5×8.5, saddle-stitch page-count constraint) — v1.7 Phase 34 (TPL-05)
+- ✓ Poetry submission DOCX reference doc + companion style spec + `/scr:build-poetry-submission` command (title page, conditional TOC for 5+ poems) — v1.7 Phase 34 (TPL-06)
+- ✓ STEP 1.8 (work-type template routing) added to build-print.md; `--fixed-layout` flag added to build-ebook.md — v1.7 Phase 34
+- ✓ Phase 34 locked by 44 regression tests (1471 total) — zero new dependencies
 
 ### Out of Scope
 
@@ -126,7 +134,7 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 ## Current State
 
 **Latest shipped milestone:** v1.6 Installer Hardening
-**Status:** Milestone v1.7 Last Mile started 2026-04-17; defining requirements
+**Status:** Milestone v1.7 Last Mile in progress — Phase 34 complete, 1 phase remaining (35: Academic LaTeX Wrappers)
 
 **Current product surface:**
 - Installer writes are crash-safe via atomic temp-file-then-rename with orphan cleanup on startup
@@ -206,4 +214,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-17 — v1.7 Phase 29 (Architectural Foundation) shipped; 6 phases remaining (30-35)*
+*Last updated: 2026-04-17 — v1.7 Phase 34 (Cross-Domain Narrative & Poetry Templates) shipped; 1 phase remaining (35)*
