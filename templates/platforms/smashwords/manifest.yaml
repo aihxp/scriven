@@ -1,0 +1,13 @@
+# Publishing platform profile — placeholder manifest.
+# Real content (trim_sizes, max_pages, epub_variant, metadata_shape, formats_accepted)
+# lands in Phase 32 (Build Pipelines & Platform Awareness).
+# DO NOT remove this file — Phase 29's validator (Plan 03) reads the
+# directory listing to populate the allowed platform values.
+platform: smashwords
+label: "Smashwords"
+trim_sizes: null
+max_pages: null
+epub_variant: null
+metadata_shape: null
+formats_accepted: null
+status: placeholder
