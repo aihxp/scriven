@@ -123,6 +123,41 @@ Proceed to STEP 2.
 
 ---
 
+### STEP 1.7: TRADITION LOADING
+
+Read `tradition:` from `.manuscript/config.json`.
+
+If absent or null: skip this step silently and proceed to STEP 2.
+
+Validate the tradition slug against the accepted list:
+`catholic`, `orthodox`, `tewahedo`, `protestant`, `jewish`, `islamic-hafs`, `islamic-warsh`, `pali`, `tibetan`, `sanskrit`
+
+If the value is not in this list:
+> **Unknown tradition "{tradition}". Valid values: catholic, orthodox, tewahedo, protestant, jewish, islamic-hafs, islamic-warsh, pali, tibetan, sanskrit**
+
+Then **stop**.
+
+If present and valid, load `templates/sacred/{tradition}/manifest.yaml`.
+
+Apply tradition data to `.manuscript/output/metadata.yaml` (before STEP 3f writes the file):
+- Set `lang:` to the tradition's primary language tag:
+  - `arabic` script → `ar`
+  - `hebrew` script → `he`
+  - `ethiopic` script → `am` (Amharic, primary Ge'ez liturgical language)
+  - `tibetan` script → `bo`
+  - `devanagari` script → `sa` (Sanskrit)
+  - `latin` script → use the project language from config.json (default `en`)
+- Set `font-family:` to the first entry in the manifest's `font_stack`.
+
+If `rtl: true` in the manifest, add `--metadata dir=rtl` to the Pandoc invocation in STEP 4.
+
+If `approval_block.required: true` in the manifest, show after the build completes:
+> **Note:** This tradition requires an approval block ("{{approval_block.label}}") before publication. Scope: {{approval_block.scope}}.
+
+Proceed to STEP 2.
+
+---
+
 ### STEP 2: CHECK PREREQUISITES
 
 Check for Pandoc:
