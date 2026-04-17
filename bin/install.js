@@ -757,6 +757,51 @@ function copyDir(src, dest) {
   return count;
 }
 
+function sha256File(filePath) {
+  try {
+    const buf = fs.readFileSync(filePath);
+    return crypto.createHash('sha256').update(buf).digest('hex');
+  } catch (err) {
+    if (err.code === 'ENOENT') return null;
+    throw err;
+  }
+}
+
+function copyDirWithPreservation(src, dest, options = {}) {
+  const timestamp = options.timestamp || new Date().toISOString().replace(/[:.]/g, '-');
+  const result = { fresh: 0, replaced: 0, backedUp: 0 };
+  if (!fs.existsSync(src)) return result;
+  fs.mkdirSync(dest, { recursive: true });
+  for (const entry of fs.readdirSync(src, { withFileTypes: true })) {
+    const srcPath = path.join(src, entry.name);
+    const destPath = path.join(dest, entry.name);
+    if (entry.isDirectory()) {
+      const sub = copyDirWithPreservation(srcPath, destPath, { ...options, timestamp });
+      result.fresh += sub.fresh;
+      result.replaced += sub.replaced;
+      result.backedUp += sub.backedUp;
+      continue;
+    }
+    const destHash = sha256File(destPath);
+    if (destHash === null) {
+      fs.copyFileSync(srcPath, destPath);
+      result.fresh++;
+      continue;
+    }
+    const srcHash = sha256File(srcPath);
+    if (srcHash === destHash) {
+      fs.copyFileSync(srcPath, destPath);
+      result.replaced++;
+    } else {
+      const backupPath = `${destPath}.backup.${timestamp}`;
+      fs.renameSync(destPath, backupPath);
+      fs.copyFileSync(srcPath, destPath);
+      result.backedUp++;
+    }
+  }
+  return result;
+}
+
 function readJsonIfExists(filePath) {
   if (!fs.existsSync(filePath)) return null;
   try {
@@ -776,6 +821,18 @@ const SETTINGS_SCHEMA = [
   { name: 'install_mode', type: 'string', required: true, enum: ['interactive', 'non-interactive'] },
   { name: 'installed_at', type: 'string', required: true },
 ];
+
+const INSTALLER_OWNED_FIELDS = ['version', 'runtime', 'runtimes', 'scope', 'data_dir', 'install_mode', 'installed_at'];
+
+function mergeSettings(existing, incoming, _schema = SETTINGS_SCHEMA) {
+  const merged = { ...incoming };
+  if (!existing || typeof existing !== 'object' || Array.isArray(existing)) return merged;
+  for (const [key, value] of Object.entries(existing)) {
+    if (INSTALLER_OWNED_FIELDS.includes(key)) continue;
+    merged[key] = value;
+  }
+  return merged;
+}
 
 function migrateSettings(raw) {
   if (raw == null) return null;
@@ -1291,4 +1348,9 @@ module.exports = {
   validateSettings,
   migrateSettings,
   readSettings,
+  readJsonIfExists,
+  sha256File,
+  copyDirWithPreservation,
+  mergeSettings,
+  INSTALLER_OWNED_FIELDS,
 };
