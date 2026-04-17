@@ -117,6 +117,52 @@ If no markers found: proceed to STEP 2.
 
 ---
 
+### STEP 1.6: FRONT-MATTER GATE
+
+**1.6a — Scaffold exclusion**
+
+Check if `.manuscript/front-matter/` exists.
+
+If the directory does not exist:
+> **Note:** No front matter found — run `/scr:front-matter` first if you want publication front matter included.
+
+Proceed to 1.6b.
+
+If the directory exists, scan all `.md` files in `.manuscript/front-matter/`. For each file, check the first 10 lines for a YAML block containing `scaffold: true`. Build a scaffold exclusion list of the paths of all files where `scaffold: true` is found.
+
+If any files were added to the scaffold exclusion list, note them for the assembly step (STEP 3b) and show:
+> **Note:** [N] scaffold front-matter element(s) will be excluded from this export:
+>   - `.manuscript/front-matter/12-preface.md` (scaffold: true — edit and set scaffold: false to include)
+>
+> To include a scaffold element, open the file and change `scaffold: true` to `scaffold: false`.
+
+If no scaffold files were found, show no note.
+
+**1.6b — GENERATE element auto-refresh**
+
+If `.manuscript/WORK.md` does not exist, skip auto-refresh and proceed to STEP 2.
+
+Compare the modification timestamp of `.manuscript/WORK.md` against each of the following GENERATE front-matter files:
+- `.manuscript/front-matter/01-half-title.md`
+- `.manuscript/front-matter/03-title-page.md`
+- `.manuscript/front-matter/04-copyright.md`
+- `.manuscript/front-matter/07-toc.md`
+
+To compare timestamps, use the appropriate command for the platform:
+- macOS: `stat -f %m <file>`
+- Linux: `stat -c %Y <file>`
+- Windows: `(Get-Item '<file>').LastWriteTimeUtc.Ticks`
+- If timestamp comparison is not possible, assume WORK.md is newer and regenerate.
+
+If WORK.md is newer than ANY of those 4 files, or if ANY of those 4 files do not exist:
+Re-run the GENERATE step from `/scr:front-matter` for elements 1, 3, 4, and 7 only (half-title, title page, copyright page, TOC) using current WORK.md metadata. Do NOT regenerate scaffold elements (5, 6, 11, 12, 13) or any other elements.
+
+If WORK.md is not newer than all 4 files and all 4 files exist: skip regeneration silently.
+
+Proceed to STEP 2.
+
+---
+
 ### STEP 2: CHECK PREREQUISITES
 
 Check for required external tools based on the requested format.
@@ -194,6 +240,8 @@ Read all files in `.manuscript/front-matter/` directory. Sort by numeric prefix 
 04-copyright.md
 ...
 ```
+
+**Scaffold exclusion:** Omit any files whose path appears in the scaffold exclusion list from STEP 1.6a. These files have `scaffold: true` in their frontmatter and are not yet ready for publication.
 
 If no front matter files exist:
 > **Note:** No front matter found. Consider running `/scr:front-matter` to generate title page, copyright, and other publishing elements.

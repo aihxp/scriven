@@ -151,9 +151,10 @@ describe('Phase 31: FM-03 export.md and publish.md have STEP 1.6 scaffold exclus
     const content = readFile(EXPORT_PATH);
     assert.ok(content !== null, 'commands/scr/export.md could not be read');
     const step16Pos = content.indexOf('STEP 1.6');
-    const step2Pos = content.indexOf('STEP 2');
+    // Use the section heading to avoid matching inline "Proceed to STEP 2." references in STEP 1.5
+    const step2Pos = content.indexOf('### STEP 2:');
     assert.ok(step16Pos !== -1, 'export.md must contain STEP 1.6 — FM-03 scaffold gate');
-    assert.ok(step2Pos !== -1, 'export.md must contain STEP 2 (CHECK PREREQUISITES) — FM-03 ordering check requires it');
+    assert.ok(step2Pos !== -1, 'export.md must contain ### STEP 2: (CHECK PREREQUISITES) — FM-03 ordering check requires it');
     assert.ok(
       step16Pos < step2Pos,
       'FM-03: STEP 1.6 must appear before STEP 2 in export.md — front-matter gate must run before prerequisite checks'
@@ -186,9 +187,10 @@ describe('Phase 31: FM-03 export.md and publish.md have STEP 1.6 scaffold exclus
     const content = readFile(PUBLISH_PATH);
     assert.ok(content !== null, 'commands/scr/publish.md could not be read');
     const step16Pos = content.indexOf('STEP 1.6');
-    const step2Pos = content.indexOf('STEP 2');
+    // Use the section heading to avoid matching inline "Proceed to STEP 2." references in STEP 1.5
+    const step2Pos = content.indexOf('### STEP 2:');
     assert.ok(step16Pos !== -1, 'publish.md must contain STEP 1.6 — FM-03 scaffold gate');
-    assert.ok(step2Pos !== -1, 'publish.md must contain STEP 2 (ROUTE) — FM-03 ordering check requires it');
+    assert.ok(step2Pos !== -1, 'publish.md must contain ### STEP 2: (ROUTE) — FM-03 ordering check requires it');
     assert.ok(
       step16Pos < step2Pos,
       'FM-03: STEP 1.6 must appear before STEP 2 in publish.md — front-matter gate must run before preset routing'
