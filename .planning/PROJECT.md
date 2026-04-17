@@ -63,6 +63,12 @@ Scriven is a spec-driven writing, publishing, and translation pipeline that runs
 - ✓ `architectural_profiles` schema in `data/CONSTRAINTS.json` with tradition/platform taxonomies + inference map — v1.7 Phase 29 (ARCH-03)
 - ✓ `lib/architectural-profiles.js` runtime validator + default-inference (listTraditions, listPlatforms, validateTradition, validatePlatform, inferTradition, inferPlatform) — v1.7 Phase 29 (ARCH-04, ARCH-05)
 - ✓ Phase 29 locked by 54 regression tests (1132 total) — zero new dependencies
+- ✓ Export cleanup dry-run/--apply, validate gate (STEP 1.5) in export.md/publish.md — v1.7 Phase 30 (VG-01..VG-05)
+- ✓ Staged front-matter generation: scaffold:true YAML, STEP 1.6 gate, GENERATE auto-refresh — v1.7 Phase 31 (FM-01..FM-04)
+- ✓ `/scr:build-ebook` EPUB pipeline (Pandoc, accessibility lang/alt/nav, platform manifests) — v1.7 Phase 32 (BUILD-01..BUILD-03)
+- ✓ `/scr:build-print` print PDF pipeline (Pandoc+Typst, KDP/Ingram trim sizes, page-count guardrail) — v1.7 Phase 32 (BUILD-04, BUILD-05)
+- ✓ Platform manifests (KDP, IngramSpark, Apple, B&N, D2D, Kobo, Google, Smashwords) — v1.7 Phase 32 (PLATFORM-01..PLATFORM-03)
+- ✓ Phase 32 locked by 90 regression tests (1266 total) — zero new dependencies
 
 ### Out of Scope
 

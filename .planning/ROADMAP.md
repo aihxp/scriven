@@ -75,7 +75,7 @@
 - [x] **Phase 29: Architectural Foundation** - `templates/sacred/` + `templates/platforms/` directories and `tradition:` / `platform:` spec keys with clean default-inference migration (completed 2026-04-17)
 - [x] **Phase 30: Export Cleanup & Validation Gate** - `/scr:cleanup` scaffold-stripping and `/scr:validate` pre-flight gate blocking export when unresolved markers remain (completed 2026-04-17)
 - [x] **Phase 31: Staged Front-Matter Generation** - Auto-computable front matter regenerates on metadata change; personalization elements ship as explicit scaffolds excluded from export (completed 2026-04-17)
-- [ ] **Phase 32: Build Pipelines & Platform Awareness** - `/scr:build-ebook` + `/scr:build-print` with per-platform trim/page guardrails, prerequisite detection, and EPUBCheck/EAA compliance
+- [x] **Phase 32: Build Pipelines & Platform Awareness** - `/scr:build-ebook` + `/scr:build-print` with per-platform trim/page guardrails, prerequisite detection, and EPUBCheck/EAA compliance (completed 2026-04-17)
 - [ ] **Phase 33: Sacred Tradition Profiles** - Ten tradition profiles (catholic, orthodox, tewahedo, protestant, jewish, islamic-hafs/warsh, pali, tibetan, sanskrit) with approval blocks, font stacks, RTL, and numbering macros
 - [ ] **Phase 34: Cross-Domain Narrative & Poetry Templates** - Stage play, picture book, fixed-layout EPUB + OPF stub, Smashwords DOCX, chapbook, and poetry-submission templates
 - [ ] **Phase 35: Academic LaTeX Wrappers** - Thin IEEE / ACM / LNCS / Elsevier / APA7 wrappers that reference user-installed publisher classes
@@ -136,9 +136,9 @@
   4. A writer whose manuscript word count projects to 900 pages on 6×9 sees a warning that it exceeds KDP paperback (828pp) and is offered IngramSpark (1200pp) as a viable path
   5. A writer selecting an unsupported trim size for their chosen platform is rejected with a clear error and the list of trim sizes that platform accepts
 **Plans**: 3 plans
-  - [ ] 32-01-PLAN.md — Phase 32 regression test suite (BUILD-01..BUILD-05, PLATFORM-01..PLATFORM-03)
-  - [ ] 32-02-PLAN.md — Create /scr:build-ebook and /scr:build-print command files (BUILD-01..BUILD-05)
-  - [ ] 32-03-PLAN.md — Platform awareness: trim size tables, page-count guardrails, prerequisite detection (PLATFORM-01..PLATFORM-03)
+  - [x] 32-01-PLAN.md — Phase 32 regression test suite (BUILD-01..BUILD-05, PLATFORM-01..PLATFORM-03)
+  - [x] 32-02-PLAN.md — Create /scr:build-ebook and /scr:build-print command files (BUILD-01..BUILD-05)
+  - [x] 32-03-PLAN.md — Platform awareness: trim size tables, page-count guardrails, prerequisite detection (PLATFORM-01..PLATFORM-03)
 
 ### Phase 33: Sacred Tradition Profiles
 **Goal**: Sacred work types adapt to the writer's tradition — not just Roman Catholic — so book order, approval blocks, fonts, script direction, and verse numbering all match the lineage
@@ -220,7 +220,7 @@ Phases execute in numeric order: 29 -> 30 -> 31 -> 32 -> 33 -> 34 -> 35
 | 29. Architectural Foundation | v1.7 | 4/4 | Complete    | 2026-04-17 |
 | 30. Export Cleanup & Validation Gate | v1.7 | 3/3 | Complete   | 2026-04-17 |
 | 31. Staged Front-Matter Generation | v1.7 | 3/3 | Complete    | 2026-04-17 |
-| 32. Build Pipelines & Platform Awareness | v1.7 | 0/3 | Not started | - |
+| 32. Build Pipelines & Platform Awareness | v1.7 | 3/3 | Complete    | 2026-04-17 |
 | 33. Sacred Tradition Profiles | v1.7 | 0/3 | Not started | - |
 | 34. Cross-Domain Narrative & Poetry Templates | v1.7 | 0/3 | Not started | - |
 | 35. Academic LaTeX Wrappers | v1.7 | 0/3 | Not started | - |
