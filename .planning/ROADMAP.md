@@ -106,7 +106,10 @@
   2. A writer running `/scr:validate` on a manuscript with unresolved scaffold markers sees a non-zero exit and a list of files + markers to fix
   3. A writer invoking `/scr:export`, `/scr:publish`, `/scr:build-ebook`, or `/scr:build-print` on a manuscript with unresolved markers is blocked before the converter runs, with actionable guidance pointing to `/scr:cleanup` or the specific file:line
   4. A writer running `/scr:validate` on a clean manuscript sees an explicit pass confirmation and exits zero
-**Plans**: TBD
+**Plans**: 3 plans
+  - [ ] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
+  - [ ] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
+  - [ ] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
 
 ### Phase 31: Staged Front-Matter Generation
 **Goal**: Front-matter elements split cleanly into auto-computable vs writer-personalized, so the writer never sees scaffolding leak into published output and auto elements stay fresh as metadata changes
@@ -117,7 +120,10 @@
   2. A writer sees personalization elements (preface, foreword, dedication, epigraph, acknowledgments) emitted as files with `scaffold: true` in frontmatter and no assumed content
   3. A writer exporting a manuscript whose preface still has `scaffold: true` sees that file excluded from the build; flipping to `scaffold: false` or opting in includes it on the next build
   4. A writer updating title, author, copyright year, or ISBN in project metadata sees the auto-computable front-matter files refresh on the next export without rerunning `/scr:front-matter`
-**Plans**: TBD
+**Plans**: 3 plans
+  - [ ] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
+  - [ ] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
+  - [ ] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
 
 ### Phase 32: Build Pipelines & Platform Awareness
 **Goal**: Writers can produce EPUB and print-ready PDF output from the current manuscript for a selected publishing platform, with guardrails that warn before they build something the platform will reject
@@ -129,7 +135,10 @@
   3. A writer missing Pandoc, Typst, or Ghostscript sees an install-guidance message before the build attempts to run, not a cryptic downstream failure
   4. A writer whose manuscript word count projects to 900 pages on 6×9 sees a warning that it exceeds KDP paperback (828pp) and is offered IngramSpark (1200pp) as a viable path
   5. A writer selecting an unsupported trim size for their chosen platform is rejected with a clear error and the list of trim sizes that platform accepts
-**Plans**: TBD
+**Plans**: 3 plans
+  - [ ] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
+  - [ ] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
+  - [ ] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
 
 ### Phase 33: Sacred Tradition Profiles
 **Goal**: Sacred work types adapt to the writer's tradition — not just Roman Catholic — so book order, approval blocks, fonts, script direction, and verse numbering all match the lineage
@@ -140,7 +149,10 @@
   2. A Catholic writer's `/scr:front-matter` emits imprimatur + nihil obstat; an Orthodox or Tewahedo writer's emits patriarchate blessing; an Islamic writer's emits mushaf certification; a Sanskrit writer's emits sampradaya endorsement; a Protestant, Jewish, or Buddhist writer sees no approval block
   3. A Jewish writer running `/scr:sacred:verse-numbering` gets Masoretic boundaries (not Septuagint); an Islamic writer with `islamic-hafs` gets Hafs numbering (not Warsh); a Pali writer gets nikaya.sutta citations; a Sanskrit writer gets shloka numbering
   4. A writer building a Tewahedo PDF gets Ge'ez font rendering; an Orthodox writer gets polytonic Greek; an Islamic writer gets RTL Arabic with mushaf-grade typesetting; a Jewish writer can toggle cantillation; a Sanskrit writer gets Devanagari; a Tibetan writer gets Uchen with stacked consonants; a Pali writer gets correct diacritics
-**Plans**: TBD
+**Plans**: 3 plans
+  - [ ] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
+  - [ ] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
+  - [ ] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
 
 ### Phase 34: Cross-Domain Narrative & Poetry Templates
 **Goal**: Playwrights, picture-book authors, illustrated-book authors, Smashwords publishers, and poets can produce publication-ready output — not just book prose — through dedicated templates
@@ -152,7 +164,10 @@
   3. An illustrated or picture-book author can export a fixed-layout EPUB (with new template + OPF stub) that Apple Books accepts without manual post-processing
   4. A writer using D2D/Smashwords gets a `scriven-smashwords.docx` output compliant with the Style Guide — first-line indents via paragraph style, no tabs, no banned formatting
   5. A poet exporting a chapbook gets a 5.5×8.5 saddle-stitch PDF via `scriven-chapbook.typst` with page count constrained to multiples of 4, and exporting a submission manuscript gets a DOCX with one poem per page, 12pt Times/Garamond, title page, and TOC
-**Plans**: TBD
+**Plans**: 3 plans
+  - [ ] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
+  - [ ] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
+  - [ ] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
 
 ### Phase 35: Academic LaTeX Wrappers
 **Goal**: Academic writers can produce publisher-ready LaTeX by routing Scriven's voice/metadata frontmatter through thin wrappers that `\documentclass` into the user-installed IEEEtran, acmart, llncs, elsarticle, or apa7 class — without Scriven redistributing the class
@@ -162,7 +177,10 @@
   1. An academic writer exports an IEEE paper and gets a `.tex` file that `\documentclass{IEEEtran}` with Scriven's title/authors/abstract/keywords pulled from project metadata — the user's TeX Live provides `IEEEtran.cls`
   2. The same writer can re-target ACM, Springer LNCS, Elsevier, or APA7 simply by switching the wrapper — each wrapper references the user-installed class
   3. A writer missing the publisher class gets a clear install-guidance error naming the class (e.g. "Install `acmart.cls` via TeX Live or CTAN") rather than a LaTeX compile failure mid-build
-**Plans**: TBD
+**Plans**: 3 plans
+  - [ ] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
+  - [ ] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
+  - [ ] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
 
 ## Progress
 
