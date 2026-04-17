@@ -540,6 +540,8 @@ gs -dPDFX -dBATCH -dNOPAUSE \
 
 ### STEP 5: REPORT
 
+**If `--platform` is NOT one of `ieee`, `acm`, `lncs`, `elsevier`, `apa7`:**
+
 Show:
 
 ```
@@ -551,7 +553,7 @@ Get file size with:
 ls -lh .manuscript/output/print-{platform}.pdf | awk '{print $5}'
 ```
 
-For academic platforms (`ieee`, `acm`, `lncs`, `elsevier`, `apa7`), show instead:
+**If `--platform` IS one of `ieee`, `acm`, `lncs`, `elsevier`, `apa7`, show instead:**
 
 ```
 ✓ LaTeX source built → .manuscript/output/paper-{platform}.tex ({file_size})
