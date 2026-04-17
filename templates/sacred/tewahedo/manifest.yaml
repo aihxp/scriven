@@ -1,14 +1,106 @@
-# Sacred tradition profile — placeholder manifest.
-# Real content (book_order, approval_block, font_stack, rtl, numbering, script)
-# lands in Phase 33 (Sacred Tradition Profiles).
+# Sacred tradition profile — Ethiopian Orthodox Tewahedo.
+# Populated in Phase 33 (Sacred Tradition Profiles).
 # DO NOT remove this file — Phase 29's validator (Plan 03) reads the
 # directory listing to populate the allowed tradition values.
 tradition: tewahedo
 label: "Ethiopian Orthodox Tewahedo"
-book_order: null
-approval_block: null
-font_stack: null
-rtl: null
-numbering: null
-script: null
-status: placeholder
+status: active
+book_order:
+  - "Genesis"
+  - "Exodus"
+  - "Leviticus"
+  - "Numbers"
+  - "Deuteronomy"
+  - "Joshua"
+  - "Judges"
+  - "Ruth"
+  - "1 Samuel"
+  - "2 Samuel"
+  - "1 Kings"
+  - "2 Kings"
+  - "1 Chronicles"
+  - "2 Chronicles"
+  - "Jubilees"
+  - "Enoch"
+  - "Ezra"
+  - "Nehemiah"
+  - "Tobit"
+  - "Judith"
+  - "Esther"
+  - "1 Maccabees"
+  - "2 Maccabees"
+  - "3 Maccabees"
+  - "Job"
+  - "Psalms"
+  - "Proverbs"
+  - "Ecclesiastes"
+  - "Song of Songs"
+  - "Wisdom"
+  - "Sirach"
+  - "Isaiah"
+  - "Jeremiah"
+  - "Lamentations"
+  - "Baruch"
+  - "Ezekiel"
+  - "Daniel"
+  - "Hosea"
+  - "Joel"
+  - "Amos"
+  - "Obadiah"
+  - "Jonah"
+  - "Micah"
+  - "Nahum"
+  - "Habakkuk"
+  - "Zephaniah"
+  - "Haggai"
+  - "Zechariah"
+  - "Malachi"
+  - "Matthew"
+  - "Mark"
+  - "Luke"
+  - "John"
+  - "Acts"
+  - "Romans"
+  - "1 Corinthians"
+  - "2 Corinthians"
+  - "Galatians"
+  - "Ephesians"
+  - "Philippians"
+  - "Colossians"
+  - "1 Thessalonians"
+  - "2 Thessalonians"
+  - "1 Timothy"
+  - "2 Timothy"
+  - "Titus"
+  - "Philemon"
+  - "Hebrews"
+  - "James"
+  - "1 Peter"
+  - "2 Peter"
+  - "1 John"
+  - "2 John"
+  - "3 John"
+  - "Jude"
+  - "Revelation"
+  - "1 Clement"
+  - "2 Clement"
+  - "Didascalia"
+  - "Sinodos"
+  - "Clement Octateuch"
+  - "Ethiopic Didache"
+  - "Josippon"
+  - "Kebra Nagast"
+  - "Dirse Lidj"
+  - "Abushakar"
+approval_block:
+  label: "Patriarchal blessing"
+  required: true
+  scope: "work"
+font_stack:
+  - "Noto Serif Ethiopic"
+  - serif
+rtl: false
+numbering:
+  format: "chapter:verse"
+  separator: ":"
+script: ethiopic
