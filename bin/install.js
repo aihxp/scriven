@@ -28,6 +28,13 @@ function shellQuote(value) {
   return `'${String(value).replace(/'/g, `'\"'\"'`)}'`;
 }
 
+// Escape a string for safe embedding inside a YAML double-quoted scalar.
+// Handles both `\` and `"` — bare backslashes are invalid in YAML double-quoted
+// scalars, so they must be escaped before the `"`-escaping pass.
+function yamlDoubleQuoted(s) {
+  return String(s).replace(/\\/g, '\\\\').replace(/"/g, '\\"');
+}
+
 function buildFilesystemMcpCommand(allowedDirs) {
   return `npx -y @modelcontextprotocol/server-filesystem ${allowedDirs.map(shellQuote).join(' ')}`;
 }
@@ -313,7 +320,9 @@ function stripInlineComment(rawValue) {
     return rawValue;
   }
   // YAML inline comments require whitespace before `#`.
-  const idx = rawValue.search(/\s#/);
+  // Use [ \t] rather than \s so newline whitespace does not trigger truncation
+  // if a multi-line string is ever fed in (defensive for future refactors).
+  const idx = rawValue.search(/[ \t]#/);
   if (idx === -1) return rawValue;
   return rawValue.slice(0, idx);
 }
@@ -334,13 +343,33 @@ function readFrontmatterValues(content) {
 
     const key = line.slice(0, idx).trim();
     if (!key) continue;
-    if (Object.prototype.hasOwnProperty.call(result, key)) continue; // first occurrence wins
+    if (Object.prototype.hasOwnProperty.call(result, key)) {
+      // L-02: warn on duplicate keys; we retain first-occurrence-wins to avoid
+      // changing downstream behavior, but surface the edit bug.
+      try {
+        console.warn(
+          `[scriven] frontmatter duplicate key "${key}" — first occurrence retained; later value ignored`
+        );
+      } catch { /* best effort */ }
+      continue;
+    }
 
     let value = line.slice(idx + 1);
     value = stripInlineComment(value);
+    // M-03: detect YAML block-scalar indicators (| or >). The parser does not
+    // support multi-line continuation; warn and fall back to an empty value so
+    // Codex skill metadata does not ship a literal `|` / `>`.
+    const leadingValue = value.replace(/^\s+/, '');
+    if (leadingValue.startsWith('|') || leadingValue.startsWith('>')) {
+      try {
+        console.warn(
+          `[scriven] frontmatter key "${key}" uses a YAML block scalar (${leadingValue[0]}); falling back to empty value`
+        );
+      } catch { /* best effort */ }
+      result[key] = '';
+      continue;
+    }
     value = stripWrappingQuotes(value);
-    // Defensive: surface block-scalar introducers verbatim rather than trying to parse them.
-    // (No shipped command file uses `|` or `>` for description/argument-hint today.)
     result[key] = value;
   }
 
@@ -417,9 +446,9 @@ function generateCodexSkill(entry, commandPath) {
 
   return `---
 name: "${entry.skillName}"
-description: "${entry.description.replace(/"/g, '\\"')}"
+description: "${yamlDoubleQuoted(entry.description)}"
 metadata:
-  short-description: "${shortDescription.replace(/"/g, '\\"')}"
+  short-description: "${yamlDoubleQuoted(shortDescription)}"
 ---
 
 <codex_skill_adapter>
@@ -496,6 +525,14 @@ function atomicWriteFileSync(targetPath, content) {
     fs.closeSync(fd);
     fd = undefined;
     fs.renameSync(tmpPath, targetPath);
+    // H-01: fsync the parent directory so the rename is durable on crash.
+    // Best effort — Windows rejects dir fsync with EISDIR/EPERM; some network
+    // filesystems also reject it. Swallow any error to preserve existing
+    // cross-platform behavior.
+    try {
+      const dfd = fs.openSync(dir, 'r');
+      try { fs.fsyncSync(dfd); } finally { fs.closeSync(dfd); }
+    } catch { /* best effort — Windows rejects dir fsync */ }
   } catch (err) {
     if (fd !== undefined) {
       try { fs.closeSync(fd); } catch { /* best effort */ }
@@ -505,15 +542,36 @@ function atomicWriteFileSync(targetPath, content) {
   }
 }
 
-function cleanOrphanedTempFiles(dir) {
+// L-01: match the exact canonical UUID shape emitted by crypto.randomUUID(),
+// so a user file incidentally named `foo.tmp.<36 dashes>` is NOT deleted.
+const ORPHAN_TMP_PATTERN = /\.tmp\.[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+
+// M-02: orphan tmp files can sit deep in skill directories (e.g.
+// `~/.codex/skills/scr-help/SKILL.md.tmp.<uuid>`). Sweep recursively with a
+// depth cap so an adversarial / pathological tree cannot hang the installer.
+const ORPHAN_SWEEP_MAX_DEPTH = 4;
+
+function cleanOrphanedTempFiles(dir, _depth = 0) {
   if (!fs.existsSync(dir)) return 0;
-  const TMP_PATTERN = /\.tmp\.[0-9a-f-]{36}$/i;
   let removed = 0;
-  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+  let entries;
+  try {
+    entries = fs.readdirSync(dir, { withFileTypes: true });
+  } catch {
+    return 0;
+  }
+  for (const entry of entries) {
+    const full = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      if (_depth < ORPHAN_SWEEP_MAX_DEPTH) {
+        removed += cleanOrphanedTempFiles(full, _depth + 1);
+      }
+      continue;
+    }
     if (!entry.isFile()) continue;
-    if (!TMP_PATTERN.test(entry.name)) continue;
+    if (!ORPHAN_TMP_PATTERN.test(entry.name)) continue;
     try {
-      fs.unlinkSync(path.join(dir, entry.name));
+      fs.unlinkSync(full);
       removed++;
     } catch { /* best effort */ }
   }
@@ -855,20 +913,55 @@ function copyDirWithPreservation(src, dest, options = {}) {
       result.backedUp += sub.backedUp;
       continue;
     }
-    const destHash = sha256File(destPath);
-    if (destHash === null) {
-      fs.copyFileSync(srcPath, destPath);
+    // H-02 + M-01: use lstat on the destination so we can (a) detect
+    // non-regular-file dests (symlinks, sockets, FIFOs) and refuse to hash
+    // through them, and (b) route the final write through atomicWriteFileSync
+    // so a crash mid-copy cannot leave destPath truncated.
+    let destStat = null;
+    try {
+      destStat = fs.lstatSync(destPath);
+    } catch (err) {
+      if (err.code !== 'ENOENT') throw err;
+    }
+
+    // Read the source buffer once — used for both hashing and the atomic write.
+    const srcBuf = fs.readFileSync(srcPath);
+
+    if (destStat === null) {
+      // No existing dest — fresh write.
+      atomicWriteFileSync(destPath, srcBuf);
       result.fresh++;
       continue;
     }
-    const srcHash = sha256File(srcPath);
+
+    if (!destStat.isFile()) {
+      // M-01: dest is a symlink / socket / directory-named-like-a-file /
+      // anything non-regular. Treat it as "modified" and back it up before
+      // installing the shipped template. Removing the non-regular entry via
+      // rename preserves the user's data under a .backup.<timestamp> sibling.
+      const backupPath = `${destPath}.backup.${timestamp}`;
+      try {
+        fs.renameSync(destPath, backupPath);
+      } catch {
+        // Fall back to unlink — renameSync can fail across some boundaries.
+        try { fs.unlinkSync(destPath); } catch { /* best effort */ }
+      }
+      atomicWriteFileSync(destPath, srcBuf);
+      result.backedUp++;
+      continue;
+    }
+
+    const destHash = sha256File(destPath);
+    const srcHash = crypto.createHash('sha256').update(srcBuf).digest('hex');
     if (srcHash === destHash) {
-      fs.copyFileSync(srcPath, destPath);
+      // Identical content — rewrite atomically so an interrupted run still
+      // leaves a complete file (no partial-write window).
+      atomicWriteFileSync(destPath, srcBuf);
       result.replaced++;
     } else {
       const backupPath = `${destPath}.backup.${timestamp}`;
       fs.renameSync(destPath, backupPath);
-      fs.copyFileSync(srcPath, destPath);
+      atomicWriteFileSync(destPath, srcBuf);
       result.backedUp++;
     }
   }
@@ -884,18 +977,24 @@ function readJsonIfExists(filePath) {
   }
 }
 
+// I-01: tag ownership on schema entries and derive INSTALLER_OWNED_FIELDS from
+// the schema so a future contributor cannot forget to classify a new field.
+// `developer_mode` is the only user-owned field today; everything else is
+// installer-owned (matches prior INSTALLER_OWNED_FIELDS list exactly).
 const SETTINGS_SCHEMA = [
-  { name: 'version', type: 'string', required: true },
-  { name: 'runtime', type: 'string', required: true, allow_empty: true },
-  { name: 'runtimes', type: 'array-of-string', required: true },
-  { name: 'scope', type: 'string', required: true, enum: ['global', 'project'] },
-  { name: 'developer_mode', type: 'boolean', required: true },
-  { name: 'data_dir', type: 'string', required: true },
-  { name: 'install_mode', type: 'string', required: true, enum: ['interactive', 'non-interactive'] },
-  { name: 'installed_at', type: 'string', required: true },
+  { name: 'version', type: 'string', required: true, owned_by: 'installer' },
+  { name: 'runtime', type: 'string', required: true, allow_empty: true, owned_by: 'installer' },
+  { name: 'runtimes', type: 'array-of-string', required: true, owned_by: 'installer' },
+  { name: 'scope', type: 'string', required: true, enum: ['global', 'project'], owned_by: 'installer' },
+  { name: 'developer_mode', type: 'boolean', required: true, owned_by: 'user' },
+  { name: 'data_dir', type: 'string', required: true, owned_by: 'installer' },
+  { name: 'install_mode', type: 'string', required: true, enum: ['interactive', 'non-interactive'], owned_by: 'installer' },
+  { name: 'installed_at', type: 'string', required: true, owned_by: 'installer' },
 ];
 
-const INSTALLER_OWNED_FIELDS = ['version', 'runtime', 'runtimes', 'scope', 'data_dir', 'install_mode', 'installed_at'];
+const INSTALLER_OWNED_FIELDS = SETTINGS_SCHEMA
+  .filter((f) => f.owned_by === 'installer')
+  .map((f) => f.name);
 
 function mergeSettings(existing, incoming, _schema = SETTINGS_SCHEMA) {
   const merged = { ...incoming };
@@ -1297,7 +1396,30 @@ function writeSharedAssets(dataDir, runtimeKeys, isGlobal, developerMode, instal
   }
 
   const settingsPath = path.join(dataDir, 'settings.json');
-  const existingSettings = readJsonIfExists(settingsPath);
+  // M-04: run migrate + validate on the existing file before merging so
+  // hand-edited / schema-invalid / stale-format settings do not silently
+  // propagate user-owned junk across installs. On invalid, back up the file
+  // to `settings.json.invalid.<timestamp>` and fall back to a clean merge
+  // (i.e. drop the unusable existing).
+  const rawExistingSettings = readJsonIfExists(settingsPath);
+  let existingSettings = null;
+  if (rawExistingSettings !== null) {
+    const migrated = migrateSettings(rawExistingSettings);
+    const validation = validateSettings(migrated);
+    if (validation.valid) {
+      existingSettings = migrated;
+    } else {
+      const ts = new Date().toISOString().replace(/[:.]/g, '-');
+      const invalidPath = `${settingsPath}.invalid.${ts}`;
+      try {
+        fs.renameSync(settingsPath, invalidPath);
+        log(`  ${c('yellow', 'i')} Existing settings.json was invalid; preserved as ${c('dim', invalidPath)}`);
+      } catch {
+        // If rename fails, we still proceed with a fresh merge below.
+      }
+      existingSettings = null;
+    }
+  }
   const incomingSettings = {
     version: VERSION,
     runtime: runtimeKeys[0],

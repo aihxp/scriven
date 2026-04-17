@@ -75,6 +75,22 @@ describe('atomicWriteFileSync', () => {
     }
   });
 
+  it('H-01: parent-dir fsync does not throw on normal writes (best-effort on platforms that reject it)', () => {
+    const tmpDir = mkTmp('fsync-parent');
+    try {
+      const target = path.join(tmpDir, 'nested', 'out.txt');
+      // Should not throw on any supported platform; internal try/catch swallows
+      // EISDIR/EPERM from Windows / network filesystems.
+      atomicWriteFileSync(target, 'durable');
+      assert.equal(fs.readFileSync(target, 'utf8'), 'durable');
+      // No tmp siblings left — rename succeeded and directory fsync is a no-op
+      // on the directory contents.
+      assert.deepEqual(fs.readdirSync(path.join(tmpDir, 'nested')), ['out.txt']);
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
+
   it('cleans up the temp file and rethrows when write fails', () => {
     const tmpDir = mkTmp('failwrite');
     try {
@@ -138,8 +154,8 @@ describe('cleanOrphanedTempFiles', () => {
     }
   });
 
-  it('does not recurse into subdirectories', () => {
-    const tmpDir = mkTmp('norecurse');
+  it('M-02: recurses into subdirectories up to the depth cap', () => {
+    const tmpDir = mkTmp('recurse');
     try {
       const uuid = '12345678-1234-1234-1234-123456789abc';
       const subdir = path.join(tmpDir, 'sub');
@@ -149,9 +165,48 @@ describe('cleanOrphanedTempFiles', () => {
       fs.writeFileSync(path.join(tmpDir, `root.tmp.${uuid}`), 'root');
 
       const removed = cleanOrphanedTempFiles(tmpDir);
+      assert.equal(removed, 2);
+      assert.ok(!fs.existsSync(path.join(subdir, `nested.tmp.${uuid}`)));
+      assert.ok(!fs.existsSync(path.join(tmpDir, `root.tmp.${uuid}`)));
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
+
+  it('M-02: sweeps deeply nested orphan tmp files (e.g. skills/<name>/SKILL.md.tmp.<uuid>)', () => {
+    const tmpDir = mkTmp('deep-recurse');
+    try {
+      const uuid = 'deadbeef-dead-beef-dead-beefdeadbeef';
+      const deep = path.join(tmpDir, 'skills', 'scr-help');
+      fs.mkdirSync(deep, { recursive: true });
+      fs.writeFileSync(path.join(deep, `SKILL.md.tmp.${uuid}`), 'partial');
+
+      const removed = cleanOrphanedTempFiles(tmpDir);
       assert.equal(removed, 1);
-      // Nested orphan survives
-      assert.ok(fs.existsSync(path.join(subdir, `nested.tmp.${uuid}`)));
+      assert.ok(!fs.existsSync(path.join(deep, `SKILL.md.tmp.${uuid}`)));
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
+
+  it('L-01: rejects non-canonical UUID shapes (e.g. 36 dashes)', () => {
+    const tmpDir = mkTmp('tight-uuid');
+    try {
+      // 36 chars of [0-9a-f-] but not the canonical 8-4-4-4-12 layout.
+      const bogus1 = 'foo.tmp.' + '-'.repeat(36);
+      const bogus2 = 'foo.tmp.' + 'a'.repeat(36);
+      const bogus3 = 'foo.tmp.' + '12345678-1234-1234-1234-12345678-abc'; // extra dash
+      fs.writeFileSync(path.join(tmpDir, bogus1), 'x');
+      fs.writeFileSync(path.join(tmpDir, bogus2), 'y');
+      fs.writeFileSync(path.join(tmpDir, bogus3), 'z');
+      // And one real canonical UUID tmp file that should be removed.
+      const realUuid = '01234567-89ab-cdef-0123-456789abcdef';
+      fs.writeFileSync(path.join(tmpDir, `real.tmp.${realUuid}`), 'w');
+
+      const removed = cleanOrphanedTempFiles(tmpDir);
+      assert.equal(removed, 1);
+      const survivors = fs.readdirSync(tmpDir).sort();
+      assert.deepEqual(survivors, [bogus1, bogus2, bogus3].sort());
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
     }
@@ -653,6 +708,203 @@ describe('installCodexRuntime rewrites command files', () => {
       }
       walk(commandsRoot);
       assert.deepEqual(leftovers, []);
+    } finally {
+      process.chdir(origCwd);
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
+});
+
+describe('M-03: readFrontmatterValue YAML block-scalar handling', () => {
+  const origWarn = console.warn;
+  it('returns empty string and warns for `|` block scalar', () => {
+    const warnings = [];
+    console.warn = (...args) => { warnings.push(args.join(' ')); };
+    try {
+      const input = '---\ndescription: |\n  multi\n  line\n---\nbody\n';
+      assert.equal(readFrontmatterValue(input, 'description'), '');
+      assert.ok(warnings.some((w) => /block scalar/i.test(w) && /description/.test(w)),
+        `expected block-scalar warning, got: ${warnings.join(' | ')}`);
+    } finally {
+      console.warn = origWarn;
+    }
+  });
+
+  it('returns empty string and warns for `>` folded scalar', () => {
+    const warnings = [];
+    console.warn = (...args) => { warnings.push(args.join(' ')); };
+    try {
+      const input = '---\ndescription: >\n  folded\n---\n';
+      assert.equal(readFrontmatterValue(input, 'description'), '');
+      assert.ok(warnings.some((w) => /block scalar/i.test(w)));
+    } finally {
+      console.warn = origWarn;
+    }
+  });
+
+  it('does NOT treat `>` inside a quoted value as a block scalar', () => {
+    const input = '---\ndescription: "> quoted angle"\n---\n';
+    assert.equal(readFrontmatterValue(input, 'description'), '> quoted angle');
+  });
+});
+
+describe('L-02: readFrontmatterValues duplicate-key warning', () => {
+  const origWarn = console.warn;
+  it('warns on duplicate keys but retains first occurrence', () => {
+    const warnings = [];
+    console.warn = (...args) => { warnings.push(args.join(' ')); };
+    try {
+      const input = '---\ndescription: first\ndescription: second\n---\n';
+      assert.equal(readFrontmatterValue(input, 'description'), 'first');
+      assert.ok(warnings.some((w) => /duplicate key/i.test(w) && /description/.test(w)),
+        `expected duplicate-key warning, got: ${warnings.join(' | ')}`);
+    } finally {
+      console.warn = origWarn;
+    }
+  });
+});
+
+describe('H-02 / M-01: copyDirWithPreservation atomic + lstat gate', () => {
+  const install = require('../bin/install.js');
+
+  it('atomic write: orphan .tmp.<uuid> from interrupted run is cleaned by sweep', () => {
+    const tmpDir = mkTmp('h02-atomic');
+    try {
+      const src = path.join(tmpDir, 'src');
+      const dest = path.join(tmpDir, 'dest');
+      fs.mkdirSync(src, { recursive: true });
+      fs.writeFileSync(path.join(src, 'a.txt'), 'shipped content');
+
+      // Simulate a crash mid-copy by pre-placing an orphan tmp sibling in dest.
+      fs.mkdirSync(dest, { recursive: true });
+      const orphan = `a.txt.tmp.00000000-0000-0000-0000-000000000000`;
+      fs.writeFileSync(path.join(dest, orphan), 'partial-garbage');
+
+      // Run preservation copy — the atomic write should succeed and leave no tmp siblings.
+      install.copyDirWithPreservation(src, dest);
+
+      // cleanOrphanedTempFiles would be called at install startup; verify it cleans the leftover.
+      const removed = install.cleanOrphanedTempFiles(dest);
+      assert.equal(removed, 1);
+      assert.deepEqual(fs.readdirSync(dest).sort(), ['a.txt']);
+      assert.equal(fs.readFileSync(path.join(dest, 'a.txt'), 'utf8'), 'shipped content');
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
+
+  it('M-01: symlink dest is backed up, then replaced with shipped content', () => {
+    const tmpDir = mkTmp('m01-symlink');
+    try {
+      const src = path.join(tmpDir, 'src');
+      const dest = path.join(tmpDir, 'dest');
+      const secretDir = path.join(tmpDir, 'secret');
+      fs.mkdirSync(src, { recursive: true });
+      fs.mkdirSync(dest, { recursive: true });
+      fs.mkdirSync(secretDir, { recursive: true });
+      fs.writeFileSync(path.join(src, 'a.txt'), 'shipped');
+      fs.writeFileSync(path.join(secretDir, 'target.txt'), 'user secret');
+
+      // dest/a.txt is a symlink pointing outside the install tree.
+      try {
+        fs.symlinkSync(path.join(secretDir, 'target.txt'), path.join(dest, 'a.txt'));
+      } catch (err) {
+        // Some environments (e.g. Windows without privilege) cannot create symlinks.
+        // Skip gracefully — the contract is enforced on platforms that support them.
+        if (err.code === 'EPERM' || err.code === 'ENOSYS') return;
+        throw err;
+      }
+
+      install.copyDirWithPreservation(src, dest);
+
+      // dest/a.txt is now a regular file with shipped content.
+      const st = fs.lstatSync(path.join(dest, 'a.txt'));
+      assert.ok(st.isFile(), 'dest/a.txt must be a regular file after install');
+      assert.equal(fs.readFileSync(path.join(dest, 'a.txt'), 'utf8'), 'shipped');
+
+      // A .backup.<timestamp> sibling preserves the original symlink.
+      const siblings = fs.readdirSync(dest);
+      const backups = siblings.filter((n) => n.startsWith('a.txt.backup.'));
+      assert.equal(backups.length, 1, `expected one backup sibling, got ${JSON.stringify(siblings)}`);
+
+      // The user's secret outside the install tree is untouched.
+      assert.equal(fs.readFileSync(path.join(secretDir, 'target.txt'), 'utf8'), 'user secret');
+    } finally {
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
+});
+
+describe('M-04: writeSharedAssets migrate+validate existing settings', () => {
+  const install = require('../bin/install.js');
+
+  it('invalid existing settings.json is backed up as .invalid.<timestamp> and a fresh file is written', () => {
+    const tmpDir = mkTmp('m04-invalid');
+    const origCwd = process.cwd();
+    try {
+      process.chdir(tmpDir);
+      const dataDir = path.join(tmpDir, '.scriven');
+      fs.mkdirSync(dataDir, { recursive: true });
+
+      // Write a schema-invalid settings.json — valid JSON but bad types.
+      // Garbage user-owned fields should be dropped on the re-merge path.
+      const badSettings = {
+        version: 42, // wrong type (number not string)
+        scope: 'galactic', // not in enum
+        developer_mode: 'yes', // wrong type
+        junk_field: 'should not survive',
+      };
+      const settingsPath = path.join(dataDir, 'settings.json');
+      fs.writeFileSync(settingsPath, JSON.stringify(badSettings, null, 2));
+
+      install.writeSharedAssets(dataDir, ['codex'], false, false, 'interactive', () => {});
+
+      // The invalid file should be preserved as settings.json.invalid.<ts>
+      const siblings = fs.readdirSync(dataDir);
+      const invalids = siblings.filter((n) => n.startsWith('settings.json.invalid.'));
+      assert.equal(invalids.length, 1,
+        `expected one .invalid.<timestamp> backup, got: ${JSON.stringify(siblings)}`);
+
+      // The live settings.json is the fresh shape, no junk_field leak.
+      const written = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+      assert.equal(written.scope, 'project');
+      assert.equal(written.developer_mode, false);
+      assert.equal(typeof written.version, 'string');
+      assert.ok(!Object.prototype.hasOwnProperty.call(written, 'junk_field'),
+        'junk_field from invalid settings must not survive re-install');
+    } finally {
+      process.chdir(origCwd);
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
+
+  it('valid existing settings.json with user fields is migrated + preserved', () => {
+    const tmpDir = mkTmp('m04-valid');
+    const origCwd = process.cwd();
+    try {
+      process.chdir(tmpDir);
+      const dataDir = path.join(tmpDir, '.scriven');
+
+      // First install to populate the file with a valid shape.
+      install.writeSharedAssets(dataDir, ['codex'], false, true, 'interactive', () => {});
+      const settingsPath = path.join(dataDir, 'settings.json');
+      const existing = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+      // Simulate user-owned addition that is not in the schema — mergeSettings
+      // retains user-owned fields; migrate+validate should treat unknown keys
+      // as warnings only.
+      existing.user_pref = 'keep-me';
+      fs.writeFileSync(settingsPath, JSON.stringify(existing, null, 2));
+
+      // Re-install: should not be treated as invalid.
+      install.writeSharedAssets(dataDir, ['codex'], false, false, 'interactive', () => {});
+      const after = JSON.parse(fs.readFileSync(settingsPath, 'utf8'));
+
+      // No .invalid backup created
+      const invalids = fs.readdirSync(dataDir).filter((n) => n.startsWith('settings.json.invalid.'));
+      assert.deepEqual(invalids, []);
+      // User-owned field preserved; user-owned developer_mode preserved from existing
+      assert.equal(after.user_pref, 'keep-me');
+      assert.equal(after.developer_mode, true);
     } finally {
       process.chdir(origCwd);
       fs.rmSync(tmpDir, { recursive: true, force: true });
