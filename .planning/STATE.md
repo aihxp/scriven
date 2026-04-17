@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.7
-milestone_name: Last Mile
-status: Not started
-stopped_at: Milestone v1.7 roadmap created — Phase 29 ready to plan
-last_updated: "2026-04-17"
+milestone: v1.2
+milestone_name: Documentation
+status: executing
+stopped_at: Completed 29-01-PLAN.md
+last_updated: "2026-04-17T12:21:37.182Z"
 last_activity: 2026-04-17
 progress:
-  total_phases: 7
+  total_phases: 1
   completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  total_plans: 4
+  completed_plans: 1
+  percent: 25
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-17)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** v1.7 Last Mile — close the production edge (build pipelines, cross-domain templates, per-platform awareness)
+**Current focus:** Phase 29 — Architectural Foundation
 
 ## Current Position
 
-Phase: 29 — Architectural Foundation (not started)
-Plan: —
-Status: Not started
-Last activity: 2026-04-17 — v1.7 roadmap created with 7 phases (29-35)
+Phase: 29 (Architectural Foundation) — EXECUTING
+Plan: 2 of 4
+Status: Ready to execute
+Last activity: 2026-04-17
 
 Progress: [          ] 0%
 
@@ -53,6 +53,8 @@ Recent decisions affecting current work:
 - [v1.7 architecture]: Introduce `templates/sacred/` and `templates/platforms/` as drop-in extension points; replace hard-coded Bible/KDP assumptions with `tradition:` and `platform:` spec keys
 - [v1.7 scope]: Publisher LaTeX classes (IEEEtran/acmart/llncs/elsarticle/apa7) stay user-installed — Scriven ships only thin wrappers to preserve zero-dependency architecture
 - [v1.7 sequencing]: Architectural shift (Phase 29) lands first so build pipelines, tradition profiles, and platform-aware templates can plug into the new structure without core-template edits
+- [Phase 29]: Placeholder manifests declare full schema shape with null values + status: placeholder so Plan 03 validator can target a stable shape without waiting for Phase 32/33 content
+- [Phase 29]: Legacy sacred-scaffold markdown files (COSMOLOGY.md etc.) coexist with new tradition subdirectories — distinct purposes (project-scaffold templates vs tradition profiles), documented in README
 
 ### Pending Todos
 
@@ -65,6 +67,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-17
-Stopped at: v1.7 roadmap created — Phase 29 ready to plan
+Last session: 2026-04-17T12:21:37.179Z
+Stopped at: Completed 29-01-PLAN.md
 Resume file: None
