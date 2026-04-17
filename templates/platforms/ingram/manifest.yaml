@@ -1,13 +1,44 @@
-# Publishing platform profile — placeholder manifest.
-# Real content (trim_sizes, max_pages, epub_variant, metadata_shape, formats_accepted)
-# lands in Phase 32 (Build Pipelines & Platform Awareness).
-# DO NOT remove this file — Phase 29's validator (Plan 03) reads the
-# directory listing to populate the allowed platform values.
+# Publishing platform profile — IngramSpark.
+# Populated in Phase 32 (Build Pipelines & Platform Awareness).
+# DO NOT remove this file — Phase 29's validator reads the directory listing
+# to populate the allowed platform values.
 platform: ingram
 label: "IngramSpark"
-trim_sizes: null
-max_pages: null
-epub_variant: null
-metadata_shape: null
-formats_accepted: null
-status: placeholder
+status: active
+formats_accepted:
+  - epub
+  - pdf_print_ready
+pdf_requirements:
+  standard: "PDF/X-1a"
+  note: "Use Ghostscript (gs) for PDF/X-1a conversion after building with Pandoc + Typst"
+trim_sizes:
+  5x8:
+    width_in: 5
+    height_in: 8
+    wpp: 220
+  5.25x8:
+    width_in: 5.25
+    height_in: 8
+    wpp: 230
+  5.5x8.5:
+    width_in: 5.5
+    height_in: 8.5
+    wpp: 235
+  6x9:
+    width_in: 6
+    height_in: 9
+    wpp: 250
+  7x10:
+    width_in: 7
+    height_in: 10
+    wpp: 300
+default_trim: "6x9"
+max_pages:
+  paperback: 1200
+epub_variant: "epub3"
+metadata_shape:
+  title: required
+  author: required
+  language: required
+  description: optional
+  isbn: optional
