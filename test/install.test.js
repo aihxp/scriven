@@ -11,7 +11,17 @@ const {
   RUNTIMES,
   readFrontmatterValue,
   readFrontmatterValues,
+  rewriteInstalledCommandRefs,
+  generateCodexCommandContent,
+  generateClaudeCommandContent,
+  commandRefToCodexInvocation,
+  commandRefToClaudeInvocation,
+  installCodexRuntime,
+  collectCommandEntries,
 } = require('../bin/install.js');
+
+const TB = '`' + '`' + '`'; // triple-backtick, avoids clashing with template literals
+const TT = '~~~';
 
 function mkTmp(label) {
   return fs.mkdtempSync(path.join(os.tmpdir(), `scriven-atomic-${label}-`));
@@ -389,5 +399,263 @@ describe('readFrontmatterValue', () => {
     assert.equal(values.other, 'something');
     // Body content must not leak into the result
     assert.notEqual(values.description, 'body leak');
+  });
+});
+
+describe('rewriteInstalledCommandRefs code-block awareness', () => {
+  it('rewrites a prose reference (Codex transform)', () => {
+    const input = 'See /scr:help for details';
+    assert.equal(
+      rewriteInstalledCommandRefs(input, commandRefToCodexInvocation),
+      'See $scr-help for details'
+    );
+  });
+
+  it('leaves triple-backtick code blocks unchanged byte-for-byte', () => {
+    const input = TB + '\n/scr:help\n' + TB;
+    assert.equal(
+      rewriteInstalledCommandRefs(input, commandRefToCodexInvocation),
+      input
+    );
+  });
+
+  it('leaves tilde-fenced code blocks unchanged byte-for-byte', () => {
+    const input = TT + '\n/scr:help\n' + TT;
+    assert.equal(
+      rewriteInstalledCommandRefs(input, commandRefToCodexInvocation),
+      input
+    );
+  });
+
+  it('mixed file: rewrites prose, preserves code blocks', () => {
+    const input =
+      'Run /scr:help.\n\n' +
+      TB + 'bash\n/scr:help --flag\n' + TB +
+      '\n\nAlso /scr:new-work.';
+    const out = rewriteInstalledCommandRefs(input, commandRefToClaudeInvocation);
+    // prose rewritten
+    assert.ok(out.startsWith('Run /scr-help.\n\n'));
+    assert.ok(out.endsWith('Also /scr-new-work.'));
+    // code block preserved byte-for-byte
+    const codeBlock = TB + 'bash\n/scr:help --flag\n' + TB;
+    assert.ok(out.includes(codeBlock));
+  });
+
+  it('empty code block passes through unchanged', () => {
+    const input = TB + '\n' + TB;
+    assert.equal(
+      rewriteInstalledCommandRefs(input, commandRefToCodexInvocation),
+      input
+    );
+  });
+
+  it('info-string fence opener (```bash) is treated as code-block opener', () => {
+    const input = TB + 'bash\n/scr:help\n' + TB;
+    assert.equal(
+      rewriteInstalledCommandRefs(input, commandRefToCodexInvocation),
+      input
+    );
+  });
+
+  it('consecutive code blocks separated by prose still rewrites prose', () => {
+    const input =
+      TB + '\n/scr:help\n' + TB +
+      '\nHello /scr:help world.\n' +
+      TB + 'js\n/scr:help\n' + TB;
+    const out = rewriteInstalledCommandRefs(input, commandRefToCodexInvocation);
+    assert.ok(out.includes('Hello $scr-help world.'));
+    // First code block preserved
+    assert.ok(out.includes(TB + '\n/scr:help\n' + TB));
+    // Second code block preserved
+    assert.ok(out.includes(TB + 'js\n/scr:help\n' + TB));
+  });
+
+  it('indented (4-space) lines are NOT treated as code blocks (out of scope)', () => {
+    const input = '    /scr:help\nand /scr:help in prose';
+    const out = rewriteInstalledCommandRefs(input, commandRefToCodexInvocation);
+    // Both should be rewritten since we only handle fenced blocks
+    assert.equal(out, '    $scr-help\nand $scr-help in prose');
+  });
+
+  it('unterminated fence: rest of file is treated as code (fail-safe)', () => {
+    const input = 'prose /scr:help\n' + TB + '\n/scr:help\nno closing fence here';
+    const out = rewriteInstalledCommandRefs(input, commandRefToCodexInvocation);
+    // leading prose is rewritten
+    assert.ok(out.startsWith('prose $scr-help\n'));
+    // everything after opener is preserved
+    assert.ok(out.endsWith(TB + '\n/scr:help\nno closing fence here'));
+  });
+
+  it('mixed fences do not close each other (``` opens, ~~~ does not close)', () => {
+    const input = TB + '\n/scr:help\n' + TT + '\n/scr:help\n' + TB;
+    // Everything between the ``` opener and ``` closer is code
+    assert.equal(
+      rewriteInstalledCommandRefs(input, commandRefToCodexInvocation),
+      input
+    );
+  });
+});
+
+describe('generateCodexCommandContent', () => {
+  it('rewrites prose /scr:help to $scr-help and inserts codex marker', () => {
+    const entry = {
+      commandRef: '/scr:help',
+      relativePath: 'help.md',
+      skillName: 'scr-help',
+      description: 'help',
+      argumentHint: '',
+    };
+    const source = 'Run /scr:help\n\n' + TB + '\n/scr:help\n' + TB + '\n';
+    const out = generateCodexCommandContent(entry, source);
+    // Prose rewritten
+    assert.ok(out.includes('Run $scr-help'));
+    // Code block preserved
+    assert.ok(out.includes(TB + '\n/scr:help\n' + TB));
+    // Marker present
+    assert.ok(out.includes(
+      '<!-- scriven-cli-installed-command runtime:codex command:$scr-help source:help.md -->'
+    ));
+  });
+
+  it('inserts marker after frontmatter when present', () => {
+    const entry = {
+      commandRef: '/scr:help',
+      relativePath: 'help.md',
+      skillName: 'scr-help',
+      description: 'help',
+      argumentHint: '',
+    };
+    const source = '---\ndescription: hi\n---\nBody /scr:help\n';
+    const out = generateCodexCommandContent(entry, source);
+    // Frontmatter stays first
+    assert.ok(out.startsWith('---\ndescription: hi\n---\n'));
+    // Marker comes immediately after frontmatter
+    const afterFm = out.slice('---\ndescription: hi\n---\n'.length);
+    assert.ok(afterFm.startsWith('<!-- scriven-cli-installed-command runtime:codex'));
+  });
+});
+
+describe('generateClaudeCommandContent regression (code-block aware)', () => {
+  it('rewrites prose to /scr- but leaves code block /scr:help intact', () => {
+    const entry = {
+      commandRef: '/scr:help',
+      relativePath: 'help.md',
+      skillName: 'scr-help',
+      description: 'help',
+      argumentHint: '',
+    };
+    const source = 'Run /scr:help\n\n' + TB + '\n/scr:help\n' + TB + '\n';
+    const out = generateClaudeCommandContent(entry, source);
+    assert.ok(out.includes('Run /scr-help'));
+    assert.ok(out.includes(TB + '\n/scr:help\n' + TB));
+    assert.ok(out.includes(
+      '<!-- scriven-cli-installed-command runtime:claude-code command:/scr-help source:help.md -->'
+    ));
+  });
+});
+
+describe('installCodexRuntime rewrites command files', () => {
+  const install = require('../bin/install.js');
+  const PKG_ROOT = path.join(__dirname, '..');
+
+  it('writes installed Codex command files with $scr- in prose, preserves code blocks, inserts marker', () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'scriven-codex-install-'));
+    const origCwd = process.cwd();
+    try {
+      process.chdir(tmpDir);
+      const runtime = {
+        ...RUNTIMES.codex,
+        skills_dir_project: '.codex/skills',
+        commands_dir_project: '.codex/commands/scr',
+        agents_dir_project: '.codex/agents',
+      };
+      installCodexRuntime(runtime, false, () => {});
+
+      const helpPath = path.join(tmpDir, '.codex/commands/scr/help.md');
+      assert.ok(fs.existsSync(helpPath), 'help.md should be installed');
+      const content = fs.readFileSync(helpPath, 'utf8');
+      // Marker present exactly once
+      const markerRe = /<!-- scriven-cli-installed-command runtime:codex /g;
+      const matches = content.match(markerRe) || [];
+      assert.equal(matches.length, 1, 'marker should appear exactly once');
+      assert.ok(content.includes('runtime:codex'));
+      assert.ok(content.includes('command:$scr-help'));
+    } finally {
+      process.chdir(origCwd);
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
+
+  it('preserves nested command paths (sacred/concordance.md)', () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'scriven-codex-nested-'));
+    const origCwd = process.cwd();
+    try {
+      process.chdir(tmpDir);
+      const runtime = {
+        ...RUNTIMES.codex,
+        skills_dir_project: '.codex/skills',
+        commands_dir_project: '.codex/commands/scr',
+        agents_dir_project: '.codex/agents',
+      };
+      installCodexRuntime(runtime, false, () => {});
+
+      const sacredDir = path.join(tmpDir, '.codex/commands/scr/sacred');
+      if (fs.existsSync(sacredDir)) {
+        const files = fs.readdirSync(sacredDir).filter((f) => f.endsWith('.md'));
+        if (files.length > 0) {
+          // Pick any nested file and verify it was rewritten
+          const nestedPath = path.join(sacredDir, files[0]);
+          const content = fs.readFileSync(nestedPath, 'utf8');
+          assert.ok(content.includes('runtime:codex'));
+          // Command ref should be the full nested invocation like $scr-sacred-<name>
+          const stem = files[0].replace(/\.md$/, '');
+          assert.ok(
+            content.includes(`command:$scr-sacred-${stem}`),
+            `expected marker for $scr-sacred-${stem} in ${nestedPath}`
+          );
+        }
+      }
+    } finally {
+      process.chdir(origCwd);
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
+  });
+
+  it('re-running the installer is idempotent (marker appears once, no tmp files)', () => {
+    const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'scriven-codex-idem-'));
+    const origCwd = process.cwd();
+    try {
+      process.chdir(tmpDir);
+      const runtime = {
+        ...RUNTIMES.codex,
+        skills_dir_project: '.codex/skills',
+        commands_dir_project: '.codex/commands/scr',
+        agents_dir_project: '.codex/agents',
+      };
+      installCodexRuntime(runtime, false, () => {});
+      installCodexRuntime(runtime, false, () => {});
+
+      const helpPath = path.join(tmpDir, '.codex/commands/scr/help.md');
+      const content = fs.readFileSync(helpPath, 'utf8');
+      const markerRe = /<!-- scriven-cli-installed-command runtime:codex /g;
+      const matches = content.match(markerRe) || [];
+      assert.equal(matches.length, 1, 'marker should appear exactly once even after re-run');
+
+      // No .tmp. files left under .codex/commands/scr/
+      const commandsRoot = path.join(tmpDir, '.codex/commands/scr');
+      const leftovers = [];
+      function walk(dir) {
+        for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+          const full = path.join(dir, e.name);
+          if (e.isDirectory()) walk(full);
+          else if (/\.tmp\./.test(e.name)) leftovers.push(full);
+        }
+      }
+      walk(commandsRoot);
+      assert.deepEqual(leftovers, []);
+    } finally {
+      process.chdir(origCwd);
+      fs.rmSync(tmpDir, { recursive: true, force: true });
+    }
   });
 });
