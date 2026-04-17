@@ -1,0 +1,364 @@
+---
+description: Build a print-ready PDF from the manuscript for a target publishing platform.
+argument-hint: "[--platform <platform>] [--trim <size>] [--strict] [--skip-validate]"
+---
+
+# /scr:build-print -- Print PDF Build Pipeline
+
+Assemble the manuscript and produce a print-ready PDF for the selected publishing platform. Includes validate gate, scaffold-exclusion, trim size validation, page-count guardrail (warning by default, hard block with --strict), and platform-aware Pandoc + Typst invocation.
+
+## Usage
+
+```
+/scr:build-print [--platform <platform>] [--trim <size>] [--strict] [--skip-validate]
+```
+
+**Platform values:** `kdp | ingram | apple | bn | d2d | kobo | google | smashwords` (default: kdp)
+
+**Trim values (KDP/Ingram):** `5x8 | 5.25x8 | 5.5x8.5 | 6x9 | 7x10` (default: 6x9)
+
+**Note:** Apple, B&N, D2D, Kobo, Google, Smashwords are EPUB-only platforms. Running build-print with these platforms will produce an error directing the writer to use `/scr:build-ebook` instead.
+
+## Instruction
+
+You are a **manuscript build specialist** for print-ready PDF output.
+
+---
+
+### STEP 1: LOAD CONTEXT
+
+Load the following project files:
+
+- `.manuscript/config.json` -- to get `work_type`, title, author, language, and project settings
+- Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) -- to check `exports` section for format availability by work type group
+
+**Check format availability:**
+
+Look up `build_print` in `CONSTRAINTS.json` under the `exports` section. Find the current work type's group in `CONSTRAINTS.json` under `work_type_groups`. Check if the group is in the `build_print.available` list.
+
+Available for: `["prose", "visual", "poetry", "sacred"]`
+
+If the work type group is **not available**:
+> This command is not available for [work_type] projects. The print PDF build is available for: prose, visual, poetry, and sacred work types.
+
+Then **stop**.
+
+---
+
+### STEP 1.5: VALIDATE MANUSCRIPT
+
+**Check for scaffold markers in `.manuscript/drafts/`.**
+
+Scan all `.md` files in `.manuscript/drafts/` for:
+- Lines containing `[Fill in` (covers `[Fill in:]`, `[Fill in or delete:]`)
+- Lines containing `[Delete if not applicable:]`
+- Lines containing `Alternate 1:` or `Alternate 2:`
+- Files with more than one `# ` (top-level H1) heading
+
+**Note:** `{{VAR}}` tokens are NOT scaffold markers and must not be flagged. They are writer content placeholders, out of scope for this gate.
+
+**If `--skip-validate` was passed:**
+
+> **Warning: Validate gate skipped (`--skip-validate`). Your manuscript may contain
+> unresolved scaffold markers. Run `/scr:validate` to check before submitting.**
+
+Proceed to STEP 2.
+
+**If markers are found** (and `--skip-validate` was not passed):
+
+> **Build blocked: unresolved scaffold markers found.**
+>
+> [list each as: `path/to/file.md:LINE_NUMBER: marker text`]
+>
+> **Fix:** Run `/scr:cleanup --apply` to remove scaffold markers, or manually
+> edit the listed files, then re-run this build command.
+
+Then **stop** -- do not proceed to STEP 2.
+
+If no markers found: proceed to STEP 2.
+
+---
+
+### STEP 1.6: FRONT-MATTER GATE
+
+**1.6a — Scaffold exclusion**
+
+Check if `.manuscript/front-matter/` exists.
+
+If the directory does not exist:
+> **Note:** No front matter found — run `/scr:front-matter` first if you want publication front matter included.
+
+Proceed to 1.6b.
+
+If the directory exists, scan all `.md` files in `.manuscript/front-matter/`. For each file, check the first 10 lines for a YAML block containing `scaffold: true`. Build a scaffold exclusion list of the paths of all files where `scaffold: true` is found.
+
+If any files were added to the scaffold exclusion list, note them for the assembly step (STEP 3b) and show:
+> **Note:** [N] scaffold front-matter element(s) will be excluded from this export:
+>   - `.manuscript/front-matter/12-preface.md` (scaffold: true — edit and set scaffold: false to include)
+>
+> To include a scaffold element, open the file and change `scaffold: true` to `scaffold: false`.
+
+If no scaffold files were found, show no note.
+
+**1.6b — GENERATE element auto-refresh**
+
+If `.manuscript/front-matter/` does not exist, skip auto-refresh and proceed to STEP 2.
+
+If `.manuscript/WORK.md` does not exist, skip auto-refresh and proceed to STEP 2.
+
+Compare the modification timestamp of `.manuscript/WORK.md` against each of the following GENERATE front-matter files:
+- `.manuscript/front-matter/01-half-title.md`
+- `.manuscript/front-matter/03-title-page.md`
+- `.manuscript/front-matter/04-copyright.md`
+- `.manuscript/front-matter/07-toc.md`
+
+To compare timestamps, use the appropriate command for the platform:
+- macOS: `stat -f %m <file>`
+- Linux: `stat -c %Y <file>`
+- Windows: `(Get-Item '<file>').LastWriteTimeUtc.Ticks`
+- If timestamp comparison is not possible, assume WORK.md is newer and regenerate.
+
+If WORK.md is newer than ANY of those 4 files, or if ANY of those 4 files do not exist:
+Re-run the GENERATE step from `/scr:front-matter` for elements 1, 3, 4, and 7 only (half-title, title page, copyright page, TOC) using current WORK.md metadata. Regenerate all four even if only one triggered the condition. Do NOT regenerate scaffold elements (5, 6, 11, 12, 13) or any other elements.
+
+If WORK.md is not newer than all 4 files and all 4 files exist: skip regeneration silently.
+
+Proceed to STEP 2.
+
+---
+
+### STEP 2: CHECK PREREQUISITES
+
+Check for Pandoc:
+
+```bash
+command -v pandoc >/dev/null 2>&1
+```
+
+If Pandoc is not found:
+
+> **Pandoc is required for print PDF build but is not installed.**
+>
+> **Install Pandoc:**
+> - macOS: `brew install pandoc`
+> - Linux: `sudo apt install pandoc`
+> - Windows: `choco install pandoc`
+> - Or download from https://pandoc.org/installing.html
+>
+> After installing, run this build command again.
+
+Then **stop** -- do not attempt the build without the required tool.
+
+Check for Typst:
+
+```bash
+command -v typst >/dev/null 2>&1
+```
+
+If Typst is not found:
+
+> **Typst is required for print PDF build but is not installed.**
+>
+> **Install Typst:**
+> - macOS: `brew install typst`
+> - Linux: Download from https://github.com/typst/typst/releases
+> - Windows: `winget install typst`
+> - Or visit https://typst.app for installation options
+>
+> After installing, run this build command again.
+
+Then **stop**.
+
+If `--platform ingram` was passed, also check Ghostscript:
+
+```bash
+command -v gs >/dev/null 2>&1
+```
+
+If Ghostscript is not found:
+
+> **Ghostscript is required for IngramSpark PDF/X-1a output but is not installed.**
+>
+> **Install Ghostscript:**
+> - macOS: `brew install ghostscript`
+> - Linux: `sudo apt install ghostscript`
+> - Windows: `choco install ghostscript`
+> - Or download from https://www.ghostscript.com/releases/gsdnld.html
+>
+> After installing, run this build command again.
+
+Then **stop**.
+
+---
+
+### STEP 2.5: VALIDATE PLATFORM AND TRIM SIZE
+
+**Resolve the platform slug:**
+
+- If `--platform` was passed, use that value.
+- If not passed, default to `kdp`.
+
+**Validate the platform slug** using `lib/architectural-profiles.js` `validatePlatform(slug)` logic (check that slug is in the list returned by `listPlatforms()`).
+
+Valid platforms: `kdp, ingram, apple, bn, d2d, kobo, google, smashwords`
+
+If the platform slug is invalid:
+> **Platform "{slug}" is not recognised.**
+>
+> Valid platforms: kdp, ingram, apple, bn, d2d, kobo, google, smashwords
+>
+> Example: `/scr:build-print --platform kdp`
+
+Then **stop**.
+
+**Check for EPUB-only platforms.** If the platform is any of: `apple`, `bn`, `d2d`, `kobo`, `google`, `smashwords`:
+> **{PLATFORM} is an EPUB-only platform and does not accept print PDFs.**
+>
+> To build an EPUB for this platform, run: `/scr:build-ebook --platform {slug}`
+
+Then **stop**.
+
+**Load manifest for selected platform:**
+
+Load `templates/platforms/{platform}/manifest.yaml`.
+
+**Resolve the trim size:**
+
+- If `--trim` was passed, use that value.
+- If not passed, use the manifest's `default_trim` value (6x9 for KDP and Ingram).
+
+**Validate trim size against manifest:**
+
+Check the trim size against the manifest's `trim_sizes` map. If the trim size is NOT in the map:
+
+> **Trim size "{size}" is not supported for {PLATFORM}.**
+>
+> Supported trim sizes for {PLATFORM}: {list all keys from manifest.trim_sizes}
+>
+> Default trim: {manifest.default_trim}
+
+Then **stop**.
+
+**Page-count estimation and guardrail** (only when platform has `max_pages` in manifest):
+
+Get manuscript word count by reading assembled markdown and counting words (split by whitespace). If word count cannot be determined, skip guardrail silently.
+
+Estimate page count:
+```
+estimated_pages = Math.round(word_count / manifest.trim_sizes[trim].wpp)
+```
+
+Compare against `manifest.max_pages`:
+- For paperback: compare against `manifest.max_pages.paperback`
+- For hardcover: only KDP hardcover applies — compare against `manifest.max_pages.hardcover` only if `--hardcover` flag is passed (otherwise use paperback limit)
+
+If `estimated_pages` exceeds the limit:
+
+- If `--strict` was NOT passed (default warning mode):
+  > ⚠ Estimated {estimated_pages} pages at {trim} ({PLATFORM} paperback limit: {MAX}pp). Consider IngramSpark (1200pp). Building anyway...
+
+- If `--strict` was passed (hard block):
+  > **Build blocked (--strict): Estimated {estimated_pages} pages at {trim} exceeds {PLATFORM} paperback limit ({MAX}pp).**
+  >
+  > **Options:**
+  > - Switch platform: `/scr:build-print --platform ingram`
+  > - Reduce manuscript length
+  > - Remove `--strict` to build anyway with a warning
+
+  Then **stop**.
+
+---
+
+### STEP 3: ASSEMBLE MANUSCRIPT
+
+This step builds the complete manuscript from its component files. All formats use this assembled file as input.
+
+**3a. Read OUTLINE.md for document order:**
+
+Read `.manuscript/OUTLINE.md` and parse the scene/chapter list. Extract the ordered list of body units (scenes, chapters, sections) with their file paths in `.manuscript/drafts/body/`.
+
+**3b. Scan front matter:**
+
+Read all files in `.manuscript/front-matter/` directory. Sort by numeric prefix to maintain Chicago Manual of Style order.
+
+**Scaffold exclusion:** Omit any files whose path appears in the scaffold exclusion list from STEP 1.6a.
+
+If no front matter files exist, proceed with body content only.
+
+**3c. Read body drafts:**
+
+For each unit listed in OUTLINE.md, look for the corresponding draft file in `.manuscript/drafts/body/`. Read in OUTLINE.md order. Warn on any missing units.
+
+**3d. Scan back matter:**
+
+Read all files in `.manuscript/back-matter/` directory. Sort alphabetically. Back matter is optional.
+
+**3e. Concatenate and write:**
+
+Assemble the full manuscript in this order:
+1. Front matter files (sorted by numeric prefix)
+2. Body draft files (ordered by OUTLINE.md)
+3. Back matter files (sorted alphabetically)
+
+Insert `\newpage` page break markers between major sections.
+
+```bash
+mkdir -p .manuscript/output
+```
+
+Write assembled content to `.manuscript/output/assembled-manuscript.md`.
+
+**3f. Generate metadata.yaml:**
+
+Read `.manuscript/config.json` and `.manuscript/WORK.md` (if it exists) to generate Pandoc metadata. Write to `.manuscript/output/metadata.yaml`.
+
+---
+
+### STEP 4: BUILD PDF
+
+Look up trim dimensions from manifest:
+- `width_in` from `manifest.trim_sizes[trim].width_in`
+- `height_in` from `manifest.trim_sizes[trim].height_in`
+
+```bash
+pandoc .manuscript/output/assembled-manuscript.md \
+  -o .manuscript/output/print-{platform}.pdf \
+  --pdf-engine=typst \
+  --template=data/export-templates/scriven-book.typst \
+  --metadata-file=.manuscript/output/metadata.yaml \
+  --toc \
+  --toc-depth=2 \
+  -V paperwidth={width_in}in \
+  -V paperheight={height_in}in \
+  -V margin-inside=0.75in \
+  -V margin-outside=0.5in \
+  -V margin-top=0.75in \
+  -V margin-bottom=0.75in
+```
+
+**For IngramSpark (`--platform ingram`):** After Pandoc generates the PDF, note to the writer that a PDF/X-1a conversion via Ghostscript may be required for final IngramSpark submission. Provide the command pattern but do not auto-run it (the conversion is destructive and the writer should verify the intermediate PDF first):
+
+```bash
+# PDF/X-1a conversion for IngramSpark submission (run manually after verifying the PDF above):
+gs -dPDFX -dBATCH -dNOPAUSE \
+  -dPDFXCompatibilityPolicy=1 \
+  -sColorConversionStrategy=CMYK \
+  -sDEVICE=pdfwrite \
+  -sOutputFile=.manuscript/output/print-ingram-cmyk.pdf \
+  .manuscript/output/print-ingram.pdf
+```
+
+---
+
+### STEP 5: REPORT
+
+Show:
+
+```
+✓ PDF built → .manuscript/output/print-{platform}.pdf ({file_size})
+```
+
+Get file size with:
+```bash
+ls -lh .manuscript/output/print-{platform}.pdf | awk '{print $5}'
+```
