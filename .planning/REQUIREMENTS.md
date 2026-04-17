@@ -5,7 +5,7 @@
 
 ## Milestone Goal
 
-Fix bugs and fragilities in Scriven's installer identified by cross-referencing GSD releases v1.33–v1.36 against the Scriven codebase. No new features — reliability and correctness pass on the existing installer.
+Fix bugs and fragilities in Scriven's installer identified by cross-referencing GSD releases v1.33-v1.36 against the Scriven codebase. No new features -- reliability and correctness pass on the existing installer.
 
 ## Active Requirements
 
@@ -43,38 +43,38 @@ Fix bugs and fragilities in Scriven's installer identified by cross-referencing 
 
 - Zero-dependency installer architecture must be preserved
 - All hardening features use Node.js 20+ built-ins exclusively
-- These are bugs or fragilities that GSD already shipped fixes for in v1.33–v1.36
+- These are bugs or fragilities that GSD already shipped fixes for in v1.33-v1.36
 - Preserve Voice DNA as the non-negotiable drafting anchor
 - Preserve existing `/scr:*` command files and runtime installer behavior
 
 ## Future Requirements
 
 - Lockfile for concurrent install protection (deferred to v1.7 if needed)
-- Template manifest with per-file ownership tracking (deferred — content-hash sufficient for now)
+- Template manifest with per-file ownership tracking (deferred -- content-hash sufficient for now)
 - `_user_overrides` sub-object in settings for explicit user/installer field boundary (deferred)
 
 ## Out of Scope
 
-- Adding npm runtime dependencies — zero-dependency constraint preserved
-- New installer features or runtime targets — this milestone is correctness-only
-- Breaking changes to settings.json format — migration handles old formats
+- Adding npm runtime dependencies -- zero-dependency constraint preserved
+- New installer features or runtime targets -- this milestone is correctness-only
+- Breaking changes to settings.json format -- migration handles old formats
 
 ## Traceability
 
 | Requirement | Phase | Plan |
 |-------------|-------|------|
-| SAFE-01 | — | — |
-| SAFE-02 | — | — |
-| PARSE-01 | — | — |
-| PARSE-02 | — | — |
-| PARSE-03 | — | — |
-| PRES-01 | — | — |
-| PRES-02 | — | — |
-| SCHEMA-01 | — | — |
-| SCHEMA-02 | — | — |
-| REWRITE-01 | — | — |
-| REWRITE-02 | — | — |
-| QA-05 | — | — |
+| SAFE-01 | Phase 23 | — |
+| SAFE-02 | Phase 23 | — |
+| PARSE-01 | Phase 24 | — |
+| PARSE-02 | Phase 24 | — |
+| PARSE-03 | Phase 24 | — |
+| PRES-01 | Phase 26 | — |
+| PRES-02 | Phase 26 | — |
+| SCHEMA-01 | Phase 25 | — |
+| SCHEMA-02 | Phase 25 | — |
+| REWRITE-01 | Phase 27 | — |
+| REWRITE-02 | Phase 27 | — |
+| QA-05 | Phase 28 | — |
 
 ---
 *Defined: 2026-04-16 for milestone v1.6*

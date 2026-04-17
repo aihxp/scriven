@@ -8,6 +8,7 @@
 - [x] **v1.3 Trust & Proof** - Phases 13-16 (shipped 2026-04-09)
 - [x] **v1.4 Perplexity & Technical Writing** - Phases 17-19 (shipped 2026-04-09)
 - [x] **v1.5 Runtime Install Reliability** - Phases 20-22 (shipped 2026-04-09)
+- [ ] **v1.6 Installer Hardening** - Phases 23-28 (in progress)
 
 ## Phases
 
@@ -214,6 +215,17 @@ Plans:
 - [x] **Phase 21: Codex Skill-Native Surface** - `$scr-*` skill generation backed by installed Scriven command files
 - [x] **Phase 22: Runtime Docs & Verification** - Runtime matrix updates, onboarding guidance, and regression coverage
 
+### v1.6 Installer Hardening (In Progress)
+
+**Milestone Goal:** Fix bugs and fragilities in Scriven's installer identified by cross-referencing GSD releases v1.33-v1.36 against the Scriven codebase. No new features -- reliability and correctness pass on the existing installer.
+
+- [ ] **Phase 23: Atomic File Writes** - Temp-file-then-rename writes and orphan cleanup for crash-safe installs
+- [ ] **Phase 24: Frontmatter Parsing** - Colon-safe, scope-bounded, multiline-aware frontmatter extraction
+- [ ] **Phase 25: Schema Validation** - Settings schema with clear errors and post-migration validation
+- [ ] **Phase 26: Settings & Template Preservation** - Field-level merge and content-hash backup on reinstall
+- [ ] **Phase 27: Multi-Runtime Command-Ref Rewriting** - Correct cross-reference syntax for all runtimes with code-block protection
+- [ ] **Phase 28: Hardening Regression Coverage** - Tests for all v1.6 hardening features
+
 ## Phase Details
 
 ### Phase 9: Generic Platform Support
@@ -241,9 +253,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [x] 10-01-PLAN.md — Rewrite README.md as documentation hub
-- [x] 10-02-PLAN.md — Getting Started guide (install to first draft in 10 minutes)
-- [x] 10-03-PLAN.md — Complete command reference (101 commands across 14 categories)
+- [x] 10-01-PLAN.md -- Rewrite README.md as documentation hub
+- [x] 10-02-PLAN.md -- Getting Started guide (install to first draft in 10 minutes)
+- [x] 10-03-PLAN.md -- Complete command reference (101 commands across 14 categories)
 
 ### Phase 11: Feature & Domain Guides
 **Goal**: Users working with specific Scriven capabilities have dedicated guides that explain concepts, workflows, and configuration for each feature domain
@@ -257,9 +269,9 @@ Plans:
 **Plans**: 3 plans
 
 Plans:
-- [x] 11-01-PLAN.md — Work Types Guide and Voice DNA Guide
-- [x] 11-02-PLAN.md — Publishing Pipeline Guide and Translation Guide
-- [x] 11-03-PLAN.md — Sacred Text Guide
+- [x] 11-01-PLAN.md -- Work Types Guide and Voice DNA Guide
+- [x] 11-02-PLAN.md -- Publishing Pipeline Guide and Translation Guide
+- [x] 11-03-PLAN.md -- Sacred Text Guide
 
 ### Phase 12: Developer Docs & Verification
 **Goal**: Contributors know how to extend Scriven, understand its architecture, and all documentation is verified accurate against the live codebase
@@ -267,49 +279,6 @@ Plans:
 **Requirements**: DOC-09, DOC-10, DOC-11
 **Success Criteria** (what must be TRUE):
   1. A contributor can follow the contributor guide to add a new command, agent, work type, or export format by following documented patterns with examples
-
-### Phase 20: Silent Multi-Runtime Installer
-**Goal**: Users can install Scriven into one or more detected runtimes without interactive prompts and without stale Scriven files lingering from prior installs
-**Depends on**: Phase 19
-**Requirements**: RUNTIME-08, RUNTIME-10, RUNTIME-11
-**Success Criteria** (what must be TRUE):
-  1. Running the installer with explicit runtime flags completes without waiting for `readline` prompts
-  2. One installer run can target both Codex and Claude Code when both runtimes are requested or detected
-  3. Scriven-owned command/skill directories are cleaned before fresh copies are written, while unrelated user files remain untouched
-**Plans**: 2 plans
-
-Plans:
-- [x] 20-01-PLAN.md -- Add CLI argument parsing, runtime selection, and silent install flow
-- [x] 20-02-PLAN.md -- Add clean install helpers for runtime-owned command, skill, and agent outputs
-
-### Phase 21: Codex Skill-Native Surface
-**Goal**: Codex users can discover and invoke Scriven through native `$scr-*` skills while keeping the installed markdown command files as the execution source of truth
-**Depends on**: Phase 20
-**Requirements**: RUNTIME-09, RUNTIME-11
-**Success Criteria** (what must be TRUE):
-  1. Codex installs generate one skill per Scriven command with stable `$scr-*` names and descriptions
-  2. Generated Codex skills instruct the runtime to read and execute the installed Scriven command files rather than duplicating command logic
-  3. Command references shown to Codex users are translated to the `$scr-*` surface instead of `/scr:*`
-**Plans**: 3 plans
-
-Plans:
-- [x] 21-01-PLAN.md -- Generate Codex skill wrappers from Scriven command metadata
-- [x] 21-02-PLAN.md -- Wire Codex install output into the installer and keep command-file compatibility assets aligned
-- [x] 21-03-PLAN.md -- Update command-surface guidance for Codex-facing help and discovery text
-
-### Phase 22: Runtime Docs & Verification
-**Goal**: Maintainers and users can trust the new install behavior because runtime docs, examples, and tests describe the same Codex and Claude surfaces the installer actually writes
-**Depends on**: Phase 20, Phase 21
-**Requirements**: QA-04
-**Success Criteria** (what must be TRUE):
-  1. Runtime support docs explain Codex’s skill-native install surface and Claude Code’s command-directory surface without overstating parity
-  2. README and onboarding docs show a truthful quick-start path for Codex `$` skills and Claude `/scr:*` commands
-  3. Automated tests fail if runtime types, install paths, generated Codex skills, or silent install behavior drift from the documented contract
-**Plans**: 2 plans
-
-Plans:
-- [x] 22-01-PLAN.md -- Update runtime support and install docs for Codex skills plus silent multi-runtime install
-- [x] 22-02-PLAN.md -- Add regression tests for runtime registry, Codex skill generation, and non-interactive installer behavior
   2. A developer can read the architecture overview and understand the skill system design, CONSTRAINTS.json schema, file structure, agent orchestration, and fresh-context-per-unit pattern
   3. Every documentation file has been verified against the live codebase -- no references to nonexistent commands, flags, files, or stale information
 **Plans**: 2 plans
@@ -375,10 +344,115 @@ Plans:
 - [x] 16-01-PLAN.md -- Add trust-regression tests for canonical launch/proof/runtime docs and shipped-asset truth
 - [x] 16-02-PLAN.md -- Extend npm pack dry-run coverage for proof bundles and currently shipped export templates
 
+### Phase 20: Silent Multi-Runtime Installer
+**Goal**: Users can install Scriven into one or more detected runtimes without interactive prompts and without stale Scriven files lingering from prior installs
+**Depends on**: Phase 19
+**Requirements**: RUNTIME-08, RUNTIME-10, RUNTIME-11
+**Success Criteria** (what must be TRUE):
+  1. Running the installer with explicit runtime flags completes without waiting for `readline` prompts
+  2. One installer run can target both Codex and Claude Code when both runtimes are requested or detected
+  3. Scriven-owned command/skill directories are cleaned before fresh copies are written, while unrelated user files remain untouched
+**Plans**: 2 plans
+
+Plans:
+- [x] 20-01-PLAN.md -- Add CLI argument parsing, runtime selection, and silent install flow
+- [x] 20-02-PLAN.md -- Add clean install helpers for runtime-owned command, skill, and agent outputs
+
+### Phase 21: Codex Skill-Native Surface
+**Goal**: Codex users can discover and invoke Scriven through native `$scr-*` skills while keeping the installed markdown command files as the execution source of truth
+**Depends on**: Phase 20
+**Requirements**: RUNTIME-09, RUNTIME-11
+**Success Criteria** (what must be TRUE):
+  1. Codex installs generate one skill per Scriven command with stable `$scr-*` names and descriptions
+  2. Generated Codex skills instruct the runtime to read and execute the installed Scriven command files rather than duplicating command logic
+  3. Command references shown to Codex users are translated to the `$scr-*` surface instead of `/scr:*`
+**Plans**: 3 plans
+
+Plans:
+- [x] 21-01-PLAN.md -- Generate Codex skill wrappers from Scriven command metadata
+- [x] 21-02-PLAN.md -- Wire Codex install output into the installer and keep command-file compatibility assets aligned
+- [x] 21-03-PLAN.md -- Update command-surface guidance for Codex-facing help and discovery text
+
+### Phase 22: Runtime Docs & Verification
+**Goal**: Maintainers and users can trust the new install behavior because runtime docs, examples, and tests describe the same Codex and Claude surfaces the installer actually writes
+**Depends on**: Phase 20, Phase 21
+**Requirements**: QA-04
+**Success Criteria** (what must be TRUE):
+  1. Runtime support docs explain Codex's skill-native install surface and Claude Code's command-directory surface without overstating parity
+  2. README and onboarding docs show a truthful quick-start path for Codex `$` skills and Claude `/scr:*` commands
+  3. Automated tests fail if runtime types, install paths, generated Codex skills, or silent install behavior drift from the documented contract
+**Plans**: 2 plans
+
+Plans:
+- [x] 22-01-PLAN.md -- Update runtime support and install docs for Codex skills plus silent multi-runtime install
+- [x] 22-02-PLAN.md -- Add regression tests for runtime registry, Codex skill generation, and non-interactive installer behavior
+
+### Phase 23: Atomic File Writes
+**Goal**: Installer file writes are crash-safe so an interrupted install never leaves truncated or corrupted files on disk
+**Depends on**: Phase 22
+**Requirements**: SAFE-01, SAFE-02
+**Success Criteria** (what must be TRUE):
+  1. Every generated file the installer writes (settings.json, manifests, SKILL.md, skill wrappers) lands via temp-file-then-rename, so the target path always contains either the old complete file or the new complete file
+  2. Running the installer after a previously interrupted install detects and removes orphaned `.tmp.*` files before writing new content
+  3. A simulated interrupt mid-install leaves no truncated files at any target path
+**Plans**: TBD
+
+### Phase 24: Frontmatter Parsing
+**Goal**: Frontmatter extraction from command files handles real-world content correctly instead of silently truncating or misreading values
+**Depends on**: Phase 23 (atomic writes protect any files the parser touches)
+**Requirements**: PARSE-01, PARSE-02, PARSE-03
+**Success Criteria** (what must be TRUE):
+  1. A command file whose frontmatter contains colons in values (e.g., `description: "Step 1: Do this"`) is parsed without truncation
+  2. Frontmatter extraction only reads within the `---` delimited block and ignores identical key patterns in the command body below
+  3. Multiline and array values in frontmatter are returned intact when present in command files
+**Plans**: TBD
+
+### Phase 25: Schema Validation
+**Goal**: Misconfigurations in settings.json are caught immediately with clear error messages instead of silently producing wrong behavior
+**Depends on**: Phase 24 (parsing changes may affect how settings values are read)
+**Requirements**: SCHEMA-01, SCHEMA-02
+**Success Criteria** (what must be TRUE):
+  1. Reading settings.json validates every field against a hand-written schema, reporting type mismatches, unknown fields, and missing required fields with human-readable messages
+  2. Old-format settings are migrated before validation, so a user upgrading from a prior version sees their settings upgraded rather than rejected
+  3. A settings.json with an invalid field causes the installer to fail loudly with the field name and expected type, not silently proceed
+**Plans**: TBD
+
+### Phase 26: Settings & Template Preservation
+**Goal**: Users who have customized their settings or templates do not lose those customizations when they reinstall or upgrade Scriven
+**Depends on**: Phase 23 (atomic writes), Phase 25 (schema validation for merged settings)
+**Requirements**: PRES-01, PRES-02
+**Success Criteria** (what must be TRUE):
+  1. Reinstalling Scriven preserves user-set fields in settings.json while updating installer-owned fields to their latest values
+  2. A user-customized template that differs from the shipped version is backed up before overwrite, and the user can find their version at a predictable backup path
+  3. A template the user has not modified is silently replaced with the latest shipped version without creating a backup
+**Plans**: TBD
+
+### Phase 27: Multi-Runtime Command-Ref Rewriting
+**Goal**: Cross-references between commands use correct invocation syntax for each runtime instead of hardcoding Claude Code's `/scr:` prefix everywhere
+**Depends on**: Phase 22 (runtime surface definitions from v1.5)
+**Requirements**: REWRITE-01, REWRITE-02
+**Success Criteria** (what must be TRUE):
+  1. Installed command files for Codex contain `$scr-*` references, Claude Code files contain `/scr:*` references, and other runtimes use their correct invocation syntax
+  2. Cross-references inside fenced code blocks are left unchanged so documentation examples remain portable
+  3. A command file with mixed prose references and code-block examples has only the prose references rewritten
+**Plans**: TBD
+
+### Phase 28: Hardening Regression Coverage
+**Goal**: All v1.6 hardening behaviors are locked by tests so future changes cannot silently break crash safety, parsing, validation, preservation, or rewriting
+**Depends on**: Phase 23, Phase 24, Phase 25, Phase 26, Phase 27
+**Requirements**: QA-05
+**Success Criteria** (what must be TRUE):
+  1. Atomic write tests verify temp-file-then-rename behavior and orphan cleanup
+  2. Frontmatter parsing tests cover colon-in-value, scope-bounded extraction, and multiline values
+  3. Schema validation tests cover type mismatches, unknown fields, missing required fields, and post-migration validation
+  4. Settings preservation tests verify field-level merge and template backup with content-hash comparison
+  5. Command-ref rewriting tests verify per-runtime syntax and code-block protection
+**Plans**: TBD
+
 ## Progress
 
 **Execution Order:**
-Phases execute in numeric order: 17 -> 18 -> 19
+Phases execute in numeric order: 23 -> 24 -> 25 -> 26 -> 27 -> 28
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -401,3 +475,12 @@ Phases execute in numeric order: 17 -> 18 -> 19
 | 17. Perplexity Runtime Support | v1.4 | 2/2 | Complete    | 2026-04-09 |
 | 18. Technical Writing Domain Modeling | v1.4 | 3/3 | Complete | 2026-04-09 |
 | 19. Verification & Trust Surface Updates | v1.4 | 2/2 | Complete | 2026-04-09 |
+| 20. Silent Multi-Runtime Installer | v1.5 | 2/2 | Complete | 2026-04-09 |
+| 21. Codex Skill-Native Surface | v1.5 | 3/3 | Complete | 2026-04-09 |
+| 22. Runtime Docs & Verification | v1.5 | 2/2 | Complete | 2026-04-09 |
+| 23. Atomic File Writes | v1.6 | 0/0 | Not started | - |
+| 24. Frontmatter Parsing | v1.6 | 0/0 | Not started | - |
+| 25. Schema Validation | v1.6 | 0/0 | Not started | - |
+| 26. Settings & Template Preservation | v1.6 | 0/0 | Not started | - |
+| 27. Multi-Runtime Command-Ref Rewriting | v1.6 | 0/0 | Not started | - |
+| 28. Hardening Regression Coverage | v1.6 | 0/0 | Not started | - |

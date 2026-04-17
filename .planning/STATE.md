@@ -1,12 +1,12 @@
 ---
 gsd_state_version: 1.0
 milestone: v1.6
-status: Defining requirements
-stopped_at: Milestone v1.6 started
+status: Ready to plan
+stopped_at: Roadmap created for v1.6 Installer Hardening
 last_updated: "2026-04-16"
 last_activity: 2026-04-16
 progress:
-  total_phases: 0
+  total_phases: 6
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -20,16 +20,16 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-16)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** Installer hardening — fixing bugs identified from GSD v1.33–v1.36 audit
+**Current focus:** Phase 23 - Atomic File Writes (v1.6 Installer Hardening)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-04-16 — Milestone v1.6 started
+Phase: 23 of 28 (Atomic File Writes)
+Plan: 0 of 0 in current phase
+Status: Ready to plan
+Last activity: 2026-04-16 — Roadmap created for v1.6
 
-Progress: [############] 100%
+Progress: [░░░░░░░░░░] 0%
 
 ## Performance Metrics
 
@@ -53,42 +53,14 @@ Progress: [############] 100%
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- [Milestone v1.1]: Generic SKILL.md installer for platforms without command directories
-- [Phase 09]: Runtime type classification: 'commands' for directory-based, 'skills' for manifest-based platforms
-- [Milestone v1.2]: Documentation milestone -- 3 phases (10-12) covering core docs, feature guides, developer docs + verification
-- [Phase 10-02]: Getting Started guide: 7-section walkthrough with demo as optional Step 2
-- [Phase 10]: Forward-reference doc links to docs/ files not yet created
-- [Phase 10]: Command reference organized in writer-workflow order with adaptation quick reference table
-- [Phase 11-03]: Sacred text guide: 16 command adaptations sourced from CONSTRAINTS.json (5 more than plan enumerated)
-- [Phase 11]: Feature guides organized with logical groupings and step-by-step workflows matching Phase 10 tone
-- [Phase 11-feature-domain-guides]: Feature guides use concrete prose examples showing how different voice/type settings produce different output
-- [Phase 12]: Used add-note.md as primary walkthrough example for contributor guide (simplest real command)
-- [Phase 12]: Created 5 missing command files (submit, complete-draft, new-revision, progress, settings) to match doc references
-- [Phase 12]: Work type count corrected from '50+' to '46' across all documentation
-- [Milestone v1.3]: Trust & Proof milestone focuses on closing claim-vs-surface gaps and adding proof artifacts
-- [Milestone v1.3]: Requirements mapped into four phases: launch integrity, runtime credibility, proof artifacts, and trust regression coverage
-- [Phase 13]: `docs/shipped-assets.md` is the canonical inventory for shipped export templates and trust-critical launch files
-- [Phase 13]: Launch-facing docs should avoid absolute shipped-surface claims unless the repo can prove them directly
-- [Phase 14]: Split planning into a source-of-truth runtime policy pass, followed by launch/onboarding propagation
-- [Phase 14]: `docs/runtime-support.md` will become the canonical runtime matrix and confidence document
-- [Phase 14]: `Node 20+` / `>=20.0.0` is the supported installer baseline across package metadata, installer UX, and planning/docs
-- [Phase 14]: Installer targets are not interchangeable proof of host-runtime parity; launch docs must point to the matrix for support confidence
-- [Phase 15]: Canonical proof artifacts should live under `data/` where possible so packaged-content verification can land cleanly in Phase 16
-- [Phase 15]: The shipped watchmaker demo is the primary proof corpus; proof docs should curate it rather than inventing a second flagship sample
-- [Phase 15]: `docs/proof-artifacts.md` is the canonical proof landing page, while proof evidence itself lives under `data/proof/`
-- [Phase 15]: Launch and onboarding docs should route skeptical users to proof artifacts before the broader feature surface
-- [Phase 16]: Trust regression coverage should test canonical docs and linked assets directly instead of snapshotting large docs
-- [Phase 16]: Packaged-asset checks should live in the existing npm pack dry-run test path so publish-time enforcement remains automatic
-- [Phase 17]: Guided runtime targets are valid first-class support surfaces when the installer and docs explain the setup model explicitly
-- [Phase 18]: Technical writing should start as a small family of real document types instead of one vague catch-all work type
-- [Phase 19]: New trust surfaces should be locked with targeted tests for counts, packaging, and scope wording
 - [Phase 20]: Silent installer flags should cover runtime selection, scope, mode, help, and version without falling back to readline
 - [Phase 21]: Codex is a skill-native runtime surface and should expose `$scr-*` skills backed by mirrored command markdown
 - [Phase 22]: Runtime docs and tests must describe the same Codex and Claude install model the installer actually writes
+- [Milestone v1.6]: Hardening features use Node.js 20+ built-ins exclusively -- zero-dependency constraint preserved
 
 ### Pending Todos
 
-- Select the next milestone
+None.
 
 ### Blockers/Concerns
 
@@ -96,6 +68,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-09T16:18:59Z
-Stopped at: Targeted docs update completed
-Resume file: .planning/tmp/docs-work-manifest.json
+Last session: 2026-04-16
+Stopped at: Roadmap created for v1.6 Installer Hardening (6 phases, 12 requirements)
+Resume file: None
