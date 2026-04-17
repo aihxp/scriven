@@ -63,7 +63,9 @@ $if(abstract)$
 $endif$
 
 $if(keywords)$
-\noindent\textbf{Keywords:} $keywords$
+\begin{IEEEkeywords}
+$keywords$
+\end{IEEEkeywords}
 $endif$
 
 $body$
