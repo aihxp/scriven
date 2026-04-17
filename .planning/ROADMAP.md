@@ -77,7 +77,7 @@
 - [x] **Phase 31: Staged Front-Matter Generation** - Auto-computable front matter regenerates on metadata change; personalization elements ship as explicit scaffolds excluded from export (completed 2026-04-17)
 - [x] **Phase 32: Build Pipelines & Platform Awareness** - `/scr:build-ebook` + `/scr:build-print` with per-platform trim/page guardrails, prerequisite detection, and EPUBCheck/EAA compliance (completed 2026-04-17)
 - [x] **Phase 33: Sacred Tradition Profiles** - Ten tradition profiles (catholic, orthodox, tewahedo, protestant, jewish, islamic-hafs/warsh, pali, tibetan, sanskrit) with approval blocks, font stacks, RTL, and numbering macros (completed 2026-04-17)
-- [ ] **Phase 34: Cross-Domain Narrative & Poetry Templates** - Stage play, picture book, fixed-layout EPUB + OPF stub, Smashwords DOCX, chapbook, and poetry-submission templates
+- [x] **Phase 34: Cross-Domain Narrative & Poetry Templates** - Stage play, picture book, fixed-layout EPUB + OPF stub, Smashwords DOCX, chapbook, and poetry-submission templates (completed 2026-04-17)
 - [ ] **Phase 35: Academic LaTeX Wrappers** - Thin IEEE / ACM / LNCS / Elsevier / APA7 wrappers that reference user-installed publisher classes
 
 ## Phase Details
@@ -165,9 +165,9 @@
   4. A writer using D2D/Smashwords gets a `scriven-smashwords.docx` output compliant with the Style Guide — first-line indents via paragraph style, no tabs, no banned formatting
   5. A poet exporting a chapbook gets a 5.5×8.5 saddle-stitch PDF via `scriven-chapbook.typst` with page count constrained to multiples of 4, and exporting a submission manuscript gets a DOCX with one poem per page, 12pt Times/Garamond, title page, and TOC
 **Plans**: 3 plans
-  - [ ] 34-01-PLAN.md — Phase 34 regression test suite (TPL-01..TPL-06)
-  - [ ] 34-02-PLAN.md — Stage play, picture book, fixed-layout EPUB templates (TPL-01, TPL-02, TPL-03)
-  - [ ] 34-03-PLAN.md — Smashwords DOCX, chapbook, poetry-submission templates (TPL-04, TPL-05, TPL-06)
+  - [x] 34-01-PLAN.md — Phase 34 regression test suite (TPL-01..TPL-06)
+  - [x] 34-02-PLAN.md — Stage play, picture book, fixed-layout EPUB templates (TPL-01, TPL-02, TPL-03)
+  - [x] 34-03-PLAN.md — Smashwords DOCX, chapbook, poetry-submission templates (TPL-04, TPL-05, TPL-06)
 
 ### Phase 35: Academic LaTeX Wrappers
 **Goal**: Academic writers can produce publisher-ready LaTeX by routing Scriven's voice/metadata frontmatter through thin wrappers that `\documentclass` into the user-installed IEEEtran, acmart, llncs, elsarticle, or apa7 class — without Scriven redistributing the class
@@ -222,5 +222,5 @@ Phases execute in numeric order: 29 -> 30 -> 31 -> 32 -> 33 -> 34 -> 35
 | 31. Staged Front-Matter Generation | v1.7 | 3/3 | Complete    | 2026-04-17 |
 | 32. Build Pipelines & Platform Awareness | v1.7 | 3/3 | Complete    | 2026-04-17 |
 | 33. Sacred Tradition Profiles | v1.7 | 4/4 | Complete    | 2026-04-17 |
-| 34. Cross-Domain Narrative & Poetry Templates | v1.7 | 0/3 | Not started | - |
+| 34. Cross-Domain Narrative & Poetry Templates | v1.7 | 3/3 | Complete   | 2026-04-17 |
 | 35. Academic LaTeX Wrappers | v1.7 | 0/3 | Not started | - |
