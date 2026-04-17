@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Documentation
 status: executing
-stopped_at: Completed 29-01-PLAN.md
-last_updated: "2026-04-17T12:21:37.182Z"
+stopped_at: Completed 29-02-PLAN.md
+last_updated: "2026-04-17T12:24:53.257Z"
 last_activity: 2026-04-17
 progress:
   total_phases: 1
   completed_phases: 0
   total_plans: 4
-  completed_plans: 1
-  percent: 25
+  completed_plans: 2
+  percent: 50
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-04-17)
 ## Current Position
 
 Phase: 29 (Architectural Foundation) — EXECUTING
-Plan: 2 of 4
+Plan: 3 of 4
 Status: Ready to execute
 Last activity: 2026-04-17
 
@@ -55,6 +55,7 @@ Recent decisions affecting current work:
 - [v1.7 sequencing]: Architectural shift (Phase 29) lands first so build pipelines, tradition profiles, and platform-aware templates can plug into the new structure without core-template edits
 - [Phase 29]: Placeholder manifests declare full schema shape with null values + status: placeholder so Plan 03 validator can target a stable shape without waiting for Phase 32/33 content
 - [Phase 29]: Legacy sacred-scaffold markdown files (COSMOLOGY.md etc.) coexist with new tradition subdirectories — distinct purposes (project-scaffold templates vs tradition profiles), documented in README
+- [Phase 29]: Plan 29-02: OLD sacred_config_schema.tradition.values taxonomy preserved byte-identical alongside new architectural_profiles.traditions (lineage profiles); they coexist — collapse deferred
 
 ### Pending Todos
 
@@ -67,6 +68,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-17T12:21:37.179Z
-Stopped at: Completed 29-01-PLAN.md
+Last session: 2026-04-17T12:24:53.255Z
+Stopped at: Completed 29-02-PLAN.md
 Resume file: None

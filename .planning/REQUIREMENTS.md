@@ -61,7 +61,7 @@
 
 - [x] **ARCH-01**: `templates/sacred/<tradition>/` directory structure ships as a drop-in extension point for adding new tradition profiles without touching core templates
 - [x] **ARCH-02**: `templates/platforms/<platform>/` directory structure ships as a drop-in extension point for adding new publishing platform configs without touching core templates
-- [ ] **ARCH-03**: `tradition:` and `platform:` keys added to the project spec (WORK.md frontmatter or equivalent) and validated by `data/CONSTRAINTS.json`
+- [x] **ARCH-03**: `tradition:` and `platform:` keys added to the project spec (WORK.md frontmatter or equivalent) and validated by `data/CONSTRAINTS.json`
 - [ ] **ARCH-04**: Existing sacred text work types (Bible, Quran commentary, etc.) migrate cleanly to the new profile system — default tradition inferred from work type with no writer action required
 - [ ] **ARCH-05**: Existing book export commands migrate cleanly — default platform inferred as KDP with no writer action required when `platform:` is absent
 
@@ -99,7 +99,7 @@ REQ-ID → Phase mapping (v1.7 Last Mile, Phases 29-35):
 |-------------|-------|--------|
 | ARCH-01 | Phase 29 | Complete |
 | ARCH-02 | Phase 29 | Complete |
-| ARCH-03 | Phase 29 | Pending |
+| ARCH-03 | Phase 29 | Complete |
 | ARCH-04 | Phase 29 | Pending |
 | ARCH-05 | Phase 29 | Pending |
 | CLEAN-01 | Phase 30 | Pending |
