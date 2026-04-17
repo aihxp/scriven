@@ -1,0 +1,129 @@
+// Scriven Stage Play Template — Samuel French format
+// Usage: pandoc ... --pdf-engine=typst --template=data/export-templates/scriven-stageplay.typst
+//
+// Samuel French standard: 8.5x11 US Letter, Courier 12pt, 1.5in left (binding), 1in right/top/bottom.
+// Character names: centered ALL CAPS (bold strong text rendered via Pandoc as **CHARACTER NAME**).
+// Stage directions: italic (Pandoc renders *(direction)* as emph).
+// H1 = Act headings, H2 = Scene headings.
+
+// Page dimensions (Pandoc -V variables with defaults)
+// US Letter — standard for stage plays and Samuel French submissions
+#let page-width = $if(paperwidth)$$paperwidth$$else$8.5in$endif$
+#let page-height = $if(paperheight)$$paperheight$$else$11in$endif$
+
+// Samuel French margins: 1.5in left (binding), 1in right, 1in top, 1in bottom
+#let margin-left   = $if(margin-left)$$margin-left$$else$1.5in$endif$
+#let margin-right  = $if(margin-right)$$margin-right$$else$1in$endif$
+#let margin-top    = $if(margin-top)$$margin-top$$else$1in$endif$
+#let margin-bottom = $if(margin-bottom)$$margin-bottom$$else$1in$endif$
+
+// Metadata
+#let play-title  = $if(title)$"$title$"$else$"Untitled"$endif$
+#let play-author = $if(author)$"$for(author)$$it.name$$sep$, $endfor$"$else$""$endif$
+
+#set document(
+  title: play-title,
+  author: play-author,
+)
+
+#set page(
+  width: page-width,
+  height: page-height,
+  margin: (
+    left:   margin-left,
+    right:  margin-right,
+    top:    margin-top,
+    bottom: margin-bottom,
+  ),
+  // Page numbering: top-right, industry standard for scripts
+  header: context {
+    let page-num = counter(page).get().first()
+    if page-num > 1 {
+      align(right, text(size: 10pt)[#str(page-num).])
+    }
+  },
+)
+
+// Courier 12pt — industry standard font for stage plays
+#set text(
+  font: $if(mainfont)$"$mainfont$"$else$"Courier New"$endif$,
+  size: $if(fontsize)$$fontsize$$else$12pt$endif$,
+  fallback: true,
+)
+
+// Paragraph settings: no first-line indent for scripts; left-aligned
+#set par(
+  leading: 1.2em,
+  first-line-indent: 0em,
+  justify: false,
+)
+
+// Character names: Pandoc renders **CHARACTER NAME** as strong; re-style to centered ALLCAPS
+#show strong: it => {
+  align(center)[
+    #text(weight: "bold")[#upper(it.body)]
+  ]
+}
+
+// Stage directions: rendered as emphasized (italic) text
+#show emph: it => {
+  text(style: "italic")[#it.body]
+}
+
+// Act headings (H1): centered, uppercase, extra space — new page per act
+#show heading.where(level: 1): it => {
+  pagebreak(weak: true)
+  v(2em)
+  align(center)[
+    #text(size: 14pt, weight: "bold")[#upper(it.body)]
+  ]
+  v(1em)
+}
+
+// Scene headings (H2): centered, title case, moderate space
+#show heading.where(level: 2): it => {
+  v(1.5em)
+  align(center)[
+    #text(size: 12pt, weight: "bold")[#it.body]
+  ]
+  v(0.8em)
+}
+
+// H3: sub-scene or location descriptions
+#show heading.where(level: 3): it => {
+  v(0.8em)
+  text(size: 12pt, weight: "bold")[#it.body]
+  v(0.5em)
+}
+
+// Blockquotes: for spoken monologues or extended speeches, indented
+#set quote(block: true)
+#show quote: it => {
+  pad(left: 1.5em, right: 1em)[
+    #it.body
+  ]
+}
+
+// Links: no color change in print
+#show link: it => it
+
+// Title page
+$if(title)$
+#align(center + horizon)[
+  #text(size: 24pt, weight: "bold")[#play-title]
+  $if(subtitle)$
+  #v(0.5em)
+  #text(size: 16pt, style: "italic")[$subtitle$]
+  $endif$
+  #v(2em)
+  #text(size: 14pt)[#play-author]
+  $if(publisher)$
+  #v(3em)
+  #text(size: 11pt)[$publisher$]
+  $endif$
+]
+#pagebreak()
+$endif$
+
+// Body content
+$body$

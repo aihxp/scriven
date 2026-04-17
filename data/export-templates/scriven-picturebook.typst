@@ -1,0 +1,113 @@
+// Scriven Picture Book Template — 8.5x8.5 with 0.125in bleed
+// Usage: pandoc ... --pdf-engine=typst --template=data/export-templates/scriven-picturebook.typst
+//
+// Picture book: 8.5×8.5 trim + 0.125in bleed on all sides = 8.75×8.75 total document size.
+// Safe zone: 0.25in from trim edge (0.375in from bleed edge) — keep all text and key visuals inside.
+// Spread-aware pagination: spread = two facing pages treated as one layout unit.
+// For preview, open PDF in two-page spread view. Pandoc --split-level=0 keeps spreads together.
+
+// Bleed and safe zone constants
+#let bleed     = 0.125in
+#let safe-zone = 0.25in
+#let trim-width  = 8.5in
+#let trim-height = 8.5in
+
+// Total page size including bleed: trim + bleed on both sides
+#let page-width  = $if(paperwidth)$$paperwidth$$else$8.75in$endif$
+#let page-height = $if(paperheight)$$paperheight$$else$8.75in$endif$
+
+// Margins set to bleed + safe zone = 0.375in minimum on all sides
+// Override with -V margin-top= etc. if custom margins are needed
+#let margin-all = $if(margin-top)$$margin-top$$else$0.375in$endif$
+
+// Metadata
+#let book-title  = $if(title)$"$title$"$else$"Untitled"$endif$
+#let book-author = $if(author)$"$for(author)$$it.name$$sep$, $endfor$"$else$""$endif$
+
+#set document(
+  title: book-title,
+  author: book-author,
+)
+
+#set page(
+  width: page-width,
+  height: page-height,
+  margin: (
+    top:    margin-all,
+    bottom: margin-all,
+    left:   margin-all,
+    right:  margin-all,
+  ),
+  // No running headers: picture books use full-bleed images; page numbers are usually suppressed
+  // or placed outside the safe zone — omit from template
+)
+
+// Text settings: large, readable sans-serif for picture books
+#set text(
+  font: $if(mainfont)$"$mainfont$"$else$"Helvetica"$endif$,
+  size: $if(fontsize)$$fontsize$$else$16pt$endif$,
+  fallback: true,
+)
+
+// Paragraph settings: centered body text (typical for picture books)
+#set par(
+  leading: 1.4em,
+  first-line-indent: 0em,
+  justify: false,
+)
+
+// Default text alignment: centered (picture book convention)
+#set align(center)
+
+// H1: spread/scene titles — bold, large, centered
+// In two-page spread view, H1 anchors the start of a visual spread
+#show heading.where(level: 1): it => {
+  pagebreak(weak: true)
+  v(1em)
+  align(center)[
+    #text(size: 20pt, weight: "bold")[#it.body]
+  ]
+  v(0.8em)
+}
+
+// H2: sub-scene or caption headings
+#show heading.where(level: 2): it => {
+  v(0.8em)
+  align(center)[
+    #text(size: 16pt, weight: "bold")[#it.body]
+  ]
+  v(0.6em)
+}
+
+// Blockquotes: for character speech bubbles or narrative captions
+#set quote(block: true)
+#show quote: it => {
+  pad(left: 1em, right: 1em)[
+    #set text(style: "italic")
+    #align(center)[#it.body]
+  ]
+}
+
+// Links: no color change in print
+#show link: it => it
+
+// Title page
+$if(title)$
+#align(center + horizon)[
+  #text(size: 28pt, weight: "bold")[#book-title]
+  $if(subtitle)$
+  #v(0.5em)
+  #text(size: 18pt, style: "italic")[$subtitle$]
+  $endif$
+  #v(2em)
+  #text(size: 16pt)[#book-author]
+  $if(publisher)$
+  #v(3em)
+  #text(size: 12pt)[$publisher$]
+  $endif$
+]
+#pagebreak()
+$endif$
+
+// Body content
+$body$
