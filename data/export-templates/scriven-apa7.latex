@@ -28,6 +28,15 @@ $if(highlighting-macros)$
 $highlighting-macros$
 $endif$
 
+% Pandoc: allow preamble additions via header-includes in metadata YAML
+$for(header-includes)$
+$header-includes$
+$endfor$
+
+% APA7 requires biblatex-apa. Uncomment if using bibliography:
+% \usepackage[style=apa,sortcites=true,sorting=nyt,backend=biber]{biblatex}
+% \addbibresource{references.bib}
+
 % Pandoc required: tight lists
 \providecommand{\tightlist}{%
   \setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}}
