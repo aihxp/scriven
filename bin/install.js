@@ -1193,15 +1193,20 @@ function installGuidedRuntime(runtime, isGlobal, dataDir, log) {
 }
 
 function writeSharedAssets(dataDir, runtimeKeys, isGlobal, developerMode, installMode, log) {
-  removePathIfExists(path.join(dataDir, 'templates'));
-  removePathIfExists(path.join(dataDir, 'data'));
   fs.mkdirSync(path.join(dataDir, 'templates'), { recursive: true });
   fs.mkdirSync(path.join(dataDir, 'data'), { recursive: true });
-  const templateCount = copyDir(path.join(PKG_ROOT, 'templates'), path.join(dataDir, 'templates'));
-  const dataCount = copyDir(path.join(PKG_ROOT, 'data'), path.join(dataDir, 'data'));
-  log(`  ${c('green', '✓')} ${templateCount} templates + ${dataCount} data files → ${c('dim', dataDir)}`);
+  const templateResult = copyDirWithPreservation(path.join(PKG_ROOT, 'templates'), path.join(dataDir, 'templates'));
+  const dataResult = copyDirWithPreservation(path.join(PKG_ROOT, 'data'), path.join(dataDir, 'data'));
+  const sum = (r) => r.fresh + r.replaced + r.backedUp;
+  log(`  ${c('green', '✓')} ${sum(templateResult)} templates + ${sum(dataResult)} data files → ${c('dim', dataDir)}`);
+  const totalBackedUp = templateResult.backedUp + dataResult.backedUp;
+  if (totalBackedUp > 0) {
+    log(`  ${c('yellow', 'i')} Preserved ${totalBackedUp} user-modified file(s) as .backup.<timestamp>`);
+  }
 
-  const settings = {
+  const settingsPath = path.join(dataDir, 'settings.json');
+  const existingSettings = readJsonIfExists(settingsPath);
+  const incomingSettings = {
     version: VERSION,
     runtime: runtimeKeys[0],
     runtimes: runtimeKeys,
@@ -1211,8 +1216,9 @@ function writeSharedAssets(dataDir, runtimeKeys, isGlobal, developerMode, instal
     install_mode: installMode,
     installed_at: new Date().toISOString(),
   };
-  atomicWriteFileSync(path.join(dataDir, 'settings.json'), JSON.stringify(settings, null, 2));
-  log(`  ${c('green', '✓')} settings.json → ${c('dim', path.join(dataDir, 'settings.json'))}`);
+  const mergedSettings = mergeSettings(existingSettings, incomingSettings);
+  atomicWriteFileSync(settingsPath, JSON.stringify(mergedSettings, null, 2));
+  log(`  ${c('green', '✓')} settings.json → ${c('dim', settingsPath)}`);
 }
 
 function printNextSteps(runtimeKeys) {
@@ -1353,4 +1359,5 @@ module.exports = {
   copyDirWithPreservation,
   mergeSettings,
   INSTALLER_OWNED_FIELDS,
+  writeSharedAssets,
 };
