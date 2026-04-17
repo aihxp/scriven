@@ -90,6 +90,8 @@ If no scaffold files were found, show no note.
 
 **1.6b — GENERATE element auto-refresh**
 
+If `.manuscript/front-matter/` does not exist, skip auto-refresh and proceed to STEP 2.
+
 If `.manuscript/WORK.md` does not exist, skip auto-refresh and proceed to STEP 2.
 
 Compare the modification timestamp of `.manuscript/WORK.md` against each of the following GENERATE front-matter files:
@@ -105,7 +107,7 @@ To compare timestamps, use the appropriate command for the platform:
 - If timestamp comparison is not possible, assume WORK.md is newer and regenerate.
 
 If WORK.md is newer than ANY of those 4 files, or if ANY of those 4 files do not exist:
-Re-run the GENERATE step from `/scr:front-matter` for elements 1, 3, 4, and 7 only (half-title, title page, copyright page, TOC) using current WORK.md metadata. Do NOT regenerate scaffold elements (5, 6, 11, 12, 13) or any other elements.
+Re-run the GENERATE step from `/scr:front-matter` for elements 1, 3, 4, and 7 only (half-title, title page, copyright page, TOC) using current WORK.md metadata. Regenerate all four even if only one triggered the condition. Do NOT regenerate scaffold elements (5, 6, 11, 12, 13) or any other elements.
 
 If WORK.md is not newer than all 4 files and all 4 files exist: skip regeneration silently.
 

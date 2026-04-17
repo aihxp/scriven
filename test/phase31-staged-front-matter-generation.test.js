@@ -234,8 +234,8 @@ describe('Phase 31: FM-04 export.md STEP 1.6 contains GENERATE auto-refresh logi
     const step16Index = content.indexOf('STEP 1.6');
     assert.ok(step16Index !== -1, 'FM-04: export.md must contain STEP 1.6 (auto-refresh gate)');
 
-    // Get text from STEP 1.6 to STEP 2 to scope the check
-    const step2Index = content.indexOf('STEP 2', step16Index);
+    // Get text from STEP 1.6 to the ### STEP 2: heading to scope the check
+    const step2Index = content.indexOf('### STEP 2:', step16Index);
     const step16Section = step2Index !== -1
       ? content.slice(step16Index, step2Index)
       : content.slice(step16Index, step16Index + 3000);

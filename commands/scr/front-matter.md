@@ -21,7 +21,7 @@ Generate all 19 front matter elements for a publication-ready manuscript. Elemen
 | 3 | Title page | `title` | GENERATE |
 | 4 | Copyright page | `copyright` | GENERATE |
 | 5 | Dedication | `dedication` | SCAFFOLD |
-| 6 | Epigraph | `epigraph` | SUGGEST |
+| 6 | Epigraph | `epigraph` | SCAFFOLD |
 | 7 | Table of contents | `toc` | GENERATE |
 | 8 | List of illustrations | `illustrations-list` | GENERATE |
 | 9 | List of tables | `tables-list` | GENERATE |
