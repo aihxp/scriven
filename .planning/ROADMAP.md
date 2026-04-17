@@ -151,8 +151,8 @@
   4. A writer building a Tewahedo PDF gets Ge'ez font rendering; an Orthodox writer gets polytonic Greek; an Islamic writer gets RTL Arabic with mushaf-grade typesetting; a Jewish writer can toggle cantillation; a Sanskrit writer gets Devanagari; a Tibetan writer gets Uchen with stacked consonants; a Pali writer gets correct diacritics
 **Plans**: 3 plans
   - [ ] 33-01-PLAN.md — Phase 33 regression test suite (TRAD-01..TRAD-05)
-  - [ ] 33-02-PLAN.md — Ten tradition profile manifests in templates/sacred/ (TRAD-01, TRAD-02)
-  - [ ] 33-03-PLAN.md — front-matter.md tradition-conditional approval blocks + verse-numbering command (TRAD-03, TRAD-04, TRAD-05)
+  - [ ] 33-02-PLAN.md — Populate all 10 templates/sacred/*/manifest.yaml with real content (TRAD-01, TRAD-02, TRAD-03, TRAD-04)
+  - [ ] 33-03-PLAN.md — Add STEP 1.7 tradition loading to build-ebook.md and build-print.md (TRAD-05)
 
 ### Phase 34: Cross-Domain Narrative & Poetry Templates
 **Goal**: Playwrights, picture-book authors, illustrated-book authors, Smashwords publishers, and poets can produce publication-ready output — not just book prose — through dedicated templates
