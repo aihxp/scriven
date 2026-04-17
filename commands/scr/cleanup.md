@@ -45,9 +45,10 @@ Scan all `.md` files in `.manuscript/drafts/` recursively. For each file, check 
 **Alternate blocks:**
 - Lines containing `Alternate 1:` or `Alternate 2:` (at line start or inline)
 - Record the full block extent: from the `Alternate N:` line through the first of:
-  - (a) the next blank line that precedes another `Alternate M:` header, or
-  - (b) a line starting with `## ` or `# ` (section heading boundary), or
-  - (c) end of file
+  - (a) the next blank line (any standalone blank line stops the block), or
+  - (b) the next line containing `Alternate M:` (another Alternate header), or
+  - (c) a line starting with `## ` or `# ` (section heading boundary), or
+  - (d) end of file
 
 **Duplicate H1 headings:**
 - Identify all lines matching `^# ` (single hash + space, top-level heading) in the file

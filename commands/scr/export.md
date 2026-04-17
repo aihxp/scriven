@@ -93,6 +93,8 @@ Scan all `.md` files in `.manuscript/drafts/` for:
 - Lines containing `Alternate 1:` or `Alternate 2:`
 - Files with more than one `# ` (top-level H1) heading
 
+**Note:** `{{VAR}}` tokens are NOT scaffold markers and must not be flagged. They are writer content placeholders, out of scope for this gate.
+
 **If `--skip-validate` was passed:**
 
 > **Warning: Validate gate skipped (`--skip-validate`). Your manuscript may contain
