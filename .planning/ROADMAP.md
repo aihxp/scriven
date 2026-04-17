@@ -72,7 +72,7 @@
 
 **Milestone Goal:** Close the production edge — ship real build pipelines, cross-domain templates, and per-platform awareness so Scriven reaches publication-ready output for any supported work type, not just book prose.
 
-- [ ] **Phase 29: Architectural Foundation** - `templates/sacred/` + `templates/platforms/` directories and `tradition:` / `platform:` spec keys with clean default-inference migration
+- [x] **Phase 29: Architectural Foundation** - `templates/sacred/` + `templates/platforms/` directories and `tradition:` / `platform:` spec keys with clean default-inference migration (completed 2026-04-17)
 - [ ] **Phase 30: Export Cleanup & Validation Gate** - `/scr:cleanup` scaffold-stripping and `/scr:validate` pre-flight gate blocking export when unresolved markers remain
 - [ ] **Phase 31: Staged Front-Matter Generation** - Auto-computable front matter regenerates on metadata change; personalization elements ship as explicit scaffolds excluded from export
 - [ ] **Phase 32: Build Pipelines & Platform Awareness** - `/scr:build-ebook` + `/scr:build-print` with per-platform trim/page guardrails, prerequisite detection, and EPUBCheck/EAA compliance
@@ -95,7 +95,7 @@
   - [x] 29-01-PLAN.md — Seed templates/sacred/ and templates/platforms/ directories with 18 placeholder manifests + 2 READMEs (ARCH-01, ARCH-02)
   - [x] 29-02-PLAN.md — Add tradition/platform spec keys to templates/WORK.md + architectural_profiles schema to data/CONSTRAINTS.json (ARCH-03)
   - [x] 29-03-PLAN.md — Implement lib/architectural-profiles.js validator + default-inference module and re-export from bin/install.js (ARCH-04, ARCH-05)
-  - [ ] 29-04-PLAN.md — Regression test suite locking ARCH-01..ARCH-05 behavior (all 5 requirements)
+  - [x] 29-04-PLAN.md — Regression test suite locking ARCH-01..ARCH-05 behavior (all 5 requirements)
 
 ### Phase 30: Export Cleanup & Validation Gate
 **Goal**: Writers can strip template scaffolding from their manuscript and are blocked from exporting a manuscript that still contains unresolved scaffold markers
@@ -199,7 +199,7 @@ Phases execute in numeric order: 29 -> 30 -> 31 -> 32 -> 33 -> 34 -> 35
 | 26. Settings & Template Preservation | v1.6 | 1/1 | Complete | 2026-04-16 |
 | 27. Multi-Runtime Command-Ref Rewriting | v1.6 | 1/1 | Complete | 2026-04-16 |
 | 28. Hardening Regression Coverage | v1.6 | 1/1 | Complete | 2026-04-16 |
-| 29. Architectural Foundation | v1.7 | 3/4 | In Progress|  |
+| 29. Architectural Foundation | v1.7 | 4/4 | Complete   | 2026-04-17 |
 | 30. Export Cleanup & Validation Gate | v1.7 | 0/? | Not started | - |
 | 31. Staged Front-Matter Generation | v1.7 | 0/? | Not started | - |
 | 32. Build Pipelines & Platform Awareness | v1.7 | 0/? | Not started | - |

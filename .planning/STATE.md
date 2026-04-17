@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.2
 milestone_name: Documentation
-status: executing
-stopped_at: Completed 29-03-PLAN.md
-last_updated: "2026-04-17T12:29:12.343Z"
+status: verifying
+stopped_at: Completed 29-04-PLAN.md (Phase 29 complete)
+last_updated: "2026-04-17T12:34:13.216Z"
 last_activity: 2026-04-17
 progress:
   total_phases: 1
-  completed_phases: 0
+  completed_phases: 1
   total_plans: 4
-  completed_plans: 3
-  percent: 75
+  completed_plans: 4
+  percent: 100
 ---
 
 # Project State
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-04-17)
 
 Phase: 29 (Architectural Foundation) — EXECUTING
 Plan: 4 of 4
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-04-17
 
 Progress: [          ] 0%
@@ -57,6 +57,8 @@ Recent decisions affecting current work:
 - [Phase 29]: Legacy sacred-scaffold markdown files (COSMOLOGY.md etc.) coexist with new tradition subdirectories — distinct purposes (project-scaffold templates vs tradition profiles), documented in README
 - [Phase 29]: Plan 29-02: OLD sacred_config_schema.tradition.values taxonomy preserved byte-identical alongside new architectural_profiles.traditions (lineage profiles); they coexist — collapse deferred
 - [Phase 29]: Plan 29-03: lib/architectural-profiles.js uses directory-listing intersection with manifest.yaml presence (not _seeded whitelist) — contributor drop-ins extend accepted tradition/platform set at runtime with zero code/data edit
+- [Phase 29]: Plan 29-04: Fixture slugs use 'zzz-test-' prefix (not '__test-...__') to satisfy SLUG_PATTERN ^[a-z][a-z0-9-]*$ from Plan 03 — Rule 1 auto-fix documented in SUMMARY
+- [Phase 29]: Plan 29-04: 54-test regression suite locks ARCH-01..ARCH-05 as machine-executable contracts; downstream Phases 30-35 can only break Phase 29 by failing npm test
 
 ### Pending Todos
 
@@ -69,6 +71,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-17T12:29:07.553Z
-Stopped at: Completed 29-03-PLAN.md
+Last session: 2026-04-17T12:34:08.879Z
+Stopped at: Completed 29-04-PLAN.md (Phase 29 complete)
 Resume file: None
