@@ -438,14 +438,14 @@ If no markers found: proceed to STEP 2.
 
 ---
 
-## Open Questions
+## Open Questions (RESOLVED)
 
-1. **Alternate block end-boundary**
+1. **Alternate block end-boundary** — **(RESOLVED: 30-02-01)** Block boundary defined in cleanup.md Task 1 `<behavior>`: strip from the `Alternate N:` line through the next blank line OR next `Alternate M:` line OR next `## ` or `# ` heading, whichever comes first. Dry-run exposes exact ranges before `--apply`.
    - What we know: `Alternate 1:` and `Alternate 2:` blocks need to be stripped as units, not just their header line
    - What's unclear: How does the agent determine where the Alternate block ends? (blank line, next heading, next Alternate marker, or end of file)
    - Recommendation: The cleanup.md instruction should specify: "strip from the `Alternate N:` line through the next blank line that precedes either another `Alternate M:` header, a `## ` or `# ` heading, or end-of-file." If unsure, the dry-run will expose it for the writer to verify before `--apply`.
 
-2. **Duplicate H1 handling — which copy to keep?**
+2. **Duplicate H1 handling — which copy to keep?** — **(RESOLVED: 30-02-01)** Rule locked in cleanup.md Task 1 `<behavior>` and `<action>`: keep the first `# ` heading, remove all subsequent ones. Dry-run shows exact line numbers for writer verification before `--apply`.
    - What we know: CONTEXT.md says "duplicate top-level `# Heading` (two or more `# ` headings in the same file)" are removed
    - What's unclear: Is the rule "keep the first, remove the rest" or "flag all and let the writer decide"?
    - Recommendation: Default to keeping the first `# ` heading and removing subsequent ones. In dry-run, show exactly which lines would be removed so the writer can verify.
