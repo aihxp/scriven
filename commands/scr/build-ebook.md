@@ -1,6 +1,6 @@
 ---
 description: Build a publication-ready EPUB from the manuscript for a target platform.
-argument-hint: "[--platform <platform>] [--skip-validate]"
+argument-hint: "[--platform <platform>] [--fixed-layout] [--skip-validate]"
 ---
 
 # /scr:build-ebook -- EPUB Build Pipeline
@@ -10,10 +10,13 @@ Assemble the manuscript and produce an accessible EPUB for the selected publishi
 ## Usage
 
 ```
-/scr:build-ebook [--platform <platform>] [--skip-validate]
+/scr:build-ebook [--platform <platform>] [--fixed-layout] [--skip-validate]
 ```
 
 **Platform values:** `kdp | ingram | apple | bn | d2d | kobo | google | smashwords` (default: kdp)
+
+**Flags:**
+  `--fixed-layout`    Produce a fixed-layout EPUB (for picture books and illustrated books). Uses `data/export-templates/scriven-fixed-layout-epub.css` and generates an OPF stub. Work type `picture_book` auto-enables this flag.
 
 ## Instruction
 
@@ -38,6 +41,9 @@ If the work type group is **not available**:
 > This command is not available for [work_type] projects. The EPUB build is available for: prose, visual, poetry, interactive, and sacred work types.
 
 Then **stop**.
+
+**Auto-detect fixed-layout:**
+If `work_type` is `picture_book` and `--fixed-layout` was not passed, treat `--fixed-layout` as enabled automatically.
 
 ---
 
@@ -190,6 +196,20 @@ If `data/export-templates/scriven-epub.css` does not exist:
 
 Then **stop** -- do not attempt the build without the stylesheet.
 
+If `--fixed-layout` was passed (or auto-enabled):
+
+If `data/export-templates/scriven-fixed-layout-epub.css` does not exist:
+> **Fixed-layout EPUB stylesheet is missing at `data/export-templates/scriven-fixed-layout-epub.css`.**
+> Re-install Scriven or restore the file from the repository.
+
+Then **stop**.
+
+If `data/export-templates/scriven-fixed-layout.opf` does not exist:
+> **Fixed-layout OPF stub is missing at `data/export-templates/scriven-fixed-layout.opf`.**
+> Re-install Scriven or restore the file from the repository.
+
+Then **stop**.
+
 ---
 
 ### STEP 3: ASSEMBLE MANUSCRIPT
@@ -278,6 +298,34 @@ Before invoking Pandoc, verify:
 - The project language (`lang`) is set — if absent from config.json, default to `en`.
 
 **4b — Pandoc invocation:**
+
+**If `--fixed-layout` is enabled:**
+
+First, copy the OPF stub for reference:
+```bash
+cp data/export-templates/scriven-fixed-layout.opf .manuscript/output/fixed-layout.opf
+```
+
+Invoke Pandoc with the fixed-layout stylesheet:
+```bash
+pandoc .manuscript/output/assembled-manuscript.md \
+  -o .manuscript/output/ebook-fixed-layout.epub \
+  --metadata-file=.manuscript/output/metadata.yaml \
+  --epub-cover-image=.manuscript/output/cover.jpg \
+  --css=data/export-templates/scriven-fixed-layout-epub.css \
+  --toc \
+  --toc-depth=2 \
+  --split-level=0
+```
+
+Note: `--split-level=0` keeps facing pages together as single spine items.
+
+After build, show:
+> **Note:** Fixed-layout EPUB generated. Merge the OPF metadata from `.manuscript/output/fixed-layout.opf` into the EPUB's `package.opf` before submitting to Apple Books.
+
+Then proceed to STEP 5 (skip the standard Pandoc invocation below).
+
+**If `--fixed-layout` is NOT enabled:** use the standard Pandoc invocation:
 
 ```bash
 pandoc .manuscript/output/assembled-manuscript.md \

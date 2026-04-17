@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Scriven Fixed-Layout OPF Stub
+     For picture books and illustrated books.
+     Merge metadata block into the book's package.opf when packaging the EPUB.
+     Apple Books compatibility: rendition:layout + rendition:spread are required.
+-->
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" unique-identifier="uid">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <!-- Fixed-layout metadata (EPUB3 rendition vocabulary) -->
+    <meta property="rendition:layout">pre-paginated</meta>
+    <meta property="rendition:spread">auto</meta>
+    <meta property="rendition:orientation">auto</meta>
+    <!-- Apple Books: iBooks-specific metadata for fixed-layout support -->
+    <meta name="fixed-layout" content="true"/>
+    <meta name="original-resolution" content="1024x768"/>
+    <!-- Replace with actual book metadata below -->
+    <dc:title>TITLE</dc:title>
+    <dc:creator>AUTHOR</dc:creator>
+    <dc:language>en</dc:language>
+    <dc:identifier id="uid">BOOK-UUID</dc:identifier>
+    <meta property="dcterms:modified">YYYY-MM-DDTHH:MM:SSZ</meta>
+  </metadata>
+</package>

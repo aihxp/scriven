@@ -161,6 +161,32 @@ If `rtl: true` in the manifest, add `--metadata dir=rtl` to the Pandoc invocatio
 If `approval_block.required: true` in the manifest, show after the build completes:
 > **Note:** This tradition requires an approval block ("{{approval_block.label}}") before publication. Scope: {{approval_block.scope}}.
 
+Proceed to STEP 1.8.
+
+---
+
+### STEP 1.8: WORK TYPE TEMPLATE SELECTION
+
+Read `work_type` from `.manuscript/config.json`.
+
+Map `work_type` to the appropriate Typst template:
+
+| work_type | Template |
+|-----------|----------|
+| `stage_play` | `data/export-templates/scriven-stageplay.typst` |
+| `picture_book` | `data/export-templates/scriven-picturebook.typst` |
+| `poetry_collection` | `data/export-templates/scriven-chapbook.typst` |
+| `single_poem` | `data/export-templates/scriven-chapbook.typst` |
+| All other work types | `data/export-templates/scriven-book.typst` |
+
+Set the resolved template path as `TYPST_TEMPLATE` for use in STEP 4.
+
+If the resolved template file does not exist at the path:
+> **Build template missing: `{TYPST_TEMPLATE}` not found.**
+> Re-install Scriven or restore the file from the repository.
+
+Then **stop**.
+
 Proceed to STEP 2.
 
 ---
@@ -363,7 +389,7 @@ Look up trim dimensions from manifest:
 pandoc .manuscript/output/assembled-manuscript.md \
   -o .manuscript/output/print-{platform}.pdf \
   --pdf-engine=typst \
-  --template=data/export-templates/scriven-book.typst \
+  --template={TYPST_TEMPLATE} \
   --metadata-file=.manuscript/output/metadata.yaml \
   --toc \
   --toc-depth=2 \
