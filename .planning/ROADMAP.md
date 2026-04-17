@@ -121,9 +121,9 @@
   3. A writer exporting a manuscript whose preface still has `scaffold: true` sees that file excluded from the build; flipping to `scaffold: false` or opting in includes it on the next build
   4. A writer updating title, author, copyright year, or ISBN in project metadata sees the auto-computable front-matter files refresh on the next export without rerunning `/scr:front-matter`
 **Plans**: 3 plans
-  - [x] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
-  - [ ] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
-  - [ ] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
+  - [ ] 31-01-PLAN.md — Phase 31 regression test suite in RED state (FM-01, FM-02, FM-03, FM-04)
+  - [ ] 31-02-PLAN.md — Update front-matter.md: prepend scaffold: true YAML to 5 personalization elements (FM-01, FM-02)
+  - [ ] 31-03-PLAN.md — Inject STEP 1.6 into export.md and publish.md + update STEP 3b (FM-03, FM-04)
 
 ### Phase 32: Build Pipelines & Platform Awareness
 **Goal**: Writers can produce EPUB and print-ready PDF output from the current manuscript for a selected publishing platform, with guardrails that warn before they build something the platform will reject
@@ -136,9 +136,9 @@
   4. A writer whose manuscript word count projects to 900 pages on 6×9 sees a warning that it exceeds KDP paperback (828pp) and is offered IngramSpark (1200pp) as a viable path
   5. A writer selecting an unsupported trim size for their chosen platform is rejected with a clear error and the list of trim sizes that platform accepts
 **Plans**: 3 plans
-  - [ ] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
-  - [ ] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
-  - [ ] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
+  - [ ] 32-01-PLAN.md — Phase 32 regression test suite (BUILD-01..BUILD-05, PLATFORM-01..PLATFORM-03)
+  - [ ] 32-02-PLAN.md — Create /scr:build-ebook and /scr:build-print command files (BUILD-01..BUILD-05)
+  - [ ] 32-03-PLAN.md — Platform awareness: trim size tables, page-count guardrails, prerequisite detection (PLATFORM-01..PLATFORM-03)
 
 ### Phase 33: Sacred Tradition Profiles
 **Goal**: Sacred work types adapt to the writer's tradition — not just Roman Catholic — so book order, approval blocks, fonts, script direction, and verse numbering all match the lineage
@@ -150,9 +150,9 @@
   3. A Jewish writer running `/scr:sacred:verse-numbering` gets Masoretic boundaries (not Septuagint); an Islamic writer with `islamic-hafs` gets Hafs numbering (not Warsh); a Pali writer gets nikaya.sutta citations; a Sanskrit writer gets shloka numbering
   4. A writer building a Tewahedo PDF gets Ge'ez font rendering; an Orthodox writer gets polytonic Greek; an Islamic writer gets RTL Arabic with mushaf-grade typesetting; a Jewish writer can toggle cantillation; a Sanskrit writer gets Devanagari; a Tibetan writer gets Uchen with stacked consonants; a Pali writer gets correct diacritics
 **Plans**: 3 plans
-  - [ ] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
-  - [ ] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
-  - [ ] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
+  - [ ] 33-01-PLAN.md — Phase 33 regression test suite (TRAD-01..TRAD-05)
+  - [ ] 33-02-PLAN.md — Ten tradition profile manifests in templates/sacred/ (TRAD-01, TRAD-02)
+  - [ ] 33-03-PLAN.md — front-matter.md tradition-conditional approval blocks + verse-numbering command (TRAD-03, TRAD-04, TRAD-05)
 
 ### Phase 34: Cross-Domain Narrative & Poetry Templates
 **Goal**: Playwrights, picture-book authors, illustrated-book authors, Smashwords publishers, and poets can produce publication-ready output — not just book prose — through dedicated templates
@@ -165,9 +165,9 @@
   4. A writer using D2D/Smashwords gets a `scriven-smashwords.docx` output compliant with the Style Guide — first-line indents via paragraph style, no tabs, no banned formatting
   5. A poet exporting a chapbook gets a 5.5×8.5 saddle-stitch PDF via `scriven-chapbook.typst` with page count constrained to multiples of 4, and exporting a submission manuscript gets a DOCX with one poem per page, 12pt Times/Garamond, title page, and TOC
 **Plans**: 3 plans
-  - [ ] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
-  - [ ] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
-  - [ ] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
+  - [ ] 34-01-PLAN.md — Phase 34 regression test suite (TPL-01..TPL-06)
+  - [ ] 34-02-PLAN.md — Stage play, picture book, fixed-layout EPUB templates (TPL-01, TPL-02, TPL-03)
+  - [ ] 34-03-PLAN.md — Smashwords DOCX, chapbook, poetry-submission templates (TPL-04, TPL-05, TPL-06)
 
 ### Phase 35: Academic LaTeX Wrappers
 **Goal**: Academic writers can produce publisher-ready LaTeX by routing Scriven's voice/metadata frontmatter through thin wrappers that `\documentclass` into the user-installed IEEEtran, acmart, llncs, elsarticle, or apa7 class — without Scriven redistributing the class
@@ -178,9 +178,9 @@
   2. The same writer can re-target ACM, Springer LNCS, Elsevier, or APA7 simply by switching the wrapper — each wrapper references the user-installed class
   3. A writer missing the publisher class gets a clear install-guidance error naming the class (e.g. "Install `acmart.cls` via TeX Live or CTAN") rather than a LaTeX compile failure mid-build
 **Plans**: 3 plans
-  - [ ] 30-01-PLAN.md — Phase 30 regression test suite (CLEAN-01, CLEAN-02, VALID-01, VALID-02, VALID-03)
-  - [ ] 30-02-PLAN.md — Create /scr:cleanup and /scr:validate command files (CLEAN-01, CLEAN-02, VALID-01, VALID-02)
-  - [ ] 30-03-PLAN.md — Inject validate gate into export.md and publish.md (VALID-03)
+  - [ ] 35-01-PLAN.md — Phase 35 regression test suite (TPL-07)
+  - [ ] 35-02-PLAN.md — Five LaTeX wrapper templates (IEEEtran, acmart, llncs, elsarticle, apa7) (TPL-07)
+  - [ ] 35-03-PLAN.md — build-print LaTeX route + missing-class error guidance (TPL-07)
 
 ## Progress
 
@@ -218,9 +218,9 @@ Phases execute in numeric order: 29 -> 30 -> 31 -> 32 -> 33 -> 34 -> 35
 | 27. Multi-Runtime Command-Ref Rewriting | v1.6 | 1/1 | Complete | 2026-04-16 |
 | 28. Hardening Regression Coverage | v1.6 | 1/1 | Complete | 2026-04-16 |
 | 29. Architectural Foundation | v1.7 | 4/4 | Complete    | 2026-04-17 |
-| 30. Export Cleanup & Validation Gate | v1.7 | 2/3 | In Progress|  |
-| 31. Staged Front-Matter Generation | v1.7 | 0/? | Not started | - |
-| 32. Build Pipelines & Platform Awareness | v1.7 | 0/? | Not started | - |
-| 33. Sacred Tradition Profiles | v1.7 | 0/? | Not started | - |
-| 34. Cross-Domain Narrative & Poetry Templates | v1.7 | 0/? | Not started | - |
-| 35. Academic LaTeX Wrappers | v1.7 | 0/? | Not started | - |
+| 30. Export Cleanup & Validation Gate | v1.7 | 3/3 | Complete   | 2026-04-17 |
+| 31. Staged Front-Matter Generation | v1.7 | 0/3 | Not started | - |
+| 32. Build Pipelines & Platform Awareness | v1.7 | 0/3 | Not started | - |
+| 33. Sacred Tradition Profiles | v1.7 | 0/3 | Not started | - |
+| 34. Cross-Domain Narrative & Poetry Templates | v1.7 | 0/3 | Not started | - |
+| 35. Academic LaTeX Wrappers | v1.7 | 0/3 | Not started | - |
