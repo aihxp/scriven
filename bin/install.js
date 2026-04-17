@@ -531,8 +531,71 @@ function insertMarkerComment(content, comment) {
   return `${comment}\n${content}`;
 }
 
+// Code-block-aware rewriter.
+//
+// Splits content into an ordered sequence of prose/code segments using
+// CommonMark-ish fenced code block rules, then applies `transform` only to
+// `/scr:*` references in prose. Code segments (including the fence lines)
+// pass through byte-for-byte unchanged.
+//
+// Fence rules:
+//   - An opener is a line whose first non-whitespace content matches `^(?:`{3,}|~{3,})`.
+//   - A closer is a subsequent line whose first non-whitespace content is the
+//     SAME fence character repeated at least as many times as the opener.
+//     (`\`\`\`` does not close a `~~~` block and vice versa.)
+//   - If a code block has no closer before EOF, the remainder of the file is
+//     treated as code (fail-safe: prefer under-rewriting over mangling code).
+//
+// Indented (4-space / tab) code blocks are NOT detected — only fenced blocks.
+// This is intentional per Phase 27 CONTEXT: documentation snippets use fences.
 function rewriteInstalledCommandRefs(content, transform) {
-  return content.replace(/\/scr:[a-z0-9:-]+/gi, (commandRef) => transform(commandRef));
+  if (typeof content !== 'string' || content.length === 0) return content;
+
+  // Preserve original line endings by splitting on \r?\n but also tracking
+  // the separators. Simpler approach: split into lines and remember whether
+  // the original ended with a trailing newline so we can reconstruct.
+  const lines = content.split(/\n/);
+  // Note: because we split on /\n/, any \r is preserved at the end of each
+  // non-final line. We re-join with \n and the \r stays attached, preserving
+  // CRLF round-trip.
+
+  const out = [];
+  let i = 0;
+  const FENCE_RE = /^(\s*)(`{3,}|~{3,})/;
+
+  while (i < lines.length) {
+    const line = lines[i];
+    const m = line.match(FENCE_RE);
+    if (!m) {
+      // prose line
+      out.push(line.replace(/\/scr:[a-z0-9:-]+/gi, (ref) => transform(ref)));
+      i++;
+      continue;
+    }
+    // Opener: emit as-is, then consume until matching closer or EOF.
+    const fenceChar = m[2][0]; // '`' or '~'
+    const fenceLen = m[2].length;
+    out.push(line);
+    i++;
+    while (i < lines.length) {
+      const inner = lines[i];
+      const mc = inner.match(FENCE_RE);
+      if (mc && mc[2][0] === fenceChar && mc[2].length >= fenceLen) {
+        // closer — emit and exit code block
+        out.push(inner);
+        i++;
+        break;
+      }
+      // still inside code block — emit verbatim
+      out.push(inner);
+      i++;
+    }
+    // If we fell out of the loop with no closer (i === lines.length without
+    // seeing a matching closer), the code block implicitly extends to EOF —
+    // the trailing lines were already pushed verbatim above.
+  }
+
+  return out.join('\n');
 }
 
 function markInstalledCommand(content, runtimeKey, commandRef, sourcePath) {
@@ -543,6 +606,16 @@ function markInstalledCommand(content, runtimeKey, commandRef, sourcePath) {
 function generateClaudeCommandContent(entry, sourceContent) {
   const rewritten = rewriteInstalledCommandRefs(sourceContent, commandRefToClaudeInvocation);
   return markInstalledCommand(rewritten, 'claude-code', commandRefToClaudeInvocation(entry.commandRef), entry.relativePath);
+}
+
+function generateCodexCommandContent(entry, sourceContent) {
+  const rewritten = rewriteInstalledCommandRefs(sourceContent, commandRefToCodexInvocation);
+  return markInstalledCommand(
+    rewritten,
+    'codex',
+    commandRefToCodexInvocation(entry.commandRef),
+    entry.relativePath
+  );
 }
 
 function isScrivenInstalledCommandFile(filePath) {
@@ -1145,14 +1218,33 @@ function installCodexRuntime(runtime, isGlobal, log) {
   const skillsDir = isGlobal ? runtime.skills_dir_global : path.resolve(runtime.skills_dir_project);
   const commandsDir = isGlobal ? runtime.commands_dir_global : path.resolve(runtime.commands_dir_project);
   const agentsDir = isGlobal ? runtime.agents_dir_global : path.resolve(runtime.agents_dir_project);
-  const commandEntries = collectCommandEntries(path.join(PKG_ROOT, 'commands', 'scr'));
+  const sourceCommandsRoot = path.join(PKG_ROOT, 'commands', 'scr');
+  const commandEntries = collectCommandEntries(sourceCommandsRoot);
   const skillNames = commandEntries.map((entry) => entry.skillName);
 
+  // Wipe the installed commands dir so stale files from previous installs
+  // (removed commands, legacy flat layouts, etc.) do not linger.
   removePathIfExists(commandsDir);
   fs.mkdirSync(skillsDir, { recursive: true });
   const removedSkillDirs = cleanCodexSkillDirs(skillsDir, skillNames);
   const removedAgentFiles = cleanMirroredFiles(path.join(PKG_ROOT, 'agents'), agentsDir);
-  const commandCount = copyDir(path.join(PKG_ROOT, 'commands', 'scr'), commandsDir);
+
+  // NOTE: `collectCommandEntries` returns .md files only, and the authoritative
+  // `commands/scr/**` tree is .md-only today. No non-.md assets need mirroring.
+  // Rewrite each command file individually for the Codex invocation surface
+  // ($scr-*) using atomicWriteFileSync (Phase 23). Re-reading the pristine
+  // source on every run means the install marker is inserted once against
+  // clean content — not on top of a previously-marked installed file — so
+  // re-runs are idempotent (single marker, current prose rewrite).
+  let commandCount = 0;
+  for (const entry of commandEntries) {
+    const sourcePath = path.join(sourceCommandsRoot, entry.relativePath);
+    const sourceContent = fs.readFileSync(sourcePath, 'utf8');
+    const targetPath = path.join(commandsDir, entry.relativePath);
+    atomicWriteFileSync(targetPath, generateCodexCommandContent(entry, sourceContent));
+    commandCount++;
+  }
+
   const agentCount = copyDir(path.join(PKG_ROOT, 'agents'), agentsDir);
 
   for (const entry of commandEntries) {
@@ -1340,6 +1432,9 @@ module.exports = {
   commandRefToCodexInvocation,
   commandEntryToFlatCommandFileName,
   generateClaudeCommandContent,
+  generateCodexCommandContent,
+  rewriteInstalledCommandRefs,
+  installCodexRuntime,
   cleanFlatCommandFiles,
   generateCodexSkill,
   generateSkillManifest,
