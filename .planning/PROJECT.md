@@ -55,7 +55,14 @@ Scriven is a spec-driven writing, publishing, and translation pipeline that runs
 
 ### Active
 
-- v1.7 Last Mile requirements (in definition) — cross-domain templates, build pipelines, per-platform awareness
+- v1.7 Last Mile — 6 phases remaining (30-35). Phase 29 Architectural Foundation shipped 2026-04-17.
+
+### Validated (v1.7 so far)
+
+- ✓ `templates/sacred/<tradition>/` + `templates/platforms/<platform>/` drop-in extension points — v1.7 Phase 29 (ARCH-01, ARCH-02)
+- ✓ `architectural_profiles` schema in `data/CONSTRAINTS.json` with tradition/platform taxonomies + inference map — v1.7 Phase 29 (ARCH-03)
+- ✓ `lib/architectural-profiles.js` runtime validator + default-inference (listTraditions, listPlatforms, validateTradition, validatePlatform, inferTradition, inferPlatform) — v1.7 Phase 29 (ARCH-04, ARCH-05)
+- ✓ Phase 29 locked by 54 regression tests (1132 total) — zero new dependencies
 
 ### Out of Scope
 
@@ -188,4 +195,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-17 — milestone v1.7 Last Mile started*
+*Last updated: 2026-04-17 — v1.7 Phase 29 (Architectural Foundation) shipped; 6 phases remaining (30-35)*
