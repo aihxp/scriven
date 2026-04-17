@@ -5,6 +5,7 @@ const path = require('path');
 const os = require('os');
 const readline = require('readline');
 const crypto = require('crypto');
+const architecturalProfiles = require('../lib/architectural-profiles.js');
 
 const PKG_ROOT = path.join(__dirname, '..');
 const PKG = require('../package.json');
@@ -1577,4 +1578,11 @@ module.exports = {
   mergeSettings,
   INSTALLER_OWNED_FIELDS,
   writeSharedAssets,
+  // Phase 29 v1.7 — architectural profiles (tradition / platform)
+  listTraditions: architecturalProfiles.listTraditions,
+  listPlatforms: architecturalProfiles.listPlatforms,
+  validateTradition: architecturalProfiles.validateTradition,
+  validatePlatform: architecturalProfiles.validatePlatform,
+  inferTradition: architecturalProfiles.inferTradition,
+  inferPlatform: architecturalProfiles.inferPlatform,
 };
