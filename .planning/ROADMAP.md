@@ -395,7 +395,10 @@ Plans:
   1. Every generated file the installer writes (settings.json, manifests, SKILL.md, skill wrappers) lands via temp-file-then-rename, so the target path always contains either the old complete file or the new complete file
   2. Running the installer after a previously interrupted install detects and removes orphaned `.tmp.*` files before writing new content
   3. A simulated interrupt mid-install leaves no truncated files at any target path
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 23-01-PLAN.md -- Add atomic write helpers, orphan cleanup, and convert installer writes (SAFE-01, SAFE-02)
 
 ### Phase 24: Frontmatter Parsing
 **Goal**: Frontmatter extraction from command files handles real-world content correctly instead of silently truncating or misreading values
@@ -415,7 +418,10 @@ Plans:
   1. Reading settings.json validates every field against a hand-written schema, reporting type mismatches, unknown fields, and missing required fields with human-readable messages
   2. Old-format settings are migrated before validation, so a user upgrading from a prior version sees their settings upgraded rather than rejected
   3. A settings.json with an invalid field causes the installer to fail loudly with the field name and expected type, not silently proceed
-**Plans**: TBD
+**Plans**: 1 plan
+
+Plans:
+- [ ] 25-01-PLAN.md — Add SETTINGS_SCHEMA, migrateSettings, validateSettings, readSettings helpers + regression tests
 
 ### Phase 26: Settings & Template Preservation
 **Goal**: Users who have customized their settings or templates do not lose those customizations when they reinstall or upgrade Scriven
