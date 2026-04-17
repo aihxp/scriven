@@ -1,36 +1,36 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.6
-milestone_name: Installer Hardening
-status: Milestone v1.6 shipped
-stopped_at: Milestone v1.6 Installer Hardening shipped
-last_updated: "2026-04-16"
-last_activity: 2026-04-16
+milestone: v1.7
+milestone_name: Last Mile
+status: Defining requirements
+stopped_at: Milestone v1.7 started — defining requirements
+last_updated: "2026-04-17"
+last_activity: 2026-04-17
 progress:
-  total_phases: 6
-  completed_phases: 6
-  total_plans: 6
-  completed_plans: 6
-  percent: 100
+  total_phases: 0
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-16)
+See: .planning/PROJECT.md (updated 2026-04-17)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** milestone complete; waiting for the next roadmap decision
+**Current focus:** v1.7 Last Mile — close the production edge (build pipelines, cross-domain templates, per-platform awareness)
 
 ## Current Position
 
-Phase: v1.6 complete
-Plan: 6 of 6 plans completed
-Status: Installer hardening shipped — atomic writes, frontmatter parsing, schema validation, preservation, rewriting, regression coverage
-Last activity: 2026-04-16 — Milestone v1.6 complete
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-17 — Milestone v1.7 started
 
-Progress: [##########] 100%
+Progress: [          ] 0%
 
 ## Performance Metrics
 
@@ -48,20 +48,15 @@ Progress: [##########] 100%
 Decisions are logged in PROJECT.md Key Decisions table.
 Recent decisions affecting current work:
 
-- [Phase 20]: Silent installer flags should cover runtime selection, scope, mode, help, and version without falling back to readline
-- [Phase 21]: Codex is a skill-native runtime surface and should expose `$scr-*` skills backed by mirrored command markdown
-- [Phase 22]: Runtime docs and tests must describe the same Codex and Claude install model the installer actually writes
-- [Milestone v1.6]: Hardening features use Node.js 20+ built-ins exclusively -- zero-dependency constraint preserved
-- [Phase 23]: Atomic writes use POSIX rename + crypto.randomUUID() temp suffix; orphan sweep at startup is anchored to strict UUID regex to avoid user-file collateral
-- [Phase 24]: Frontmatter parser is line-based, scoped to `---` block, splits on first colon only
-- [Phase 25]: Migration must run before validation to avoid bootstrap deadlock on old-format settings
-- [Phase 26]: Installer-owned fields (version, runtime, runtimes, scope, data_dir, install_mode, installed_at) overwrite; user-owned fields (developer_mode, unknown keys) preserve
-- [Phase 27]: Only `installCodexRuntime` command-file copy needed rewriting; subdirectory runtimes (Cursor, Gemini, etc.) keep `/scr:` native
-- [Phase 28]: Integration smoke test must use os.mkdtempSync + project-scope to avoid touching real ~/.claude / ~/.codex / ~/.scriven
+- [v1.6 closeout]: Installer hardening + 1067 regression tests lock the reliability baseline v1.7 builds on
+- [v1.7 research]: Cross-domain platform research at `.planning/tmp/cross-domain-platforms-research.md` is the canonical input for requirements
+- [v1.7 architecture]: Introduce `templates/sacred/` and `templates/platforms/` as drop-in extension points; replace hard-coded Bible/KDP assumptions with `tradition:` and `platform:` spec keys
+- [v1.7 scope]: Publisher LaTeX classes (IEEEtran/acmart/llncs/elsarticle/apa7) stay user-installed — Scriven ships only thin wrappers to preserve zero-dependency architecture
 
 ### Pending Todos
 
-- Select the next milestone
+- Define v1.7 requirements with REQ-IDs
+- Spawn gsd-roadmapper for v1.7 phase structure
 
 ### Blockers/Concerns
 
@@ -69,6 +64,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-16
-Stopped at: Milestone v1.6 shipped
+Last session: 2026-04-17
+Stopped at: v1.7 started — defining requirements
 Resume file: None

@@ -55,7 +55,7 @@ Scriven is a spec-driven writing, publishing, and translation pipeline that runs
 
 ### Active
 
-- None. Milestone v1.6 shipped on 2026-04-16.
+- v1.7 Last Mile requirements (in definition) — cross-domain templates, build pipelines, per-platform awareness
 
 ### Out of Scope
 
@@ -82,10 +82,33 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - **Plan authority**: If a command file contradicts the product plan, fix the command — plan is canonical (section 15 for command specs)
 - **Progressive disclosure**: Onboarding asks 3 questions max; depth is optional and additive
 
+## Current Milestone: v1.7 Last Mile
+
+**Goal:** Close the production edge — ship real build pipelines, cross-domain templates, and per-platform awareness so Scriven reaches publication-ready output for any supported work type, not just book prose.
+
+**Target features:**
+- `/scr:cleanup` + `/scr:validate` — scaffold bracket stripping and placeholder lint gate before export
+- `/scr:build-ebook` + `/scr:build-print` — reference Pandoc + Pandoc/Typst build pipelines
+- Staged front-matter generation (auto vs scaffold-only vs personalize)
+- Platform-awareness: word → page estimator with KDP 828pg / Ingram 1200pg guardrails
+- Sacred tradition profiles (catholic, orthodox, tewahedo, protestant, jewish, islamic-hafs, islamic-warsh, pali, tibetan, sanskrit) with book-order, approval-block, font stack, RTL, numbering macro
+- Stage play Typst template (Samuel French format) and picture book Typst template (8.5×8.5 with bleed/safe-zone)
+- Fixed-layout EPUB template + OPF stub and Smashwords DOCX reference doc
+- Poetry stack: chapbook Typst template + poetry submission DOCX reference doc
+- Academic LaTeX wrappers for IEEE, ACM, LNCS, Elsevier, APA7 (thin wrappers to user-installed classes)
+- Architectural shift: `templates/sacred/` + `templates/platforms/` directories and `tradition:` / `platform:` keys in project spec
+
+**Key context:**
+- Driven by first real cross-domain validation — a Bible project surfaced that sacred templates assumed Roman Catholic conventions and that the build edge ends at manuscript scaffolding rather than publication-ready output
+- Research artifact at `.planning/tmp/cross-domain-platforms-research.md` is the canonical input
+- Must preserve zero-dependency architecture — publisher LaTeX classes stay user-installed; Scriven ships only thin wrappers
+- EU EAA (June 2025) accessibility applies to every EPUB output
+- Voice DNA pipeline must not regress
+
 ## Current State
 
 **Latest shipped milestone:** v1.6 Installer Hardening
-**Status:** Milestone v1.6 shipped 2026-04-16; awaiting next milestone selection
+**Status:** Milestone v1.7 Last Mile started 2026-04-17; defining requirements
 
 **Current product surface:**
 - Installer writes are crash-safe via atomic temp-file-then-rename with orphan cleanup on startup
@@ -111,7 +134,7 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 
 ## Next Milestone Goals
 
-- TBD — next product focus not yet selected
+- v1.8+ TBD — depends on v1.7 Last Mile outcomes. Candidates from research deferred this cycle include: narrator script DOCX (audiobook work type), tech-doc scaffolds (mkdocs.yml, Sphinx conf.py, runbook skeletons), comic/webtoon script templates, radio drama template, IngramSpark full-wrap cover Typst template, Tier-3 cross-domain additions.
 
 <details>
 <summary>Archived milestone context: v1.4 Perplexity & Technical Writing</summary>
@@ -165,4 +188,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-16 after shipping milestone v1.6*
+*Last updated: 2026-04-17 — milestone v1.7 Last Mile started*
