@@ -1147,7 +1147,8 @@
     "sacred-verse-numbering": {
       "category": "sacred_exclusive",
       "available": ["sacred"],
-      "hidden": ["prose", "script", "academic", "visual", "poetry", "interactive", "speech_song"]
+      "hidden": ["prose", "script", "academic", "visual", "poetry", "interactive", "speech_song"],
+      "requires": ["config.tradition"]
     },
     "source-tracking": {
       "category": "sacred_exclusive",

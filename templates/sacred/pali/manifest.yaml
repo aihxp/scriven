@@ -7,7 +7,7 @@ label: "Pali Canon (Theravada)"
 status: active
 book_order: null
 approval_block:
-  label: "none"
+  label: null
   required: false
   scope: "work"
 font_stack:

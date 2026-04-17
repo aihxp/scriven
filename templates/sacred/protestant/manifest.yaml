@@ -73,7 +73,7 @@ book_order:
   - "Jude"
   - "Revelation"
 approval_block:
-  label: "none"
+  label: null
   required: false
   scope: "work"
 font_stack:

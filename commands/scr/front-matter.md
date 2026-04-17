@@ -480,7 +480,7 @@ Save the abstract to `.manuscript/front-matter/05-abstract.md`
 
 ### SACRED ADAPTATION (behavior: sacred_front_matter)
 
-When the work type group is `sacred`, apply these modifications to the standard 19 elements AND add the following tradition-specific elements. Read `config.json` `sacred.tradition` to determine which elements to include.
+When the work type group is `sacred`, apply these modifications to the standard 19 elements AND add the following tradition-specific elements. Read the top-level `tradition:` key from `.manuscript/config.json` to determine which elements to include.
 
 **Standard sacred modifications:**
 

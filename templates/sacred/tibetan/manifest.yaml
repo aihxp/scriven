@@ -7,7 +7,7 @@ label: "Tibetan Buddhist"
 status: active
 book_order: null
 approval_block:
-  label: "none"
+  label: null
   required: false
   scope: "work"
 font_stack:
@@ -15,6 +15,6 @@ font_stack:
   - serif
 rtl: false
 numbering:
-  format: "chapter:verse"
+  format: "toh:folio"
   separator: "."
 script: tibetan
