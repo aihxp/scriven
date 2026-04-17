@@ -290,9 +290,66 @@ function stripWrappingQuotes(value) {
   return trimmed;
 }
 
+function extractFrontmatterBlock(content) {
+  if (typeof content !== 'string' || content.length === 0) return null;
+  // Strip a leading UTF-8 BOM if present so the first-line check is robust.
+  const stripped = content.charCodeAt(0) === 0xFEFF ? content.slice(1) : content;
+  const lines = stripped.split(/\r?\n/);
+  if (lines.length === 0 || lines[0] !== '---') return null;
+  for (let i = 1; i < lines.length; i++) {
+    if (lines[i] === '---' || lines[i] === '...') {
+      return lines.slice(1, i);
+    }
+  }
+  // No closing fence — treat as malformed / no frontmatter.
+  return null;
+}
+
+function stripInlineComment(rawValue) {
+  const trimmedLeading = rawValue.replace(/^\s+/, '');
+  if (trimmedLeading.startsWith('"') || trimmedLeading.startsWith('\'')) {
+    // Preserve `#` inside quoted values; do not attempt to parse quote escaping beyond
+    // the simple wrapping-quote behavior already handled by stripWrappingQuotes.
+    return rawValue;
+  }
+  // YAML inline comments require whitespace before `#`.
+  const idx = rawValue.search(/\s#/);
+  if (idx === -1) return rawValue;
+  return rawValue.slice(0, idx);
+}
+
+function readFrontmatterValues(content) {
+  const lines = extractFrontmatterBlock(content);
+  const result = {};
+  if (!lines) return result;
+
+  for (const line of lines) {
+    if (line.length === 0) continue;
+    const leading = line.replace(/^\s+/, '');
+    if (leading.length === 0) continue;
+    if (leading.startsWith('#')) continue; // YAML comment line
+
+    const idx = line.indexOf(':');
+    if (idx === -1) continue;
+
+    const key = line.slice(0, idx).trim();
+    if (!key) continue;
+    if (Object.prototype.hasOwnProperty.call(result, key)) continue; // first occurrence wins
+
+    let value = line.slice(idx + 1);
+    value = stripInlineComment(value);
+    value = stripWrappingQuotes(value);
+    // Defensive: surface block-scalar introducers verbatim rather than trying to parse them.
+    // (No shipped command file uses `|` or `>` for description/argument-hint today.)
+    result[key] = value;
+  }
+
+  return result;
+}
+
 function readFrontmatterValue(content, key) {
-  const match = content.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
-  return match ? stripWrappingQuotes(match[1]) : '';
+  const values = readFrontmatterValues(content);
+  return Object.prototype.hasOwnProperty.call(values, key) ? values[key] : '';
 }
 
 function commandRefToCodexSkillName(commandRef) {
@@ -1107,4 +1164,6 @@ module.exports = {
   atomicWriteFileSync,
   cleanOrphanedTempFiles,
   collectTargetDirsForSweep,
+  readFrontmatterValue,
+  readFrontmatterValues,
 };
