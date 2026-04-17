@@ -2,12 +2,12 @@
 gsd_state_version: 1.0
 milestone: v1.7
 milestone_name: Last Mile
-status: Defining requirements
-stopped_at: Milestone v1.7 started — defining requirements
+status: Not started
+stopped_at: Milestone v1.7 roadmap created — Phase 29 ready to plan
 last_updated: "2026-04-17"
 last_activity: 2026-04-17
 progress:
-  total_phases: 0
+  total_phases: 7
   completed_phases: 0
   total_plans: 0
   completed_plans: 0
@@ -25,10 +25,10 @@ See: .planning/PROJECT.md (updated 2026-04-17)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: 29 — Architectural Foundation (not started)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-04-17 — Milestone v1.7 started
+Status: Not started
+Last activity: 2026-04-17 — v1.7 roadmap created with 7 phases (29-35)
 
 Progress: [          ] 0%
 
@@ -52,11 +52,12 @@ Recent decisions affecting current work:
 - [v1.7 research]: Cross-domain platform research at `.planning/tmp/cross-domain-platforms-research.md` is the canonical input for requirements
 - [v1.7 architecture]: Introduce `templates/sacred/` and `templates/platforms/` as drop-in extension points; replace hard-coded Bible/KDP assumptions with `tradition:` and `platform:` spec keys
 - [v1.7 scope]: Publisher LaTeX classes (IEEEtran/acmart/llncs/elsarticle/apa7) stay user-installed — Scriven ships only thin wrappers to preserve zero-dependency architecture
+- [v1.7 sequencing]: Architectural shift (Phase 29) lands first so build pipelines, tradition profiles, and platform-aware templates can plug into the new structure without core-template edits
 
 ### Pending Todos
 
-- Define v1.7 requirements with REQ-IDs
-- Spawn gsd-roadmapper for v1.7 phase structure
+- Plan Phase 29 (Architectural Foundation) — `templates/sacred/` + `templates/platforms/` directories and `tradition:` / `platform:` spec keys
+- Plans for Phases 30-35 will be authored in sequence
 
 ### Blockers/Concerns
 
@@ -65,5 +66,5 @@ None.
 ## Session Continuity
 
 Last session: 2026-04-17
-Stopped at: v1.7 started — defining requirements
+Stopped at: v1.7 roadmap created — Phase 29 ready to plan
 Resume file: None

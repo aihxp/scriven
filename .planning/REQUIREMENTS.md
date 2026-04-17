@@ -93,8 +93,48 @@ Items surfaced by research but deferred to v1.8+:
 
 ## Traceability
 
-*(To be filled by gsd-roadmapper with REQ-ID → Phase mapping after roadmap creation.)*
+REQ-ID → Phase mapping (v1.7 Last Mile, Phases 29-35):
+
+| Requirement | Phase | Status |
+|-------------|-------|--------|
+| ARCH-01 | Phase 29 | Pending |
+| ARCH-02 | Phase 29 | Pending |
+| ARCH-03 | Phase 29 | Pending |
+| ARCH-04 | Phase 29 | Pending |
+| ARCH-05 | Phase 29 | Pending |
+| CLEAN-01 | Phase 30 | Pending |
+| CLEAN-02 | Phase 30 | Pending |
+| VALID-01 | Phase 30 | Pending |
+| VALID-02 | Phase 30 | Pending |
+| VALID-03 | Phase 30 | Pending |
+| FM-01 | Phase 31 | Pending |
+| FM-02 | Phase 31 | Pending |
+| FM-03 | Phase 31 | Pending |
+| FM-04 | Phase 31 | Pending |
+| BUILD-01 | Phase 32 | Pending |
+| BUILD-02 | Phase 32 | Pending |
+| BUILD-03 | Phase 32 | Pending |
+| BUILD-04 | Phase 32 | Pending |
+| BUILD-05 | Phase 32 | Pending |
+| PLATFORM-01 | Phase 32 | Pending |
+| PLATFORM-02 | Phase 32 | Pending |
+| PLATFORM-03 | Phase 32 | Pending |
+| TRAD-01 | Phase 33 | Pending |
+| TRAD-02 | Phase 33 | Pending |
+| TRAD-03 | Phase 33 | Pending |
+| TRAD-04 | Phase 33 | Pending |
+| TRAD-05 | Phase 33 | Pending |
+| TPL-01 | Phase 34 | Pending |
+| TPL-02 | Phase 34 | Pending |
+| TPL-03 | Phase 34 | Pending |
+| TPL-04 | Phase 34 | Pending |
+| TPL-05 | Phase 34 | Pending |
+| TPL-06 | Phase 34 | Pending |
+| TPL-07 | Phase 35 | Pending |
+
+**Coverage:** 30/30 v1.7 requirements mapped. No orphans, no duplicates.
 
 ---
 
 *Defined: 2026-04-17*
+*Traceability populated: 2026-04-17 (by gsd-roadmapper)*
