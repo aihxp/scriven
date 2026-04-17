@@ -1057,6 +1057,18 @@
       "description": "Run full publishing pipeline unattended with quality gate",
       "requires": ["complete-draft"]
     },
+    "build-ebook": {
+      "category": "publishing",
+      "available": ["prose", "visual", "poetry", "interactive", "sacred"],
+      "description": "Build EPUB with platform-aware accessibility guardrails (Pandoc + EAA compliance)",
+      "requires": ["complete-draft"]
+    },
+    "build-print": {
+      "category": "publishing",
+      "available": ["prose", "visual", "poetry", "sacred"],
+      "description": "Build print-ready PDF with platform trim sizes and page-count guardrails (Pandoc + Typst)",
+      "requires": ["complete-draft"]
+    },
     "translate": {
       "category": "translation",
       "available": ["all"],

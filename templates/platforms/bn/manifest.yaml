@@ -1,13 +1,20 @@
-# Publishing platform profile — placeholder manifest.
-# Real content (trim_sizes, max_pages, epub_variant, metadata_shape, formats_accepted)
-# lands in Phase 32 (Build Pipelines & Platform Awareness).
-# DO NOT remove this file — Phase 29's validator (Plan 03) reads the
-# directory listing to populate the allowed platform values.
+# Publishing platform profile — B&N Press.
+# Populated in Phase 32 (Build Pipelines & Platform Awareness).
+# DO NOT remove this file — Phase 29's validator reads the directory listing
+# to populate the allowed platform values.
 platform: bn
-label: "Barnes & Noble Press"
+label: "B&N Press"
+status: active
+formats_accepted:
+  - epub
 trim_sizes: null
+default_trim: null
 max_pages: null
-epub_variant: null
-metadata_shape: null
-formats_accepted: null
-status: placeholder
+epub_variant: "epub3"
+epub_notes: "B&N Press accepts EPUB3. Ensure valid cover image and NCX nav for compatibility."
+metadata_shape:
+  title: required
+  author: required
+  language: required
+  description: optional
+  isbn: optional
