@@ -12,16 +12,9 @@
 \usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 
-% Math support
-\usepackage{amsmath,amssymb}
-
-% Graphics
-\usepackage{graphicx}
-\makeatletter
-\def\maxwidth{\ifdim\Gin@nat@width>\linewidth\linewidth\else\Gin@nat@width\fi}
-\def\maxheight{\ifdim\Gin@nat@height>\textheight\textheight\else\Gin@nat@height\fi}
-\makeatother
-\setkeys{Gin}{width=\maxwidth,height=\maxheight,keepaspectratio}
+% acmart.cls already loads amsmath, amssymb, and graphicx internally.
+% Do NOT add \usepackage{amsmath,amssymb} or \usepackage{graphicx} here.
+% Math support and graphics are available without additional declarations.
 
 % Pandoc required: code highlighting
 $if(highlighting-macros)$
