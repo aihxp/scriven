@@ -33,6 +33,38 @@ Determine the work type group from CONSTRAINTS.json `work_type_groups` so you ca
 
 ---
 
+### STEP 1.5: VALIDATE MANUSCRIPT
+
+**Check for scaffold markers in `.manuscript/drafts/`.**
+
+Scan all `.md` files in `.manuscript/drafts/` for:
+- Lines containing `[Fill in` (covers `[Fill in:]`, `[Fill in or delete:]`)
+- Lines containing `[Delete if not applicable:]`
+- Lines containing `Alternate 1:` or `Alternate 2:`
+- Files with more than one `# ` (top-level H1) heading
+
+**If `--skip-validate` was passed:**
+
+> **Warning: Validate gate skipped (`--skip-validate`). Your manuscript may contain
+> unresolved scaffold markers. Run `/scr:validate` to check before submitting.**
+
+Proceed to STEP 2.
+
+**If markers are found** (and `--skip-validate` was not passed):
+
+> **Publishing blocked: unresolved scaffold markers found.**
+>
+> [list each as: `path/to/file.md:LINE_NUMBER: marker text`]
+>
+> **Fix:** Run `/scr:cleanup --apply` to remove scaffold markers, or manually
+> edit the listed files, then re-run this publish command.
+
+Then **stop** -- do not proceed to STEP 2.
+
+If no markers found: proceed to STEP 2.
+
+---
+
 ### STEP 2: ROUTE
 
 **If `--preset` is given:** Validate the preset name against the known presets below. If valid, jump to STEP 4 (preset pipeline). If invalid, show the list of available presets and stop.
