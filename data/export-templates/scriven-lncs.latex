@@ -50,6 +50,7 @@ $endif$
 % Document metadata
 \title{$if(title)$$title$$else$Untitled$endif$}
 \author{$if(author)$$for(author)$$if(it.name)$$it.name$$else$$it$$endif$$sep$ \and $endfor$$else$~$endif$}
+\institute{$if(author)$$for(author)$$if(it.affiliation)$$it.affiliation$$endif$$sep$ \and $endfor$$else$~$endif$}
 \date{$if(date)$$date$$else$\today$endif$}
 
 \begin{document}
