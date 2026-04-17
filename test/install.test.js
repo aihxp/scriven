@@ -9,6 +9,8 @@ const {
   cleanOrphanedTempFiles,
   collectTargetDirsForSweep,
   RUNTIMES,
+  readFrontmatterValue,
+  readFrontmatterValues,
 } = require('../bin/install.js');
 
 function mkTmp(label) {
@@ -286,5 +288,106 @@ describe('Installer leaves no *.tmp. files behind', () => {
     } finally {
       fs.rmSync(tmpDir, { recursive: true, force: true });
     }
+  });
+});
+
+describe('readFrontmatterValue', () => {
+  it('extracts a simple value', () => {
+    const input = '---\ndescription: hello world\n---\nbody\n';
+    assert.equal(readFrontmatterValue(input, 'description'), 'hello world');
+  });
+
+  it('PARSE-01: preserves colons in quoted values', () => {
+    const input = '---\ndescription: "Step 1: Do this"\n---\nbody\n';
+    assert.equal(readFrontmatterValue(input, 'description'), 'Step 1: Do this');
+  });
+
+  it('PARSE-01: preserves colons in unquoted values (splits on first colon only)', () => {
+    const input = '---\ndescription: Scan: files\n---\n';
+    assert.equal(readFrontmatterValue(input, 'description'), 'Scan: files');
+  });
+
+  it('PARSE-02: ignores body text that looks like a key line', () => {
+    const input = [
+      '---',
+      'description: real value',
+      '---',
+      'Some body text.',
+      'description: fake body value',
+      '',
+    ].join('\n');
+    assert.equal(readFrontmatterValue(input, 'description'), 'real value');
+  });
+
+  it('PARSE-02: key that exists only in body returns empty string', () => {
+    const input = '---\nfoo: bar\n---\ndescription: body only\n';
+    assert.equal(readFrontmatterValue(input, 'description'), '');
+  });
+
+  it('PARSE-03: array-style value returned intact as string', () => {
+    const input = '---\nargument-hint: [work-id, locale]\n---\n';
+    assert.equal(readFrontmatterValue(input, 'argument-hint'), '[work-id, locale]');
+  });
+
+  it('PARSE-03: bracketed value containing colons is preserved', () => {
+    const input = '---\ntags: [a:1, b:2]\n---\n';
+    assert.equal(readFrontmatterValue(input, 'tags'), '[a:1, b:2]');
+  });
+
+  it('missing key returns empty string', () => {
+    const input = '---\nother: x\n---\n';
+    assert.equal(readFrontmatterValue(input, 'description'), '');
+  });
+
+  it('file without frontmatter returns empty string', () => {
+    const input = '# Just a markdown file\n\ndescription: nope\n';
+    assert.equal(readFrontmatterValue(input, 'description'), '');
+  });
+
+  it('empty string input returns empty string', () => {
+    assert.equal(readFrontmatterValue('', 'description'), '');
+  });
+
+  it('strips wrapping double quotes', () => {
+    const input = '---\ndescription: "hello"\n---\n';
+    assert.equal(readFrontmatterValue(input, 'description'), 'hello');
+  });
+
+  it('strips wrapping single quotes', () => {
+    const input = "---\ndescription: 'hello'\n---\n";
+    assert.equal(readFrontmatterValue(input, 'description'), 'hello');
+  });
+
+  it('strips an unquoted trailing inline comment', () => {
+    const input = '---\ndescription: real value # trailing note\n---\n';
+    assert.equal(readFrontmatterValue(input, 'description'), 'real value');
+  });
+
+  it('preserves # inside a quoted value', () => {
+    const input = '---\ndescription: "has #hash inside"\n---\n';
+    assert.equal(readFrontmatterValue(input, 'description'), 'has #hash inside');
+  });
+
+  it('malformed frontmatter (no closing fence) returns empty', () => {
+    const input = '---\ndescription: hello\nmore body without fence\n';
+    assert.equal(readFrontmatterValue(input, 'description'), '');
+  });
+
+  it('readFrontmatterValues returns a full object with every key', () => {
+    const input = [
+      '---',
+      'description: real value',
+      'argument-hint: [work-id, locale]',
+      'other: something',
+      '---',
+      'description: body leak',
+      '',
+    ].join('\n');
+    const values = readFrontmatterValues(input);
+    assert.equal(values.description, 'real value');
+    assert.equal(values['argument-hint'], '[work-id, locale]');
+    assert.equal(values.other, 'something');
+    // Body content must not leak into the result
+    assert.notEqual(values.description, 'body leak');
   });
 });
