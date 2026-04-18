@@ -177,8 +177,8 @@ After prerequisites are resolved, ask:
 > 3. **ebook-wide** -- All ebook stores (EPUB + PDF)
 > 4. **query-submission** -- Agent/publisher query (blurb + synopsis + query letter)
 > 5. **ingram-paperback** -- IngramSpark bookstore distribution
-> 6. **academic-submission** -- Journal/academic submission (LaTeX + PDF)
-> 7. **thesis-defense** -- Thesis/dissertation (academic front/back matter + PDF)
+> 6. **academic-submission** -- Journal/academic source build via supported academic platform
+> 7. **thesis-defense** -- Thesis/dissertation source build with front/back matter and supported academic platform
 > 8. **screenplay-query** -- Screenplay agent query (Fountain + FDX + package)
 > 9. **custom** -- Choose specific export formats
 
@@ -248,16 +248,16 @@ Step 4/4: Building KDP package...
 **academic-submission** -- Journal or academic press
 | Step | Command | Condition |
 |------|---------|-----------|
-| 1 | `/scr:export --format latex` | Always |
-| 2 | `/scr:export --format pdf` | Always |
+| 1 | Ask the writer which supported academic platform they need: `ieee`, `acm`, `lncs`, `elsevier`, or `apa7` | If not already specified |
+| 2 | `/scr:build-print --platform <selected academic platform>` | Always |
 
 **thesis-defense** -- Thesis or dissertation
 | Step | Command | Condition |
 |------|---------|-----------|
 | 1 | `/scr:front-matter` | If `.manuscript/front-matter/` is empty |
 | 2 | `/scr:back-matter` | If `.manuscript/back-matter/` is empty |
-| 3 | `/scr:export --format latex` | Always |
-| 4 | `/scr:export --format pdf --print-ready` | Always |
+| 3 | Ask the writer which supported academic platform best matches the institution requirement: `ieee`, `acm`, `lncs`, `elsevier`, or `apa7` | If not already specified |
+| 4 | `/scr:build-print --platform <selected academic platform>` | Always |
 
 **screenplay-query** -- Screenplay agent/manager submission
 | Step | Command | Condition |
@@ -301,7 +301,7 @@ Adapt the "Next Steps" section to the preset:
 - **kdp-paperback/kdp-ebook:** KDP upload instructions
 - **ingram-paperback:** IngramSpark upload instructions
 - **query-submission/screenplay-query:** How to send query packages to agents
-- **academic-submission/thesis-defense:** Journal submission or university submission steps
+- **academic-submission/thesis-defense:** Academic wrapper and TeX compilation submission steps
 - **ebook-wide:** Upload to each platform (KDP, Apple Books, Kobo, B&N, Google Play)
 
 ---
