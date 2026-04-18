@@ -43,7 +43,7 @@ Use the adapted unit terminology throughout all output and prompts.
    - If the unit is already at the requested position, inform the writer: "That [unit_type] is already at position [N]."
 
 3. **Draft safety check** (D-07):
-   - Scan `.manuscript/drafts/` for ALL draft files (not just the moved unit)
+   - Scan `.manuscript/drafts/body/` for ALL draft files (not just the moved unit)
    - Identify every draft file that will need to be renamed due to the reorder
    - **If any drafted units are affected:**
      - Show the complete renaming plan:
@@ -72,7 +72,7 @@ Use the adapted unit terminology throughout all output and prompts.
    - Remove the unit from its current position in OUTLINE.md
    - Insert it at the new position
    - Renumber all affected units
-   - Rename all affected draft files in `.manuscript/drafts/` to match new numbering
+   - Rename all affected draft files in `.manuscript/drafts/body/` to match new numbering
      (use a temporary naming scheme to avoid conflicts: rename to `.tmp` first, then to final names)
 
 5. **Update related files:**

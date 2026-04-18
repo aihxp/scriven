@@ -42,7 +42,7 @@ Use the adapted unit terminology throughout all output and prompts.
    - If not found, show available units and ask for correction
 
 3. **Draft safety check** (D-07):
-   - Scan `.manuscript/drafts/` for a draft file matching this unit
+   - Scan `.manuscript/drafts/body/` for a draft file matching this unit
    - **If a draft file exists:**
      - Show the full draft content summary (word count, paragraph count, scene breaks)
      - Ask how to split the content:
@@ -71,8 +71,8 @@ Use the adapted unit terminology throughout all output and prompts.
    - The first new unit keeps the original position number
    - The second new unit takes position + 1
    - Renumber all subsequent units
-   - If draft exists: create two draft files with the split content
-   - Rename subsequent draft files to match new numbering
+   - If draft exists: create two draft files in `.manuscript/drafts/body/` with the split content
+   - Rename subsequent draft files in `.manuscript/drafts/body/` to match new numbering
 
 6. **Update related files:**
    - Update `.manuscript/STATE.md` to reflect the two new units

@@ -46,7 +46,7 @@ Use the adapted unit terminology throughout all output and prompts.
    - If either unit-id is invalid, show available units
 
 3. **Draft safety check** (D-07):
-   - Scan `.manuscript/drafts/` for draft files matching both units
+   - Scan `.manuscript/drafts/body/` for draft files matching both units
    - **If both have drafts:**
      - Show word count for each draft
      - Explain the merge approach:
@@ -83,9 +83,9 @@ Use the adapted unit terminology throughout all output and prompts.
 5. **Execute merge:**
    - Replace the two unit entries in OUTLINE.md with a single entry at the first unit's position
    - Renumber all subsequent units (they shift down by 1)
-   - If drafts exist: combine into a single draft file with scene break separator (`---`)
-   - Remove the second draft file
-   - Rename subsequent draft files to match new numbering
+   - If drafts exist: combine them into a single draft file in `.manuscript/drafts/body/` with a scene break separator (`---`)
+   - Remove the second draft file from `.manuscript/drafts/body/`
+   - Rename subsequent draft files in `.manuscript/drafts/body/` to match new numbering
 
 6. **Update related files:**
    - Update `.manuscript/STATE.md` to reflect the merged unit

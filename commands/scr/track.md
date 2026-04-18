@@ -31,6 +31,7 @@ Track metadata lives in `.manuscript/tracks.json`. Create this file on first `tr
 
 ```json
 {
+  "canon_branch": "trunk",
   "tracks": [
     {
       "label": "Editor's suggestions",
@@ -47,6 +48,18 @@ Track metadata lives in `.manuscript/tracks.json`. Create this file on first `tr
 
 **Label-to-branch mapping (D-01):** Writer-friendly labels are stored as-is. The git branch name is derived by slugifying the label: lowercase, replace spaces with hyphens, strip special characters (keep alphanumeric and hyphens only), prefix with `track/`. Example: "Second Draft Attempt" becomes `track/second-draft-attempt`.
 
+**Canon branch metadata:** `canon_branch` stores the real branch name of the canon manuscript. This may be `main`, `master`, `trunk`, or any other branch name the writer uses.
+
+## Canon Branch Resolution
+
+Any subcommand that needs the canon manuscript must resolve the canon branch in this order:
+
+1. If `.manuscript/tracks.json` has a top-level `canon_branch`, use it.
+2. Otherwise, read the current branch with `git branch --show-current`. If it exists and does not start with `track/`, treat that branch as canon and write it back to `tracks.json` as `canon_branch`.
+3. Otherwise, if the repo has a remote default branch (`git symbolic-ref refs/remotes/origin/HEAD`), use that short branch name.
+4. Otherwise, fall back to `main` if it exists locally, then `master` if it exists locally.
+5. If none of the above succeeds, stop and tell the writer: "I can't tell which branch is your canon manuscript. Switch to the branch that should be canon, then run `/scr:track create <name>` again."
+
 ---
 
 ## Subcommand: track create
@@ -59,28 +72,35 @@ Track metadata lives in `.manuscript/tracks.json`. Create this file on first `tr
 2. Generate the slugified branch name: lowercase, spaces to hyphens, strip special chars, prefix `track/`.
 3. Check if a track with this label already exists in `tracks.json`. If so: "A revision track called '[name]' already exists. Use `/scr:track switch [name]` to work on it."
 4. Check for unsaved changes (`git status --porcelain .manuscript/`). If changes exist: "You have unsaved changes. Save them first with `/scr:save` before creating a new track."
-5. Run `git checkout -b track/{slug}` to create and switch to the new branch.
-6. If `.manuscript/tracks.json` does not exist, create it with an empty `tracks` array.
-7. Add the new track entry to `tracks.json`:
+5. Resolve the canon branch using the Canon Branch Resolution rules above. On a first track in a fresh repo, this will usually be the current branch returned by `git branch --show-current`.
+6. Check whether `track/{slug}` already exists as a branch. If it does, append `-2`, `-3`, and so on until you find an unused branch name, then use that resolved slug for all remaining steps in this flow.
+7. Run `git checkout -b track/{slug}` to create and switch to the new branch.
+8. If `.manuscript/tracks.json` does not exist, create it with an object containing `canon_branch` and an empty `tracks` array.
+9. Add the new track entry to `tracks.json`:
    ```json
    {
-     "label": "<name>",
-     "branch": "track/<slug>",
-     "created": "<ISO 8601 timestamp>",
-     "author": "writer",
-     "status": "active",
-     "merged_at": null,
-     "proposed_at": null
+     "canon_branch": "<resolved canon branch>",
+     "tracks": [
+       {
+         "label": "<name>",
+         "branch": "track/<slug>",
+         "created": "<ISO 8601 timestamp>",
+         "author": "writer",
+         "status": "active",
+         "merged_at": null,
+         "proposed_at": null
+       }
+     ]
    }
    ```
-8. Read `.manuscript/config.json`. If `collaboration.tracks_enabled` is `false` or missing, set it to `true`.
-9. Commit the track metadata and any config update together:
+10. Read `.manuscript/config.json`. If `collaboration.tracks_enabled` is `false` or missing, set it to `true`.
+11. Commit the track metadata and any config update together:
    ```
    git add .manuscript/tracks.json .manuscript/config.json
    git commit -m "Created revision track: track/{slug}"
    ```
    Never interpolate the raw writer-provided label directly into a shell command. Use the sanitized slug or another shell-safe identifier in git commit messages.
-10. Confirm to the writer:
+12. Confirm to the writer:
 
 **Output:**
 ```
@@ -99,11 +119,12 @@ Everything you write and save here stays on this track until you switch back to 
 
 1. Read `.manuscript/tracks.json`. If missing or empty: "No revision tracks yet. Create one with `/scr:track create <name>`."
 2. Determine the current branch: `git branch --show-current`.
-3. For each track in `tracks.json`:
+3. Resolve the canon branch using the Canon Branch Resolution rules above.
+4. For each track in `tracks.json`:
    - Determine if it is the currently active track (current branch matches `track.branch`).
-   - Get commit count ahead/behind canon: `git rev-list --left-right --count main...{branch} 2>/dev/null` (or `master` if `main` does not exist).
+   - Get commit count ahead/behind canon: `git rev-list --left-right --count {canon_branch}...{branch} 2>/dev/null`.
    - Get the date of the last checkpoint on the track: `git log -1 --format="%ai" {branch} -- .manuscript/ 2>/dev/null`.
-4. Always show "Canon manuscript" as the base track, marked as active if the current branch is `main` or `master`.
+5. Always show "Canon manuscript" as the base track, marked as active if the current branch is the resolved `canon_branch`.
 
 **Output format:**
 
@@ -136,12 +157,13 @@ Your revision tracks:
 
 **What to do:**
 
-1. If `<name>` is "canon", "main", or "master": switch to the main branch (`git checkout main` or `git checkout master`).
-2. Otherwise, look up `<name>` in `tracks.json` by matching the `label` field (case-insensitive).
-3. If not found: "No revision track called '[name]' found. Use `/scr:track list` to see available tracks."
-4. Check for unsaved changes (`git status --porcelain .manuscript/`). If changes exist: "You have unsaved changes. Save them first with `/scr:save` before switching tracks."
-5. Run `git checkout {branch}` using the branch name from the track entry.
-6. Confirm to the writer.
+1. Resolve the canon branch using the Canon Branch Resolution rules above.
+2. If `<name>` is "canon" or matches the resolved canon branch name: switch to the canon branch with `git checkout {canon_branch}`.
+3. Otherwise, look up `<name>` in `tracks.json` by matching the `label` field (case-insensitive).
+4. If not found: "No revision track called '[name]' found. Use `/scr:track list` to see available tracks."
+5. Check for unsaved changes (`git status --porcelain .manuscript/`). If changes exist: "You have unsaved changes. Save them first with `/scr:save` before switching tracks."
+6. Run `git checkout {branch}` using the branch name from the track entry.
+7. Confirm to the writer.
 
 **Output:**
 ```
@@ -154,7 +176,7 @@ Or if switching to canon:
 ```
 Switched to the canon manuscript.
 
-You're now working on the main version of your manuscript.
+You're now working on the base version of your manuscript.
 ```
 
 ---
@@ -169,7 +191,7 @@ You're now working on the main version of your manuscript.
    - No arguments: compare current track vs canon. If already on canon: "You're on the canon manuscript. Specify a track to compare: `/scr:track compare <name>`."
    - One name: compare that track vs canon.
    - Two names: compare track A vs track B.
-2. Resolve writer-friendly labels to branch names via `tracks.json`. "Canon" resolves to `main` (or `master`).
+2. Resolve the canon branch using the Canon Branch Resolution rules above. "Canon" resolves to `{canon_branch}`.
 3. Run `git diff {branch-a}...{branch-b} -- .manuscript/` to get the differences.
 4. If no differences: "No differences found between '[track A]' and '[track B]'. The manuscripts are identical."
 
@@ -220,8 +242,10 @@ Show passage-by-passage tracked changes in writer-friendly format:
 
 1. Resolve `<name>` to a branch via `tracks.json`. If not found: "No revision track called '[name]' found."
 2. Check if the track has any changes ahead of canon. If not: "Nothing to merge. '[name]' has no changes that differ from canon."
-3. If not currently on canon, switch to canon first: `git checkout main` (or `master`). Inform the writer: "Switching to the canon manuscript to accept the revisions."
-4. Attempt the merge without creating the final commit yet: `git merge {branch} --no-commit`.
+3. Resolve the canon branch using the Canon Branch Resolution rules above.
+4. If not currently on canon, switch to canon first: `git checkout {canon_branch}`. Inform the writer: "Switching to the canon manuscript to accept the revisions."
+5. Attempt the merge without creating the final commit yet: `git merge {branch} --no-ff --no-commit`.
+   This must explicitly block fast-forward merges so `tracks.json` can be updated before the final merge checkpoint is created.
 
 **If clean merge (no conflicts):**
 
@@ -289,7 +313,7 @@ Tip: Run `/scr:continuity-check` to verify everything reads smoothly after mergi
 
 1. Resolve `<name>` to a branch via `tracks.json`. If not found: "No revision track called '[name]' found."
 2. Check if the track has any changes ahead of canon. If not: "Nothing to propose. '[name]' has no changes that differ from canon."
-3. Generate a diff summary: `git diff main...{branch} -- .manuscript/` (or `master`).
+3. Resolve the canon branch using the Canon Branch Resolution rules above, then generate a diff summary: `git diff {canon_branch}...{branch} -- .manuscript/`.
 4. Parse the diff to count: passages changed, passages added, passages removed, sections affected.
 5. Create the proposal directory if needed: `.manuscript/proposals/`.
 6. Generate `.manuscript/proposals/{track-slug}-proposal.md` with the following structure:
@@ -461,7 +485,7 @@ When `track merge` detects that the merging track and canon have BOTH been modif
 
 Continuity checking during merge triggers automatically when:
 - The track being merged has `"type": "co-writing"` in `tracks.json`, OR
-- Both the track and canon have been modified since the track was created (detected via `git rev-list --left-right --count main...{branch}` showing changes on both sides)
+- Both the track and canon have been modified since the track was created (detected via `git rev-list --left-right --count {canon_branch}...{branch}` showing changes on both sides)
 
 For standard revision tracks where only the track has changes (canon is unmodified), the regular merge flow applies without continuity scanning.
 
@@ -478,7 +502,7 @@ This command MUST use writer-friendly terminology throughout. Never expose git i
 | Git Term | Writer Term |
 |----------|------------|
 | branch | revision track |
-| main/master | canon manuscript (or just "canon") |
+| canon branch | canon manuscript (or just "canon") |
 | checkout | switch to |
 | commit | checkpoint / save |
 | merge | accept revisions / merge (the word "merge" is acceptable in creative context) |
@@ -507,7 +531,7 @@ All error messages use plain English:
 - **No git repo:** Initialize silently in writer mode (same as `/scr:save`).
 - **No tracks.json:** Create on first `track create`.
 - **Branch deleted externally:** If a track's branch no longer exists in git, mark it as "(unavailable)" in the list and suggest removing it.
-- **Canon branch name:** Check for both `main` and `master`. Use whichever exists. If neither exists (fresh repo), default to `main`.
+- **Canon branch name:** Resolve it from `tracks.json.canon_branch` first. For older projects without that field, fall back to the current non-track branch, the remote default branch, then `main` or `master`.
 - **Track name collision:** If the slugified branch name would collide with an existing branch, append a number: `track/editors-suggestions-2`.
 - **Empty track:** If a track has no changes vs canon, `merge` and `propose` should inform the writer rather than creating empty merges/proposals.
 

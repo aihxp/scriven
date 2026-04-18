@@ -42,7 +42,7 @@ Use the adapted unit terminology throughout all output and prompts.
    - If the unit-id does not exist, show available units and ask for correction
 
 3. **CRITICAL: Draft safety check** (D-07):
-   - Scan `.manuscript/drafts/` for a draft file matching this unit
+   - Scan `.manuscript/drafts/body/` for a draft file matching this unit
    - **If a draft file exists:**
      - Show the word count of the draft
      - Show the first 3 lines of the draft content
@@ -50,7 +50,7 @@ Use the adapted unit terminology throughout all output and prompts.
 
        **WARNING: This [chapter/scene/etc.] has drafted content.**
 
-       File: `.manuscript/drafts/[filename]`
+       File: `.manuscript/drafts/body/[filename]`
        Word count: [N] words
        Preview:
        > [first 3 lines]
@@ -69,7 +69,7 @@ Use the adapted unit terminology throughout all output and prompts.
    - Renumber all subsequent units
    - If archived: move draft file to `.manuscript/archive/` with original name preserved
    - If deleted: remove the draft file
-   - Rename subsequent draft files to match new numbering
+   - Rename subsequent draft files in `.manuscript/drafts/body/` to match new numbering
 
 5. **Update related files:**
    - Update `.manuscript/STATE.md` to remove the unit and adjust progress

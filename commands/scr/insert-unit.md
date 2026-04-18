@@ -49,7 +49,7 @@ Use the adapted unit terminology throughout all output and prompts.
    - Brief summary (1-2 sentences)
 
 4. **Draft safety check** (D-07):
-   - Scan `.manuscript/drafts/` for draft files corresponding to units at and after the insertion point
+   - Scan `.manuscript/drafts/body/` for draft files corresponding to units at and after the insertion point
    - If any drafted units will be renumbered, warn the writer:
      "This will renumber [N] existing units. The following drafted files will need to be renamed:"
      List each affected file with its current and new name
@@ -58,7 +58,7 @@ Use the adapted unit terminology throughout all output and prompts.
 5. **Execute insertion:**
    - Insert the new unit at the specified position in OUTLINE.md
    - Renumber all subsequent units (position + 1, position + 2, etc.)
-   - Rename any affected draft files in `.manuscript/drafts/` to match new numbering
+   - Rename any affected draft files in `.manuscript/drafts/body/` to match new numbering
 
 6. **Update related files:**
    - Update `.manuscript/STATE.md` to reflect the new unit and renumbered units

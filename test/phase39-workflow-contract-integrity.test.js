@@ -60,6 +60,22 @@ describe('Phase 39: workflow contract integrity', () => {
     );
   });
 
+  it('structure-management commands operate on the canonical body drafts tree', () => {
+    for (const file of [
+      'commands/scr/insert-unit.md',
+      'commands/scr/reorder-units.md',
+      'commands/scr/remove-unit.md',
+      'commands/scr/split-unit.md',
+      'commands/scr/merge-units.md',
+    ]) {
+      assert.match(
+        read(file),
+        /\.manuscript\/drafts\/body\//,
+        `${file} should operate on the canonical body drafts tree`
+      );
+    }
+  });
+
   it('source docs do not advertise root-level active manuscript draft files', () => {
     const invalidRootLevelDraftRef = /\.manuscript\/(?!drafts\/|translation\/)[^`\s/]+-DRAFT\.md/;
     const invalidWildcardRootLevelDraftRef = /\.manuscript\/`?\s*matching\s*`?\*-DRAFT\.md`?/;
