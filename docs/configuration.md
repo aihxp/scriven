@@ -43,7 +43,7 @@ The repo-local copy at `data/CONSTRAINTS.json` is the authoring source of truth.
 `CONSTRAINTS.json` controls:
 
 - all 50 work types and 9 work-type groups
-- all 101 command registrations
+- all shipped command registrations
 - adaptive renames and group-specific command behavior
 - export availability and prerequisite rules
 
@@ -55,7 +55,7 @@ When a writer runs `/scr:new-work`, Scriven creates `.manuscript/config.json`. T
 
 ```json
 {
-  "scriven_version": "1.5.1",
+  "scriven_version": "1.5.2",
   "work_type": "<chosen>",
   "group": "<group>",
   "command_unit": "<unit>",
@@ -67,6 +67,8 @@ When a writer runs `/scr:new-work`, Scriven creates `.manuscript/config.json`. T
   }
 }
 ```
+
+That `scriven_version` value should track the current package release and the live `/scr:new-work` contract, not an older milestone snapshot.
 
 Every project gets those core keys. Additional blocks are added only when the work type requires them.
 

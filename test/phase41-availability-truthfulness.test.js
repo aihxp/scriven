@@ -52,6 +52,46 @@ describe('Phase 41: availability truthfulness and regression locks', () => {
     assert.match(help, /comic_only/);
   });
 
+  it('help keeps revision tracks visible in writer mode and keeps collaboration distinct from save history', () => {
+    const help = read('commands/scr/help.md');
+
+    assert.match(
+      help,
+      /\*\*Collaborate\*\* — track/,
+      'help.md should use /scr:track as the collaboration entrypoint'
+    );
+    assert.match(
+      help,
+      /Present `\/scr:track` as the entrypoint for revision-track workflows, and describe its subcommands in prose: create, list, switch, compare, merge, propose\./,
+      'help.md should explain track subcommands instead of flattening them into fake top-level commands'
+    );
+    assert.match(
+      help,
+      /\*\*Versions\*\* — save, history, versions, compare, undo/,
+      'help.md should keep save-history commands separate from collaboration'
+    );
+    assert.match(
+      help,
+      /Revision tracks are a writer-facing workflow, not a developer-only one/i,
+      'help.md should explicitly state that track workflows are not hidden in writer mode'
+    );
+    assert.match(
+      help,
+      /Do not invent top-level commands like `\/scr:merge` for collaboration/i,
+      'help.md should ban fake top-level collaboration commands'
+    );
+    assert.match(
+      help,
+      /do not confuse `\/scr:compare` \(save-to-save history comparison\) with `\/scr:track compare` \(revision-track comparison\)/i,
+      'help.md should distinguish save-history compare from track compare'
+    );
+    assert.doesNotMatch(
+      help,
+      /shown only if developer_mode is true/i,
+      'help.md should not hide collaboration commands behind developer_mode'
+    );
+  });
+
   it('source docs do not advertise unsupported adapted labels as surfaced commands', () => {
     for (const file of sourceDocs) {
       const content = read(file);

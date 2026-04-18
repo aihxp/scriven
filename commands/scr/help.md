@@ -45,8 +45,12 @@ Group by stage:
 - **Write** — discuss, plan, draft, quick-write, plus any profile-building commands actually available for the current work type
 - **Revise** — editor-review, line-edit, copy-edit, continuity-check, beta-reader, voice-check
 - **Publish** — front-matter, back-matter, blurb, cover-art, publish, export
-- **Collaborate** — track, compare, merge (shown only if developer_mode is true; otherwise show save/history/compare/versions)
+- **Collaborate** — track
+  Present `/scr:track` as the entrypoint for revision-track workflows, and describe its subcommands in prose: create, list, switch, compare, merge, propose.
+- **Versions** — save, history, versions, compare, undo
 - **Navigate** — next, progress, pause-work, resume-work
+
+Revision tracks are a writer-facing workflow, not a developer-only one. Always surface `/scr:track` when it is otherwise available for the current project, and explain that comparison and merge actions live under its subcommands. Do not invent top-level commands like `/scr:merge` for collaboration, and do not confuse `/scr:compare` (save-to-save history comparison) with `/scr:track compare` (revision-track comparison). `developer_mode` only changes whether you expose extra technical detail such as hashes, branch names, or raw git output — it does not hide the collaboration workflow itself.
 
 Only show commands where `available` includes the current work type's group, OR where it's `"all"`, **and** any narrower command-level constraints still pass for the specific work type. For example, `book-proposal` is still hidden for fiction prose because `nonfiction_only` narrows the broad prose/sacred availability, and `panel-layout` is hidden for non-comic visual projects because `comic_only` narrows the visual group. Show canonical runnable command names, and use adapted labels as descriptive text only when the base command is actually available — sacred review surfaces may show `/scr:editor-review` as scholarly review, and technical docs may show `/scr:plot-graph` as procedure map, but hidden commands stay hidden even if CONSTRAINTS.json stores an adapted label.
 
