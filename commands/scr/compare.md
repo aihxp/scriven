@@ -13,15 +13,24 @@ You are showing the writer how their prose has changed. Your job is to format gi
 
 2. **Check for `.git/` directory.** If missing: "No save history to compare. Save your work first with `/scr:save`."
 
-3. **Check for at least 2 saves.** Run `git rev-list --count HEAD -- .manuscript/ 2>/dev/null`. If less than 2: "Need at least two saves to compare. Save your work again with `/scr:save` after making changes."
+3. **Load the save history, not the raw manuscript history.** Run:
+   ```
+   git log --format="%H|%s" --grep="^(Saved|Initial save)" --extended-regexp .manuscript/ 2>/dev/null
+   ```
+   This command compares against actual saves only. Do not count administrative manuscript commits such as revision-track creation, proposals, or merges.
+   - If the save list is empty: "No save history to compare. Save your work first with `/scr:save`."
+   - If the writer asks to compare save N or save M and that numbered save does not exist in the filtered save list: "I couldn't find that save number. Use `/scr:versions` to see the available saves first."
 
 4. **Read `.manuscript/config.json`** for `developer_mode` and `command_unit`.
 
 5. **Determine what to compare:**
-   - No argument or `last`: compare current state with last save (`HEAD~1`)
-   - A number N: compare current state with the Nth previous save (`HEAD~N`)
-   - Two numbers "N M": compare save N with save M
-   - Run the appropriate: `git diff HEAD~1 -- .manuscript/` (or specified refs)
+   - No argument or `last`: compare the current working tree against the most recent save hash from the filtered save list
+   - A number N: compare the current working tree against save N from the filtered save list (1 = most recent save, 2 = the save before that, and so on)
+   - Two numbers "N M": compare save N with save M using the corresponding hashes from the filtered save list
+   - Run the appropriate diff against those resolved save hashes, for example:
+     - `git diff {save-hash-1} -- .manuscript/`
+     - `git diff {save-hash-N} {save-hash-M} -- .manuscript/`
+   Never resolve save numbers with raw ancestry offsets, because manuscript history may include non-save checkpoints.
 
 6. **Parse the diff output** into changed prose pairs:
    - For each changed file in `.manuscript/`, extract the diff hunks
@@ -69,7 +78,7 @@ You are showing the writer how their prose has changed. Your job is to format gi
 ## Edge cases
 
 - **No changes:** "No differences found. Your current work matches your last save."
-- **Only one save:** "Need at least two saves to compare."
+- **Only one save:** Comparing the current working tree against that save is fine. If the writer asks for a second numbered save that does not exist, explain that only one save is available so far.
 - **Binary files changed** (images, etc.): Skip them silently in writer mode. Mention them in developer mode.
 - **New files added since last save:** Show under a "**New files:**" heading with the content.
 - **Files deleted since last save:** Show under a "**Removed files:**" heading.

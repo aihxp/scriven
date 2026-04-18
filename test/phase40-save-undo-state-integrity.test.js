@@ -34,8 +34,14 @@ describe('Phase 40: save / undo state integrity', () => {
 
     assert.match(
       undo,
-      /git log -1 --format="%H\|%s" \.manuscript\//,
-      'undo.md should capture the explicit target commit hash from the manuscript history'
+      /git log -1 --format="%H\|%s" --grep="\^\(Saved\|Initial save\)" --extended-regexp \.manuscript\//,
+      'undo.md should capture the explicit target commit hash from filtered save history'
+    );
+
+    assert.match(
+      undo,
+      /This must be the most recent actual save, not merely the most recent commit that touched `\.manuscript\/`\./,
+      'undo.md should clarify that admin manuscript commits are not valid undo targets'
     );
 
     assert.doesNotMatch(

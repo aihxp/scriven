@@ -57,8 +57,9 @@ Any subcommand that needs the canon manuscript must resolve the canon branch in 
 1. If `.manuscript/tracks.json` has a top-level `canon_branch`, use it.
 2. Otherwise, read the current branch with `git branch --show-current`. If it exists and does not start with `track/`, treat that branch as canon and write it back to `tracks.json` as `canon_branch`.
 3. Otherwise, if the repo has a remote default branch (`git symbolic-ref refs/remotes/origin/HEAD`), use that short branch name.
-4. Otherwise, fall back to `main` if it exists locally, then `master` if it exists locally.
-5. If none of the above succeeds, stop and tell the writer: "I can't tell which branch is your canon manuscript. Switch to the branch that should be canon, then run `/scr:track create <name>` again."
+4. Otherwise, inspect the local branches. If there is exactly one non-`track/` local branch, use it as canon and write it back to `tracks.json` as `canon_branch`.
+5. Otherwise, fall back to `trunk` if it exists locally, then `main`, then `master`.
+6. If none of the above succeeds, stop and tell the writer: "I can't tell which branch is your canon manuscript. Switch to the branch that should be canon, then run `/scr:track create <name>` again."
 
 ---
 
@@ -531,7 +532,7 @@ All error messages use plain English:
 - **No git repo:** Initialize silently in writer mode (same as `/scr:save`).
 - **No tracks.json:** Create on first `track create`.
 - **Branch deleted externally:** If a track's branch no longer exists in git, mark it as "(unavailable)" in the list and suggest removing it.
-- **Canon branch name:** Resolve it from `tracks.json.canon_branch` first. For older projects without that field, fall back to the current non-track branch, the remote default branch, then `main` or `master`.
+- **Canon branch name:** Resolve it from `tracks.json.canon_branch` first. For older projects without that field, fall back to the current non-track branch, the remote default branch, the single non-track local branch if there is only one, then `trunk`, `main`, or `master`.
 - **Track name collision:** If the slugified branch name would collide with an existing branch, append a number: `track/editors-suggestions-2`.
 - **Empty track:** If a track has no changes vs canon, `merge` and `propose` should inform the writer rather than creating empty merges/proposals.
 

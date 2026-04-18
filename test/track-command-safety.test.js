@@ -30,6 +30,16 @@ describe('track command safety', () => {
       /git diff \{canon_branch\}\.\.\.\{branch\} -- \.manuscript\//,
       'track compare and propose should diff against the resolved canon branch'
     );
+    assert.match(
+      trackCommand,
+      /If there is exactly one non-`track\/` local branch, use it as canon/i,
+      'track.md should reuse the only local non-track branch for older repos without canon metadata'
+    );
+    assert.match(
+      trackCommand,
+      /fall back to `trunk` if it exists locally, then `main`, then `master`/i,
+      'track.md should probe trunk before main/master in local fallback resolution'
+    );
   });
 
   it('does not embed raw writer-provided track names inside git commit commands', () => {

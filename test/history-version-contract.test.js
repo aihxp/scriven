@@ -56,6 +56,61 @@ describe('history and versions command contracts', () => {
     );
   });
 
+  it('compare resolves numbered saves from filtered save history instead of raw HEAD offsets', () => {
+    const compare = read('commands/scr/compare.md');
+
+    assert.match(
+      compare,
+      /git log --format="%H\|%s" --grep="\^\(Saved\|Initial save\)" --extended-regexp \.manuscript\//,
+      'compare.md should load save history from filtered save commits only'
+    );
+    assert.match(
+      compare,
+      /Do not count administrative manuscript commits such as revision-track creation, proposals, or merges/i,
+      'compare.md should explicitly exclude non-save manuscript commits from save indexing'
+    );
+    assert.match(
+      compare,
+      /git diff \{save-hash-1\} -- \.manuscript\//,
+      'compare.md should diff against the resolved most-recent save hash, not HEAD~1'
+    );
+    assert.match(
+      compare,
+      /git diff \{save-hash-N\} \{save-hash-M\} -- \.manuscript\//,
+      'compare.md should diff historical saves by their resolved save hashes'
+    );
+    assert.doesNotMatch(
+      compare,
+      /HEAD~1|HEAD~N/,
+      'compare.md should not resolve save numbers with raw HEAD offsets'
+    );
+  });
+
+  it('undo targets the most recent filtered save checkpoint instead of raw manuscript history', () => {
+    const undo = read('commands/scr/undo.md');
+
+    assert.match(
+      undo,
+      /git log --format="%H\|%s" --grep="\^\(Saved\|Initial save\)" --extended-regexp \.manuscript\//,
+      'undo.md should count save checkpoints from filtered save history only'
+    );
+    assert.match(
+      undo,
+      /git log -1 --format="%H\|%s" --grep="\^\(Saved\|Initial save\)" --extended-regexp \.manuscript\//,
+      'undo.md should select the most recent actual save as its revert target'
+    );
+    assert.match(
+      undo,
+      /Do not treat revision-track creation, proposals, merges, or other administrative manuscript commits as undo targets/i,
+      'undo.md should explicitly exclude administrative manuscript commits from undo targeting'
+    );
+    assert.doesNotMatch(
+      undo,
+      /git rev-list --count HEAD -- \.manuscript\//,
+      'undo.md should not count raw manuscript commits when deciding whether undo is available'
+    );
+  });
+
   it('release notes include the current 1.5.2 package release', () => {
     const releaseNotes = read('docs/release-notes.md');
 
