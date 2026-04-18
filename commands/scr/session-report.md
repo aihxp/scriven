@@ -19,7 +19,7 @@ You are summarizing the writer's current session. Your job is to compute actiona
    - **Time estimate:** Difference between the first and last action timestamps this session. Present as hours and minutes (e.g., "~2 hours 15 minutes").
    - **Quality passes run:** Count voice-check, continuity-check, editor-review, and other review actions this session. Note whether they passed or had issues.
 
-4. **Read STATE.md "Session handoff" section** for session start time if available under "Session metrics".
+4. **Read STATE.md "Session metrics" section** for `Current session started` if available. Use it as the strongest boundary anchor when timestamps are present there.
 
 ## Output format
 
@@ -46,9 +46,9 @@ Present the report in this format:
 
 ## Edge cases
 
-- **No actions this session:** If the Last actions table is empty or has no entries after the last pause/resume, say: "Nothing to report yet. Start working with `/scr:next`."
+- **No actions this session:** If the Last actions table is empty or has no entries after the last pause/resume marker, say: "Nothing to report yet. Start working with `/scr:next`."
 
-- **Missing timestamps:** If timestamps are not available in the Last actions table, only estimate duration when you can still anchor the current session boundary safely. Prefer `Session metrics` start time from `STATE.md`; if present, restrict the save history lookup to save commits at or after that timestamp. Otherwise, use save-history timestamps only if you can confidently match the first current-session action to a save commit after the last pause/resume boundary. Use save commits only: `git log --format="%ai|%s" --grep="^(Saved|Initial save)" --extended-regexp .manuscript/`. Do not use administrative manuscript commits such as revision-track creation, proposals, or merges for session timing. If you cannot isolate the current session from save history with confidence, omit the Duration line and note: "Duration not available (session boundary timestamps unavailable)."
+- **Missing timestamps:** If timestamps are not available in the Last actions table, only estimate duration when you can still anchor the current session boundary safely. Prefer `Session metrics` start time from `STATE.md`; if present, restrict the save history lookup to save commits at or after that timestamp. Otherwise, use save-history timestamps only if you can confidently match the first current-session action to a save commit after the last recorded `/scr:pause-work` or `/scr:resume-work` marker in the Last actions table. Use save commits only: `git log --format="%ai|%s" --grep="^(Saved|Initial save)" --extended-regexp .manuscript/`. Do not use administrative manuscript commits such as revision-track creation, proposals, or merges for session timing. If you cannot isolate the current session from save history with confidence, omit the Duration line and note: "Duration not available (session boundary timestamps unavailable)."
 
 - **Per D-12:** Session state is per-project. Do not reference other projects. All data comes from this project's STATE.md and git history.
 

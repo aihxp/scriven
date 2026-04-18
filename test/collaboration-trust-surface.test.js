@@ -89,6 +89,29 @@ describe('collaboration trust surfaces', () => {
     );
   });
 
+  it('keeps session and version reference text aligned to the live command contracts', () => {
+    assert.match(
+      commandReference,
+      /Use `--all` when you want the complete save-version list without the default 10-version cap\./,
+      'docs/command-reference.md should describe versions output as save history, not archived drafts'
+    );
+    assert.doesNotMatch(
+      commandReference,
+      /Draft 1 \(archived\), Draft 2 \(current\)/,
+      'docs/command-reference.md should not imply an archived-draft model for versions'
+    );
+    assert.match(
+      commandReference,
+      /- `--force` -- Skip the unsaved-changes warning, but still require confirmation before undoing/,
+      'docs/command-reference.md should describe undo --force the same way as the live command contract'
+    );
+    assert.match(
+      commandReference,
+      /still asks for confirmation, even with `--force`\./,
+      'docs/command-reference.md should not imply that undo --force bypasses confirmation'
+    );
+  });
+
   it('keeps session-report duration fallback on save commits only', () => {
     assert.match(
       sessionReport,
@@ -104,6 +127,11 @@ describe('collaboration trust surfaces', () => {
       sessionReport,
       /Prefer `Session metrics` start time from `STATE\.md`; if present, restrict the save history lookup to save commits at or after that timestamp\./,
       'session-report.md should scope fallback timestamps to the current session when Session metrics are available'
+    );
+    assert.match(
+      sessionReport,
+      /last recorded `\/scr:pause-work` or `\/scr:resume-work` marker in the Last actions table/i,
+      'session-report.md should tie save-history fallback to recorded pause/resume markers'
     );
     assert.match(
       sessionReport,

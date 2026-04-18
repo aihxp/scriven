@@ -11,21 +11,34 @@ You are helping the writer pause their session gracefully. Your job is to captur
 
 1. **Read STATE.md** for current position (unit, stage, progress).
 
-2. **Ask the writer:** "Any notes for when you come back?" -- This captures their thinking, intentions, concerns. Wait for their response.
+2. **Check for pre-existing uncommitted manuscript changes before mutating STATE.md.**
+   - Run `git status` for `.manuscript/` and remember whether there were already modified or untracked files.
+   - This check must happen before you update `STATE.md`, so the pause marker itself does not get mistaken for pre-existing unsaved writing work.
 
-3. **Handle the writer's response:**
+3. **Ask the writer:** "Any notes for when you come back?" -- This captures their thinking, intentions, concerns. Wait for their response.
+
+4. **Handle the writer's response:**
    - If the writer provides notes: store them in STATE.md "Session handoff" > "Resume context" along with the automated context.
    - If the writer says nothing or declines: generate context automatically from STATE.md progress and last actions.
 
-4. **Update STATE.md "Session handoff" section** with the current timestamp and combined context:
+5. **Update STATE.md "Session handoff" section and session boundary markers** with the current timestamp and combined context:
    ```
    **Last session ended:** {current timestamp, e.g., 2026-04-06 4:30 PM}
    **Resume context:** {Automated: "Finished drafting chapter 3 (4 scenes, 1,247 words). Voice check passed. Was about to start discussing chapter 4."} {Writer's note: "I want chapter 4 to be shorter and more tense -- Marcus discovers the letter here."}
    ```
+   Also append a row to the "Last actions" table with:
+   - Timestamp: current timestamp
+   - Command: `pause-work`
+   - Unit: current unit (or `--` if none)
+   - Outcome: `Paused session`
+   Keep this pause marker in the Last actions table because `/scr:session-report` and future resume logic use it as a session boundary.
 
-5. **Auto-save if there are uncommitted changes.** Check `git status` for any modified or untracked files in `.manuscript/`. If found, run the `/scr:save` logic with the message "Saved before pausing" to ensure nothing is lost.
+6. **Auto-save if there were pre-existing uncommitted changes.**
+   - Use the result from step 2, not a fresh post-update `git status` check.
+   - If the manuscript already had modified or untracked files before the pause-state update, run the `/scr:save` logic with the message "Saved before pausing" so both the writer's in-progress work and the pause metadata are preserved together.
+   - Do not treat the pause-state update by itself as proof that the writer had unsaved manuscript work before pausing.
 
-6. **Tell the writer:** "Paused. When you're ready to come back, just run `/scr:resume-work`."
+7. **Tell the writer:** "Paused. When you're ready to come back, just run `/scr:resume-work`."
 
 ## State capture
 

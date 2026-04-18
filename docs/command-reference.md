@@ -441,8 +441,8 @@ See what changed since your last save, described in plain language.
 ```
 /scr:versions
 ```
-See "Draft 1 (archived), Draft 2 (current), 12 saves."
-See your complete save timeline without the default 10-version cap.
+See your recent save timeline with readable labels like "Current", "Yesterday", and "Apr 4".
+Use `--all` when you want the complete save-version list without the default 10-version cap.
 
 ---
 
@@ -455,13 +455,13 @@ See your complete save timeline without the default 10-version cap.
 **Prerequisites:** None
 
 **Flags:**
-- `--force` -- Skip the confirmation prompt
+- `--force` -- Skip the unsaved-changes warning, but still require confirmation before undoing
 
 **Example:**
 ```
 /scr:undo
 ```
-Go back to the previous save. Scriven shows what will be reverted and asks for confirmation.
+Go back to the previous save. Scriven shows what will be reverted and still asks for confirmation, even with `--force`.
 
 ---
 

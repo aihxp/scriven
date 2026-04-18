@@ -171,6 +171,21 @@ describe('Session commands content', () => {
     assert.match(content, /come back/i);
   });
 
+  it('pause-work.md records a pause marker in Last actions', () => {
+    const content = fs.readFileSync(path.join(commandsDir, 'pause-work.md'), 'utf8');
+    assert.match(
+      content,
+      /Append a row to the "Last actions" table[\s\S]*Command: `pause-work`[\s\S]*Outcome: `Paused session`/i
+    );
+  });
+
+  it('pause-work.md checks for unsaved work before mutating STATE.md', () => {
+    const content = fs.readFileSync(path.join(commandsDir, 'pause-work.md'), 'utf8');
+    assert.match(content, /Check for pre-existing uncommitted manuscript changes before mutating STATE\.md/i);
+    assert.match(content, /This check must happen before you update `STATE\.md`/i);
+    assert.match(content, /Use the result from step 2, not a fresh post-update `git status` check\./i);
+  });
+
   it('resume-work.md contains "Last time" or "last time"', () => {
     const content = fs.readFileSync(path.join(commandsDir, 'resume-work.md'), 'utf8');
     assert.ok(
@@ -179,10 +194,28 @@ describe('Session commands content', () => {
     );
   });
 
+  it('resume-work.md resets Session metrics and records a resume marker', () => {
+    const content = fs.readFileSync(path.join(commandsDir, 'resume-work.md'), 'utf8');
+    assert.match(content, /Set `## Session metrics` -> `Current session started` to the current timestamp\./);
+    assert.match(content, /Units this session: 0/);
+    assert.match(content, /Words this session: 0/);
+    assert.match(content, /Quality passes: none yet/);
+    assert.match(
+      content,
+      /Append a row to the "Last actions" table[\s\S]*Command: `resume-work`[\s\S]*Outcome: `Resumed session`/i
+    );
+  });
+
   it('session-report.md contains words and units metrics', () => {
     const content = fs.readFileSync(path.join(commandsDir, 'session-report.md'), 'utf8');
     assert.match(content, /words/i);
     assert.match(content, /units/i);
+  });
+
+  it('session-report.md anchors boundaries to Session metrics and recorded pause/resume markers', () => {
+    const content = fs.readFileSync(path.join(commandsDir, 'session-report.md'), 'utf8');
+    assert.match(content, /Read STATE\.md "Session metrics" section/i);
+    assert.match(content, /last recorded `\/scr:pause-work` or `\/scr:resume-work` marker in the Last actions table/i);
   });
 });
 

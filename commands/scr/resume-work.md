@@ -23,7 +23,20 @@ You are welcoming the writer back and orienting them. Your job is to read the se
    - Voice-check issues
    - Continuity flags
 
-4. **Generate ONE paragraph** that covers three parts:
+4. **Record the new session boundary in STATE.md before responding.**
+   - Set `## Session metrics` -> `Current session started` to the current timestamp.
+   - Reset the per-session summary placeholders so this session starts fresh:
+     - `Units this session: 0`
+     - `Words this session: 0`
+     - `Quality passes: none yet`
+   - Append a row to the "Last actions" table with:
+     - Timestamp: current timestamp
+     - Command: `resume-work`
+     - Unit: current unit (or `--` if none)
+     - Outcome: `Resumed session`
+   `/scr:session-report` depends on these markers to separate the current session from older work, so always write them here.
+
+5. **Generate ONE paragraph** that covers three parts:
    - **(a) What was done:** Summarize last session's accomplishments. Use concrete numbers -- words, units, quality passes.
    - **(b) What was in progress + writer's notes:** Where they were when they stopped. Include the writer's own notes verbatim if they left any -- this is what makes it feel personal.
    - **(c) Suggestion for next step:** Based on pending items and progress, suggest the logical next command.
