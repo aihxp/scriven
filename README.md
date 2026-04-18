@@ -197,9 +197,9 @@ Scriven currently ships installer targets for these AI tooling environments:
 
 **Version:** 1.5.2
 
-Scriven's core command surface is stable across 108 commands, 50 work types, and 11 installer targets. All six roadmap milestones through `v1.5` (MVP, Generic Platform Support, Documentation, Trust & Proof, Perplexity & Technical Writing, and Runtime Install Reliability) are shipped in the repo. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
+ Scriven's core command surface is stable across 108 commands, 50 work types, and 11 installer targets. The current repo baseline includes shipped planning milestones through `v1.9 Workflow Contract Integrity`, while the published package version remains `1.5.2`. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
 
-Version `1.5.2` is a patch release on top of the shipped `v1.5 Runtime Install Reliability` milestone. It refines the Claude Code install surface to use flat `/scr-*` commands, keeps Codex on generated `$scr-*` skills, and extends the installer/tests/docs so that runtime contract stays consistent.
+ Version `1.5.2` is still the current npm/package release. Since that release, the repo baseline has also shipped milestone-level hardening for command-surface truthfulness and workflow-contract integrity, tightening the Claude `/scr-*` surface, Codex `$scr-*` skill surface, save-history contracts, session boundaries, and help/docs alignment without changing the zero-dependency architecture.
 
 Package history is tracked in [CHANGELOG.md](CHANGELOG.md), and the public-facing summary for this release is in [docs/release-notes.md](docs/release-notes.md).
 

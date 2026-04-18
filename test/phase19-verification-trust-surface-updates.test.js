@@ -16,6 +16,7 @@ describe('phase 19 technical-writing trust surfaces', () => {
   const architecture = read('docs/architecture.md');
   const agentsDoc = read('AGENTS.md');
   const claudeDoc = read('CLAUDE.md');
+  const roadmap = read('.planning/ROADMAP.md');
 
   it('keeps root and onboarding docs aligned on the expanded work-type count', () => {
     for (const [name, doc] of [
@@ -39,7 +40,23 @@ describe('phase 19 technical-writing trust surfaces', () => {
   });
 
   it('keeps the README status section aligned to the shipped milestone state', () => {
-    assert.match(readme, /All six roadmap milestones through `?v1\.5`? .* shipped in the repo/i);
+    const latestShippedMatch = roadmap.match(
+      /Latest shipped milestone:\s+\*\*(.+?)\*\* \(completed [^)]+\)/
+    );
+
+    assert.ok(
+      latestShippedMatch,
+      'ROADMAP.md should declare the latest shipped milestone in Current Status'
+    );
+
+    const latestShipped = latestShippedMatch[1]
+      .replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+
+    assert.match(
+      readme,
+      new RegExp(`shipped planning milestones through \`${latestShipped}\``),
+      'README should match the latest shipped milestone declared in ROADMAP.md'
+    );
     assert.doesNotMatch(readme, /v1\.5 .* in progress/i);
   });
 
