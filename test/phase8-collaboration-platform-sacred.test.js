@@ -214,6 +214,25 @@ describe('RUNTIME-05: Health Command', () => {
       'should mention repair'
     );
   });
+
+  it('health.md keeps detached-head guidance branch-agnostic', () => {
+    const content = fs.readFileSync(healthPath, 'utf8');
+    assert.match(
+      content,
+      /git switch <canon branch>/i,
+      'health.md should suggest switching to the resolved canon branch instead of assuming main'
+    );
+    assert.match(
+      content,
+      /canon_branch|main`, `master`, `trunk`/i,
+      'health.md should explain that detached-head recovery depends on the project canonical branch'
+    );
+    assert.doesNotMatch(
+      content,
+      /git checkout main/,
+      'health.md should not hard-code main for detached-head recovery'
+    );
+  });
 });
 
 // ── RUNTIME-06: Utility Commands ────────────────────────────

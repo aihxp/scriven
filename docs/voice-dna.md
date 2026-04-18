@@ -266,5 +266,5 @@ This is the same principle behind recording each instrument separately in a stud
 
 - [Proof Artifacts](proof-artifacts.md) -- inspect the Voice DNA before/after bundle first if you want the fastest concrete evidence
 - [Getting Started](getting-started.md) -- Install Scriven and write your first draft
-- [Command Reference](command-reference.md) -- Full list of all 101 commands with usage and examples
+- [Command Reference](command-reference.md) -- Full list of all 108 commands with usage and examples
 - [Work Types Guide](work-types.md) -- How work types adapt Scriven's vocabulary and commands

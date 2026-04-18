@@ -100,5 +100,15 @@ describe('collaboration trust surfaces', () => {
       /Do not use administrative manuscript commits such as revision-track creation, proposals, or merges for session timing\./,
       'session-report.md should explicitly exclude admin commits from duration estimation'
     );
+    assert.match(
+      sessionReport,
+      /Prefer `Session metrics` start time from `STATE\.md`; if present, restrict the save history lookup to save commits at or after that timestamp\./,
+      'session-report.md should scope fallback timestamps to the current session when Session metrics are available'
+    );
+    assert.match(
+      sessionReport,
+      /If you cannot isolate the current session from save history with confidence, omit the Duration line and note: "Duration not available \(session boundary timestamps unavailable\)\."/,
+      'session-report.md should refuse to overstate duration when it cannot isolate the current session boundary'
+    );
   });
 });

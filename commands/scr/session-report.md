@@ -48,7 +48,7 @@ Present the report in this format:
 
 - **No actions this session:** If the Last actions table is empty or has no entries after the last pause/resume, say: "Nothing to report yet. Start working with `/scr:next`."
 
-- **Missing timestamps:** If timestamps are not available in the Last actions table, try to estimate from the save history only: `git log --format="%ai|%s" --grep="^(Saved|Initial save)" --extended-regexp .manuscript/`. Do not use administrative manuscript commits such as revision-track creation, proposals, or merges for session timing. If neither source has timestamps, omit the Duration line and note: "Duration not available (no timestamps recorded)."
+- **Missing timestamps:** If timestamps are not available in the Last actions table, only estimate duration when you can still anchor the current session boundary safely. Prefer `Session metrics` start time from `STATE.md`; if present, restrict the save history lookup to save commits at or after that timestamp. Otherwise, use save-history timestamps only if you can confidently match the first current-session action to a save commit after the last pause/resume boundary. Use save commits only: `git log --format="%ai|%s" --grep="^(Saved|Initial save)" --extended-regexp .manuscript/`. Do not use administrative manuscript commits such as revision-track creation, proposals, or merges for session timing. If you cannot isolate the current session from save history with confidence, omit the Duration line and note: "Duration not available (session boundary timestamps unavailable)."
 
 - **Per D-12:** Session state is per-project. Do not reference other projects. All data comes from this project's STATE.md and git history.
 

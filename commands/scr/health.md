@@ -81,7 +81,7 @@ With `--repair`, fix what can be auto-fixed:
 1. **Regenerate missing STATE.md** from file system state -- count actual draft files, detect current position in workflow
 2. **Fix config.json missing fields** with sensible defaults (author = "Unknown", work_type from directory structure heuristics)
 3. **Report orphaned drafts** for manual review -- do NOT delete them, just list them with suggested actions
-4. **Suggest git commands** for git issues (e.g., "Run `git stash` to save uncommitted changes" or "Run `git checkout main` to fix detached HEAD")
+4. **Suggest git commands** for git issues (e.g., "Run `git stash` to save uncommitted changes" or "Run `git switch <canon branch>` to fix detached HEAD"). Resolve `<canon branch>` from `.manuscript/tracks.json` `canon_branch` when available; otherwise refer to the writer's real default branch generically (`main`, `master`, `trunk`, or another branch name) instead of hard-coding `main`.
 
 After repair: re-run diagnostics and show the updated health report.
 
