@@ -17,9 +17,10 @@ You are listing the writer's draft versions. Your job is to show saves as a numb
 
 4. **Retrieve the version list.** Run:
    ```
-   git log --format="%H|%ai|%s" .manuscript/
+   git log --format="%H|%ai|%s" --grep="^(Saved|Initial save)" --extended-regexp -n 10 .manuscript/
    ```
-   Default: last 10 versions. If the writer specified `--all`, show the complete list.
+   Default: last 10 versions. If the writer specified `--all`, drop the `-n 10` limit and retrieve the complete save-version list instead.
+   This command is for writer-visible draft versions, so exclude administrative manuscript commits such as revision-track creation, proposals, and merges.
 
 5. **Parse into a numbered version list**, grouped by date:
    - Convert commit messages into human-readable descriptions (same parsing as `/scr:history`)
@@ -58,6 +59,7 @@ You are listing the writer's draft versions. Your job is to show saves as a numb
 - **No versions:** "No versions yet. Save your work first with `/scr:save`."
 - **Only one version:** Show it as "1. Current -- {description}". No "see more" message.
 - **Many versions:** Default to last 10. If more exist, mention: "Showing your last 10 versions. Use `--all` to see the complete list."
+- **Administrative manuscript commits:** Exclude track creation, proposals, merges, and other non-save checkpoints. Show only commits whose subject starts with `Saved` or `Initial save`.
 - **Multiple saves on the same day:** Group them under one date, showing individual descriptions:
   ```
   1. Current -- Revised chapter 3 opening

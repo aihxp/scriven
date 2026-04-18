@@ -11,15 +11,20 @@ You are showing the writer their save history. Your job is to format git log out
 
 1. **Check for `.git/` directory.** If missing: "No save history yet. Save your work first with `/scr:save`."
 
-2. **Check for any commits touching `.manuscript/`.** Run `git log --oneline .manuscript/ 2>/dev/null | head -1`. If empty: "No save history yet."
+2. **Check for any save commits.** Run:
+   ```
+   git log --format="%H" --grep="^(Saved|Initial save)" --extended-regexp -n 1 .manuscript/ 2>/dev/null
+   ```
+   If empty: "No save history yet."
 
 3. **Read `.manuscript/config.json`** for `developer_mode`.
 
 4. **Retrieve the log.** Run:
    ```
-   git log --format="%H|%ai|%s" .manuscript/
+   git log --format="%H|%ai|%s" --grep="^(Saved|Initial save)" --extended-regexp -n {limit} .manuscript/
    ```
    Default: last 20 entries. If the writer specified `--limit N`, use that number instead.
+   This command is a **save history**, so exclude administrative manuscript commits such as revision-track creation, proposals, and merges.
 
 5. **Parse each line** into three columns:
    - **Date:** Convert the ISO timestamp to human-friendly format: "Mon D, H:MM AM/PM" (e.g., "Apr 6, 2:30 PM"). Omit year unless the save is from a different year than the current year.
@@ -57,7 +62,7 @@ You are showing the writer their save history. Your job is to format git log out
 - **No history:** "No save history yet. Save your work first with `/scr:save`."
 - **Only one save:** Show the table with one row. No "see more" message.
 - **Very long history:** Default to last 20. If more exist, mention: "Showing your last 20 saves. Use `--limit 50` to see more."
-- **Non-Scriven commits in history:** Only show commits that touched `.manuscript/` files. The git log is already scoped to `.manuscript/`.
+- **Administrative manuscript commits:** Exclude track creation, proposals, merges, and other non-save checkpoints. Show only commits whose subject starts with `Saved` or `Initial save`.
 
 ## Tone
 

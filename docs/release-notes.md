@@ -2,6 +2,29 @@
 
 This document is the public-facing summary of what changed between package releases. For package history, see the root [CHANGELOG](../CHANGELOG.md).
 
+## 1.5.2 - 2026-04-09
+
+### What changed
+
+- Added safer revision-track contracts so canon resolution no longer assumes `main` or `master`
+- Tightened structure-editing workflows to operate on the canonical `.manuscript/drafts/body/` tree
+- Extended workflow-integrity and track-safety regression coverage around those command contracts
+
+### Why it matters
+
+`1.5.2` closes a couple of trust gaps in writer-facing workflow commands without changing the overall product surface. Draft renumbering commands now point at the live manuscript tree, and revision tracks are more portable across repos that use custom default branch names such as `trunk`.
+
+### Affected areas
+
+- structure-management command guidance
+- revision-track command guidance
+- workflow-integrity and track-safety tests
+
+### Verification
+
+- `node --test test/phase39-workflow-contract-integrity.test.js test/track-command-safety.test.js`
+- `npm test`
+
 ## 1.5.1 - 2026-04-09
 
 ### What changed
