@@ -4,6 +4,9 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.join(__dirname, '..');
+const packageJson = JSON.parse(
+  fs.readFileSync(path.join(ROOT, 'package.json'), 'utf8')
+);
 
 function read(relativePath) {
   return fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
@@ -111,13 +114,15 @@ describe('history and versions command contracts', () => {
     );
   });
 
-  it('release notes include the current 1.5.2 package release', () => {
+  it('release notes include the current package release', () => {
     const releaseNotes = read('docs/release-notes.md');
 
     assert.match(
       releaseNotes,
-      /## 1\.5\.2 - 2026-04-09/,
-      'release-notes.md should document the current 1.5.2 package release'
+      new RegExp(
+        `## ${packageJson.version.replace(/[.*+?^${}()|[\\]\\\\]/g, '\\$&')} - \\d{4}-\\d{2}-\\d{2}`
+      ),
+      'release-notes.md should document the current package release'
     );
   });
 });

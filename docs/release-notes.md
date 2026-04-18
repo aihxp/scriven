@@ -2,6 +2,28 @@
 
 This document is the public-facing summary of what changed between package releases. For package history, see the root [CHANGELOG](../CHANGELOG.md).
 
+## 1.5.3 - 2026-04-18
+
+### What changed
+
+- Packaged the workflow-contract hardening that landed after `1.5.2`
+- Tightened save-history, compare, undo, session-report, and revision-track guidance so writer-facing commands match the live git/state contract
+- Aligned README, configuration, release, and command-reference trust surfaces with the shipped 108-command package state
+
+### Why it matters
+
+`1.5.3` turns the repo's post-`1.5.2` hardening work into the current published package baseline. Writers get safer save/version/session behavior, more truthful collaboration and help surfaces, and cleaner agreement between package metadata, generated project config, and the public docs.
+
+### Affected areas
+
+- writer-facing save/version/session workflows
+- revision-track and collaboration guidance
+- package metadata, config scaffolding, and release-facing documentation
+
+### Verification
+
+- `npm test`
+
 ## 1.5.2 - 2026-04-09
 
 ### What changed

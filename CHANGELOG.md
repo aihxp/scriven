@@ -2,6 +2,14 @@
 
 All notable package-level changes to `scriven-cli` are documented here.
 
+## 1.5.3 - 2026-04-18
+
+This release packages the hardening work that landed after `1.5.2`.
+
+- aligned the published package version, constraints metadata, generated project config, and release-facing docs on `1.5.3`
+- packaged the writer-facing workflow-contract fixes around save history, compare, undo, session boundaries, revision tracks, and help/router guidance
+- kept the zero-dependency installer architecture intact while shipping the hardened post-`1.5.2` command/doc/test baseline
+
 ## 1.5.1 - 2026-04-09
 
 This release is a Claude command-surface follow-up to `1.5.0`.
