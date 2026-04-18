@@ -79,8 +79,8 @@ Switch to a different calendar system for display. Dates are stored internally i
 
 - Drafter agents use this file to avoid anachronisms
 - Continuity-checker cross-references this when verifying drafts
-- `/scr:cross-reference` uses chronology to identify prophecy/fulfillment pairs
-- `/scr:source-tracking` uses it to align primary sources with the narrative timeline
+- `/scr:sacred:cross-reference` uses chronology to identify prophecy/fulfillment pairs
+- `/scr:sacred:source-tracking` uses it to align primary sources with the narrative timeline
 
 ## Handling disputes
 

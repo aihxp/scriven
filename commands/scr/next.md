@@ -44,7 +44,7 @@ Walk the core chain in order and run the first incomplete step:
 
 ## Adaptive naming
 
-ALWAYS use the adapted command name for the current work type. If command_unit is "surah", run `/scr:draft-surah`, not `/scr:draft-chapter`. Load CONSTRAINTS.json to get the right names and adaptations.
+Use canonical runnable commands, and adapt the terminology in prompts/output for the current work type. If command_unit is "surah", run `/scr:draft` and frame the work as drafting a surah; do not invent uninstalled aliases like `/scr:draft-surah` unless the active runtime explicitly provides them.
 
 ## Tone
 

@@ -6,14 +6,29 @@ const path = require('path');
 const ROOT = path.join(__dirname, '..');
 const commandsDir = path.join(ROOT, 'commands', 'scr');
 
-const commandFiles = fs.readdirSync(commandsDir)
-  .filter(f => f.endsWith('.md') && fs.statSync(path.join(commandsDir, f)).isFile());
+function collectMarkdownFiles(dir, prefix = '') {
+  const files = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const relPath = prefix ? path.join(prefix, entry.name) : entry.name;
+    const absPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...collectMarkdownFiles(absPath, relPath));
+      continue;
+    }
+    if (entry.isFile() && entry.name.endsWith('.md')) {
+      files.push(relPath);
+    }
+  }
+  return files.sort();
+}
+
+const commandFiles = collectMarkdownFiles(commandsDir);
 
 describe('Command file structure', () => {
   it('command file names use kebab-case', () => {
     for (const file of commandFiles) {
       assert.match(
-        file,
+        path.basename(file),
         /^[a-z][a-z0-9-]*\.md$/,
         `"${file}" does not match kebab-case pattern`
       );

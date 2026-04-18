@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.8
 milestone_name: Command Surface Coherence
-status: requirements
-stopped_at: Defining v1.8 requirements and roadmap
-last_updated: "2026-04-18T02:45:58.000Z"
+status: milestone_complete
+stopped_at: Shipped v1.8 and archived closeout artifacts
+last_updated: "2026-04-18T03:40:00.000Z"
 last_activity: 2026-04-18
 progress:
   total_phases: 3
-  completed_phases: 0
+  completed_phases: 3
   total_plans: 7
-  completed_plans: 0
-  percent: 0
+  completed_plans: 7
+  percent: 100
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-18)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** v1.8 Command Surface Coherence — defining requirements and roadmap
+**Current focus:** No active milestone defined — v1.8 Command Surface Coherence is shipped
 
 ## Current Position
 
-Phase: Not started (defining requirements)
-Plan: —
-Status: Defining requirements
-Last activity: 2026-04-18 — Milestone v1.8 started
+Phase: 38 complete
+Plan: 38-03
+Status: Milestone complete
+Last activity: 2026-04-18 — Archived and audited v1.8
 
-Progress: [----------] 0%
+Progress: [##########] 100%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 104 (37 from v1.0, 2 from v1.1, 8 from v1.2, 9 from v1.3, 7 from v1.4, 2 unrecorded from v1.5, 6 from v1.6, 13 from v1.7)
-- Latest shipped milestone v1.7: 7 phases, 26 plans, 1510 regression tests, zero new dependencies
+- Total plans completed: 104 (35 from v1.0, 2 from v1.1, 8 from v1.2, 9 from v1.3, 7 from v1.4, 7 from v1.5, 6 from v1.6, 23 from v1.7, 7 from v1.8)
+- Latest shipped milestone v1.8: 3 phases, 7 plans, 1537 regression tests, zero new dependencies
 
 *Updated after each plan completion*
 
@@ -69,16 +69,14 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-- Author detailed plans for Phases 36-38
-- Resolve sacred command namespace policy before runtime/doc rewrites begin
-- Decide whether adapted names become real runtime wrappers or display-only vocabulary
+- Define the next milestone when product priorities are ready
 
 ### Blockers/Concerns
 
-None.
+- No active blockers. Next work begins with milestone selection.
 
 ## Session Continuity
 
-Last session: 2026-04-18T02:45:58.000Z
-Stopped at: Defining v1.8 requirements and roadmap
+Last session: 2026-04-18T03:40:00.000Z
+Stopped at: v1.8 shipped; waiting for next milestone definition
 Resume file: None

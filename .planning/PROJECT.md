@@ -53,18 +53,13 @@ Scriven is a spec-driven writing, publishing, and translation pipeline that runs
 - ✓ Installed command files use correct invocation syntax per runtime with code-block preservation — v1.6 Phase 27
 - ✓ All v1.6 hardening behaviors locked by 88 regression tests with requirement-to-test traceability — v1.6 Phase 28
 
-### Active
+### Validated (v1.8)
 
-- **CMD-01**: Sacred-exclusive commands must expose one canonical installed runtime name per host surface, and every command file or doc that references them must use that real surface
-- **CMD-02**: Installer/runtime inventory generation must come from one canonical command-source model so sacred commands cannot appear both as phantom top-level commands and namespaced commands in the same runtime
-- **CMD-03**: Cross-file validation must detect command references that do not resolve against the installed runtime surface for the target host
-- **CMD-04**: Adapted command names shown to writers (`/scr:new-figure`, `/scr:procedure-map`, `/scr:peer-review`, etc.) must either install runnable wrappers/aliases or be reframed as descriptive adaptations rather than direct invocation strings
-- **CMD-05**: Help, router, sacred docs, work-type docs, and command reference must stay aligned on whether adapted names are runnable commands, conceptual renames, or display-only vocabulary
-- **CMD-06**: Claude Code must use one flat `/scr-*` command surface consistently across installer output, docs, examples, and upgrade guidance
-- **CMD-07**: Claude-facing command examples for autopilot/autonomous-style flows must use the flat `/scr-*` surface consistently, matching the runtime-native pattern Scriven already claims in README/getting-started
-- **CMD-08**: Any remaining Claude-specific `/scr:*` examples in launch, guide, or reference docs must be normalized or explicitly marked as non-Claude surfaces
-- **CMD-09**: Regression tests must cover nested sacred command discovery plus dead-reference detection across `commands/`, `docs/`, and installer-generated manifests
-- **CMD-10**: Contributor/runtime docs must clearly explain the naming contract by host: Claude uses `/scr-*`, Codex uses `$scr-*`, and any namespaced or adapted forms must specify whether they are installed or conceptual
+- ✓ Sacred-exclusive command references now use canonical installed names across source commands, docs, and manifests — v1.8 Phases 36-38 (CMD-01, CMD-03)
+- ✓ Installer and generic manifest generation now derive from one canonical file-backed command inventory — v1.8 Phase 36 (CMD-02)
+- ✓ Adapted names are now treated as descriptive labels unless a runtime deliberately installs wrappers — v1.8 Phase 37 (CMD-04, CMD-05)
+- ✓ Claude Code now consistently uses the flat `/scr-*` command surface in docs and examples — v1.8 Phase 37 (CMD-06, CMD-07, CMD-08)
+- ✓ Command-surface coherence is now locked by nested-command and dead-reference regression coverage plus contributor naming guidance — v1.8 Phase 38 (CMD-09, CMD-10)
 
 ### Validated (v1.7 so far)
 
@@ -110,7 +105,7 @@ The product plan (`SCRIVEN-PRODUCT-PLAN-v0.3.md`) is the canonical source of tru
 
 Milestones v1.0 through v1.2 shipped the core product surface, multi-runtime installer expansion, and a complete documentation suite. The docs verification pass also exposed a new class of product problem: trust gaps between what the product promises and what the repo can prove today.
 
-The most visible gaps were in the export stack and launch proof layer. Phase 13 aligned shipped-asset truth, Phase 14 standardized the Node 20+ installer baseline while making runtime evidence explicit, Phase 15 added the canonical proof layer that makes Scriven's voice-preservation wedge tangible, and Phase 16 turned those trust surfaces into release-time regression gates. Milestone v1.4 then extended that posture into Perplexity Desktop support and a first-pass technical-writing family without weakening the existing trust model.
+The most visible gaps were in the export stack and launch proof layer. Phase 13 aligned shipped-asset truth, Phase 14 standardized the Node 20+ installer baseline while making runtime evidence explicit, Phase 15 added the canonical proof layer that makes Scriven's voice-preservation wedge tangible, and Phase 16 turned those trust surfaces into release-time regression gates. Milestone v1.4 then extended that posture into Perplexity Desktop support and a first-pass technical-writing family without weakening the existing trust model. Milestone v1.8 tightened the command surface the same way: the names Scriven advertises now match the runtime surfaces it actually installs, and the repo has regression coverage to keep that contract honest.
 
 ## Constraints
 
@@ -120,28 +115,10 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - **Plan authority**: If a command file contradicts the product plan, fix the command — plan is canonical (section 15 for command specs)
 - **Progressive disclosure**: Onboarding asks 3 questions max; depth is optional and additive
 
-## Current Milestone: v1.8 Command Surface Coherence
-
-**Goal:** Make Scriven's command surface truthful and runtime-native so every documented command name is runnable in the host that advertises it.
-
-**Target features:**
-- Sacred-exclusive command naming repair so command files, docs, manifests, and installer output agree on the real installed names
-- Adapted command alias policy: either generate runnable aliases for renamed commands or stop presenting them as invokable commands
-- Claude Code flat `/scr-*` surface audit and completion, including autopilot/autonomous-style commands and example snippets
-- Canonical command inventory generation for installer manifests and documentation
-- Dead-command reference detection across `commands/`, `docs/`, and installer-generated surfaces
-- Runtime naming policy docs that explain Claude flat slash commands, Codex `$scr-*` skills, and namespaced surfaces where applicable
-
-**Key context:**
-- Triggered by live review findings showing that sacred workflows, help surfaces, and generic manifests can currently advertise command names the installer never creates
-- User requested Claude refactor guidance aligned with the flat GSD pattern used in `gsd-build/get-shit-done`, where commands are documented as `/gsd-help`, `/gsd-progress`, and `/gsd-autonomous`
-- Must preserve zero-dependency architecture and keep command behavior file-backed; surface changes should come from installer/runtime contracts, not a compiled dispatcher
-- Voice DNA pipeline must not regress while command names, aliases, or runtime wrappers are normalized
-
 ## Current State
 
-**Latest shipped milestone:** v1.7 Last Mile (complete 2026-04-17)
-**Status:** v1.8 planning active. v1.7 is shipped; 1510 regression tests currently pass.
+**Latest shipped milestone:** v1.8 Command Surface Coherence (complete 2026-04-18)
+**Status:** No active milestone is currently defined. Scriven's latest shipped surface is locked by 1537 passing regression tests.
 
 **Current product surface:**
 - Installer writes are crash-safe via atomic temp-file-then-rename with orphan cleanup on startup
@@ -149,33 +126,32 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - Settings validated against hand-written schema with migration-before-validation to avoid bootstrap deadlocks
 - User customizations to settings.json and templates survive reinstall via field-level merge and SHA-256 content-hash backup
 - Codex command files now use `$scr-*` invocation syntax, code blocks preserved unchanged
+- Sacred-exclusive commands now use canonical installed names across source commands, docs, and generated manifests
+- Claude-facing docs now use the flat `/scr-*` surface consistently, matching the runtime-native install contract
+- Adapted command names are documented as conceptual labels unless a runtime explicitly installs wrappers
+- Command-surface drift is guarded by nested-command and dead-reference regression tests
 - Full export stack: EPUB (Pandoc, accessible), print PDF (Pandoc+Typst, KDP/Ingram trim sizes), academic LaTeX (.tex via 5 publisher wrapper templates), Smashwords DOCX, poetry submission DOCX
 - Sacred tradition profiles for 10 traditions with book-order, approval-block, font stack, RTL, numbering
 - Cross-domain templates: stage play, picture book, fixed-layout EPUB, chapbook, poetry submission, academic (IEEE/ACM/LNCS/Elsevier/APA7)
-- 1510 regression tests lock all behavior with requirement-to-test traceability
+- 1537 regression tests lock all behavior with requirement-to-test traceability
 
-## Latest Milestone: v1.7 Last Mile
+## Latest Milestone: v1.8 Command Surface Coherence
 
-**Goal:** Close the production edge — ship real build pipelines, cross-domain templates, and per-platform awareness so Scriven reaches publication-ready output for any supported work type, not just book prose.
+**Goal:** Make Scriven's command surface truthful and runtime-native so every documented command name is runnable in the host that advertises it.
 
 **Outcome shipped:**
-- `/scr:cleanup` + validate gate — scaffold bracket stripping and placeholder lint before export
-- `/scr:build-ebook` — Pandoc EPUB 3 pipeline with accessibility (lang, alt, nav), platform manifests for 8 retailers
-- `/scr:build-print` — Pandoc+Typst PDF pipeline with KDP/IngramSpark trim sizes and page-count guardrail
-- Staged front-matter generation (auto vs scaffold-only vs personalize) with STEP 1.6 gate
-- Sacred tradition profiles for 10 traditions (Catholic, Orthodox, Tewahedo, Protestant, Jewish, Islamic-Hafs, Islamic-Warsh, Pali, Tibetan, Sanskrit)
-- Stage play Typst template (Samuel French), picture book Typst template (8.75×8.75 with bleed)
-- Fixed-layout EPUB CSS + OPF stub, Smashwords DOCX reference doc, chapbook Typst template
-- Poetry submission DOCX reference doc with title page and conditional TOC
-- Five academic LaTeX wrapper templates (IEEEtran, acmart, llncs, elsarticle, apa7) with kpsewhich pre-flight detection
-- Architectural extension points: `templates/sacred/<tradition>/` + `templates/platforms/<platform>/`
+- Sacred-exclusive commands now resolve to the same names the installer actually exposes, including canonical `/scr:sacred:*` references for sacred-only tools
+- Generic manifest output now derives from the same file-backed inventory as runtime installs, eliminating phantom sacred top-level commands
+- Claude-facing docs and examples now use a flat `/scr-*` surface consistently, following the runtime-native pattern requested by the user
+- Adapted command names are now explained as conceptual labels unless a runtime deliberately installs wrappers, avoiding misleading alias promises
+- New regression coverage now catches dead sacred refs, adapted-label slash drift, and nested command-surface omissions before release
 
-**Stats:** 7 phases, 18 plans, 39 new tests in Phase 35 alone (1510 total), zero new dependencies
+**Stats:** 3 phases, 7 plans, 1537 total tests, zero new dependencies
 
 ## Next Milestone Goals
 
-- v1.8 Command Surface Coherence — fix sacred command name breakage, resolve adapted alias truthfulness, and finish the Claude flat `/scr-*` contract
-- Defer broader product expansion until the command surface is internally consistent across installer output, docs, and runtime manifests
+- No new milestone is defined yet
+- Next milestone selection should build on the now-truthful runtime surface rather than reopen command-surface ambiguity
 
 <details>
 <summary>Archived milestone context: v1.4 Perplexity & Technical Writing</summary>
@@ -210,8 +186,8 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 | Technical writing should start as a small, domain-native family | A narrow set of real document types produces better adaptive behavior than one vague catch-all type | ✓ Good |
 | Codex should be treated as a skill-native runtime, not a slash-command clone | Match the host's real discovery surface while keeping installed command markdown as the behavior source of truth | ✓ Good |
 | Silent installs must clean only Scriven-owned runtime outputs | Reliability gains are not worth risking user-managed host files | ✓ Good |
-| Runtime command names must only advertise installable surfaces | A guide that points at dead command names erodes trust faster than a missing feature | In progress in v1.8 |
-| Claude Code should follow a flat `/scr-*` surface, mirroring GSD's runtime-native style | Flat slash commands are easier to discover and match the upstream host conventions Scriven now claims to support | In progress in v1.8 |
+| Runtime command names must only advertise installable surfaces | A guide that points at dead command names erodes trust faster than a missing feature | ✓ Good |
+| Claude Code should follow a flat `/scr-*` surface, mirroring GSD's runtime-native style | Flat slash commands are easier to discover and match the upstream host conventions Scriven now claims to support | ✓ Good |
 
 ## Evolution
 
@@ -231,4 +207,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-18 — v1.8 Command Surface Coherence started; requirements and roadmap definition in progress*
+*Last updated: 2026-04-18 — v1.8 Command Surface Coherence shipped and archived*

@@ -229,6 +229,14 @@ describe('generateSkillManifest', () => {
     );
   });
 
+  it('does not publish phantom top-level sacred commands', () => {
+    assert.doesNotMatch(
+      manifest,
+      /\| \/scr:concordance \|/,
+      'manifest should not advertise /scr:concordance when only /scr:sacred:concordance is installed'
+    );
+  });
+
   it('has at least 80 command rows', () => {
     const commandRows = manifest.split('\n').filter(line => line.includes('| `/scr:') || (line.includes('| /scr:') && line.includes(' | ')));
     assert.ok(

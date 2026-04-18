@@ -71,8 +71,8 @@ Produce a report with specific file:line locations.
 ## Integration
 
 - Export commands use verse numbering for pagination, cross-reference rendering, and index generation
-- `/scr:concordance` and `/scr:cross-reference` use the numbering as primary keys
-- `/scr:annotation-layer` uses verse numbers as anchors — annotations are tied to specific verses
+- `/scr:sacred:concordance` and `/scr:sacred:cross-reference` use the numbering as primary keys
+- `/scr:sacred:annotation-layer` uses verse numbers as anchors — annotations are tied to specific verses
 - Translation work must preserve the source numbering system (or explicitly convert)
 
 ## Tone

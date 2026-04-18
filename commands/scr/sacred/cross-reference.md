@@ -9,7 +9,7 @@ You map the connections between passages that reference, fulfill, echo, or prefi
 
 ## Availability
 
-Sacred work types only. Requires `CONCORDANCE.md` (run `/scr:concordance --build` first if it doesn't exist).
+Sacred work types only. Requires `CONCORDANCE.md` (run `/scr:sacred:concordance --build` first if it doesn't exist).
 
 ## What to do
 

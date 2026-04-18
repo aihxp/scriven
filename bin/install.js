@@ -217,42 +217,12 @@ const RUNTIMES = {
 };
 
 function generateSkillManifest(constraintsPath) {
-  const constraints = JSON.parse(fs.readFileSync(constraintsPath, 'utf8'));
-  const commands = constraints.commands;
-
-  // Read sacred subcommand files to include them
-  const sacredDir = path.join(PKG_ROOT, 'commands', 'scr', 'sacred');
-  const sacredCommands = [];
-  if (fs.existsSync(sacredDir)) {
-    for (const file of fs.readdirSync(sacredDir)) {
-      if (file.endsWith('.md')) {
-        const name = file.replace(/\.md$/, '');
-        // Look up in commands object for category/description, fall back to sacred_exclusive
-        const cmdData = commands[name] || {};
-        sacredCommands.push({
-          name: `/scr:sacred:${name}`,
-          category: cmdData.category || 'sacred_exclusive',
-          description: cmdData.description || name.replace(/-/g, ' '),
-        });
-      }
-    }
-  }
-
-  // Build entries from commands object
-  const entries = [];
-  for (const [name, cmd] of Object.entries(commands)) {
-    entries.push({
-      name: `/scr:${name}`,
-      category: cmd.category || 'uncategorized',
-      description: cmd.description || name.replace(/-/g, ' '),
-    });
-  }
-
-  // Add sacred subcommands as /scr:sacred:name entries
-  // These represent the sacred/ subdirectory path for discovery
-  for (const sc of sacredCommands) {
-    entries.push(sc);
-  }
+  const commandsRoot = path.join(PKG_ROOT, 'commands', 'scr');
+  const entries = collectCanonicalCommandInventory(commandsRoot, constraintsPath).map((entry) => ({
+    name: entry.commandRef,
+    category: entry.category,
+    description: entry.description,
+  }));
 
   // Sort by category, then alphabetically by name within category
   entries.sort((a, b) => {
@@ -388,6 +358,13 @@ function commandRefToCodexSkillName(commandRef) {
     .replace(/:/g, '-');
 }
 
+function commandRefToConstraintKey(commandRef) {
+  return commandRef
+    .replace(/^\/scr:/, '')
+    .split(':')
+    .pop();
+}
+
 function commandRefToClaudeInvocation(commandRef) {
   return `/${commandRefToCodexSkillName(commandRef)}`;
 }
@@ -434,6 +411,21 @@ function collectCommandEntries(commandsRoot) {
   walk(commandsRoot);
   entries.sort((a, b) => a.commandRef.localeCompare(b.commandRef));
   return entries;
+}
+
+function collectCanonicalCommandInventory(commandsRoot, constraintsPath = path.join(PKG_ROOT, 'data', 'CONSTRAINTS.json')) {
+  const constraints = JSON.parse(fs.readFileSync(constraintsPath, 'utf8'));
+  const commandMetadata = constraints.commands || {};
+
+  return collectCommandEntries(commandsRoot).map((entry) => {
+    const key = commandRefToConstraintKey(entry.commandRef);
+    const metadata = commandMetadata[key] || {};
+    return {
+      ...entry,
+      category: metadata.category || 'uncategorized',
+      description: metadata.description || entry.description || key.replace(/-/g, ' '),
+    };
+  });
 }
 
 function generateCodexSkill(entry, commandPath) {

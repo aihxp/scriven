@@ -189,7 +189,7 @@ After your first draft units are complete, you can also run:
 /scr:voice-check
 ```
 
-This compares drafted prose against your STYLE-GUIDE.md and flags anything that drifted -- sentences that are too long relative to your profile, metaphor density that crept up, dialogue tags that shifted style. For sacred work types, this command becomes `/scr:register-check` and verifies voice register consistency.
+This compares drafted prose against your STYLE-GUIDE.md and flags anything that drifted -- sentences that are too long relative to your profile, metaphor density that crept up, dialogue tags that shifted style. For sacred work types, the same `/scr:voice-check` command shifts into a register-check role and verifies voice register consistency.
 
 ## Sacred Voice Registers
 

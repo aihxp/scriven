@@ -77,7 +77,7 @@ Filter to a specific lineage tradition (e.g., rabbinic succession, apostolic suc
 
 The drafter agent uses this file when writing any passage involving genealogical claims. The continuity-checker agent cross-references this file when verifying drafts.
 
-`/scr:doctrinal-check` flags any theological claim that depends on a contested genealogical link.
+`/scr:sacred:doctrinal-check` flags any theological claim that depends on a contested genealogical link.
 
 ## Tone
 

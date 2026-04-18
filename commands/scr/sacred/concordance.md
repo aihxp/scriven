@@ -58,7 +58,7 @@ Filter the concordance to only terms from a specific tradition. Useful for inter
 
 ## Cross-reference integration
 
-The concordance feeds `/scr:cross-reference`. Entries here are used as lookup keys for finding intertextual connections. Keep them in sync.
+The concordance feeds `/scr:sacred:cross-reference`. Entries here are used as lookup keys for finding intertextual connections. Keep them in sync.
 
 ## Tone
 

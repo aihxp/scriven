@@ -60,8 +60,8 @@ Produce a report with file:line references.
 
 - Drafter agents, when drafting historical or critical passages, load relevant SOURCES.md entries as context
 - Export commands include source apparatus in academic and critical-edition formats (LaTeX, print-ready PDF)
-- `/scr:chronology` uses source dates to build the timeline
-- `/scr:cross-reference` uses source relationships to identify parallel accounts
+- `/scr:sacred:chronology` uses source dates to build the timeline
+- `/scr:sacred:cross-reference` uses source relationships to identify parallel accounts
 
 ## Critical apparatus export
 

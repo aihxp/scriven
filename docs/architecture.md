@@ -92,7 +92,7 @@ Individual work type definitions. Each entry specifies its structural hierarchy 
 ```
 
 - **`hierarchy`** -- Three structural levels. The `top` is the largest division (part, act, testament), `mid` is the middle (chapter, scene, section), and `atomic` is the smallest unit that gets drafted individually (scene, beat, verse).
-- **`command_unit`** -- Determines how commands adapt their names. A novel's `/scr:draft` becomes `/scr:draft-chapter`. A screenplay's becomes `/scr:draft-act`.
+- **`command_unit`** -- Determines how commands adapt their terminology. A novel's `/scr:draft` talks about drafting a chapter. A screenplay's `/scr:draft` talks about drafting an act.
 
 Sacred work types can also specify defaults:
 
@@ -324,7 +324,7 @@ The installer detects which AI agents are available by checking for their config
 
 ### Three installation strategies
 
-**Command-directory (type: `commands`).** Copies individual command markdown files into the agent's command directory (e.g., `~/.claude/commands/scr/`). Each file becomes a slash command. Also copies agent files to the agent directory. This is the native approach for agents that support file-based commands.
+**Command-directory (type: `commands`).** Copies individual command markdown files into the agent's command directory (for Claude Code, `~/.claude/commands/scr-*.md`; for other slash-command runtimes, nested `scr/` directories are still used). Each file becomes a slash command. Also copies agent files to the agent directory. This is the native approach for agents that support file-based commands.
 
 **Skill-file (type: `skills`).** Generates a single `SKILL.md` manifest file that lists all commands in a table. For platforms that do not support file-based command directories (like Manus), the SKILL.md acts as a command index that the agent reads to discover available commands. The agent then reads individual command files from the package directory.
 
@@ -336,8 +336,8 @@ Codex uses a skill-native variation of this strategy. The installer generates on
 
 The installer supports two scopes:
 
-- **Global** -- Installs to the user's home directory (`~/.claude/commands/scr/`). Commands available in all projects.
-- **Project** -- Installs to the current project directory (`.claude/commands/scr/`). Commands scoped to this project only.
+- **Global** -- Installs to the user's home directory (`~/.claude/commands/scr-*.md` for Claude Code). Commands available in all projects.
+- **Project** -- Installs to the current project directory (`.claude/commands/scr-*.md` for Claude Code). Commands scoped to this project only.
 
 The user chooses during installation. Guided local-MCP targets still write their setup assets globally or per-project, but the connector itself remains tied to the specific project paths the user allows.
 

@@ -1,5 +1,27 @@
 # Project Milestones: Scriven
 
+## v1.8 Command Surface Coherence (Shipped: 2026-04-18)
+
+**Delivered:** Closed the command-surface trust gap so the names Scriven documents now match the runtime surfaces it actually installs across sacred commands, Claude-facing docs, and generic manifests.
+
+**Phases completed:** 36-38 (3 phases, 7 plans)
+
+**Key accomplishments:**
+
+- Unified installer and generic manifest generation on one canonical file-backed command inventory, eliminating phantom top-level sacred command rows
+- Repaired sacred-exclusive command references so source commands and docs use the real `/scr:sacred:*` installed surface
+- Finished the Claude flat `/scr-*` contract across runtime-facing docs and examples, following the GSD-style naming direction requested by the user
+- Reframed adapted command names as descriptive vocabulary instead of silently advertising wrappers the runtime does not install
+- Added regression coverage for nested sacred command discovery and dead-reference drift across commands, docs, and installer output
+
+**Stats:**
+
+- 3 phases, 7 plans, 1537 regression tests
+- Zero new npm dependencies
+- Milestone completed 2026-04-18
+
+---
+
 ## v1.7 Last Mile (Shipped: 2026-04-17)
 
 **Delivered:** Closed the production edge — shipped real build pipelines, cross-domain templates, sacred tradition profiles, and academic LaTeX wrappers so Scriven reaches publication-ready output for any supported work type, not just book prose.

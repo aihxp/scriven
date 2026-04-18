@@ -113,6 +113,10 @@ Run the full pipeline autonomously. Three profiles:
 - **Full-auto** -- Run until complete; only pause on critical failures
 
 ```bash
+# Claude Code
+/scr-autopilot --profile supervised
+
+# Other slash-command runtimes
 /scr:autopilot --profile supervised
 ```
 
