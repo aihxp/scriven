@@ -79,7 +79,7 @@ After files are generated, tell the writer: "I've set up your project. Now let m
 
 Tell the writer:
 1. What was created (file count, directory path)
-2. What's next — usually `/scr:voice-test` or `/scr:discuss-{unit} 1` (use the adaptive unit name)
+2. What's next — usually `/scr:voice-test` or `/scr:discuss 1`, framed with the project's unit terminology
 3. That they can always run `/scr:next` if unsure
 
 Keep it warm. This is the moment they decide whether to commit to the project. Make them feel like they've started something real.

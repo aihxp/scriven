@@ -7,7 +7,7 @@ This guide covers the configuration surfaces Scriven actually ships today: packa
 Scriven is intentionally narrow in where configuration lives:
 
 - `package.json` defines the npm package metadata, installer entrypoint, and supported Node baseline
-- `data/CONSTRAINTS.json` is the central registry for work types, command availability, adaptive naming, and export rules
+- `data/CONSTRAINTS.json` is the central registry for work types, command availability, adaptive terminology, and export rules
 - `bin/install.js` defines installer targets and where Scriven writes commands, skills, agents, or guided setup assets
 - `.manuscript/config.json` stores project-specific writing settings after `/scr:new-work`
 
@@ -140,7 +140,7 @@ The authoritative guidance for those tools is split across:
 
 Use this rule of thumb:
 
-- change `data/CONSTRAINTS.json` for command availability, work-type structure, adaptive naming, or export rules
+- change `data/CONSTRAINTS.json` for command availability, work-type structure, adaptive terminology, or export rules
 - change `bin/install.js` for runtime targets or install paths
 - change command files for workflow behavior
 - change `.manuscript/config.json` only as project state, not as product schema authoring

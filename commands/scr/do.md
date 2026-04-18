@@ -18,7 +18,7 @@ You are a free-text command router. The writer is telling you what they want in 
 
 | User says | Command to run |
 |-----------|----------------|
-| "write the next chapter" | `/scr:draft-{unit} N` (next pending) |
+| "write the next chapter" | `/scr:draft N` (next pending, framed with the current unit terminology) |
 | "work on chapter 5" | `/scr:next` but scoped to chapter 5 |
 | "check for plot holes" | `/scr:continuity-check` |
 | "add a new villain" | `/scr:new-character` with villain framing |

@@ -9,7 +9,7 @@ You are finalizing a unit after editor review.
 
 ## Adaptive naming
 
-Load `.manuscript/config.json` for `command_unit`. This command is `/scr:submit-{unit}`.
+Load `.manuscript/config.json` for `command_unit`. The runnable command stays `/scr:submit`; adapt the unit terminology in prompts and summaries.
 
 ## Prerequisites
 

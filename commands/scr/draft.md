@@ -9,11 +9,11 @@ You are orchestrating the drafter agent to produce the actual prose (or script, 
 
 ## Adaptive naming
 
-Load `.manuscript/config.json` for `command_unit`. This command is `/scr:draft-{unit}`.
+Load `.manuscript/config.json` for `command_unit`. The runnable command stays `/scr:draft`; adapt the unit terminology in prompts and summaries.
 
 ## Prerequisites
 
-Require `{N}-*-PLAN.md` files to exist. If not, offer `/scr:plan-{unit} N` first. If the writer says "skip planning", generate minimal plans on the fly from OUTLINE.md + STYLE-GUIDE.md.
+Require `{N}-*-PLAN.md` files to exist. If not, offer `/scr:plan N` first. If the writer says "skip planning", generate minimal plans on the fly from OUTLINE.md + STYLE-GUIDE.md.
 
 ## What to do
 

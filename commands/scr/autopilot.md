@@ -26,7 +26,7 @@ You are running the Scriven pipeline autonomously. Your job is to execute the di
 ```
 FOR each unit in OUTLINE.md (starting from current position):
   FOR each stage in [discuss, plan, draft, review, submit]:
-    Execute the stage command (/scr:discuss-{unit}, /scr:plan-{unit}, etc.)
+    Execute the canonical stage command (/scr:discuss, /scr:plan, etc.) with the unit number as an argument
     Update STATE.md with: timestamp, command name, unit, outcome
     Check pause conditions (see Profile rules below)
     If paused: show review prompt, wait for writer input
@@ -119,19 +119,19 @@ When `--resume` is passed:
 
 ## Adaptive naming
 
-Load `.manuscript/config.json` for the `command_unit` field. Use the adapted command names for the current work type throughout all output:
+Load `.manuscript/config.json` for the `command_unit` field. Keep the runnable commands canonical and adapt only the terminology in output:
 
-- If `command_unit` is `"surah"`, run `/scr:draft-surah`, not `/scr:draft-chapter`
+- If `command_unit` is `"surah"`, run `/scr:draft 2` and describe it as drafting Surah 2
 - If `command_unit` is `"act"`, show "Act 2 complete" not "Chapter 2 complete"
 
-Reference CONSTRAINTS.json for work-type-specific command names and hierarchy labels. All progress messages, pause prompts, and summaries must use the adapted terminology.
+Reference CONSTRAINTS.json for work-type-specific hierarchy labels. All progress messages, pause prompts, and summaries must use the adapted terminology without inventing new command ids.
 
 ## State management
 
 **MANDATORY:** Update STATE.md after EVERY action -- not just at pauses. Resume depends on accurate state.
 
 After each stage execution:
-1. Record in the "Last actions" table: timestamp, command name (e.g., `/scr:draft-chapter 3`), unit identifier, outcome (e.g., "drafted, 1,247 words, voice check passed")
+1. Record in the "Last actions" table: timestamp, command name (e.g., `/scr:draft 3`), unit identifier, outcome (e.g., "drafted, 1,247 words, voice check passed")
 2. Update progress counters: `units_discussed`, `units_planned`, `units_drafted`, `units_reviewed`, `units_submitted`
 3. Update `current_unit` and next step
 4. Update `total_words` running count

@@ -19,7 +19,7 @@ Nothing compiles. Nothing bundles. Changes take effect immediately because the a
 
 The skill system works like this:
 
-1. The writer types a slash command (e.g., `/scr:draft-chapter 3`)
+1. The writer types a slash command (e.g., `/scr:draft 3`)
 2. The AI agent reads `commands/scr/draft.md`
 3. The command file contains step-by-step instructions in plain markdown
 4. The agent follows those instructions, using its tools to read files, write drafts, and run checks
@@ -132,7 +132,7 @@ The command registry. Each entry maps a command name to its category, availabili
 ```
 
 - **`available`** -- `["all"]` means universal. Otherwise, list specific group names like `["prose", "script"]`.
-- **`renames_by_unit`** -- The command name adapts based on the project's `command_unit`.
+- **`renames_by_unit`** -- Legacy schema flag indicating that the command's terminology adapts based on the project's `command_unit`. The runnable command id remains the canonical base command.
 - **`adapted`** -- Per-group overrides. The `editor-review` command becomes `peer-review` for academic works, `technical-review` for technical docs, and `scholarly-review` for sacred works.
 
 ## File Structure
@@ -140,7 +140,7 @@ The command registry. Each entry maps a command name to its category, availabili
 ```
 scriven/
   commands/
-    scr/                   Core command tree (101 command files total, including sacred subcommands)
+    scr/                   Core command tree (100+ command files total, including sacred subcommands)
       draft.md             Core workflow: draft a unit
       new-work.md          Core workflow: start a new project
       autopilot.md         Autonomous pipeline orchestrator
@@ -217,7 +217,7 @@ The `.manuscript/` directory is created when a writer runs `/scr:new-work`. It c
 Commands invoke agents to perform specialized work. Here is how the orchestration flows:
 
 ```
-Writer: /scr:draft-chapter 3
+Writer: /scr:draft 3
         |
         v
   commands/scr/draft.md
@@ -247,13 +247,13 @@ The autopilot command (`/scr:autopilot`) chains multiple stages:
     |
     FOR each unit in OUTLINE.md:
     |
-    +-> /scr:discuss-chapter N
-    +-> /scr:plan-chapter N
-    +-> /scr:draft-chapter N
+    +-> /scr:discuss N
+    +-> /scr:plan N
+    +-> /scr:draft N
     |     +-> drafter agent (per atomic unit)
     |     +-> voice-checker agent
     +-> /scr:editor-review N
-    +-> /scr:submit-chapter N
+    +-> /scr:submit N
     |
     Pause behavior depends on profile:
       guided     -> pause after every atomic unit

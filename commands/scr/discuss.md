@@ -9,7 +9,7 @@ You are in the **discuss phase** of the Scriven workflow. Your job is to help th
 
 ## Adaptive naming
 
-Load `.manuscript/config.json` to get the `command_unit` (chapter, act, section, surah, essay, etc.). This command is conceptually `/scr:discuss-{unit}`. Use the right term throughout your conversation.
+Load `.manuscript/config.json` to get the `command_unit` (chapter, act, section, surah, essay, etc.). The runnable command stays `/scr:discuss`; use the right unit term throughout your conversation and prompts.
 
 ## What to do
 
@@ -37,11 +37,11 @@ Load `.manuscript/config.json` to get the `command_unit` (chapter, act, section,
 
    Don't ask all of them. Pick the 3-4 most relevant for this specific unit. If the writer seems ready to move on, move on.
 
-4. **Capture decisions** in `.manuscript/{N}-CONTEXT.md`. This file is the input to `/scr:plan-{unit}`. It should contain: approach, voice notes, what to include, what to avoid, continuity anchors, specific beats the writer wants hit.
+4. **Capture decisions** in `.manuscript/{N}-CONTEXT.md`. This file is the input to `/scr:plan`. It should contain: approach, voice notes, what to include, what to avoid, continuity anchors, specific beats the writer wants hit.
 
 5. **Update STATE.md** to mark discuss phase complete for this unit.
 
-6. **Suggest next step:** "Ready to plan this {unit}? Run `/scr:plan-{unit} N` or `/scr:next` and I'll handle it."
+6. **Suggest next step:** "Ready to plan this {unit}? Run `/scr:plan N` or `/scr:next` and I'll handle it."
 
 ## Tone
 

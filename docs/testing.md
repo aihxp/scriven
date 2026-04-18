@@ -72,7 +72,7 @@ These catch drift around Node baseline, packed files, and release-facing package
 
 ### Constraints and command inventory
 
-Use these when changing command registration, work-type counts, or adaptive naming:
+Use these when changing command registration, work-type counts, or adaptive terminology:
 
 - `test/constraints.test.js`
 - `test/commands.test.js`

@@ -22,7 +22,7 @@ Create a new demo project in `./scriven-demo/.manuscript/` with a pre-built shor
 - **PLOT-GRAPH.md** — Arc positions marked, emotional beats specified
 - **THEMES.md** — Themes of lost time, parenthood, second chances
 - **4 drafted scenes** in `.manuscript/1-*-DRAFT.md` through `.manuscript/4-*-DRAFT.md`
-- **1 planned-but-not-drafted scene** at `.manuscript/5-*-PLAN.md` so the writer can try `/scr:draft-scene 5` and see the drafter in action
+- **1 planned-but-not-drafted scene** at `.manuscript/5-*-PLAN.md` so the writer can try `/scr:draft 5` and see the drafter in action
 - **Editor notes** on scene 2 so the writer can try reviewing and revising
 
 After generating, tell the writer:
@@ -33,7 +33,7 @@ Try any of these to see Scriven in action:
   cd scriven-demo
   /scr:progress              See where the project is
   /scr:next                  Let Scriven pick your next move
-  /scr:draft-scene 5         Watch the drafter produce scene 5 in the established voice
+  /scr:draft 5               Watch the drafter produce scene 5 in the established voice
   /scr:editor-review 2       See editor-style review on an existing scene
   /scr:continuity-check      Run a continuity pass across the whole story
   /scr:cover-art             Generate a cover concept

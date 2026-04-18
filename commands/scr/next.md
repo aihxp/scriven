@@ -23,14 +23,14 @@ You are routing the writer to the right next step in their workflow. This comman
 
 Walk the core chain in order and run the first incomplete step:
 
-1. **No OUTLINE.md** → `/scr:discuss-work` (high-level discussion about the whole project)
+1. **No OUTLINE.md** → `/scr:discuss` (high-level discussion about the whole project)
 2. **No CHARACTERS.md / FIGURES.md and work type supports them** → `/scr:new-character` loop
 3. **No STYLE-GUIDE.md calibration done** → `/scr:voice-test`
-4. **No {unit} discussed** → `/scr:discuss-{unit} N` (next pending unit)
-5. **No {unit} planned** → `/scr:plan-{unit} N`
-6. **No {unit} drafted** → `/scr:draft-{unit} N`
+4. **No {unit} discussed** → `/scr:discuss N` (next pending unit)
+5. **No {unit} planned** → `/scr:plan N`
+6. **No {unit} drafted** → `/scr:draft N`
 7. **No editor review** → `/scr:editor-review N`
-8. **Not submitted** → `/scr:submit-{unit} N`
+8. **Not submitted** → `/scr:submit N`
 9. **All units submitted** → `/scr:complete-draft` or start next unit
 10. **Draft complete, no revisions** → suggest revision, beta reader, or publishing path
 11. **Revisions pending** → run the next revision step
@@ -44,7 +44,7 @@ Walk the core chain in order and run the first incomplete step:
 
 ## Adaptive naming
 
-Use canonical runnable commands, and adapt the terminology in prompts/output for the current work type. If command_unit is "surah", run `/scr:draft` and frame the work as drafting a surah; do not invent uninstalled aliases like `/scr:draft-surah` unless the active runtime explicitly provides them.
+Use canonical runnable commands, and adapt the terminology in prompts/output for the current work type. If `command_unit` is `surah`, run `/scr:draft` and frame the work as drafting a surah; keep the command id stable and treat unit labels as presentation only.
 
 ## Tone
 

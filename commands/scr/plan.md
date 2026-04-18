@@ -9,11 +9,11 @@ You are in the **plan phase**. Your job is to turn the discuss-phase decisions i
 
 ## Adaptive naming
 
-Load `.manuscript/config.json` for `command_unit`. This command is `/scr:plan-{unit}`.
+Load `.manuscript/config.json` for `command_unit`. The runnable command stays `/scr:plan`; adapt the unit terminology in prompts and summaries.
 
 ## Prerequisites
 
-Require `{N}-CONTEXT.md` to exist (from discuss phase). If it doesn't, offer to run `/scr:discuss-{unit} N` first. If the writer says "skip discuss", use defaults from STYLE-GUIDE.md and a brief read of OUTLINE.md.
+Require `{N}-CONTEXT.md` to exist (from discuss phase). If it doesn't, offer to run `/scr:discuss N` first. If the writer says "skip discuss", use defaults from STYLE-GUIDE.md and a brief read of OUTLINE.md.
 
 ## What to do
 
@@ -31,7 +31,7 @@ Require `{N}-CONTEXT.md` to exist (from discuss phase). If it doesn't, offer to 
 
 5. **Write a short summary** for the writer: "Planned {unit} {N}: X {atomic_units}, main arc goes from Y to Z, voice notes applied from STYLE-GUIDE.md."
 
-6. **Update STATE.md** and suggest: "Ready to draft? Run `/scr:draft-{unit} N`."
+6. **Update STATE.md** and suggest: "Ready to draft? Run `/scr:draft N`."
 
 ## Tone
 

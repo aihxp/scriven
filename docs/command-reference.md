@@ -2,7 +2,7 @@
 
 Scriven has **108 commands** organized into **14 categories**. Commands adapt automatically to your work type -- for example, `/scr:draft` talks about drafting a surah for Quranic commentary, an act for screenplays, and a section for research papers.
 
-Commands marked with **adaptive naming** rename themselves based on your work type's `command_unit` in `.manuscript/config.json`. Commands marked with **group adaptation** have different names for specific work type groups (academic, sacred, etc.).
+Commands marked with **adaptive terminology** change how Scriven talks about your work type's `command_unit` in `.manuscript/config.json`, while keeping the runnable command id stable. Commands marked with **group adaptation** have different labels for specific work type groups (academic, sacred, etc.).
 
 ## Table of Contents
 
@@ -51,15 +51,15 @@ Start a novel project. Scriven asks your premise and whether you have existing m
 
 **Description:** Shape the next unit before planning. Discuss the approach, voice, themes, open questions.
 
-**Usage:** `/scr:discuss-{unit} [unit number]`
+**Usage:** `/scr:discuss [unit number]`
 
 **Prerequisites:** OUTLINE.md must exist
 
-**Adaptive naming:** Command name changes by work type -- `/scr:discuss-chapter` (novel), `/scr:discuss-act` (screenplay), `/scr:discuss-surah` (Quranic), `/scr:discuss-section` (research paper)
+**Adaptive terminology:** Scriven keeps the runnable command as `/scr:discuss` and frames the unit appropriately -- chapter (novel), act (screenplay), surah (Quranic), section (research paper)
 
 **Example:**
 ```
-/scr:discuss-chapter 3
+/scr:discuss 3
 ```
 Talk through Chapter 3 before planning it -- themes to explore, character arcs to advance, tone shifts to consider.
 
@@ -69,15 +69,15 @@ Talk through Chapter 3 before planning it -- themes to explore, character arcs t
 
 **Description:** Research and plan the next unit. Produces a structured plan file the drafter agent uses.
 
-**Usage:** `/scr:plan-{unit} [unit number]`
+**Usage:** `/scr:plan [unit number]`
 
 **Prerequisites:** Discussed unit context (`{N}-CONTEXT.md`)
 
-**Adaptive naming:** Same pattern as discuss -- `/scr:plan-chapter`, `/scr:plan-act`, `/scr:plan-surah`, etc.
+**Adaptive terminology:** Same pattern as discuss -- `/scr:plan` stays stable while Scriven speaks in chapters, acts, surahs, and other unit labels
 
 **Example:**
 ```
-/scr:plan-chapter 5
+/scr:plan 5
 ```
 Research and plan Chapter 5, producing plan files for each scene the drafter agent will use.
 
@@ -87,15 +87,15 @@ Research and plan Chapter 5, producing plan files for each scene the drafter age
 
 **Description:** Draft the planned unit. Invokes the drafter agent in fresh context per atomic unit.
 
-**Usage:** `/scr:draft-{unit} [unit number]`
+**Usage:** `/scr:draft [unit number]`
 
 **Prerequisites:** Plan files must exist (`{N}-*-PLAN.md`)
 
-**Adaptive naming:** `/scr:draft-chapter`, `/scr:draft-act`, `/scr:draft-surah`, `/scr:draft-section`, etc.
+**Adaptive terminology:** `/scr:draft` stays stable while Scriven frames the work as drafting a chapter, act, surah, section, and so on
 
 **Example:**
 ```
-/scr:draft-chapter 5
+/scr:draft 5
 ```
 Draft all scenes in Chapter 5. Each scene gets fresh context with STYLE-GUIDE.md loaded first to maintain your voice.
 
@@ -130,15 +130,15 @@ Review the draft of unit 3 with your editor hat on. Scriven highlights issues, s
 
 **Description:** Package and finalize unit.
 
-**Usage:** `/scr:submit-{unit} [unit number]`
+**Usage:** `/scr:submit [unit number]`
 
 **Prerequisites:** Editor notes must exist (`{N}-EDITOR-NOTES.md`)
 
-**Adaptive naming:** `/scr:submit-chapter`, `/scr:submit-act`, `/scr:submit-surah`, etc.
+**Adaptive terminology:** `/scr:submit` stays stable while Scriven describes the current chapter, act, surah, or other unit being finalized
 
 **Example:**
 ```
-/scr:submit-chapter 3
+/scr:submit 3
 ```
 Finalize Chapter 3 after editor review. Marks it as complete in the workflow.
 
@@ -2248,7 +2248,7 @@ Many commands automatically rename based on your work type group. Here is a summ
 
 Sacred-specific flow labels like `chronology` and `doctrinal-check` are exposed through the dedicated `/scr:sacred:*` command family rather than by relabeling hidden base commands.
 
-Commands with **adaptive naming** (discuss, plan, draft, submit) change their suffix based on your work type's structural unit. For example, a novel uses chapters, so you get `/scr:draft-chapter`. A screenplay uses acts: `/scr:draft-act`. A Quranic commentary uses surahs: `/scr:draft-surah`.
+Commands with **adaptive terminology** (discuss, plan, draft, submit) keep the runnable command id stable and change only the unit wording in prompts and output. For example, a novel still runs `/scr:draft 5`, but Scriven frames it as drafting Chapter 5. A screenplay frames the same command as drafting Act 5. A Quranic commentary frames it as drafting Surah 5.
 
 ---
 

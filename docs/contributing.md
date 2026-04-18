@@ -93,17 +93,17 @@ Some commands have additional fields:
 }
 ```
 
-- **`renames_by_unit`** -- When `true`, the command adapts its name based on the work type. A novel project shows `/scr:draft-chapter`, a screenplay shows `/scr:draft-act`.
+- **`renames_by_unit`** -- Legacy schema flag indicating that the command adapts its terminology based on the work type. A novel project still runs `/scr:draft`, but Scriven presents the work as drafting a chapter; a screenplay presents it as drafting an act.
 - **`adapted`** -- Work-type-specific overrides (renames, behavior changes). For example, `editor-review` becomes `peer-review` for academic works.
 
-### Step 3: Understand adaptive naming
+### Step 3: Understand adaptive terminology
 
-Commands that set `renames_by_unit: true` in CONSTRAINTS.json adapt their names based on `command_unit` in the project's `.manuscript/config.json`. The command file itself handles this:
+Commands that set `renames_by_unit: true` in CONSTRAINTS.json adapt their terminology based on `command_unit` in the project's `.manuscript/config.json`. The command file itself handles this:
 
 ```markdown
 ## Adaptive naming
 
-Load `.manuscript/config.json` for `command_unit`. This command is `/scr:draft-{unit}`.
+Load `.manuscript/config.json` for `command_unit`. This command stays `/scr:draft`; use the active unit term in prompts and output.
 ```
 
 When a writer starts a novel project, `command_unit` is set to `"chapter"`, so `/scr:draft` is presented in chapter terms. For a screenplay, the same `/scr:draft` command is presented in act terms. The command file itself does not change -- the adaptation happens at runtime through config.json.
@@ -123,7 +123,7 @@ Look at `commands/scr/draft.md` for a complex example (orchestrates the drafter 
 
 ### Minimal vs full
 
-A minimal command needs only frontmatter + basic instructions (like `add-note.md` at 29 lines). A full command like `draft.md` (46 lines) includes adaptive naming, prerequisites, autopilot behavior, and tone guidance. Start minimal and add sections as needed.
+A minimal command needs only frontmatter + basic instructions (like `add-note.md` at 29 lines). A full command like `draft.md` (46 lines) includes adaptive terminology, prerequisites, autopilot behavior, and tone guidance. Start minimal and add sections as needed.
 
 ## Adding an Agent
 

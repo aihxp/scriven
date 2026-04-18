@@ -56,6 +56,21 @@ describe('Command surface coherence', () => {
       .map((rename) => `/scr:${rename}`)
   ));
 
+  const commandUnits = Array.from(new Set(
+    Object.values(constraints.work_types)
+      .map((workType) => workType.command_unit)
+      .filter(Boolean)
+  ));
+
+  const invalidUnitAliasRefs = Array.from(new Set(
+    Object.entries(constraints.commands)
+      .filter(([, command]) => command.renames_by_unit)
+      .flatMap(([commandName]) => [
+        `/scr:${commandName}-{unit}`,
+        ...commandUnits.map((unit) => `/scr:${commandName}-${unit}`),
+      ])
+  ));
+
   it('source docs do not advertise top-level sacred command refs', () => {
     for (const file of sourceFiles) {
       const content = fs.readFileSync(path.join(ROOT, file), 'utf8');
@@ -77,6 +92,19 @@ describe('Command surface coherence', () => {
           content,
           new RegExp(escapedPattern(ref)),
           `${file} should not advertise adapted alias ${ref} as a runnable command`
+        );
+      }
+    }
+  });
+
+  it('source docs do not advertise unit-suffixed aliases as runnable /scr:* commands', () => {
+    for (const file of sourceFiles) {
+      const content = fs.readFileSync(path.join(ROOT, file), 'utf8');
+      for (const ref of invalidUnitAliasRefs) {
+        assert.doesNotMatch(
+          content,
+          new RegExp(escapedPattern(ref)),
+          `${file} should not advertise unit alias ${ref}; keep the base command id stable and pass the unit number as an argument`
         );
       }
     }

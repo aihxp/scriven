@@ -29,7 +29,7 @@ You are welcoming the writer back and orienting them. Your job is to read the se
    - **(c) Suggestion for next step:** Based on pending items and progress, suggest the logical next command.
 
    Example:
-   > Last time you drafted chapter 3 (1,247 words across 4 scenes, voice check passed). You were working on chapter 4 -- you noted you wanted it shorter and more tense, with Marcus discovering the letter. I'd suggest starting with /scr:discuss-chapter 4 to shape the plan.
+   > Last time you drafted chapter 3 (1,247 words across 4 scenes, voice check passed). You were working on chapter 4 -- you noted you wanted it shorter and more tense, with Marcus discovering the letter. I'd suggest starting with /scr:discuss 4 to shape the plan.
 
 ## Output format
 

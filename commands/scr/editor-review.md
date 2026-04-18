@@ -92,7 +92,7 @@ Write `{act_num}-EDITOR-NOTES.md`:
   <section name="revision_plans">
     If issues were found, generate targeted revision plans in the same
     format as SCENE-PLAN.md, but scoped to specific fixes.
-    These can be re-executed with /scr:draft-act.
+    These can be re-executed with /scr:draft.
   </section>
   <section name="global_notes">
     Any patterns across scenes (recurring issues, consistent strengths).
@@ -106,11 +106,11 @@ Write `{act_num}-EDITOR-NOTES.md`:
 
 If all beats passed:
 - Mark act as "reviewed" in STATE.md
-- Suggest moving to `/scr:submit N` or `/scr:discuss-act {N+1}`
+- Suggest moving to `/scr:submit N` or `/scr:discuss {N+1}`
 
 If revision plans were created:
 - Present the revision scope to the writer
-- Explain that running `/scr:draft-act N` will use the revision plans
+- Explain that running `/scr:draft N` will use the revision plans
 - Ask if they want to revise now or move on and come back later
 
 ---
