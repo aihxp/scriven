@@ -4,11 +4,25 @@ Scriven's launch surface should point to what is actually bundled in this repo t
 
 ## Export Templates Shipped Today
 
-These are the only export templates currently bundled in `data/export-templates/`:
+These export templates are currently bundled in `data/export-templates/`:
 
-- `scriven-book.typst` — book interior and print-ready PDF template
-- `scriven-epub.css` — EPUB styling and KDP-compatible ebook CSS
-- `scriven-academic.latex` — academic and thesis LaTeX template
+- `scriven-book.typst` — default book interior and print-ready PDF template
+- `scriven-stageplay.typst` — stage play interior template
+- `scriven-picturebook.typst` — picture-book interior template
+- `scriven-chapbook.typst` — chapbook and poetry-collection interior template
+- `scriven-epub.css` — standard EPUB styling and KDP-compatible ebook CSS
+- `scriven-fixed-layout-epub.css` — fixed-layout EPUB stylesheet
+- `scriven-fixed-layout.opf` — fixed-layout EPUB OPF stub
+- `scriven-academic.latex` — generic academic/thesis LaTeX template
+- `scriven-ieee.latex` — IEEE wrapper template
+- `scriven-acm.latex` — ACM wrapper template
+- `scriven-lncs.latex` — LNCS wrapper template
+- `scriven-elsevier.latex` — Elsevier wrapper template
+- `scriven-apa7.latex` — APA7 wrapper template
+- `scriven-smashwords.docx` — Smashwords reference DOCX
+- `scriven-smashwords-styles.md` — Smashwords style guide companion
+- `scriven-poetry-submission.docx` — poetry-submission reference DOCX
+- `scriven-poetry-submission-styles.md` — poetry-submission style guide companion
 
 ## Export Template Behaviors
 
