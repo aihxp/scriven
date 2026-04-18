@@ -17,7 +17,7 @@ Commands marked with **adaptive terminology** change how Scriven talks about you
 9. [Publishing](#publishing) -- Front/back matter, blurbs, synopses, export, publish
 10. [Illustration](#illustration) -- Cover art, scene illustrations, character refs, maps
 11. [Translation](#translation) -- Translate, glossary, memory, cultural adaptation
-12. [Collaboration](#collaboration) -- Revision tracks, compare, merge, propose
+12. [Collaboration](#collaboration) -- Revision tracks and their collaboration subcommands
 13. [Utility](#utility) -- Manager, health checks, quick edits, notes, settings
 14. [Sacred Exclusive](#sacred-exclusive) -- Concordance, cross-reference, genealogy, and more
 
@@ -1793,8 +1793,8 @@ Commands for managing revision tracks and collaborative workflows.
 - `create` -- Create a new revision track
 - `list` -- List all tracks
 - `switch` -- Switch to a different track
-- `compare` -- Compare tracks side by side
-- `merge` -- Merge a track into the main draft
+- `compare` -- Compare a revision track against canon or another track
+- `merge` -- Merge a track into the canon manuscript
 - `propose` -- Propose changes from a track for review
 
 **Available for:** All work types
@@ -1803,7 +1803,7 @@ Commands for managing revision tracks and collaborative workflows.
 ```
 /scr:track create "experimental-ending"
 ```
-Create a revision track to experiment with an alternate ending without affecting your main draft.
+Create a revision track to experiment with an alternate ending without affecting your canon manuscript.
 
 ---
 

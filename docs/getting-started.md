@@ -184,7 +184,8 @@ Beyond the core workflow, Scriven offers:
 
 - **Revision** -- `/scr-editor-review`, `/scr-line-edit`, `/scr-continuity-check`
 - **Publishing** -- `/scr-publish`, `/scr-export`, `/scr-cover-art`, `/scr-blurb`
-- **Collaboration** -- `/scr-save`, `/scr-history`, `/scr-compare`
+- **Collaboration** -- `/scr-track` for revision tracks (`create`, `compare`, `merge`, `propose`)
+- **Versions** -- `/scr-save`, `/scr-history`, `/scr-versions`, `/scr-compare`
 - **Navigation** -- `/scr-help`, `/scr-next`, `/scr-pause-work`
 
 For the full command list, see [Command Reference](command-reference.md).
