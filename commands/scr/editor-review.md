@@ -48,7 +48,7 @@ Load the act's scene plans and drafts. For each scene, extract the key experient
 Present each scene's reviewable beats ONE AT A TIME. For each:
 
 1. Show the scene title and a brief reminder of what it covers
-2. Direct the writer to read the scene (reference the file path)
+2. Direct the writer to read the scene. Only reference the underlying file path when `developer_mode` is `true`; otherwise use unit and scene labels only.
 3. Ask about each beat:
    - "Works as intended"
    - "Close but needs adjustment" (ask for details)
@@ -77,7 +77,7 @@ For any issues flagged, spawn a diagnostic agent:
 
 ### STEP 4: GENERATE EDITOR NOTES
 
-Write `{act_num}-EDITOR-NOTES.md`:
+Write `{N}-EDITOR-NOTES.md`:
 
 <editor_notes>
   <section name="overall_assessment">
@@ -121,8 +121,13 @@ If revision plans were created:
 
 ### Prerequisites
 
-1. Check that `.manuscript/proposals/{slug}-proposal.md` exists. If not: "No proposal found for '[name]'. Create one with `/scr:track propose <name>`."
-2. Read the proposal file to get the list of changed passages.
+1. Derive a safe slug from the provided proposal name before touching the filesystem:
+   - lowercase the name
+   - replace any run of non-alphanumeric characters with `-`
+   - trim leading and trailing `-`
+   - if the result is empty, stop and ask for a clearer proposal name
+2. Check that `.manuscript/proposals/{slug}-proposal.md` exists. If not: "No proposal found for '[name]'. Create one with `/scr:track propose <name>`."
+3. Read the proposal file to get the list of changed passages.
 
 ### Workflow
 
@@ -184,7 +189,7 @@ If revision plans were created:
    The writer can review your decisions with `/scr:editor-review --respond <name>`.
    ```
 
-5. **Commit the decisions file:** `git add .manuscript/proposals/{slug}-decisions.json && git commit -m "Editor review: <name>"`
+5. **Save the decisions file.** Keep all proposal artifacts inside `.manuscript/proposals/` using the sanitized slug only. If `developer_mode` is `true` and the writer explicitly asks for git bookkeeping, mention that they can commit the saved proposal artifacts separately. In writer mode, do not surface git commands.
 
 ### Accountability
 
@@ -238,7 +243,7 @@ If revision plans were created:
    Notes do not change the manuscript text -- they are advisory comments.
    ```
 
-5. **Commit notes:** `git add .manuscript/editor-notes/ && git commit -m "Editor notes added"`
+5. **Save the notes.** If `developer_mode` is `true` and the writer explicitly asks for git bookkeeping, mention that the saved editor-notes directory can be committed separately. In writer mode, do not surface git commands.
 
 ---
 
@@ -248,7 +253,7 @@ If revision plans were created:
 
 ### Prerequisites
 
-1. Check that `.manuscript/proposals/{slug}-decisions.json` exists. If not: "No editor decisions found for '[name]'. The editor needs to review this proposal first with `/scr:editor-review --proposal <name>`."
+1. Derive the same sanitized slug from the provided proposal name before touching the filesystem, then check that `.manuscript/proposals/{slug}-decisions.json` exists. If not: "No editor decisions found for '[name]'. The editor needs to review this proposal first with `/scr:editor-review --proposal <name>`."
 
 ### Workflow
 
@@ -326,10 +331,10 @@ If revision plans were created:
    - Z items flagged for follow-up (push-backs)
    - W notes acknowledged, V acted upon
 
-   Full decision trail saved in .manuscript/proposals/
+   Full decision trail saved with the proposal artifacts.
    ```
 
-7. **Commit responses and any applied changes.**
+7. **Save responses and any applied changes.** If `developer_mode` is `true` and the writer explicitly asks for git bookkeeping, mention that the saved proposal artifacts and accepted manuscript changes can be committed separately. In writer mode, do not surface git commands.
 
 ### Decision Trail for Accountability
 
@@ -366,8 +371,8 @@ This command uses writer-friendly terminology throughout:
 ## OUTPUT
 
 **Standard review mode:**
-- `{act_num}-EDITOR-NOTES.md`
-- Revision plans (if needed): `{act_num}-{N}-REVISION-PLAN.md`
+- `{N}-EDITOR-NOTES.md`
+- Revision plans (if needed): `{N}-{A}-REVISION-PLAN.md`
 - Updated `STATE.md`
 
 **Collaboration mode:**

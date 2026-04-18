@@ -45,7 +45,7 @@ Load the following project files:
 - Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) -- to check back-matter availability and adaptations for the current work type
 - `.manuscript/WORK.md` -- title, author, publisher, and publication details
 - `.manuscript/CHARACTERS.md` -- for glossary extraction (character names, terms)
-- Drafted prose from `.manuscript/drafts/` -- for content extraction (glossary terms, endnotes, themes)
+- Drafted prose from `.manuscript/` matching `*-DRAFT.md` files -- for content extraction (glossary terms, endnotes, themes)
 
 **Confirm the `back-matter` command is available** for the current work type by checking `CONSTRAINTS.json`. If the work type's group is in the `hidden` list, inform the writer and stop.
 

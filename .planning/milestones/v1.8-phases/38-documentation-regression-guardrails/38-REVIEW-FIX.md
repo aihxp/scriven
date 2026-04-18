@@ -1,57 +1,68 @@
 ---
 phase: 38-documentation-regression-guardrails
-fixed_at: 2026-04-18T03:49:33Z
+fixed_at: 2026-04-18T04:32:00Z
 review_path: .planning/milestones/v1.8-phases/38-documentation-regression-guardrails/38-REVIEW.md
 iteration: 1
-findings_in_scope: 3
-fixed: 3
+findings_in_scope: 5
+fixed: 5
 skipped: 0
 status: all_fixed
 ---
 
 # Phase 38: Code Review Fix Report
 
-**Fixed at:** 2026-04-18T03:49:33Z
+**Fixed at:** 2026-04-18T04:32:00Z
 **Source review:** .planning/milestones/v1.8-phases/38-documentation-regression-guardrails/38-REVIEW.md
 **Iteration:** 1
 
 **Summary:**
-- Findings in scope: 3
-- Fixed: 3
+- Findings in scope: 5
+- Fixed: 5
 - Skipped: 0
 
 ## Fixed Issues
 
-### WR-01: Command reference is stale, but the new tests do not verify completeness
+### CR-01: Proposal paths and commit guidance use unsanitized proposal names
 
-**Files modified:** `docs/command-reference.md`, `test/command-surface-coherence.test.js`
-**Commit:** `6f8e223`
-**Applied fix:** Updated the command reference to the live 108-command inventory, added the missing build/cleanup/validate/sacred entries, removed the inaccurate "auto-generated" claim, and added regression coverage that compares the documented command refs and headline count directly against `collectCommandEntries(...)`.
-
----
-
-### WR-02: Sacred and academic adaptation docs advertise commands that the registry marks unavailable
-
-**Files modified:** `docs/command-reference.md`, `docs/work-types.md`, `docs/sacred-texts.md`, `commands/scr/help.md`, `commands/scr/do.md`
-**Commit:** `6f8e223`
-**Applied fix:** Rewrote the adaptation guidance to distinguish canonical runnable commands from descriptive labels, removed dead sacred/academic alias examples, and pointed sacred-only flows like chronology, doctrinal review, concordance, and verse numbering at the dedicated `/scr:sacred:*` command family.
+**Files modified:** `commands/scr/editor-review.md`
+**Applied fix:** Added an explicit slug-normalization contract before proposal file access, required proposal artifacts to stay under `.manuscript/proposals/` using the sanitized slug only, and removed raw git shell command snippets that interpolated user-controlled names.
 
 ---
 
-### IN-01: Contributing guide inventory counts are already stale
+### WR-01: Back matter loads a draft directory that the rest of Scriven no longer uses
 
-**Files modified:** `docs/contributing.md`
-**Commit:** `6f8e223`
-**Applied fix:** Replaced brittle hard-coded repo inventory counts with durable descriptive labels so the contributing guide no longer drifts every time the command or template tree changes.
+**Files modified:** `commands/scr/back-matter.md`
+**Applied fix:** Switched the draft-loading guidance from the stale `.manuscript/drafts/` directory to the canonical `.manuscript/*-DRAFT.md` contract used by the rest of the workflow.
+
+---
+
+### WR-02: Editor-review and submit disagree on the editor notes contract
+
+**Files modified:** `commands/scr/editor-review.md`
+**Applied fix:** Standardized the standard review output on `{N}-EDITOR-NOTES.md` so it matches the prerequisite expected by `commands/scr/submit.md`.
+
+---
+
+### WR-03: Writer mode still exposes file paths and git operations in editor-review
+
+**Files modified:** `commands/scr/editor-review.md`
+**Applied fix:** Gated file-path references behind `developer_mode`, replaced writer-mode git instructions with save-only guidance, and kept any optional git-bookkeeping mention strictly developer-mode and explicit-opt-in.
+
+---
+
+### IN-01: README trust-surface counts and version text are stale
+
+**Files modified:** `README.md`
+**Applied fix:** Updated the public command/work-type counts and package version text to match the current shipped surface.
 
 ## Verification
 
-- `npm test` -> 1539/1539 passing
-- `node --test test/command-surface-coherence.test.js test/commands.test.js` -> passing during fix development
-- `rg` audit across `README.md`, `docs/`, `commands/`, and `test/` found no remaining dead adapted `/scr:*` alias references in the reviewed command-surface docs
+- `node --test test/command-surface-coherence.test.js test/commands.test.js test/installer.test.js` -> passing
+- `npm test` -> 1540/1540 passing
+- `rg` audit confirmed the removed risky `git commit` guidance, stale draft directory path, and stale README counts/version strings are gone
 
 ---
 
-_Fixed: 2026-04-18T03:49:33Z_
+_Fixed: 2026-04-18T04:32:00Z_
 _Fixer: Codex (gsd-code-review-fix)_
 _Iteration: 1_

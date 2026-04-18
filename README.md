@@ -154,11 +154,11 @@ Scriven is built on five principles:
 
 - [Proof Artifacts](docs/proof-artifacts.md) -- Canonical proof hub for the watchmaker sample flow and Voice DNA before/after bundle
 - [Getting Started](docs/getting-started.md) -- Install to first draft in 10 minutes
-- [Command Reference](docs/command-reference.md) -- All 101 commands with usage, flags, and examples
+- [Command Reference](docs/command-reference.md) -- All 108 commands with usage, flags, and examples
 - [Work Types Guide](docs/work-types.md) -- How 50 work types adapt Scriven's vocabulary
 - [Voice DNA Guide](docs/voice-dna.md) -- The 15+ dimension voice profiling system
 - [Publishing Guide](docs/publishing.md) -- 13 export formats, KDP, IngramSpark, submission packages
-- [Sacred Text Guide](docs/sacred-texts.md) -- 13 sacred work types, voice registers, tradition-native features
+- [Sacred Text Guide](docs/sacred-texts.md) -- 15 sacred work types, voice registers, tradition-native features
 - [Translation Guide](docs/translation.md) -- Multi-language pipeline with glossary and cultural adaptation
 - [Contributing](docs/contributing.md) -- How to add commands, agents, work types, and templates
 - [Architecture](docs/architecture.md) -- How Scriven works under the hood
@@ -195,11 +195,11 @@ Scriven currently ships installer targets for these AI tooling environments:
 
 ## Status
 
-**Version:** 1.5.1
+**Version:** 1.5.2
 
-Scriven's core command surface is stable across 101 commands, 50 work types, and 11 installer targets. All six roadmap milestones through `v1.5` (MVP, Generic Platform Support, Documentation, Trust & Proof, Perplexity & Technical Writing, and Runtime Install Reliability) are shipped in the repo. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
+Scriven's core command surface is stable across 108 commands, 50 work types, and 11 installer targets. All six roadmap milestones through `v1.5` (MVP, Generic Platform Support, Documentation, Trust & Proof, Perplexity & Technical Writing, and Runtime Install Reliability) are shipped in the repo. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
 
-Version `1.5.1` is a patch release on top of the shipped `v1.5 Runtime Install Reliability` milestone. It refines the Claude Code install surface to use flat `/scr-*` commands, keeps Codex on generated `$scr-*` skills, and extends the installer/tests/docs so that runtime contract stays consistent.
+Version `1.5.2` is a patch release on top of the shipped `v1.5 Runtime Install Reliability` milestone. It refines the Claude Code install surface to use flat `/scr-*` commands, keeps Codex on generated `$scr-*` skills, and extends the installer/tests/docs so that runtime contract stays consistent.
 
 Package history is tracked in [CHANGELOG.md](CHANGELOG.md), and the public-facing summary for this release is in [docs/release-notes.md](docs/release-notes.md).
 
