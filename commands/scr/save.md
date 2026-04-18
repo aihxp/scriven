@@ -35,17 +35,18 @@ You are saving the writer's current work. Your job is to create a git commit wit
    - After discussion (last command was `discuss`): `"Saved after discussing {unit_name} {N}"`
    - Default / manual save: `"Saved work in progress on {unit_name} {N}"`
 
-6. **Execute the save:**
-   ```
-   git add .manuscript/
-   git commit -m "{generated message}"
-   ```
-
-7. **Update STATE.md** "Last actions" table with a new row:
+6. **Update STATE.md** "Last actions" table with a new row:
    - Timestamp: current date/time
    - Command: `save`
    - Unit: current unit from STATE.md
    - Outcome: the generated message
+
+7. **Execute the save:**
+   ```
+   git add .manuscript/
+   git commit -m "{generated message}"
+   ```
+   This commit must include the `STATE.md` update from step 6 so the worktree is clean immediately after a successful save.
 
 8. **Tell the writer** the result (see output section below).
 

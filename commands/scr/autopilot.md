@@ -155,7 +155,7 @@ On pause or stop:
 
 **Never show** (unless `developer_mode` is `true` in config.json):
 - Git terminology (commits, branches, diffs, hashes)
-- File paths (`.manuscript/3-2-DRAFT.md`)
+- File paths (`.manuscript/drafts/body/3-2-DRAFT.md`)
 - Technical jargon (context window, tokens, agent invocation)
 - Raw error output
 

@@ -1,0 +1,63 @@
+const { describe, it } = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('fs');
+const path = require('path');
+
+const ROOT = path.join(__dirname, '..');
+
+function read(relativePath) {
+  return fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
+}
+
+describe('Phase 40: save / undo state integrity', () => {
+  it('save updates STATE.md before the checkpoint commit', () => {
+    const save = read('commands/scr/save.md');
+    const stateStep = save.indexOf('6. **Update STATE.md** "Last actions" table');
+    const executeStep = save.indexOf('7. **Execute the save:**');
+
+    assert.notEqual(stateStep, -1, 'save.md should include the STATE.md update step');
+    assert.notEqual(executeStep, -1, 'save.md should include the checkpoint execution step');
+    assert.ok(
+      stateStep < executeStep,
+      'save.md should update STATE.md before executing the checkpoint commit'
+    );
+
+    assert.match(
+      save,
+      /git add \.manuscript\/[\s\S]*git commit -m "\{generated message\}"/,
+      'save.md should still stage and commit the manuscript tree after the state update'
+    );
+  });
+
+  it('undo targets an explicit manuscript commit instead of assuming HEAD', () => {
+    const undo = read('commands/scr/undo.md');
+
+    assert.match(
+      undo,
+      /git log -1 --format="%H\|%s" \.manuscript\//,
+      'undo.md should capture the explicit target commit hash from the manuscript history'
+    );
+
+    assert.doesNotMatch(
+      undo,
+      /git revert HEAD --no-edit/,
+      'undo.md should not assume HEAD is the manuscript checkpoint to revert'
+    );
+
+    assert.match(
+      undo,
+      /git revert \{target hash\} --no-commit/,
+      'undo.md should use a no-commit revert for the explicit target hash'
+    );
+  });
+
+  it('undo commits the revert and STATE.md update together', () => {
+    const undo = read('commands/scr/undo.md');
+
+    assert.match(
+      undo,
+      /git revert \{target hash\} --no-commit[\s\S]*?Update STATE\.md[\s\S]*?git add \.manuscript\/[\s\S]*?git commit -m "Undid save: \{writer-friendly description\}"/,
+      'undo.md should create one final undo commit that includes the revert and the state update'
+    );
+  });
+});

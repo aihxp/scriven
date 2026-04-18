@@ -21,7 +21,7 @@ Create a new demo project in `./scriven-demo/.manuscript/` with a pre-built shor
 - **CHARACTERS.md** — Two characters with full voice anchors: Eliáš the watchmaker, Petra the daughter
 - **PLOT-GRAPH.md** — Arc positions marked, emotional beats specified
 - **THEMES.md** — Themes of lost time, parenthood, second chances
-- **4 drafted scenes** in `.manuscript/1-*-DRAFT.md` through `.manuscript/4-*-DRAFT.md`
+- **4 drafted scenes** in `.manuscript/drafts/body/1-*-DRAFT.md` through `.manuscript/drafts/body/4-*-DRAFT.md`
 - **1 planned-but-not-drafted scene** at `.manuscript/5-*-PLAN.md` so the writer can try `/scr:draft 5` and see the drafter in action
 - **Editor notes** on scene 2 so the writer can try reviewing and revising
 

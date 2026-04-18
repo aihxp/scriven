@@ -50,7 +50,7 @@ Research and scholarly writing with emphasis on argumentation, citation, and pee
 
 **Members:** Research Paper, Thesis / Dissertation, Journal Article, White Paper, Literature Review, Monograph
 
-Academic work types relabel selected review commands in help and output: `/scr:editor-review` appears as `peer-review`, `/scr:beta-reader` appears as `reviewer-simulation`, and `/scr:sensitivity-review` appears as `ethics-review`. Context files also adapt -- `CHARACTERS.md` becomes `CONCEPTS.md`, `THEMES.md` becomes `QUESTIONS.md`.
+Academic work types relabel selected always-available review commands in help and output: `/scr:editor-review` appears as `peer-review`, `/scr:beta-reader` appears as `reviewer-simulation`, and `/scr:sensitivity-review` appears as `ethics-review`. Context files also adapt -- `CHARACTERS.md` becomes `CONCEPTS.md`, `THEMES.md` becomes `QUESTIONS.md`.
 
 ### Technical Writing
 
@@ -66,7 +66,7 @@ Works where text and image are co-equal. Layout, illustration, and visual pacing
 
 **Members:** Comic / Graphic Novel, Graphic Novel, Children's Book, Picture Book
 
-Visual work types unlock illustration-specific commands like `/scr:spread-layout`, `/scr:panel-layout`, and `/scr:storyboard`.
+Visual work types unlock illustration-specific commands like `/scr:spread-layout` and `/scr:storyboard`. Comics and graphic novels additionally use `/scr:panel-layout`, which stays hidden for non-comic visual projects.
 
 ### Poetry
 
@@ -276,7 +276,7 @@ All other groups (Prose, Script, Visual, Poetry, Interactive, Speech & Song) use
 
 ## Command Adaptations
 
-Certain commands get adapted labels for academic, technical, and sacred work type groups. The canonical runnable command remains the file-backed base command unless a runtime explicitly installs an alias.
+Certain commands get adapted labels for academic, technical, and sacred work type groups. The canonical runnable command remains the file-backed base command unless a runtime explicitly installs an alias, and an adapted label only surfaces when the base command is actually available for that group.
 
 ### Academic Adaptations
 

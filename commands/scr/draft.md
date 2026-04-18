@@ -26,7 +26,7 @@ Require `{N}-*-PLAN.md` files to exist. If not, offer `/scr:plan N` first. If th
    - The last 200 words of the previous atomic unit (for voice/tone continuity)
    - THEMES.md or DOCTRINES.md (relevant threads only)
 
-3. **Save drafted output** to `.manuscript/{N}-{A}-DRAFT.md`.
+3. **Save drafted output** to `.manuscript/drafts/body/{N}-{A}-DRAFT.md`.
 
 4. **After all atomic units in the unit are drafted, do a voice-check pass.** Load the full drafted unit, compare against STYLE-GUIDE.md, flag any scenes that drift from the voice profile by more than the configured threshold. If drift is detected, offer to re-draft the problem scenes.
 

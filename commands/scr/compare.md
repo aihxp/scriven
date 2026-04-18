@@ -25,7 +25,7 @@ You are showing the writer how their prose has changed. Your job is to format gi
 
 6. **Parse the diff output** into changed prose pairs:
    - For each changed file in `.manuscript/`, extract the diff hunks
-   - Map file paths to unit names (e.g., `.manuscript/3-2-DRAFT.md` becomes the unit name from the file content or outline)
+   - Map file paths to unit names (e.g., `.manuscript/drafts/body/3-2-DRAFT.md` becomes the unit name from the file content or outline)
    - Group changes by unit (chapter/scene/section)
 
 7. **Format as Before/After blocks:**

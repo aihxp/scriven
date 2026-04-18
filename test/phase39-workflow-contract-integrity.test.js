@@ -1,0 +1,81 @@
+const { describe, it } = require('node:test');
+const assert = require('node:assert/strict');
+const fs = require('fs');
+const path = require('path');
+
+const ROOT = path.join(__dirname, '..');
+
+function collectMarkdownFiles(dir, prefix = '') {
+  const files = [];
+  for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+    const relPath = prefix ? path.join(prefix, entry.name) : entry.name;
+    const absPath = path.join(dir, entry.name);
+    if (entry.isDirectory()) {
+      files.push(...collectMarkdownFiles(absPath, relPath));
+      continue;
+    }
+    if (entry.isFile() && entry.name.endsWith('.md')) {
+      files.push(relPath);
+    }
+  }
+  return files.sort();
+}
+
+function read(relativePath) {
+  return fs.readFileSync(path.join(ROOT, relativePath), 'utf8');
+}
+
+describe('Phase 39: workflow contract integrity', () => {
+  const sourceDocs = [
+    'README.md',
+    ...collectMarkdownFiles(path.join(ROOT, 'docs')).map((file) => path.join('docs', file)),
+    ...collectMarkdownFiles(path.join(ROOT, 'commands')).map((file) => path.join('commands', file)),
+  ];
+
+  it('draft and import write active manuscript units into .manuscript/drafts/body/', () => {
+    assert.match(
+      read('commands/scr/draft.md'),
+      /\.manuscript\/drafts\/body\/\{N\}-\{A\}-DRAFT\.md/,
+      'draft.md should write the canonical body draft path'
+    );
+
+    assert.match(
+      read('commands/scr/import.md'),
+      /\.manuscript\/drafts\/body\/\{N\}-\{A\}-DRAFT\.md/,
+      'import.md should write imported units into the canonical body draft path'
+    );
+  });
+
+  it('source-manuscript consumers read from the canonical drafts tree', () => {
+    assert.match(
+      read('commands/scr/back-translate.md'),
+      /\.manuscript\/drafts\/body\/\{unit\}-DRAFT\.md/,
+      'back-translate.md should read source units from the canonical body draft path'
+    );
+
+    assert.match(
+      read('commands/scr/back-matter.md'),
+      /\.manuscript\/drafts\//,
+      'back-matter.md should load drafted prose from the drafts tree'
+    );
+  });
+
+  it('source docs do not advertise root-level active manuscript draft files', () => {
+    const invalidRootLevelDraftRef = /\.manuscript\/(?!drafts\/|translation\/)[^`\s/]+-DRAFT\.md/;
+    const invalidWildcardRootLevelDraftRef = /\.manuscript\/`?\s*matching\s*`?\*-DRAFT\.md`?/;
+
+    for (const file of sourceDocs) {
+      const content = read(file);
+      assert.doesNotMatch(
+        content,
+        invalidRootLevelDraftRef,
+        `${file} should not advertise root-level active manuscript draft files`
+      );
+      assert.doesNotMatch(
+        content,
+        invalidWildcardRootLevelDraftRef,
+        `${file} should not advertise wildcard root-level draft lookups`
+      );
+    }
+  });
+});

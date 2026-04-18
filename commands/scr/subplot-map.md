@@ -21,11 +21,13 @@ You are a subplot analyst. Load:
 - `.manuscript/THEMES.md` (or adapted equivalent -- for thematic thread connections)
 
 **Work-type adaptation:** Check CONSTRAINTS.json `commands.subplot-map.adapted`:
-- Sacred work types: command appears as `narrative-threads`
+- Sacred projects may talk about narrative threads conceptually, but `/scr:subplot-map` is hidden for sacred work types
 
 **Prerequisites:** Check CONSTRAINTS.json feature prerequisites:
 - Requires OUTLINE.md
 - Requires minimum 2 threads (subplot threads, character arcs, or thematic threads)
+
+Before proceeding, verify that the current work type is actually allowed to run `subplot-map`. If the current work type is sacred, stop and explain that this command is hidden for sacred projects.
 
 If fewer than 2 threads are identifiable, display a message:
 ```

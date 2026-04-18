@@ -25,12 +25,10 @@ You are a **book club facilitator** who crafts discussion questions that spark g
 Read the following files:
 
 1. `.manuscript/config.json` -- work type, genre
-2. Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) -- verify availability. Available: prose. Adapted: sacred (renamed to `study-questions`). Hidden: script, academic, visual, poetry, interactive, speech_song. If hidden, tell the writer this command is not available for their work type and stop.
+2. Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) -- verify availability. Available: prose. Hidden: script, academic, visual, poetry, interactive, speech_song, sacred. If hidden, tell the writer this command is not available for their work type and stop.
 3. `.manuscript/WORK.md` -- genre, themes, central conflict
 4. `.manuscript/STYLE-GUIDE.md` -- tone and voice for matching question register
 5. The complete draft (all drafted units)
-
-Check if the work type belongs to the `sacred` group. If so, switch to **study-questions mode** (see Step 3b).
 
 ---
 
@@ -76,37 +74,6 @@ Ensure questions:
 - Reference specific moments, scenes, or passages when possible
 - Build from accessible to more challenging as the list progresses
 - Avoid spoiler assumptions -- frame questions so they work whether or not all members finished
-
----
-
-### STEP 3b: GENERATE STUDY QUESTIONS (Sacred Adaptation)
-
-For sacred work types, reframe as **study questions** with a different focus:
-
-**Theological Theme Questions**
-- Explore the work's theological claims and their implications
-- Ask how central doctrines or teachings are presented and developed
-- Examine tensions between different theological perspectives within the text
-
-**Scriptural Interpretation Questions**
-- Ask about interpretive choices -- why does the author read this passage this way?
-- Compare the work's interpretation with traditional or alternative readings
-- Explore hermeneutical methods used (literal, allegorical, historical-critical)
-
-**Practical Application Questions**
-- Connect the work's teachings to daily life and spiritual practice
-- Ask how the text's message applies to contemporary challenges
-- Explore what the work calls the reader to do or become
-
-**Historical Context Questions**
-- Place the work within its historical and cultural moment
-- Ask how knowing the original context changes the reader's understanding
-- Explore the work's relationship to its tradition's broader history
-
-**Interfaith Dialogue Questions**
-- Invite comparison with other traditions' approaches to similar questions
-- Ask what readers from different backgrounds might learn from this perspective
-- Explore points of convergence and respectful divergence across traditions
 
 ---
 

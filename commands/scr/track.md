@@ -73,8 +73,13 @@ Track metadata lives in `.manuscript/tracks.json`. Create this file on first `tr
      "proposed_at": null
    }
    ```
-8. Commit the `tracks.json` change: `git add .manuscript/tracks.json && git commit -m "Created revision track: <name>"`
-9. Read `.manuscript/config.json`. If `collaboration.tracks_enabled` is `false` or missing, set it to `true` and include the config update in the commit.
+8. Read `.manuscript/config.json`. If `collaboration.tracks_enabled` is `false` or missing, set it to `true`.
+9. Commit the track metadata and any config update together:
+   ```
+   git add .manuscript/tracks.json .manuscript/config.json
+   git commit -m "Created revision track: track/{slug}"
+   ```
+   Never interpolate the raw writer-provided label directly into a shell command. Use the sanitized slug or another shell-safe identifier in git commit messages.
 10. Confirm to the writer:
 
 **Output:**
@@ -216,7 +221,7 @@ Show passage-by-passage tracked changes in writer-friendly format:
 1. Resolve `<name>` to a branch via `tracks.json`. If not found: "No revision track called '[name]' found."
 2. Check if the track has any changes ahead of canon. If not: "Nothing to merge. '[name]' has no changes that differ from canon."
 3. If not currently on canon, switch to canon first: `git checkout main` (or `master`). Inform the writer: "Switching to the canon manuscript to accept the revisions."
-4. Attempt the merge: `git merge {branch} --no-edit`.
+4. Attempt the merge without creating the final commit yet: `git merge {branch} --no-commit`.
 
 **If clean merge (no conflicts):**
 
@@ -226,7 +231,14 @@ Revision track '<name>' merged into the canon manuscript. All changes accepted.
 Tip: Run `/scr:continuity-check` to verify everything reads smoothly after merging.
 ```
 
-Update `tracks.json`: set the track's `status` to `"merged"` and `merged_at` to the current ISO timestamp.
+Update `tracks.json`: set the track's `status` to `"merged"` and `merged_at` to the current ISO timestamp, then create the final merge commit:
+
+```
+git add .manuscript/
+git commit -m "Merged revision track: track/{slug}"
+```
+
+Never interpolate the raw writer-provided label directly into a shell command. Use the sanitized slug or another shell-safe identifier in git commit messages.
 
 **If continuity conflicts arise (D-02):**
 
@@ -254,8 +266,10 @@ After the writer chooses for each conflict:
 - Apply the resolution by editing the conflicted file (remove conflict markers, keep the chosen content).
 - For "Keep both": concatenate both versions separated by `---` (scene break / horizontal rule).
 - Stage the resolved file: `git add <file>`.
-- After all conflicts are resolved: `git commit -m "Merged revision track: <name> (conflicts resolved)"`.
-- Update `tracks.json`: set `status` to `"merged"`, `merged_at` to current timestamp.
+- After all conflicts are resolved, update `tracks.json`: set `status` to `"merged"`, `merged_at` to current timestamp.
+- Then stage the manuscript and metadata together and create the final merge commit:
+  `git add .manuscript/ && git commit -m "Merged revision track: track/{slug} (conflicts resolved)"`
+- Never interpolate the raw writer-provided label directly into a shell command. Use the sanitized slug or another shell-safe identifier in git commit messages.
 
 ```
 All continuity conflicts resolved. Revision track '<name>' is now merged into canon.
@@ -309,8 +323,13 @@ _Space for the editor to write feedback, approve, or request changes._
 _This proposal was generated from revision track '<name>'. To accept these changes, run `/scr:track merge <name>`. To see the full comparison, run `/scr:track compare <name>`._
 ```
 
-7. Commit the proposal file: `git add .manuscript/proposals/{track-slug}-proposal.md && git commit -m "Created revision proposal for: <name>"`.
-8. Update `tracks.json`: set `proposed_at` to the current ISO timestamp.
+7. Update `tracks.json`: set `proposed_at` to the current ISO timestamp.
+8. Commit the proposal file and metadata together:
+   ```
+   git add .manuscript/proposals/{track-slug}-proposal.md .manuscript/tracks.json
+   git commit -m "Created revision proposal: track/{track-slug}"
+   ```
+   Never interpolate the raw writer-provided label directly into a shell command. Use the sanitized slug or another shell-safe identifier in git commit messages.
 
 **Output:**
 ```

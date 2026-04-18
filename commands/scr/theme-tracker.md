@@ -22,10 +22,12 @@ You are a thematic analyst. Load:
 - Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) (to check command adaptations and file mappings)
 - The appropriate themes file based on work type (from CONSTRAINTS.json `file_adaptations`):
   - Default: `.manuscript/THEMES.md`
-  - Academic work types: `.manuscript/QUESTIONS.md` (command appears as `research-questions`)
-  - Sacred work types: `.manuscript/DOCTRINES.md` (command appears as `doctrine-tracker`)
+  - Academic work types keep analogous material in `.manuscript/QUESTIONS.md`, but `/scr:theme-tracker` is hidden for academic projects
+  - Sacred work types keep analogous material in `.manuscript/DOCTRINES.md`, but `/scr:theme-tracker` is hidden for sacred projects
 - `.manuscript/CHARACTERS.md` (or adapted equivalent, for character-theme connections)
 - Drafted prose from `.manuscript/drafts/` (for auto-detection mode)
+
+Before proceeding, verify that the current work type is actually allowed to run `theme-tracker`. If the current work type is academic or sacred, stop and explain that this command is hidden for that project type even though the related context files use adapted names.
 
 Use adapted terminology throughout all output.
 
@@ -95,8 +97,8 @@ For each theme, show:
 - **No drafted prose yet (--detect):** Skip auto-detection entirely. Display message: "No drafted prose to scan. Write or import some content first, or add themes manually to [themes file]."
 - **THEMES.md is empty:** Offer to seed with common genre themes as starting points. Present 3-5 themes typical for the genre (from WORK.md genre field) and let the writer pick which to track.
 - **THEMES.md doesn't exist:** Direct the writer to run `/scr:plan` to generate context files, or offer to create a blank THEMES.md.
-- **Sacred work type:** Use "doctrine" instead of "theme", reference DOCTRINES.md, and scan for theological/doctrinal patterns rather than literary ones.
-- **Academic work type:** Use "research question" instead of "theme", reference QUESTIONS.md, and scan for argument threads and evidence patterns.
+- **Sacred work type:** This command is hidden. Tell the writer to work directly in `DOCTRINES.md` instead of pretending `/scr:theme-tracker` is available there.
+- **Academic work type:** This command is hidden. Tell the writer to work directly in `QUESTIONS.md` instead of pretending `/scr:theme-tracker` is available there.
 
 ## Tone
 

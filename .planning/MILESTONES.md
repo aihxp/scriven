@@ -1,5 +1,27 @@
 # Project Milestones: Scriven
 
+## v1.9 Workflow Contract Integrity (Shipped: 2026-04-18)
+
+**Delivered:** Closed the workflow-contract trust gaps so manuscript draft paths, save/undo checkpoint flows, and help/docs availability guidance now agree with each other and with the live constraints surface.
+
+**Phases completed:** 39-41 (3 phases, 9 plans)
+
+**Key accomplishments:**
+
+- Unified active-manuscript draft storage on `.manuscript/drafts/body/` across draft producers, source readers, and trust-facing examples
+- Repaired `/scr:save` and `/scr:undo` so they describe clean checkpoints that include `STATE.md` in the same save/undo commit
+- Made undo target the explicit latest `.manuscript/` commit instead of assuming `HEAD`
+- Tightened `/scr:help`, work-type docs, and affected command files to respect narrower constraints like `nonfiction_only` and `comic_only`
+- Added regression suites for draft-path consistency, save/undo sequencing, and unsupported adapted-label visibility drift
+
+**Stats:**
+
+- 3 phases, 9 plans, 1550 regression tests
+- Zero new npm dependencies
+- Milestone completed 2026-04-18
+
+---
+
 ## v1.8 Command Surface Coherence (Shipped: 2026-04-18)
 
 **Delivered:** Closed the command-surface trust gap so the names Scriven documents now match the runtime surfaces it actually installs across sacred commands, Claude-facing docs, and generic manifests.

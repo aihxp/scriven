@@ -13,7 +13,10 @@ You are helping the user navigate Scriven commands. Load Scriven's installed/sha
    - If it exists, read `.manuscript/config.json` to get the work type and developer_mode setting
    - If it doesn't exist, show the "getting started" view
 
-2. **Load CONSTRAINTS.json** and filter commands by the current work type's group.
+2. **Load CONSTRAINTS.json** and filter commands by the current work type's group plus any command-level constraints.
+   - A command is only menu-eligible when its `available` list includes the current group (or `"all"`) **and** any narrower gate passes.
+   - Apply explicit constraints such as `nonfiction_only` and `comic_only` before you show the command.
+   - If a group has a dedicated replacement command family (for example sacred chronology and doctrinal checks), prefer that real surface over any conceptual adapted label on a hidden base command.
 
 3. **If the user passed an argument**, treat it as a category filter or search term. Otherwise show the full grouped view.
 
@@ -45,7 +48,7 @@ Group by stage:
 - **Collaborate** — track, compare, merge (shown only if developer_mode is true; otherwise show save/history/compare/versions)
 - **Navigate** — next, progress, pause-work, resume-work
 
-Only show commands where `available` includes the current work type's group, OR where it's `"all"`. Show canonical runnable command names, and use adapted labels as descriptive text only — sacred review surfaces may show `/scr:editor-review` as scholarly review, and technical docs may show `/scr:plot-graph` as procedure map, not dead alias commands.
+Only show commands where `available` includes the current work type's group, OR where it's `"all"`, **and** any narrower command-level constraints still pass for the specific work type. For example, `book-proposal` is still hidden for fiction prose because `nonfiction_only` narrows the broad prose/sacred availability, and `panel-layout` is hidden for non-comic visual projects because `comic_only` narrows the visual group. Show canonical runnable command names, and use adapted labels as descriptive text only when the base command is actually available — sacred review surfaces may show `/scr:editor-review` as scholarly review, and technical docs may show `/scr:plot-graph` as procedure map, but hidden commands stay hidden even if CONSTRAINTS.json stores an adapted label.
 
 ## The filtered view
 

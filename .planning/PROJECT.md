@@ -117,8 +117,8 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 
 ## Current State
 
-**Latest shipped milestone:** v1.8 Command Surface Coherence (complete 2026-04-18)
-**Status:** No active milestone is currently defined. Scriven's latest shipped surface is locked by 1537 passing regression tests.
+**Latest shipped milestone:** v1.9 Workflow Contract Integrity (complete 2026-04-18)
+**Status:** No active milestone currently defined. Scriven's latest shipped surface is locked by 1550 passing regression tests.
 
 **Current product surface:**
 - Installer writes are crash-safe via atomic temp-file-then-rename with orphan cleanup on startup
@@ -130,12 +130,28 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - Claude-facing docs now use the flat `/scr-*` surface consistently, matching the runtime-native install contract
 - Adapted command names are documented as conceptual labels unless a runtime explicitly installs wrappers
 - Command-surface drift is guarded by nested-command and dead-reference regression tests
+- Active manuscript draft paths now converge on `.manuscript/drafts/body/` across drafting, import, export, translation, and review flows
+- Save and undo now describe clean git-backed checkpoints with `STATE.md` included in the same commit
+- Help and trust-facing docs now respect narrower availability constraints and never surface hidden adapted labels as runnable commands
 - Full export stack: EPUB (Pandoc, accessible), print PDF (Pandoc+Typst, KDP/Ingram trim sizes), academic LaTeX (.tex via 5 publisher wrapper templates), Smashwords DOCX, poetry submission DOCX
 - Sacred tradition profiles for 10 traditions with book-order, approval-block, font stack, RTL, numbering
 - Cross-domain templates: stage play, picture book, fixed-layout EPUB, chapbook, poetry submission, academic (IEEE/ACM/LNCS/Elsevier/APA7)
-- 1537 regression tests lock all behavior with requirement-to-test traceability
+- 1550 regression tests lock all behavior with requirement-to-test traceability
 
-## Latest Milestone: v1.8 Command Surface Coherence
+## Latest Milestone: v1.9 Workflow Contract Integrity
+
+**Goal:** Restore internal workflow truth so Scriven's core commands agree on where drafts live, save/undo leave the manuscript state clean, and help surfaces only advertise commands the current project can actually run.
+
+**Outcome shipped:**
+- Draft-producing and draft-consuming commands now converge on the canonical `.manuscript/drafts/body/` source path
+- `/scr:save` and `/scr:undo` now describe clean checkpoints with `STATE.md` included inside the same save/undo commit
+- Help and trust-facing docs now honor command-level constraints such as `nonfiction_only` and `comic_only`
+- Unsupported adapted labels no longer appear as surfaced command behavior when the base command is hidden for that group
+- New workflow-contract regression coverage now locks draft paths, save/undo sequencing, and constrained command visibility
+
+**Stats:** 3 phases, 9 plans, 1550 total tests, zero new dependencies
+
+## Previous Milestone: v1.8 Command Surface Coherence
 
 **Goal:** Make Scriven's command surface truthful and runtime-native so every documented command name is runnable in the host that advertises it.
 
@@ -150,8 +166,9 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 
 ## Next Milestone Goals
 
-- No new milestone is defined yet
-- Next milestone selection should build on the now-truthful runtime surface rather than reopen command-surface ambiguity
+- Define the next milestone without reopening the command-surface and workflow-contract truthfulness work now shipped in v1.8 and v1.9
+- Preserve the canonical draft-path, save/undo checkpoint, and constrained-availability contracts in future command edits
+- Extend product capability from this stricter trust baseline rather than broadening runtime or workflow claims first
 
 <details>
 <summary>Archived milestone context: v1.4 Perplexity & Technical Writing</summary>

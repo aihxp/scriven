@@ -33,9 +33,11 @@ You are a story structure analyst. Load:
 
 **Work-type adaptation:** Check CONSTRAINTS.json `file_adaptations` for the current work type:
 - Default: reads `PLOT-GRAPH.md`
-- Academic work types: reads `ARGUMENT-MAP.md`, command appears as `argument-map`
-- Technical work types: reads `PROCEDURES.md`, command appears as `procedure-map`
-- Sacred work types: reads `THEOLOGICAL-ARC.md`, command appears as `theological-arc`
+- Technical work types: reads `PROCEDURES.md`, command is described as `procedure-map` in help/output
+- Academic work types store analogous structure in `ARGUMENT-MAP.md`, but `/scr:plot-graph` is hidden for academic projects
+- Sacred work types store analogous structure in `THEOLOGICAL-ARC.md`, but `/scr:plot-graph` is hidden for sacred projects
+
+Before proceeding, verify that the current work type is actually allowed to run `plot-graph`. If the current work type is academic or sacred, stop and explain that the adapted file name exists, but this command does not surface for that group.
 
 Use adapted terminology throughout all output.
 

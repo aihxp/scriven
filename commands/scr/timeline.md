@@ -25,7 +25,9 @@ You are a timeline analyst. Load:
 - `.manuscript/STATE.md` (to know which units are drafted)
 
 **Work-type adaptation:** Check CONSTRAINTS.json `commands.timeline.adapted`:
-- Sacred work types: command appears as `chronology`
+- Sacred projects use the dedicated `/scr:sacred:chronology` command instead of `/scr:timeline`
+
+Before proceeding, verify that the current work type is actually allowed to run `timeline`. If the current work type is sacred, stop and direct the writer to `/scr:sacred:chronology`.
 
 Use adapted terminology throughout all output.
 

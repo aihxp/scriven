@@ -42,7 +42,7 @@ The back-translation is performed by you (the AI agent) in-context. No external 
 
 For each unit to verify:
 
-1. Load the **original source text** from `.manuscript/drafts/{unit}-DRAFT.md`
+1. Load the **original source text** from `.manuscript/drafts/body/{unit}-DRAFT.md`
 2. Load the **translated text** from `.manuscript/translation/{lang}/drafts/{unit}-DRAFT.md`
 3. If `--unit` is specified, load only that unit pair. Otherwise, load all available unit pairs.
 
