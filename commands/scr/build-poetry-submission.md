@@ -106,7 +106,7 @@ Write `.manuscript/output/poetry-title-page.md`:
 **3b. Assemble body with per-poem page breaks:**
 
 Read `.manuscript/OUTLINE.md`. For each poem unit in order:
-- Read `.manuscript/drafts/body/[poem-file].md`
+- Read the corresponding `.manuscript/drafts/body/[poem-file]-DRAFT.md`
 - Append `\newpage` after each poem's content
 
 This ensures one poem per page in the output DOCX.

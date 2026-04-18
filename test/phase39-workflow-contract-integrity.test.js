@@ -60,6 +60,52 @@ describe('Phase 39: workflow contract integrity', () => {
     );
   });
 
+  it('analysis and editing commands read active manuscript units from .manuscript/drafts/body/', () => {
+    for (const file of [
+      'commands/scr/originality-check.md',
+      'commands/scr/copy-edit.md',
+      'commands/scr/voice-check.md',
+      'commands/scr/cultural-adaptation.md',
+      'commands/scr/line-edit.md',
+      'commands/scr/polish.md',
+      'commands/scr/theme-tracker.md',
+      'commands/scr/add-unit.md',
+      'commands/scr/outline.md',
+    ]) {
+      assert.match(
+        read(file),
+        /\.manuscript\/drafts\/body\//,
+        `${file} should read or inspect active manuscript units from the canonical body drafts tree`
+      );
+    }
+  });
+
+  it('agent prompts use the canonical body draft path and stable command names', () => {
+    assert.match(
+      read('agents/drafter.md'),
+      /\.manuscript\/drafts\/body\/\{N\}-\{A\}-DRAFT\.md/,
+      'drafter.md should write active manuscript units into the canonical body draft path'
+    );
+
+    assert.match(
+      read('agents/voice-checker.md'),
+      /\.manuscript\/drafts\/body\/\{N\}-\{A\}-DRAFT\.md/,
+      'voice-checker.md should receive active manuscript units from the canonical body draft path'
+    );
+
+    assert.match(
+      read('agents/continuity-checker.md'),
+      /\.manuscript\/drafts\/body\/\{N\}-\{A\}-DRAFT\.md/,
+      'continuity-checker.md should read active manuscript units from the canonical body draft path'
+    );
+
+    assert.doesNotMatch(
+      read('agents/researcher.md'),
+      /\/scr:plan-\{unit\}/,
+      'researcher.md should not describe the removed unit-suffixed plan alias'
+    );
+  });
+
   it('structure-management commands operate on the canonical body drafts tree', () => {
     for (const file of [
       'commands/scr/insert-unit.md',

@@ -147,6 +147,16 @@ describe('Phase 30: VALID-02 validate.md blocks on marker detection', () => {
     );
   });
 
+  it('validate.md failure examples use the canonical body draft naming contract', () => {
+    const content = readFile(VALIDATE_PATH);
+    assert.ok(content !== null, 'commands/scr/validate.md could not be read');
+    assert.match(
+      content,
+      /\.manuscript\/drafts\/body\/1-opening-image-DRAFT\.md:3:/,
+      'validate.md should show failure examples using the canonical *-DRAFT.md body file contract'
+    );
+  });
+
   it('validate.md references file:line output format', () => {
     const content = readFile(VALIDATE_PATH);
     assert.ok(content !== null, 'commands/scr/validate.md could not be read');
@@ -180,6 +190,19 @@ describe('Phase 30: VALID-02 validate.md blocks on marker detection', () => {
     assert.ok(
       hasPassConfirmation,
       'validate.md must include an explicit clean pass confirmation message ("Manuscript clean" or "no scaffold markers found") — VALID-02 / SC4'
+    );
+  });
+});
+
+describe('Phase 34: poetry submission assembly reads canonical body draft files', () => {
+  it('build-poetry-submission.md reads poem units from *-DRAFT.md files', () => {
+    const poetryBuildPath = path.join(ROOT, 'commands', 'scr', 'build-poetry-submission.md');
+    const content = readFile(poetryBuildPath);
+    assert.ok(content !== null, 'commands/scr/build-poetry-submission.md could not be read');
+    assert.match(
+      content,
+      /\.manuscript\/drafts\/body\/\[poem-file\]-DRAFT\.md/,
+      'build-poetry-submission.md should assemble poems from canonical *-DRAFT.md body files'
     );
   });
 });

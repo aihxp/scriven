@@ -73,7 +73,7 @@ Before finalizing, do these quick checks:
 - Is there any exposition that should be subtext? Any subtext that should be exposition?
 
 ### Step 5: Write to file
-Save your draft to `.manuscript/{N}-{A}-DRAFT.md`. No preamble, no "Here's the draft:" — just the prose. The file is the draft.
+Save your draft to `.manuscript/drafts/body/{N}-{A}-DRAFT.md`. No preamble, no "Here's the draft:" — just the prose. The file is the draft.
 
 ## What you must never do
 

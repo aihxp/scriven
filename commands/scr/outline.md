@@ -81,7 +81,7 @@ Allow the writer to modify the outline interactively:
 - **Nest/Unnest**: Move a unit up or down in the hierarchy
 
 **Draft-safety protocol (D-07):**
-- Before any modification, check `.manuscript/drafts/` for files corresponding to affected units
+- Before any modification, check `.manuscript/drafts/body/` for files corresponding to affected units
 - If drafted content exists:
   - List all affected draft files
   - Warn: "This will affect [N] drafted files: [list]"

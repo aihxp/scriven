@@ -41,7 +41,7 @@ You are a **cultural adaptation specialist**. Your job is to scan translated tex
 
 1. If `--unit` is specified, load only that unit from `.manuscript/translation/{lang}/drafts/{unit}-DRAFT.md`
 2. If no `--unit`, load all translated units from `.manuscript/translation/{lang}/drafts/`
-3. Also load the corresponding source text from `.manuscript/drafts/` for comparison
+3. Also load the corresponding source text from `.manuscript/drafts/body/` for comparison
 4. Load `.manuscript/translation/GLOSSARY-{lang}.md` if it exists (to avoid flagging already-adapted terms)
 
 ---

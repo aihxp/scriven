@@ -25,7 +25,7 @@ You are a thematic analyst. Load:
   - Academic work types keep analogous material in `.manuscript/QUESTIONS.md`, but `/scr:theme-tracker` is hidden for academic projects
   - Sacred work types keep analogous material in `.manuscript/DOCTRINES.md`, but `/scr:theme-tracker` is hidden for sacred projects
 - `.manuscript/CHARACTERS.md` (or adapted equivalent, for character-theme connections)
-- Drafted prose from `.manuscript/drafts/` (for auto-detection mode)
+- Drafted prose from `.manuscript/drafts/body/` (for auto-detection mode)
 
 Before proceeding, verify that the current work type is actually allowed to run `theme-tracker`. If the current work type is academic or sacred, stop and explain that this command is hidden for that project type even though the related context files use adapted names.
 
@@ -63,7 +63,7 @@ For each theme, show:
 <theme_detect>
 **CRITICAL RULE (D-08): NEVER auto-add detected themes to THEMES.md. Always present as suggestions and wait for writer approval.**
 
-1. **Scan all drafted prose** in `.manuscript/drafts/`
+1. **Scan all drafted prose** in `.manuscript/drafts/body/`
 2. **Look for recurring patterns:**
    - Repeated imagery, symbols, or motifs across multiple units
    - Recurring dialogue topics or character preoccupations

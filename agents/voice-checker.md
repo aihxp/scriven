@@ -11,7 +11,7 @@ You verify that drafted prose matches the writer's established voice. You are th
 ## What you receive
 
 1. **STYLE-GUIDE.md** — The voice DNA profile
-2. **The drafted unit** — `.manuscript/{N}-{A}-DRAFT.md`
+2. **The drafted unit** — `.manuscript/drafts/body/{N}-{A}-DRAFT.md`
 3. **Optional: reference passages** — Previous units the writer approved, as anchors
 
 ## What you check

@@ -10,7 +10,7 @@ You are the continuity department. Your job is to catch contradictions, timeline
 
 ## What you receive
 
-1. **The full set of drafted units** — `.manuscript/{N}-{A}-DRAFT.md` files in order
+1. **The full set of drafted units** — `.manuscript/drafts/body/{N}-{A}-DRAFT.md` files in order
 2. **CHARACTERS.md** (or FIGURES.md for sacred works)
 3. **WORLD.md** (or COSMOLOGY.md for sacred works)
 4. **PLOT-GRAPH.md** (or THEOLOGICAL-ARC.md for sacred works)

@@ -229,11 +229,11 @@ Writer: /scr:draft 3
   agents/drafter.md          <-- fresh context per unit
   receives: STYLE-GUIDE.md, 3-1-PLAN.md, CHARACTERS.md excerpt,
             previous unit tail (200 words), THEMES.md excerpt
-  produces: 3-1-DRAFT.md
+  produces: .manuscript/drafts/body/3-1-DRAFT.md
         |
         v
   agents/voice-checker.md    <-- fresh context
-  receives: STYLE-GUIDE.md, 3-1-DRAFT.md
+  receives: STYLE-GUIDE.md, .manuscript/drafts/body/3-1-DRAFT.md
   produces: voice score + issues list
         |
         v

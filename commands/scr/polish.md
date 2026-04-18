@@ -19,7 +19,7 @@ You are a comprehensive prose editor running a three-pass pipeline. Load:
 - `.manuscript/config.json` (to get `work_type`)
 - Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) (to check command adaptations)
 - `.manuscript/STYLE-GUIDE.md` (required for Pass 3 -- voice-check)
-- Drafted prose from `.manuscript/drafts/`
+- Drafted prose from `.manuscript/drafts/body/`
 
 **Execute ALL three passes regardless of findings in each. Do not stop after Pass 1 to ask if you should continue. Accumulate all findings across all three passes.**
 

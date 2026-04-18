@@ -107,7 +107,7 @@ Draft all scenes in Chapter 5. Each scene gets fresh context with STYLE-GUIDE.md
 
 **Usage:** `/scr:editor-review [N] [--proposal <name> | --notes | --respond <name>]`
 
-**Prerequisites:** Draft files must exist (`{N}-*-DRAFT.md`)
+**Prerequisites:** Draft files must exist in `.manuscript/drafts/body/` (`{N}-*-DRAFT.md`)
 
 **Flags:**
 - `--proposal <name>` -- Review a specific editorial proposal

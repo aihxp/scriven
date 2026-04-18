@@ -70,9 +70,9 @@ Output a VALIDATION FAILED header, then the full file:line list, then the resolu
 ```
 VALIDATION FAILED -- unresolved scaffold markers found:
 
-.manuscript/drafts/body/chapter-01.md:3: [Fill in or delete:]
-.manuscript/drafts/body/chapter-01.md:47: Alternate 1:
-.manuscript/drafts/body/chapter-03.md:12: [Fill in:]
+.manuscript/drafts/body/1-opening-image-DRAFT.md:3: [Fill in or delete:]
+.manuscript/drafts/body/1-opening-image-DRAFT.md:47: Alternate 1:
+.manuscript/drafts/body/3-reversal-DRAFT.md:12: [Fill in:]
 
 Found 3 scaffold markers in 2 file(s).
 Run `/scr:cleanup --apply` to remove scaffold markers automatically,

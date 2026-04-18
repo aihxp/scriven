@@ -28,7 +28,7 @@ You are orchestrating a **voice fidelity check**. Your job is to feed the right 
 3. Check for `STYLE-GUIDE.md`:
    - **If STYLE-GUIDE.md exists:** Load it. Proceed.
    - **If STYLE-GUIDE.md does NOT exist:** STOP. Tell the writer: "Voice check requires a voice profile. Run `/scr:profile-writer` first to generate your STYLE-GUIDE.md, then re-run this command."
-4. Load drafted prose from `.manuscript/drafts/`
+4. Load drafted prose from `.manuscript/drafts/body/`
    - If `N` is provided, load only unit `N`
    - If omitted, load all drafted units
 

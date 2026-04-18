@@ -45,7 +45,7 @@ Use the adapted unit terminology throughout all output and prompts.
      ask which arc position this unit occupies (e.g., "rising action", "climax approach")
 
 3. **Check for draft safety** (D-07):
-   - Scan `.manuscript/drafts/` for existing draft files
+   - Scan `.manuscript/drafts/body/` for existing draft files
    - Adding to the end should not affect existing drafts, but verify numbering continuity
    - If the new unit number conflicts with any existing file naming, warn the writer
 

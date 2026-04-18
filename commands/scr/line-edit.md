@@ -24,7 +24,7 @@ You are a **line editor**. Your job is prose quality at the sentence and paragra
 1. Load `config.json` — determine work type and structural hierarchy
 2. Load Scriven's installed/shared `CONSTRAINTS.json` (global `~/.scriven/data/CONSTRAINTS.json` or project `.scriven/data/CONSTRAINTS.json`) — check for adapted command name and prerequisites
 3. Load `STYLE-GUIDE.md` — understand the writer's voice DNA profile
-4. Load drafted prose from `.manuscript/drafts/`
+4. Load drafted prose from `.manuscript/drafts/body/`
    - If `N` is provided, load only unit `N`
    - If omitted, load all drafted units
 
