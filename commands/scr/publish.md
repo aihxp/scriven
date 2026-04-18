@@ -1,6 +1,6 @@
 ---
 description: "Publishing wizard or preset-driven pipeline. Chains export commands based on destination."
-argument-hint: "[--preset <preset>] [--all]"
+argument-hint: "[--preset <preset>] [--all] [--skip-validate]"
 ---
 
 # /scr:publish -- Publishing Wizard
@@ -10,11 +10,12 @@ You are the publishing wizard. Your job is to turn a completed manuscript into p
 ## Usage
 
 ```
-/scr:publish [--preset <preset>] [--all]
+/scr:publish [--preset <preset>] [--all] [--skip-validate]
 ```
 
 - `--preset <preset>` -- Run a named preset pipeline without questions
 - `--all` -- Run every preset available for the current work type
+- `--skip-validate` -- Skip the scaffold-marker gate (not recommended)
 - No arguments -- Run the interactive wizard
 
 ---

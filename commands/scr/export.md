@@ -1,6 +1,6 @@
 ---
 description: Compile and export manuscript to publication-ready formats.
-argument-hint: "--format <format> [--formatted] [--print-ready]"
+argument-hint: "--format <format> [--formatted] [--print-ready] [--skip-validate]"
 ---
 
 # /scr:export -- Manuscript Export
@@ -10,7 +10,7 @@ Assemble the manuscript from OUTLINE.md and export to the specified format. Hand
 ## Usage
 
 ```
-/scr:export --format <format> [--formatted] [--print-ready]
+/scr:export --format <format> [--formatted] [--print-ready] [--skip-validate]
 ```
 
 **Primary Formats:**

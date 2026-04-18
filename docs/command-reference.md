@@ -1256,13 +1256,14 @@ Generate 10-15 book club questions that spark real conversation about your theme
 
 **Description:** Publishing wizard or preset-driven pipeline. Chains export commands based on destination.
 
-**Usage:** `/scr:publish [--preset <preset>] [--all]`
+**Usage:** `/scr:publish [--preset <preset>] [--all] [--skip-validate]`
 
 **Prerequisites:** None (wraps export commands)
 
 **Flags:**
 - `--preset <preset>` -- Use a preset such as `kdp-paperback`, `kdp-ebook`, `ebook-wide`, `ingram-paperback`, `query-submission`, or `screenplay-query`
 - `--all` -- Run all applicable presets
+- `--skip-validate` -- Skip the scaffold-marker validation gate (not recommended)
 
 **Available for:** All work types
 
@@ -1278,7 +1279,7 @@ Run the full KDP paperback publishing pipeline: prepare the interior package, ge
 
 **Description:** Compile and export manuscript to publication-ready formats.
 
-**Usage:** `/scr:export --format <format> [--formatted] [--print-ready]`
+**Usage:** `/scr:export --format <format> [--formatted] [--print-ready] [--skip-validate]`
 
 **Prerequisites:** Complete draft must exist
 
@@ -1287,6 +1288,7 @@ Run the full KDP paperback publishing pipeline: prepare the interior package, ge
 - `--formatted` -- Use designed/formatted template (vs. manuscript format)
 - `--print-ready` -- Generate print-ready output with bleeds and crop marks
 
+- `--skip-validate` -- Skip the scaffold-marker validation gate (not recommended)
 **Available for:** All work types (format availability varies by work type)
 
 **Example:**
