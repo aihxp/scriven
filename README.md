@@ -197,7 +197,7 @@ Scriven currently ships installer targets for these AI tooling environments:
 
 **Version:** 1.5.3
 
- Scriven's core command surface is stable across 108 commands, 50 work types, and 11 installer targets. The current repo baseline includes shipped planning milestones through `v1.9 Workflow Contract Integrity`, and the published package version is now `1.5.3`. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
+ Scriven's core command surface is stable across 108 commands, 50 work types, and 11 installer targets. The current repo baseline includes shipped planning milestones through `v2.0 Publishing Cover Packaging`, and the published package version is now `1.5.3`. See [Shipped Assets](docs/shipped-assets.md) for the canonical asset inventory and [Runtime Support](docs/runtime-support.md) for the runtime compatibility matrix.
 
  Version `1.5.3` packages the post-`1.5.2` hardening work that landed in the repo baseline: command-surface truthfulness, workflow-contract integrity, the Claude `/scr-*` surface, the Codex `$scr-*` skill surface, save-history contracts, session boundaries, and help/docs alignment, all without changing the zero-dependency architecture.
 
