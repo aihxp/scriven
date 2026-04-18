@@ -22,7 +22,7 @@ You are a free-text command router. The writer is telling you what they want in 
 | "work on chapter 5" | `/scr:next` but scoped to chapter 5 |
 | "check for plot holes" | `/scr:continuity-check` |
 | "add a new villain" | `/scr:new-character` with villain framing |
-| "add a new figure" (sacred) | `/scr:new-figure` |
+| "scholarly review this passage" (sacred) | `/scr:editor-review` with sacred scholarly framing |
 | "make a cover" | `/scr:cover-art` |
 | "how's the pacing?" | `/scr:pacing-analysis` |
 | "I want to publish on KDP" | `/scr:publish --preset kdp-paperback` |
@@ -38,7 +38,7 @@ Don't run anything. Ask: "I want to make sure I do the right thing — did you m
 
 ## When the command doesn't exist for this work type
 
-Suggest the adapted alternative from CONSTRAINTS.json. Example: user says "write a villain" in a sacred commentary project → "Sacred projects use figures, not characters. Want me to run `/scr:new-figure`?"
+Suggest the canonical runnable command plus the adapted label from CONSTRAINTS.json. Example: user says "scholarly review this" in a sacred commentary project → "Sacred projects surface that as scholarly review. Want me to run `/scr:editor-review` and use sacred review framing?"
 
 ## Tone
 

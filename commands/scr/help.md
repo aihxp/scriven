@@ -39,13 +39,13 @@ Show commands relevant to the current stage. Use `.manuscript/STATE.md` to figur
 
 Group by stage:
 - **Create** — new-work, profile-writer, series-bible
-- **Write** — discuss, plan, draft, quick-write, new-character (or new-figure for sacred works, new-concept for academic)
+- **Write** — discuss, plan, draft, quick-write, plus any profile-building commands actually available for the current work type
 - **Revise** — editor-review, line-edit, copy-edit, continuity-check, beta-reader, voice-check
 - **Publish** — front-matter, back-matter, blurb, cover-art, publish, export
 - **Collaborate** — track, compare, merge (shown only if developer_mode is true; otherwise show save/history/compare/versions)
 - **Navigate** — next, progress, pause-work, resume-work
 
-Only show commands where `available` includes the current work type's group, OR where it's `"all"`. Use adapted names when the work type has adaptations — Bible commentary shows `/scr:new-figure`, and technical docs show `/scr:procedure-map`, not the generic names.
+Only show commands where `available` includes the current work type's group, OR where it's `"all"`. Show canonical runnable command names, and use adapted labels as descriptive text only — sacred review surfaces may show `/scr:editor-review` as scholarly review, and technical docs may show `/scr:plot-graph` as procedure map, not dead alias commands.
 
 ## The filtered view
 

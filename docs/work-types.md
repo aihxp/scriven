@@ -12,9 +12,9 @@ When you set a work type (via `/scr:new-work --type <work_type>` or during onboa
 
 Every work type defines a three-level structural hierarchy: **top level**, **mid level**, and **atomic unit**. A novel's hierarchy is part > chapter > scene. A screenplay's is act > sequence > scene. A Torah project's is chumash > parashah > pasuk. Scriven uses these terms everywhere -- in commands, outlines, progress reports, and file names.
 
-### 2. Command names
+### 2. Command terminology
 
-Commands rename themselves to match your domain. `/scr:draft-chapter` becomes `/scr:draft-surah` for Quranic work, `/scr:draft-act` for screenplays, `/scr:draft-section` for research papers, and `/scr:draft-procedure` for runbooks. Some commands get entirely different names for specific groups -- for example, `/scr:character-sheet` becomes `/scr:figure-sheet` for sacred work types, and `/scr:plot-graph` becomes `/scr:procedure-map` for technical work. See the [Command Adaptations](#command-adaptations) section below.
+Scriven adapts the vocabulary around a command to match your domain. `/scr:draft` talks about drafting a surah for Quranic work, an act for screenplays, a section for research papers, and a procedure for runbooks. Some commands also get domain-specific labels in help and output when that base command is available for the current group -- for example, `voice-check` is presented as `register-check` for sacred work types, and `plot-graph` is presented as `procedure-map` for technical work. See the [Command Adaptations](#command-adaptations) section below.
 
 ### 3. File names
 
@@ -50,7 +50,7 @@ Research and scholarly writing with emphasis on argumentation, citation, and pee
 
 **Members:** Research Paper, Thesis / Dissertation, Journal Article, White Paper, Literature Review, Monograph
 
-Academic work types rename several commands: `/scr:editor-review` becomes `/scr:peer-review`, `/scr:plot-graph` becomes `/scr:argument-map`, `/scr:beta-reader` becomes `/scr:reviewer-simulation`. Context files also adapt -- `CHARACTERS.md` becomes `CONCEPTS.md`, `THEMES.md` becomes `QUESTIONS.md`.
+Academic work types relabel selected review commands in help and output: `/scr:editor-review` appears as `peer-review`, `/scr:beta-reader` appears as `reviewer-simulation`, and `/scr:sensitivity-review` appears as `ethics-review`. Context files also adapt -- `CHARACTERS.md` becomes `CONCEPTS.md`, `THEMES.md` becomes `QUESTIONS.md`.
 
 ### Technical Writing
 
@@ -58,7 +58,7 @@ Task-oriented documentation and system explanation work where accuracy, audience
 
 **Members:** Technical Guide / User Guide, Runbook / SOP, API or CLI Reference, Design Spec / Architecture Doc
 
-Technical-writing work types keep the core discuss → plan → draft flow, but rename context and review surfaces to match docs work. `WORLD.md` becomes `SYSTEM.md`, `PLOT-GRAPH.md` becomes `PROCEDURES.md`, `/scr:build-world` becomes `/scr:map-system`, and `/scr:editor-review` becomes `/scr:technical-review`.
+Technical-writing work types keep the core discuss → plan → draft flow, but relabel context and review surfaces to match docs work. `WORLD.md` becomes `SYSTEM.md`, `PLOT-GRAPH.md` becomes `PROCEDURES.md`, `/scr:build-world` is presented as `map-system`, and `/scr:editor-review` is presented as `technical-review`.
 
 ### Visual
 
@@ -98,7 +98,7 @@ Sacred texts, historical chronicles, and religious literature. This is the most 
 
 **Members:** Scripture (Biblical), Scripture (Quranic), Scripture (Torah), Scripture (Vedic), Scripture (Buddhist), Scripture (Generic), Commentary / Exegesis, Devotional, Liturgical Text, Historical Chronicle, Historical Account, Mythological Collection, Religious Epic, Sermon / Homily, Homiletic Collection
 
-Sacred work types rename most character/world commands (character becomes figure, world becomes cosmology), unlock 8 exclusive commands (concordance, cross-reference, genealogy, chronology, annotation-layer, verse-numbering, source-tracking, doctrinal-check), and support 10 voice registers in STYLE-GUIDE.md.
+Sacred work types relabel selected review commands (`/scr:editor-review` becomes `scholarly-review`, `/scr:voice-check` becomes `register-check`), unlock 8 exclusive commands (`/scr:sacred:concordance`, `/scr:sacred:cross-reference`, `/scr:sacred:genealogy`, `/scr:sacred:chronology`, `/scr:sacred:annotation-layer`, `/scr:sacred:verse-numbering`, `/scr:sacred:source-tracking`, `/scr:sacred:doctrinal-check`), and support 10 voice registers in STYLE-GUIDE.md.
 
 ## Word Count and Page Ranges
 
@@ -276,21 +276,19 @@ All other groups (Prose, Script, Visual, Poetry, Interactive, Speech & Song) use
 
 ## Command Adaptations
 
-Certain commands rename themselves for academic, technical, and sacred work type groups. Both the original and adapted names work -- Scriven recognizes either.
+Certain commands get adapted labels for academic, technical, and sacred work type groups. The canonical runnable command remains the file-backed base command unless a runtime explicitly installs an alias.
 
 ### Academic Adaptations
 
-| Original Command | Adapted Name | Focus |
+| Base Command | Adapted Label | Focus |
 |-----------------|--------------|-------|
-| copy-edit | citation-check | Citation format, bibliography consistency |
-| beta-reader | peer-review | Methodology critique, argument strength |
-| export | journal-submit | APA, MLA, Chicago presets |
-
-Additional adaptations defined in the commands section of CONSTRAINTS.json: `editor-review` becomes `peer-review`, `plot-graph` becomes `argument-map`, `theme-tracker` becomes `research-questions`, `continuity-check` becomes `citation-check`, `sensitivity-review` becomes `ethics-review`, `new-character` becomes `new-concept`, `character-sheet` becomes `concept-sheet`.
+| editor-review | peer-review | Scholarly critique and reviewer framing |
+| beta-reader | reviewer-simulation | Methodology critique and argument-strength review |
+| sensitivity-review | ethics-review | Ethics, audience, and institutional review lens |
 
 ### Technical Writing Adaptations
 
-| Original Command | Adapted Name | Description |
+| Base Command | Adapted Label | Description |
 |-----------------|--------------|-------------|
 | build-world | map-system | System boundaries, environments, and operating context |
 | plot-graph | procedure-map | Procedure flow, escalation path, and task sequence |
@@ -300,24 +298,14 @@ Additional adaptations defined in the commands section of CONSTRAINTS.json: `edi
 
 ### Sacred Adaptations
 
-| Original Command | Adapted Name | Description |
+| Base Command | Adapted Label | Description |
 |-----------------|--------------|-------------|
-| new-character | new-figure | Create figure profile |
-| character-sheet | figure-sheet | View/edit figure profile |
-| character-arc | figure-arc | Spiritual/historical arc |
-| cast-list | figures-list | Roster of all figures |
-| relationship-map | lineage-map | Genealogical/covenantal relationships |
-| build-world | build-cosmology | Sacred geography, cosmological framework |
-| character-voice-sample | register-sample | Voice register sample |
 | voice-check | register-check | Voice register consistency |
-| plot-graph | theological-arc | Salvation history or dharmic cycle |
-| theme-tracker | doctrine-tracker | Doctrinal threads |
-| subplot-map | narrative-threads | Narrative threads across text |
-| character-ref | figure-ref | Visual figure reference for sacred art |
-| discussion-questions | study-questions | Study/reflection questions |
 | editor-review | scholarly-review | Academic review |
 | beta-reader | theological-review | Doctrinal/pastoral review |
 | sensitivity-review | interfaith-review | Sensitivity across traditions |
+
+Sacred-specific workflows like chronology, doctrinal review, and verse numbering are available through the dedicated `/scr:sacred:*` command family rather than by relabeling hidden base commands.
 
 ## Choosing Your Work Type
 
@@ -345,5 +333,5 @@ Your work type is stored in `.manuscript/config.json` and can be changed later b
 ## See Also
 
 - [Getting Started](getting-started.md) -- Install Scriven and write your first draft
-- [Command Reference](command-reference.md) -- Full list of all 101 commands with usage and examples
+- [Command Reference](command-reference.md) -- Full list of all 108 commands with usage and examples
 - [Voice DNA Guide](voice-dna.md) -- How Scriven profiles and preserves your writing voice

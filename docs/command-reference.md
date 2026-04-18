@@ -1,6 +1,6 @@
 # Command Reference
 
-Scriven has **101 commands** organized into **14 categories**. Commands adapt automatically to your work type -- for example, `/scr:draft-chapter` becomes `/scr:draft-surah` for Quranic commentary, `/scr:draft-act` for screenplays, and `/scr:draft-section` for research papers.
+Scriven has **108 commands** organized into **14 categories**. Commands adapt automatically to your work type -- for example, `/scr:draft` talks about drafting a surah for Quranic commentary, an act for screenplays, and a section for research papers.
 
 Commands marked with **adaptive naming** rename themselves based on your work type's `command_unit` in `.manuscript/config.json`. Commands marked with **group adaptation** have different names for specific work type groups (academic, sacred, etc.).
 
@@ -115,8 +115,8 @@ Draft all scenes in Chapter 5. Each scene gets fresh context with STYLE-GUIDE.md
 - `--respond <name>` -- Respond to an editor proposal
 
 **Group adaptation:**
-- Academic: becomes `/scr:peer-review`
-- Sacred: becomes `/scr:scholarly-review`
+- Academic label: `peer-review`
+- Sacred label: `scholarly-review`
 
 **Example:**
 ```
@@ -531,8 +531,7 @@ Commands for visualizing and managing your narrative structure, themes, and time
 **Available for:** Prose, script, visual, interactive
 
 **Group adaptation:**
-- Academic: becomes `/scr:argument-map`
-- Sacred: becomes `/scr:theological-arc`
+- Technical label: `procedure-map`
 
 **Example:**
 ```
@@ -552,8 +551,7 @@ Visualize your novel's structure mapped to the hero's journey.
 
 **Available for:** Prose, script, academic, visual, interactive
 
-**Group adaptation:**
-- Sacred: becomes `/scr:chronology`
+**Sacred note:** Sacred projects use the dedicated `/scr:sacred:chronology` command instead of `/scr:timeline`.
 
 **Example:**
 ```
@@ -573,10 +571,6 @@ See events in chronological order, even if your narrative is non-linear.
 
 **Available for:** Prose, script, visual, poetry, interactive
 
-**Group adaptation:**
-- Academic: becomes `/scr:research-questions`
-- Sacred: becomes `/scr:doctrine-tracker`
-
 **Example:**
 ```
 /scr:theme-tracker
@@ -594,9 +588,6 @@ See where your themes appear across chapters and which ones need more developmen
 **Prerequisites:** OUTLINE.md must exist, at least 2 threads
 
 **Available for:** Prose, script, interactive
-
-**Group adaptation:**
-- Sacred: becomes `/scr:narrative-threads`
 
 **Example:**
 ```
@@ -753,10 +744,6 @@ Commands for creating and managing characters, relationships, and world-building
 
 **Available for:** Prose, script, visual, interactive
 
-**Group adaptation:**
-- Academic: becomes `/scr:new-concept` (academic concept profile)
-- Sacred: becomes `/scr:new-figure` (sacred figure profile)
-
 **Example:**
 ```
 /scr:new-character
@@ -774,10 +761,6 @@ Start building a character. Scriven interviews you about appearance, personality
 **Prerequisites:** CHARACTERS.md must exist
 
 **Available for:** Prose, script, visual, interactive
-
-**Group adaptation:**
-- Academic: becomes `/scr:concept-sheet`
-- Sacred: becomes `/scr:figure-sheet`
 
 **Flags:**
 - `--edit` -- Modify the character profile
@@ -800,9 +783,6 @@ View Maria's full profile and make changes.
 
 **Available for:** Prose, script, visual, interactive
 
-**Group adaptation:**
-- Sacred: becomes `/scr:lineage-map` (genealogical/covenantal relationships)
-
 **Flags:**
 - `--edit` -- Modify relationships
 
@@ -822,10 +802,10 @@ See how all your characters relate to each other in an ASCII diagram.
 
 **Prerequisites:** None
 
-**Available for:** Prose, script, visual, interactive
+**Available for:** Prose, script, technical, visual, interactive
 
 **Group adaptation:**
-- Sacred: becomes `/scr:build-cosmology` (sacred geography, cosmological framework)
+- Technical label: `map-system`
 
 **Flags:**
 - `--area <area>` -- Focus on a specific area of the world
@@ -848,9 +828,6 @@ Flesh out your magic system through guided world-building questions.
 
 **Available for:** Prose, script, visual, interactive
 
-**Group adaptation:**
-- Sacred: becomes `/scr:figures-list`
-
 **Example:**
 ```
 /scr:cast-list
@@ -869,9 +846,6 @@ Quick overview of all characters: name, role, one-line description.
 
 **Available for:** Prose, script, visual, interactive
 
-**Group adaptation:**
-- Sacred: becomes `/scr:figure-arc` (spiritual/historical arc)
-
 **Example:**
 ```
 /scr:character-arc Maria
@@ -889,9 +863,6 @@ See Maria's emotional journey mapped across chapters -- where she starts, key tu
 **Prerequisites:** CHARACTERS.md and STYLE-GUIDE.md must exist
 
 **Available for:** Prose, script, visual, interactive
-
-**Group adaptation:**
-- Sacred: becomes `/scr:register-sample` (voice register sample)
 
 **Example:**
 ```
@@ -1010,8 +981,7 @@ Commands for reviewing your manuscript from different angles -- continuity, voic
 **Available for:** Prose, script, visual, interactive
 
 **Group adaptation:**
-- Academic: becomes `/scr:citation-check`
-- Sacred: becomes `/scr:doctrinal-check`
+- Technical label: `consistency-check`
 
 **Example:**
 ```
@@ -1032,7 +1002,7 @@ Find contradictions: "In Chapter 3 Maria has brown eyes, but in Chapter 7 they'r
 **Available for:** All work types
 
 **Group adaptation:**
-- Sacred: becomes `/scr:register-check` (voice register consistency)
+- Sacred label: `register-check` (voice register consistency)
 
 **Example:**
 ```
@@ -1053,8 +1023,8 @@ Detect where your drafted prose drifts from your established voice profile.
 **Available for:** All work types
 
 **Group adaptation:**
-- Academic: becomes `/scr:ethics-review`
-- Sacred: becomes `/scr:interfaith-review` (sensitivity across traditions)
+- Academic label: `ethics-review`
+- Sacred label: `interfaith-review` (sensitivity across traditions)
 
 **Example:**
 ```
@@ -1114,8 +1084,8 @@ Check that each character sounds distinct, dialogue tags are clear, and scenes a
 **Available for:** All work types
 
 **Group adaptation:**
-- Academic: becomes `/scr:reviewer-simulation`
-- Sacred: becomes `/scr:theological-review` (doctrinal/pastoral review)
+- Academic label: `reviewer-simulation`
+- Sacred label: `theological-review` (doctrinal/pastoral review)
 
 **Example:**
 ```
@@ -1273,9 +1243,6 @@ Generate a full book proposal: overview, market analysis, chapter summaries, aut
 
 **Available for:** Prose
 
-**Group adaptation:**
-- Sacred: becomes `/scr:study-questions` (study/reflection questions)
-
 **Example:**
 ```
 /scr:discussion-questions
@@ -1326,6 +1293,96 @@ Run the full KDP publishing pipeline: format interior, generate cover template, 
 /scr:export --format epub
 ```
 Export your manuscript as a publication-ready EPUB with proper metadata, table of contents, and styling.
+
+---
+
+### `/scr:build-ebook`
+
+**Description:** Build EPUB with platform-aware accessibility guardrails (Pandoc + EAA compliance).
+
+**Usage:** `/scr:build-ebook [--platform <platform>] [--fixed-layout] [--skip-validate]`
+
+**Prerequisites:** Complete draft must exist
+
+**Flags:**
+- `--platform <platform>` -- Target retailer: kdp, ingram, apple, bn, d2d, kobo, google, smashwords
+- `--fixed-layout` -- Produce fixed-layout EPUB output for picture books and illustrated books
+- `--skip-validate` -- Skip scaffold-marker validation (not recommended)
+
+**Available for:** Prose, visual, poetry, interactive, sacred
+
+**Example:**
+```
+/scr:build-ebook --platform kdp
+```
+Build a retailer-ready EPUB with metadata, accessibility checks, and platform-aware styling.
+
+---
+
+### `/scr:build-print`
+
+**Description:** Build print-ready PDF with trim-size guardrails, or academic `.tex` output for publisher wrapper platforms.
+
+**Usage:** `/scr:build-print [--platform <platform>] [--trim <size>] [--strict] [--hardcover] [--skip-validate]`
+
+**Prerequisites:** Complete draft must exist
+
+**Flags:**
+- `--platform <platform>` -- Target print or academic platform: kdp, ingram, ieee, acm, lncs, elsevier, apa7
+- `--trim <size>` -- Trim size for print-book output: 5x8, 5.25x8, 5.5x8.5, 6x9, 7x10
+- `--strict` -- Turn page-count warnings into hard failures
+- `--hardcover` -- Apply hardcover page limit for KDP
+- `--skip-validate` -- Skip scaffold-marker validation (not recommended)
+
+**Available for:** Prose, script, visual, poetry, sacred, academic
+
+**Example:**
+```
+/scr:build-print --platform kdp --trim 6x9
+```
+Build a print-ready PDF with platform guardrails, or use an academic platform to emit `.tex` source instead.
+
+---
+
+### `/scr:build-smashwords`
+
+**Description:** Build Smashwords/D2D-compliant DOCX via Pandoc reference doc.
+
+**Usage:** `/scr:build-smashwords [--skip-validate]`
+
+**Prerequisites:** Complete draft must exist
+
+**Flags:**
+- `--skip-validate` -- Skip scaffold-marker validation (not recommended)
+
+**Available for:** Prose, visual
+
+**Example:**
+```
+/scr:build-smashwords
+```
+Build a distribution-ready DOCX using the Smashwords/D2D reference document and formatting rules.
+
+---
+
+### `/scr:build-poetry-submission`
+
+**Description:** Build poetry submission manuscript DOCX with one poem per page, title page, and conditional TOC.
+
+**Usage:** `/scr:build-poetry-submission [--skip-validate]`
+
+**Prerequisites:** Complete draft must exist
+
+**Flags:**
+- `--skip-validate` -- Skip scaffold-marker validation (not recommended)
+
+**Available for:** Poetry
+
+**Example:**
+```
+/scr:build-poetry-submission
+```
+Build a poetry-submission DOCX for journal or contest submission using the poetry reference document.
 
 ---
 
@@ -1408,9 +1465,6 @@ Generate an illustration prompt for Chapter 3, Scene 2 in watercolor style.
 **Prerequisites:** CHARACTERS.md must exist
 
 **Available for:** Prose, script, visual, interactive
-
-**Group adaptation:**
-- Sacred: becomes `/scr:figure-ref` (visual figure reference for sacred art)
 
 **Flags:**
 - `--style <style>` -- Art style for the reference sheet
@@ -1801,6 +1855,45 @@ Check for missing files, broken references, and state inconsistencies, then fix 
 
 ---
 
+### `/scr:cleanup`
+
+**Description:** Strip template scaffold markers from draft files. Dry-run by default.
+
+**Usage:** `/scr:cleanup [--apply]`
+
+**Prerequisites:** Draft files must exist
+
+**Flags:**
+- `--apply` -- Modify files in place instead of showing a dry-run preview
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:cleanup --apply
+```
+Remove scaffold markers, Alternate blocks, and duplicate H1 headings from the draft files in place.
+
+---
+
+### `/scr:validate`
+
+**Description:** Scan manuscript for unresolved scaffold markers before export.
+
+**Usage:** `/scr:validate`
+
+**Prerequisites:** Draft files must exist
+
+**Available for:** All work types
+
+**Example:**
+```
+/scr:validate
+```
+Check whether the manuscript is clean enough to export, and list every blocking scaffold marker if it is not.
+
+---
+
 ### `/scr:fast`
 
 **Description:** Make a quick inline edit without full planning overhead. For small fixes and tweaks.
@@ -1962,11 +2055,30 @@ Build your Voice DNA profile by analyzing an existing piece of your writing.
 
 Commands available only for sacred and historical work types (scripture, commentary, devotional, liturgical, historical chronicle, religious epic, sermon, etc.). These commands are hidden from other work types.
 
-### `/scr:concordance`
+### `/scr:sacred-verse-numbering`
+
+**Description:** Show verse numbering format for the active sacred tradition.
+
+**Usage:** `/scr:sacred-verse-numbering [--example <text>]`
+
+**Prerequisites:** `.manuscript/config.json` must include a valid `tradition`
+
+**Flags:**
+- `--example <text>` -- Format an example citation using the active tradition's numbering style
+
+**Example:**
+```
+/scr:sacred-verse-numbering --example "John 3 16"
+```
+Show the active tradition's numbering format and render an example citation using that system.
+
+---
+
+### `/scr:sacred:concordance`
 
 **Description:** Build or search a concordance of key terms, names, and phrases across the sacred text. Essential for cross-referencing and intertextual study.
 
-**Usage:** `/scr:concordance [--build] [--search <term>] [--tradition <tradition>]`
+**Usage:** `/scr:sacred:concordance [--build] [--search <term>] [--tradition <tradition>]`
 
 **Prerequisites:** Draft must exist
 
@@ -1977,17 +2089,17 @@ Commands available only for sacred and historical work types (scripture, comment
 
 **Example:**
 ```
-/scr:concordance --search "covenant"
+/scr:sacred:concordance --search "covenant"
 ```
 Find every occurrence of "covenant" across the text with surrounding context and cross-references.
 
 ---
 
-### `/scr:cross-reference`
+### `/scr:sacred:cross-reference`
 
 **Description:** Map connections between passages -- parallel accounts, prophetic fulfillments, intertextual echoes, typological links.
 
-**Usage:** `/scr:cross-reference [--passage <ref>] [--type <parallel|fulfillment|echo|typology>]`
+**Usage:** `/scr:sacred:cross-reference [--passage <ref>] [--type <parallel|fulfillment|echo|typology>]`
 
 **Prerequisites:** Draft must exist
 
@@ -1997,17 +2109,17 @@ Find every occurrence of "covenant" across the text with surrounding context and
 
 **Example:**
 ```
-/scr:cross-reference --passage "Genesis 22" --type typology
+/scr:sacred:cross-reference --passage "Genesis 22" --type typology
 ```
 Find typological connections to the binding of Isaac across the text.
 
 ---
 
-### `/scr:genealogy`
+### `/scr:sacred:genealogy`
 
 **Description:** Build and verify genealogical trees and lineages for figures in the text. Catches contradictions across chapters.
 
-**Usage:** `/scr:genealogy [--verify] [--figure <name>] [--tradition <tradition>]`
+**Usage:** `/scr:sacred:genealogy [--verify] [--figure <name>] [--tradition <tradition>]`
 
 **Prerequisites:** FIGURES.md must exist with at least 2 figures
 
@@ -2018,17 +2130,17 @@ Find typological connections to the binding of Isaac across the text.
 
 **Example:**
 ```
-/scr:genealogy --figure Abraham --verify
+/scr:sacred:genealogy --figure Abraham --verify
 ```
 Build Abraham's genealogical tree and verify consistency across all mentions in the text.
 
 ---
 
-### `/scr:chronology`
+### `/scr:sacred:chronology`
 
 **Description:** Timeline management with era-appropriate dating systems. Handles overlapping calendars and disputed dates.
 
-**Usage:** `/scr:chronology [--calendar <system>] [--verify] [--range <start>-<end>]`
+**Usage:** `/scr:sacred:chronology [--calendar <system>] [--verify] [--range <start>-<end>]`
 
 **Prerequisites:** None
 
@@ -2039,17 +2151,17 @@ Build Abraham's genealogical tree and verify consistency across all mentions in 
 
 **Example:**
 ```
-/scr:chronology --calendar hebrew --verify
+/scr:sacred:chronology --calendar hebrew --verify
 ```
 Build a timeline using the Hebrew calendar and verify dates are consistent across the text.
 
 ---
 
-### `/scr:annotation-layer`
+### `/scr:sacred:annotation-layer`
 
 **Description:** Add or manage a commentary/exegetical layer alongside the primary sacred text. Support multiple annotation traditions simultaneously.
 
-**Usage:** `/scr:annotation-layer [tradition_name] [--list] [--remove <tradition>]`
+**Usage:** `/scr:sacred:annotation-layer [tradition_name] [--list] [--remove <tradition>]`
 
 **Prerequisites:** Draft must exist
 
@@ -2059,17 +2171,17 @@ Build a timeline using the Hebrew calendar and verify dates are consistent acros
 
 **Example:**
 ```
-/scr:annotation-layer reformed
+/scr:sacred:annotation-layer reformed
 ```
 Add a Reformed theological annotation layer to your text alongside existing Catholic annotations.
 
 ---
 
-### `/scr:verse-numbering`
+### `/scr:sacred:verse-numbering`
 
 **Description:** Manage verse/ayah/pasuk numbering systems. Handles differences between traditions (Masoretic vs. Septuagint numbering, Hafs vs. Warsh Quranic numbering, etc.).
 
-**Usage:** `/scr:verse-numbering [--system <system>] [--convert <from>-<to>] [--verify]`
+**Usage:** `/scr:sacred:verse-numbering [--system <system>] [--convert <from>-<to>] [--verify]`
 
 **Prerequisites:** Draft must exist
 
@@ -2080,17 +2192,17 @@ Add a Reformed theological annotation layer to your text alongside existing Cath
 
 **Example:**
 ```
-/scr:verse-numbering --convert masoretic-septuagint
+/scr:sacred:verse-numbering --convert masoretic-septuagint
 ```
 Show how verse numbers differ between Masoretic and Septuagint traditions.
 
 ---
 
-### `/scr:source-tracking`
+### `/scr:sacred:source-tracking`
 
 **Description:** Track primary sources, oral traditions, manuscript variants, and source attributions. For historical and critical editions.
 
-**Usage:** `/scr:source-tracking [--add <source>] [--list] [--verify]`
+**Usage:** `/scr:sacred:source-tracking [--add <source>] [--list] [--verify]`
 
 **Prerequisites:** WORK.md must exist
 
@@ -2101,23 +2213,23 @@ Show how verse numbers differ between Masoretic and Septuagint traditions.
 
 **Example:**
 ```
-/scr:source-tracking --add "Dead Sea Scrolls, 1QIsaA"
+/scr:sacred:source-tracking --add "Dead Sea Scrolls, 1QIsaA"
 ```
 Track the Dead Sea Scrolls as a primary source for your critical edition.
 
 ---
 
-### `/scr:doctrinal-check`
+### `/scr:sacred:doctrinal-check`
 
 **Description:** Verify internal theological and doctrinal consistency across the text. Flag contradictions in doctrine, moral teaching, or cosmological claims.
 
-**Usage:** `/scr:doctrinal-check [unit number]`
+**Usage:** `/scr:sacred:doctrinal-check [unit number]`
 
 **Prerequisites:** Draft and DOCTRINES.md must exist
 
 **Example:**
 ```
-/scr:doctrinal-check
+/scr:sacred:doctrinal-check
 ```
 Scan the entire text for doctrinal inconsistencies -- contradictions in theology, moral teaching, or cosmology.
 
@@ -2127,29 +2239,17 @@ Scan the entire text for doctrinal inconsistencies -- contradictions in theology
 
 Many commands automatically rename based on your work type group. Here is a summary:
 
-| Base Command | Academic | Sacred |
+| Base Command | Academic Label | Sacred Label |
 |---|---|---|
-| `/scr:editor-review` | `/scr:peer-review` | `/scr:scholarly-review` |
-| `/scr:new-character` | `/scr:new-concept` | `/scr:new-figure` |
-| `/scr:character-sheet` | `/scr:concept-sheet` | `/scr:figure-sheet` |
-| `/scr:relationship-map` | -- | `/scr:lineage-map` |
-| `/scr:build-world` | -- | `/scr:build-cosmology` |
-| `/scr:cast-list` | -- | `/scr:figures-list` |
-| `/scr:character-arc` | -- | `/scr:figure-arc` |
-| `/scr:character-voice-sample` | -- | `/scr:register-sample` |
-| `/scr:plot-graph` | `/scr:argument-map` | `/scr:theological-arc` |
-| `/scr:timeline` | -- | `/scr:chronology` |
-| `/scr:theme-tracker` | `/scr:research-questions` | `/scr:doctrine-tracker` |
-| `/scr:subplot-map` | -- | `/scr:narrative-threads` |
-| `/scr:continuity-check` | `/scr:citation-check` | `/scr:doctrinal-check` |
-| `/scr:voice-check` | -- | `/scr:register-check` |
-| `/scr:sensitivity-review` | `/scr:ethics-review` | `/scr:interfaith-review` |
-| `/scr:beta-reader` | `/scr:reviewer-simulation` | `/scr:theological-review` |
-| `/scr:character-ref` | -- | `/scr:figure-ref` |
-| `/scr:discussion-questions` | -- | `/scr:study-questions` |
+| `/scr:editor-review` | `peer-review` | `scholarly-review` |
+| `/scr:beta-reader` | `reviewer-simulation` | `theological-review` |
+| `/scr:voice-check` | -- | `register-check` |
+| `/scr:sensitivity-review` | `ethics-review` | `interfaith-review` |
+
+Sacred-specific flow labels like `chronology` and `doctrinal-check` are exposed through the dedicated `/scr:sacred:*` command family rather than by relabeling hidden base commands.
 
 Commands with **adaptive naming** (discuss, plan, draft, submit) change their suffix based on your work type's structural unit. For example, a novel uses chapters, so you get `/scr:draft-chapter`. A screenplay uses acts: `/scr:draft-act`. A Quranic commentary uses surahs: `/scr:draft-surah`.
 
 ---
 
-*This reference is auto-generated from `data/CONSTRAINTS.json` and individual command files in `commands/scr/`. For the most current command details, run `/scr:help` inside your project.*
+*This reference is maintained against `data/CONSTRAINTS.json` and the live command tree in `commands/scr/`. For the most current project-scoped menu, run `/scr:help` inside your project.*

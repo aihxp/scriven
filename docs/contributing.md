@@ -9,15 +9,15 @@ This guide walks you through extending Scriven: adding commands, agents, work ty
 Before diving in, here is how the codebase is organized:
 
 ```
-commands/scr/          Core command tree (101 command files total, including sacred subcommands)
+commands/scr/          Core command tree (100+ command files, including sacred subcommands)
 commands/scr/sacred/   8 sacred-exclusive subcommands
 agents/                6 specialized agents (drafter, voice-checker, etc.)
 data/CONSTRAINTS.json  Central constraint registry -- every command checks this
 data/demo/             Pre-baked demo project (watchmaker story)
 data/export-templates/ Export templates (Typst, CSS, LaTeX)
-templates/             9 base project templates + technical/ and sacred/ variants
+templates/             Base project templates + technical/ and sacred/ variants
 templates/technical/   6 technical-writing context variants
-templates/sacred/      6 sacred-specific context templates
+templates/sacred/      Sacred-specific context templates and tradition manifests
 bin/install.js         Multi-platform installer (Node.js)
 docs/                  Documentation suite (16 guides)
 ```
@@ -106,7 +106,7 @@ Commands that set `renames_by_unit: true` in CONSTRAINTS.json adapt their names 
 Load `.manuscript/config.json` for `command_unit`. This command is `/scr:draft-{unit}`.
 ```
 
-When a writer starts a novel project, `command_unit` is set to `"chapter"`, so `/scr:draft` becomes `/scr:draft-chapter`. For a screenplay, it becomes `/scr:draft-act`. The command file itself does not change -- the adaptation happens at runtime through config.json.
+When a writer starts a novel project, `command_unit` is set to `"chapter"`, so `/scr:draft` is presented in chapter terms. For a screenplay, the same `/scr:draft` command is presented in act terms. The command file itself does not change -- the adaptation happens at runtime through config.json.
 
 ### Step 4: Write a full command
 

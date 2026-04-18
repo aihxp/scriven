@@ -127,49 +127,49 @@ The didactic register adapted for systematic teaching. Instructional, systematic
 
 These 8 commands are only available when your work type belongs to the sacred group. They appear in the command list automatically when you create a sacred project and are hidden for all other work types.
 
-### `/scr:concordance`
+### `/scr:sacred:concordance`
 
 Build or search a concordance of key terms, names, and phrases across your sacred text. Tracks every occurrence of significant terms to enable cross-referencing and intertextual study. Run with `--build` to generate a full concordance from your drafted text, or `--search <term>` to find all occurrences of a specific term.
 
 **Requires:** At least one drafted unit.
 
-### `/scr:cross-reference`
+### `/scr:sacred:cross-reference`
 
 Map connections between passages within your text or between your text and other sacred sources. Identifies parallel passages, quotations, allusions, and thematic echoes. Essential for commentary and exegetical work where intertextuality is central.
 
 **Requires:** At least one drafted unit.
 
-### `/scr:genealogy`
+### `/scr:sacred:genealogy`
 
 Build and visualize genealogical trees and lineage relationships from your FIGURES.md file. For biblical genealogies, Quranic lineages, mythological family trees, or any sacred text where figures are connected by descent, marriage, or spiritual succession.
 
 **Requires:** FIGURES.md with at least 2 figures.
 
-### `/scr:chronology`
+### `/scr:sacred:chronology`
 
 Construct a timeline of events across your sacred text. Handles multiple calendar systems (Gregorian, Hijri, Hebrew, Vikram Samvat, Buddhist Era) and can cross-reference events with external historical timelines. Unlike the standard `/scr:timeline` command, this is designed for texts spanning centuries or millennia.
 
 **No prerequisites** -- can be started at any point.
 
-### `/scr:annotation-layer`
+### `/scr:sacred:annotation-layer`
 
 Add scholarly annotations, footnotes, and commentary layers to your drafted text. Supports multiple annotation layers (textual, historical, theological, linguistic) that can be toggled independently in the exported output.
 
 **Requires:** At least one drafted unit.
 
-### `/scr:verse-numbering`
+### `/scr:sacred:verse-numbering`
 
 Apply or adjust verse numbering systems to your drafted text. Supports tradition-specific systems (Masoretic for Hebrew Bible, Hafs for Quran, etc.) and can convert between systems. Ensures your verse references match the numbering expected by your tradition.
 
 **Requires:** At least one drafted unit.
 
-### `/scr:source-tracking`
+### `/scr:sacred:source-tracking`
 
 Track and document the source traditions, manuscripts, and textual variants underlying your sacred text. For critical editions, translation projects, and any work that draws from multiple source texts.
 
 **No prerequisites** -- can be started at any point.
 
-### `/scr:doctrinal-check`
+### `/scr:sacred:doctrinal-check`
 
 Verify that your drafted text is consistent with the doctrines recorded in your DOCTRINES.md file. Flags any assertions, implications, or narrative choices that might contradict your established doctrinal framework.
 
@@ -177,28 +177,16 @@ Verify that your drafted text is consistent with the doctrines recorded in your 
 
 ## Command Adaptations
 
-When you are working on a sacred work type, several standard commands automatically rename to use tradition-appropriate vocabulary. You do not need to remember the renamed versions -- Scriven handles this in the background -- but knowing the renames helps you understand what you see in the help output.
+When you are working on a sacred work type, selected review commands pick up tradition-appropriate labels in help and output. You still invoke the canonical file-backed command unless your runtime explicitly installs an alias.
 
-| Standard Command | Sacred Rename | Why |
+| Standard Command | Sacred Label | Why |
 |-----------------|---------------|-----|
-| `/scr:character-sheet` | `/scr:figure-sheet` | Sacred texts have historical/religious **figures**, not fictional characters |
-| `/scr:cast-list` | `/scr:figures-list` | A list of figures, not a cast |
-| `/scr:character-arc` | `/scr:figure-arc` | Tracking a figure's journey through the text |
-| `/scr:character-voice-sample` | `/scr:register-sample` | Voice **registers** replace character voices in sacred writing |
-| `/scr:build-world` | `/scr:build-cosmology` | Sacred texts build **cosmologies**, not fictional worlds |
-| `/scr:relationship-map` | `/scr:lineage-map` | Relationships in sacred texts are often **lineages** |
-| `/scr:plot-graph` | `/scr:theological-arc` | The arc of a sacred text is **theological**, not a plot |
-| `/scr:timeline` | `/scr:chronology` | Sacred timelines span eras and use tradition-specific calendars |
-| `/scr:theme-tracker` | `/scr:doctrine-tracker` | Sacred texts track **doctrines**, not themes |
-| `/scr:subplot-map` | `/scr:narrative-threads` | Interwoven **narrative threads**, not subplots |
-| `/scr:sensitivity-review` | `/scr:interfaith-review` | Review for **interfaith** sensitivity, not general sensitivity |
-| `/scr:editor-review` | `/scr:scholarly-review` | Sacred texts undergo **scholarly** review |
-| `/scr:continuity-check` | `/scr:doctrinal-check` | Consistency is checked against **doctrine**, not plot continuity |
-| `/scr:voice-check` | `/scr:register-check` | Checking **register** consistency, not character voice |
-| `/scr:beta-reader` | `/scr:theological-review` | Review by a **theological** perspective, not a casual reader |
-| `/scr:discussion-questions` | `/scr:study-questions` | **Study questions** for sacred text discussion groups |
+| `/scr:sensitivity-review` | `interfaith-review` | Review for **interfaith** sensitivity, not general sensitivity |
+| `/scr:editor-review` | `scholarly-review` | Sacred texts undergo **scholarly** review |
+| `/scr:voice-check` | `register-check` | Checking **register** consistency, not character voice |
+| `/scr:beta-reader` | `theological-review` | Review by a **theological** perspective, not a casual reader |
 
-These adaptations are defined in `data/CONSTRAINTS.json` and applied automatically based on your work type group.
+Sacred-specific workflows like chronology, doctrinal review, and verse numbering are exposed through the dedicated `/scr:sacred:*` command family instead of by relabeling hidden base commands.
 
 ## Sacred Translation
 
@@ -254,7 +242,7 @@ Sacred front matter can include:
 Sacred back matter can include:
 
 - **Glossary** -- Key terms with definitions in the tradition's vocabulary
-- **Concordance** -- Cross-referenced index of terms (generated by `/scr:concordance`)
+- **Concordance** -- Cross-referenced index of terms (generated by `/scr:sacred:concordance`)
 - **Bibliography** -- Source texts, commentaries, and reference works
 - **Scriptural index** -- References to other sacred texts cited or alluded to
 - **Subject index** -- Topical index
@@ -272,14 +260,14 @@ Here is a quick walkthrough for starting a sacred writing project:
 
 3. **Explore and plan.** Use `/scr:discuss` (it adapts automatically to your sacred work type) to shape your first unit. Discuss the theological themes, source traditions, and structural approach you want to take.
 
-4. **Draft.** Run `/scr:draft` (which becomes `/scr:draft-surah`, `/scr:draft-parashah`, etc., depending on your work type). The drafter agent will write in the register specified in your plan file, using your voice as defined in STYLE-GUIDE.md.
+4. **Draft.** Run `/scr:draft`. In sacred projects, Scriven frames the work in the right unit terminology (surah, parashah, sutta, and so on) while the drafter writes in the register specified in your plan file, using your voice as defined in STYLE-GUIDE.md.
 
-5. **Review.** Use `/scr:scholarly-review` (the sacred adaptation of editor-review) for expert review, `/scr:doctrinal-check` to verify consistency with your DOCTRINES.md, and `/scr:register-check` to ensure voice register fidelity.
+5. **Review.** Use `/scr:editor-review` for expert review, `/scr:sacred:doctrinal-check` to verify consistency with your DOCTRINES.md, and `/scr:voice-check` for sacred register fidelity.
 
-6. **Build your apparatus.** As you draft, use `/scr:concordance` to build cross-references, `/scr:chronology` for timelines, `/scr:genealogy` for lineage trees, and `/scr:annotation-layer` for scholarly footnotes.
+6. **Build your apparatus.** As you draft, use `/scr:sacred:concordance` to build cross-references, `/scr:sacred:chronology` for timelines, `/scr:sacred:genealogy` for lineage trees, and `/scr:sacred:annotation-layer` for scholarly footnotes.
 
 ## See Also
 
 - [Getting Started](getting-started.md) -- Install Scriven and create your first project
-- [Command Reference](command-reference.md) -- Full reference for all 101 commands, including the [Sacred Exclusive](command-reference.md#sacred-exclusive) section
+- [Command Reference](command-reference.md) -- Full reference for all 108 commands, including the [Sacred Exclusive](command-reference.md#sacred-exclusive) section
 - [README](../README.md) -- Project overview and feature list
