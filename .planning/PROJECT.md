@@ -55,7 +55,16 @@ Scriven is a spec-driven writing, publishing, and translation pipeline that runs
 
 ### Active
 
-- v1.8+ TBD — all v1.7 Last Mile phases complete as of 2026-04-17. Planning pending.
+- **CMD-01**: Sacred-exclusive commands must expose one canonical installed runtime name per host surface, and every command file or doc that references them must use that real surface
+- **CMD-02**: Installer/runtime inventory generation must come from one canonical command-source model so sacred commands cannot appear both as phantom top-level commands and namespaced commands in the same runtime
+- **CMD-03**: Cross-file validation must detect command references that do not resolve against the installed runtime surface for the target host
+- **CMD-04**: Adapted command names shown to writers (`/scr:new-figure`, `/scr:procedure-map`, `/scr:peer-review`, etc.) must either install runnable wrappers/aliases or be reframed as descriptive adaptations rather than direct invocation strings
+- **CMD-05**: Help, router, sacred docs, work-type docs, and command reference must stay aligned on whether adapted names are runnable commands, conceptual renames, or display-only vocabulary
+- **CMD-06**: Claude Code must use one flat `/scr-*` command surface consistently across installer output, docs, examples, and upgrade guidance
+- **CMD-07**: Claude-facing command examples for autopilot/autonomous-style flows must use the flat `/scr-*` surface consistently, matching the runtime-native pattern Scriven already claims in README/getting-started
+- **CMD-08**: Any remaining Claude-specific `/scr:*` examples in launch, guide, or reference docs must be normalized or explicitly marked as non-Claude surfaces
+- **CMD-09**: Regression tests must cover nested sacred command discovery plus dead-reference detection across `commands/`, `docs/`, and installer-generated manifests
+- **CMD-10**: Contributor/runtime docs must clearly explain the naming contract by host: Claude uses `/scr-*`, Codex uses `$scr-*`, and any namespaced or adapted forms must specify whether they are installed or conceptual
 
 ### Validated (v1.7 so far)
 
@@ -111,33 +120,28 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - **Plan authority**: If a command file contradicts the product plan, fix the command — plan is canonical (section 15 for command specs)
 - **Progressive disclosure**: Onboarding asks 3 questions max; depth is optional and additive
 
-## Current Milestone: v1.7 Last Mile
+## Current Milestone: v1.8 Command Surface Coherence
 
-**Goal:** Close the production edge — ship real build pipelines, cross-domain templates, and per-platform awareness so Scriven reaches publication-ready output for any supported work type, not just book prose.
+**Goal:** Make Scriven's command surface truthful and runtime-native so every documented command name is runnable in the host that advertises it.
 
 **Target features:**
-- `/scr:cleanup` + `/scr:validate` — scaffold bracket stripping and placeholder lint gate before export
-- `/scr:build-ebook` + `/scr:build-print` — reference Pandoc + Pandoc/Typst build pipelines
-- Staged front-matter generation (auto vs scaffold-only vs personalize)
-- Platform-awareness: word → page estimator with KDP 828pg / Ingram 1200pg guardrails
-- Sacred tradition profiles (catholic, orthodox, tewahedo, protestant, jewish, islamic-hafs, islamic-warsh, pali, tibetan, sanskrit) with book-order, approval-block, font stack, RTL, numbering macro
-- Stage play Typst template (Samuel French format) and picture book Typst template (8.5×8.5 with bleed/safe-zone)
-- Fixed-layout EPUB template + OPF stub and Smashwords DOCX reference doc
-- Poetry stack: chapbook Typst template + poetry submission DOCX reference doc
-- Academic LaTeX wrappers for IEEE, ACM, LNCS, Elsevier, APA7 (thin wrappers to user-installed classes)
-- Architectural shift: `templates/sacred/` + `templates/platforms/` directories and `tradition:` / `platform:` keys in project spec
+- Sacred-exclusive command naming repair so command files, docs, manifests, and installer output agree on the real installed names
+- Adapted command alias policy: either generate runnable aliases for renamed commands or stop presenting them as invokable commands
+- Claude Code flat `/scr-*` surface audit and completion, including autopilot/autonomous-style commands and example snippets
+- Canonical command inventory generation for installer manifests and documentation
+- Dead-command reference detection across `commands/`, `docs/`, and installer-generated surfaces
+- Runtime naming policy docs that explain Claude flat slash commands, Codex `$scr-*` skills, and namespaced surfaces where applicable
 
 **Key context:**
-- Driven by first real cross-domain validation — a Bible project surfaced that sacred templates assumed Roman Catholic conventions and that the build edge ends at manuscript scaffolding rather than publication-ready output
-- Research artifact at `.planning/tmp/cross-domain-platforms-research.md` is the canonical input
-- Must preserve zero-dependency architecture — publisher LaTeX classes stay user-installed; Scriven ships only thin wrappers
-- EU EAA (June 2025) accessibility applies to every EPUB output
-- Voice DNA pipeline must not regress
+- Triggered by live review findings showing that sacred workflows, help surfaces, and generic manifests can currently advertise command names the installer never creates
+- User requested Claude refactor guidance aligned with the flat GSD pattern used in `gsd-build/get-shit-done`, where commands are documented as `/gsd-help`, `/gsd-progress`, and `/gsd-autonomous`
+- Must preserve zero-dependency architecture and keep command behavior file-backed; surface changes should come from installer/runtime contracts, not a compiled dispatcher
+- Voice DNA pipeline must not regress while command names, aliases, or runtime wrappers are normalized
 
 ## Current State
 
 **Latest shipped milestone:** v1.7 Last Mile (complete 2026-04-17)
-**Status:** All 7 v1.7 phases complete. 1510 regression tests passing. Zero new dependencies introduced.
+**Status:** v1.8 planning active. v1.7 is shipped; 1510 regression tests currently pass.
 
 **Current product surface:**
 - Installer writes are crash-safe via atomic temp-file-then-rename with orphan cleanup on startup
@@ -170,7 +174,8 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 
 ## Next Milestone Goals
 
-- v1.8+ TBD — depends on v1.7 Last Mile outcomes. Candidates from research deferred this cycle include: narrator script DOCX (audiobook work type), tech-doc scaffolds (mkdocs.yml, Sphinx conf.py, runbook skeletons), comic/webtoon script templates, radio drama template, IngramSpark full-wrap cover Typst template, Tier-3 cross-domain additions.
+- v1.8 Command Surface Coherence — fix sacred command name breakage, resolve adapted alias truthfulness, and finish the Claude flat `/scr-*` contract
+- Defer broader product expansion until the command surface is internally consistent across installer output, docs, and runtime manifests
 
 <details>
 <summary>Archived milestone context: v1.4 Perplexity & Technical Writing</summary>
@@ -205,6 +210,8 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 | Technical writing should start as a small, domain-native family | A narrow set of real document types produces better adaptive behavior than one vague catch-all type | ✓ Good |
 | Codex should be treated as a skill-native runtime, not a slash-command clone | Match the host's real discovery surface while keeping installed command markdown as the behavior source of truth | ✓ Good |
 | Silent installs must clean only Scriven-owned runtime outputs | Reliability gains are not worth risking user-managed host files | ✓ Good |
+| Runtime command names must only advertise installable surfaces | A guide that points at dead command names erodes trust faster than a missing feature | In progress in v1.8 |
+| Claude Code should follow a flat `/scr-*` surface, mirroring GSD's runtime-native style | Flat slash commands are easier to discover and match the upstream host conventions Scriven now claims to support | In progress in v1.8 |
 
 ## Evolution
 
@@ -224,4 +231,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-17 — v1.7 Last Mile complete; all 7 phases shipped, 1510 tests passing*
+*Last updated: 2026-04-18 — v1.8 Command Surface Coherence started; requirements and roadmap definition in progress*

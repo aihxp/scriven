@@ -1,43 +1,43 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.7
-milestone_name: Last Mile
-status: complete
-stopped_at: Completed Phase 35 (Academic LaTeX Wrappers) — v1.7 milestone archived
-last_updated: "2026-04-17T00:00:00.000Z"
-last_activity: 2026-04-17
+milestone: v1.8
+milestone_name: Command Surface Coherence
+status: requirements
+stopped_at: Defining v1.8 requirements and roadmap
+last_updated: "2026-04-18T02:45:58.000Z"
+last_activity: 2026-04-18
 progress:
-  total_phases: 7
-  completed_phases: 7
-  total_plans: 26
-  completed_plans: 26
-  percent: 100
+  total_phases: 3
+  completed_phases: 0
+  total_plans: 7
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
 
 ## Project Reference
 
-See: .planning/PROJECT.md (updated 2026-04-17)
+See: .planning/PROJECT.md (updated 2026-04-18)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** v1.7 Last Mile — all 7 phases complete
+**Current focus:** v1.8 Command Surface Coherence — defining requirements and roadmap
 
 ## Current Position
 
-Phase: 35 (complete)
-Plan: All 26 plans complete
-Status: Milestone v1.7 complete — lifecycle in progress
-Last activity: 2026-04-17
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-18 — Milestone v1.8 started
 
-Progress: [██████████] 100%
+Progress: [----------] 0%
 
 ## Performance Metrics
 
 **Velocity:**
 
 - Total plans completed: 104 (37 from v1.0, 2 from v1.1, 8 from v1.2, 9 from v1.3, 7 from v1.4, 2 unrecorded from v1.5, 6 from v1.6, 13 from v1.7)
-- Milestone v1.7: 7 phases, 26 plans, 1510 regression tests, zero new dependencies
+- Latest shipped milestone v1.7: 7 phases, 26 plans, 1510 regression tests, zero new dependencies
 
 *Updated after each plan completion*
 
@@ -69,7 +69,9 @@ Recent decisions affecting current work:
 
 ### Pending Todos
 
-- Plans for Phases 31-35 will be authored in sequence
+- Author detailed plans for Phases 36-38
+- Resolve sacred command namespace policy before runtime/doc rewrites begin
+- Decide whether adapted names become real runtime wrappers or display-only vocabulary
 
 ### Blockers/Concerns
 
@@ -77,6 +79,6 @@ None.
 
 ## Session Continuity
 
-Last session: 2026-04-17T14:00:00.000Z
-Stopped at: Completed Phase 30 (Export Cleanup & Validation Gate)
+Last session: 2026-04-18T02:45:58.000Z
+Stopped at: Defining v1.8 requirements and roadmap
 Resume file: None

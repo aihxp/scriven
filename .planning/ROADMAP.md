@@ -10,6 +10,7 @@
 - [x] **v1.5 Runtime Install Reliability** - Phases 20-22 (shipped 2026-04-09)
 - [x] **v1.6 Installer Hardening** - Phases 23-28 (shipped 2026-04-16) — [archive](milestones/v1.6-ROADMAP.md)
 - [x] **v1.7 Last Mile** - Phases 29-35 (shipped 2026-04-17) — [archive](milestones/v1.7-ROADMAP.md)
+- [ ] **v1.8 Command Surface Coherence** - Phases 36-38 (planned 2026-04-18)
 
 ## Phases
 
@@ -26,6 +27,14 @@
 - [x] **Phase 8: Collaboration, Platform & Sacred** - Revision tracks, multi-runtime support, and sacred text features
 
 </details>
+
+### v1.8 Command Surface Coherence (Planned)
+
+**Milestone Goal:** Make Scriven's command surface truthful and runtime-native so every documented command name is runnable in the host that advertises it.
+
+- [ ] **Phase 36: Canonical Command Inventory** - Unify sacred command discovery and manifest generation so installer output, docs, and runtime manifests derive from one real command inventory
+- [ ] **Phase 37: Claude Surface & Alias Runtime Contract** - Finish Claude flat `/scr-*` naming and decide whether adapted names become real wrappers or stop being advertised as runnable commands
+- [ ] **Phase 38: Documentation & Regression Guardrails** - Sweep docs/command files to the canonical surface and add dead-reference tests so naming drift fails fast
 
 <details>
 <summary>v1.1 Generic Platform Support (Phase 9) - SHIPPED 2026-04-07</summary>
@@ -183,10 +192,47 @@
   - [x] 35-02-PLAN.md — Five LaTeX wrapper templates (IEEEtran, acmart, llncs, elsarticle, apa7) (TPL-07)
   - [x] 35-03-PLAN.md — build-print LaTeX route + missing-class error guidance (TPL-07)
 
+### Phase 36: Canonical Command Inventory
+**Goal**: Scriven has one authoritative command inventory per runtime so sacred command names, manifest output, and installer behavior cannot disagree
+**Depends on**: Phase 27 (runtime-specific command-ref rewriting baseline), Phase 33 (sacred command surface in active use)
+**Requirements**: CMD-01, CMD-02
+**Success Criteria** (what must be TRUE):
+  1. A sacred command referenced from another command file resolves to the same installed name the runtime actually exposes
+  2. Generic/manifest runtimes no longer advertise duplicate sacred names like both `/scr:concordance` and `/scr:sacred:concordance` unless both are intentionally installed
+  3. Installer/runtime inventory generation has one canonical source model that contributors can reason about without checking multiple partial inventories
+**Plans**: 2 plans
+  - [ ] 36-01-PLAN.md — Canonical command inventory design and sacred namespace policy (CMD-01, CMD-02)
+  - [ ] 36-02-PLAN.md — Installer/manifest implementation for canonical sacred command discovery (CMD-01, CMD-02)
+
+### Phase 37: Claude Surface & Alias Runtime Contract
+**Goal**: Claude Code uses one flat `/scr-*` surface consistently, and adapted command names are either truly runnable or clearly not presented as commands
+**Depends on**: Phase 36 (canonical inventory exists)
+**Requirements**: CMD-04, CMD-06, CMD-07
+**Success Criteria** (what must be TRUE):
+  1. A Claude user following README/getting-started/examples sees flat `/scr-*` commands everywhere, including autopilot/autonomous-style flows
+  2. A writer told to run an adapted command such as `/scr-new-figure` or `/scr-procedure-map` can actually invoke it, or the docs stop presenting it as a direct command
+  3. Claude install output, migration guidance, and runtime docs all describe the same command contract
+**Plans**: 2 plans
+  - [ ] 37-01-PLAN.md — Claude flat command surface audit and normalization plan (CMD-06, CMD-07)
+  - [ ] 37-02-PLAN.md — Adapted alias wrapper policy and runtime implementation (CMD-04, CMD-06)
+
+### Phase 38: Documentation & Regression Guardrails
+**Goal**: Command-surface drift is caught automatically by docs/tests rather than by manual review after release
+**Depends on**: Phase 36, Phase 37
+**Requirements**: CMD-03, CMD-05, CMD-08, CMD-09, CMD-10
+**Success Criteria** (what must be TRUE):
+  1. Command files, guides, and reference docs no longer point writers at dead command names for their target runtime
+  2. Test coverage fails if nested sacred commands or adapted aliases drift away from the installed surface
+  3. Contributor docs explain exactly when to use `/scr:*`, `/scr-*`, or `$scr-*` and whether an adapted name is conceptual or runnable
+**Plans**: 3 plans
+  - [ ] 38-01-PLAN.md — Dead-reference regression suite covering commands, docs, and manifest output (CMD-03, CMD-09)
+  - [ ] 38-02-PLAN.md — Docs sweep for canonical runtime naming and adapted alias language (CMD-05, CMD-08, CMD-10)
+  - [ ] 38-03-PLAN.md — Contributor/runtime naming contract updates and release-note guidance (CMD-10)
+
 ## Progress
 
-**Execution Order (v1.7):**
-Phases execute in numeric order: 29 -> 30 -> 31 -> 32 -> 33 -> 34 -> 35
+**Execution Order (v1.8):**
+Phases execute in numeric order: 36 -> 37 -> 38
 
 | Phase | Milestone | Plans Complete | Status | Completed |
 |-------|-----------|----------------|--------|-----------|
@@ -225,3 +271,6 @@ Phases execute in numeric order: 29 -> 30 -> 31 -> 32 -> 33 -> 34 -> 35
 | 33. Sacred Tradition Profiles | v1.7 | 4/4 | Complete    | 2026-04-17 |
 | 34. Cross-Domain Narrative & Poetry Templates | v1.7 | 3/3 | Complete    | 2026-04-17 |
 | 35. Academic LaTeX Wrappers | v1.7 | 3/3 | Complete    | 2026-04-17 |
+| 36. Canonical Command Inventory | v1.8 | 0/2 | Planned | — |
+| 37. Claude Surface & Alias Runtime Contract | v1.8 | 0/2 | Planned | — |
+| 38. Documentation & Regression Guardrails | v1.8 | 0/3 | Planned | — |
