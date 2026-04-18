@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-milestone: v2.0
-milestone_name: Publishing Cover Packaging
-status: defining_requirements
-stopped_at: Milestone started; requirements and roadmap defined
-last_updated: "2026-04-18T23:00:00Z"
+milestone: none
+milestone_name: none
+status: milestone_shipped
+stopped_at: v2.0 shipped and archived; awaiting next milestone
+last_updated: "2026-04-18T06:59:31Z"
 last_activity: 2026-04-18
 progress:
   total_phases: 3
-  completed_phases: 0
-  total_plans: 0
-  completed_plans: 0
-  percent: 0
+  completed_phases: 3
+  total_plans: 9
+  completed_plans: 9
+  percent: 100
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-18)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** v2.0 Publishing Cover Packaging
+**Current focus:** No active milestone (v2.0 shipped)
 
 ## Current Position
 
-Phase: Not started (defining requirements)
+Phase: None (milestone shipped)
 Plan: —
-Status: Defining requirements
-Last activity: 2026-04-18 — Milestone v2.0 started for publishing cover packaging
+Status: Awaiting next milestone
+Last activity: 2026-04-18 — v2.0 Publishing Cover Packaging shipped and archived
 
-Progress: [----------] 0%
+Progress: [##########] 100%
 
 ## Performance Metrics
 
 **Velocity:**
 
-- Total plans completed: 113 (through v1.9)
-- Latest shipped milestone v1.9: 3 phases, 9 plans, 1580 regression tests in the current repo state, zero new dependencies
+- Total plans completed: 122 (through v2.0)
+- Latest shipped milestone v2.0: 3 phases, 9 plans, 1590 regression tests in the current repo state, zero new dependencies
 
 *Updated after each plan completion*
 
@@ -59,11 +59,13 @@ Recent decisions affecting current work:
 - [post-v1.9 destructive flags]: Trust-facing docs for `/scr:undo --force` must match the command contract exactly — skip the unsaved-changes warning, but still require confirmation
 - [v2.0 framing]: Treat cover packaging as a production-contract milestone, not just a doc pass — asset paths, platform specs, and build integration must agree
 - [v2.0 print truth]: Paperback and hardcover wrap dimensions must stay template-driven from IngramSpark inputs instead of being hard-coded as universal constants
+- [v2.0 build contract]: Cover deliverables live under `.manuscript/build/` as manuscript assets, not as bundled export templates
+- [v2.0 trust surface]: Build/export/publish docs and release-facing trust docs must describe the same cover workflow contract and external-template boundary
 
 ### Pending Todos
 
-- Plan Phase 42
-- Keep workflow-contract regression coverage aligned if later command edits touch draft paths, save/undo, availability filtering, or session-boundary handling
+- Define the next milestone
+- Keep workflow and publishing regression coverage aligned if later command edits touch cover assets, build surfaces, save-history flows, or session boundaries
 
 ### Blockers/Concerns
 
@@ -71,6 +73,6 @@ Recent decisions affecting current work:
 
 ## Session Continuity
 
-Last session: 2026-04-18T20:30:00Z
-Stopped at: v2.0 defined; ready for Phase 42 planning
+Last session: 2026-04-18T06:59:31Z
+Stopped at: v2.0 shipped and archived; no active milestone
 Resume file: None

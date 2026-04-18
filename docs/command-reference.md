@@ -1261,16 +1261,16 @@ Generate 10-15 book club questions that spark real conversation about your theme
 **Prerequisites:** None (wraps export commands)
 
 **Flags:**
-- `--preset <preset>` -- Use a preset: kdp, ingram, submission, query
+- `--preset <preset>` -- Use a preset such as `kdp-paperback`, `kdp-ebook`, `ebook-wide`, `ingram-paperback`, `query-submission`, or `screenplay-query`
 - `--all` -- Run all applicable presets
 
 **Available for:** All work types
 
 **Example:**
 ```
-/scr:publish --preset kdp
+/scr:publish --preset kdp-paperback
 ```
-Run the full KDP publishing pipeline: format interior, generate cover template, create EPUB and print-ready PDF.
+Run the full KDP paperback publishing pipeline: prepare the interior package, generate the platform handoff brief, and use the finished print cover from `.manuscript/build/paperback-cover.pdf`.
 
 ---
 
@@ -1322,7 +1322,7 @@ Build a retailer-ready EPUB with metadata, accessibility checks, and platform-aw
 
 ### `/scr:build-print`
 
-**Description:** Build print-ready PDF with trim-size guardrails, or academic `.tex` output for publisher wrapper platforms.
+**Description:** Build print-ready PDF with trim-size guardrails, or academic `.tex` output for publisher wrapper platforms. Pair the interior with `.manuscript/build/paperback-cover.pdf` or `.manuscript/build/hardcover-cover.pdf` rather than relying on hard-coded wrap geometry.
 
 **Usage:** `/scr:build-print [--platform <platform>] [--trim <size>] [--strict] [--hardcover] [--skip-validate]`
 
@@ -1414,25 +1414,26 @@ Commands for generating cover art, scene illustrations, character references, ma
 
 ### `/scr:cover-art`
 
-**Description:** Generate structured cover art prompts with KDP-compliant dimensions.
+**Description:** Generate structured cover art prompts and delivery briefs for ebook, paperback, and hardcover cover assets.
 
-**Usage:** `/scr:cover-art [--kdp <trim_size>] [--series] [--prompt-only] [--element front|spine|back|full-wrap]`
+**Usage:** `/scr:cover-art [--trim <size>] [--kdp <trim_size>] [--series] [--prompt-only] [--element front|spine|back|full-wrap]`
 
 **Prerequisites:** WORK.md must exist
 
 **Available for:** Prose, visual, poetry, sacred
 
 **Flags:**
-- `--kdp <trim_size>` -- Generate at KDP dimensions (6x9, 5.5x8.5, etc.)
+- `--trim <size>` -- Preferred trim shorthand for prompt framing
+- `--kdp <trim_size>` -- Legacy alias for `--trim`
 - `--series` -- Generate series-consistent cover
 - `--prompt-only` -- Generate prompts without calling image API
 - `--element` -- Generate specific cover element
 
 **Example:**
 ```
-/scr:cover-art --kdp 6x9 --element front
+/scr:cover-art --trim 6x9 --element front
 ```
-Generate a front cover illustration prompt sized for a 6x9 KDP paperback.
+Generate a front-cover prompt and delivery brief while keeping the final packaged files under `.manuscript/build/`.
 
 ---
 

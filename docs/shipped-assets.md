@@ -18,6 +18,11 @@ These are the only export templates currently bundled in `data/export-templates/
 - `scriven-formatted.docx` is not shipped today.
 - `scriven-kdp-cover.typst` is not shipped today.
 - `scriven-ingram-cover.typst` is not shipped today.
+- Cover deliverables are manuscript build assets, not bundled export templates:
+  - Ebook front cover: `.manuscript/build/ebook-cover.jpg` (or `.png`)
+  - Paperback full wrap: `.manuscript/build/paperback-cover.pdf`
+  - Hardcover case wrap: `.manuscript/build/hardcover-cover.pdf`
+- Those cover files are designer-provided or externally produced assets that Scriven's build/export commands reference; exact paperback and hardcover wrap geometry still comes from the active platform cover template generator.
 
 ## Trust-Critical Launch Files
 

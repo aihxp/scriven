@@ -401,15 +401,15 @@ EPUB 3 with metadata, table of contents, cover image, and custom CSS.
 pandoc .manuscript/output/assembled-manuscript.md \
   -o .manuscript/output/manuscript.epub \
   --metadata-file=.manuscript/output/metadata.yaml \
-  --epub-cover-image=.manuscript/output/cover.jpg \
+  --epub-cover-image=.manuscript/build/ebook-cover.jpg \
   --css=data/export-templates/scriven-epub.css \
   --toc \
   --toc-depth=2 \
   --split-level=1
 ```
 
-**Cover image:** If `.manuscript/output/cover.jpg` (or `.png`) does not exist:
-> **Note:** No cover image found at `.manuscript/output/cover.jpg`. EPUB will be generated without a cover. To add a cover, place your cover image at `.manuscript/output/cover.jpg` and re-run the export.
+**Cover image:** If `.manuscript/build/ebook-cover.jpg` (or `.png`) does not exist:
+> **Note:** No ebook cover found at `.manuscript/build/ebook-cover.jpg` or `.png`. EPUB will be generated without a cover. To add a cover, place your front-cover-only RGB ebook asset there and re-run the export.
 
 Run the command without the `--epub-cover-image` flag.
 
@@ -547,7 +547,7 @@ Output: `.manuscript/output/manuscript.tex`
 
 #### FORMAT: kdp-package (EXP-10)
 
-Bundle a complete KDP (Kindle Direct Publishing) paperback submission package with interior PDF, calculated cover dimensions, and metadata.
+Bundle a KDP print submission package with interior PDF, a canonical cover handoff brief, and metadata.
 
 **Work type check:** Look up `kdp_package` in `CONSTRAINTS.json` under `exports`. Available for `prose`, `visual`, `poetry`, and `sacred` group work types. If the current work type's group is not in the `available` list, inform the writer and **stop**.
 
@@ -555,75 +555,48 @@ Bundle a complete KDP (Kindle Direct Publishing) paperback submission package wi
 
 Check if `.manuscript/output/manuscript-print.pdf` exists. If not, run the `pdf --print-ready` export first (see FORMAT: pdf --print-ready above).
 
-**Step 2: Calculate page count and spine width**
+**Step 2: Resolve the canonical cover asset contract**
 
-```
-# Get word count from assembled manuscript
-word_count = count words in .manuscript/output/assembled-manuscript.md
-page_count = ceil(word_count / 250)
-```
+Use these canonical cover locations:
 
-Read `paper_type` from `.manuscript/config.json` (default: `"white"`).
+- Ebook front cover: `.manuscript/build/ebook-cover.jpg` (or `.png`)
+- Paperback full wrap: `.manuscript/build/paperback-cover.pdf`
+- Hardcover case wrap: `.manuscript/build/hardcover-cover.pdf`
 
-**Paper thickness factors:**
+For this KDP print package, the relevant finished print asset is `.manuscript/build/paperback-cover.pdf`.
 
-| Paper Type | Factor (inches/page) |
-|------------|---------------------|
-| white      | 0.002252            |
-| cream      | 0.0025              |
-| color      | 0.0032              |
+**Do not calculate final print-cover wrap geometry from hard-coded paper factors in this command.** Exact paperback wrap width, spine width, and bleed-safe template geometry must come from the active platform cover template tool.
 
-**Spine width formula (per D-05):**
-
-```
-spine_width = (page_count * paper_factor) + 0.06
-```
-
-Where `0.06` is the cover thickness for paperback.
-
-**Spine text rule:** Only add text to the spine if `page_count >= 79`. Books under 79 pages have spines too narrow for readable text.
-
-**Step 3: Calculate cover dimensions**
-
-Read `trim_width` and `trim_height` from `.manuscript/config.json` (defaults: `6` inches width, `9` inches height).
-
-```
-bleed = 0.125  # inches, on each side
-
-cover_width  = (trim_width * 2) + spine_width + (bleed * 2)
-cover_height = trim_height + (bleed * 2)
-```
-
-**Step 4: Create KDP package directory and files**
+**Step 3: Create KDP package directory and files**
 
 ```bash
 mkdir -p .manuscript/output/kdp-package
 cp .manuscript/output/manuscript-print.pdf .manuscript/output/kdp-package/interior.pdf
 ```
 
-**Generate `cover-specs.md`** with exact calculated dimensions:
+If `.manuscript/build/paperback-cover.pdf` exists, copy it into the package as `cover.pdf`. If it does not exist, still generate the package and note that the print cover is pending.
+
+**Generate `cover-specs.md`** as a delivery brief:
 
 ```markdown
 # KDP Cover Specifications
 
-## Interior
-- Page count: [page_count]
-- Trim size: [trim_width]" x [trim_height]"
-- Paper type: [paper_type]
+## Canonical Asset
+- Expected print cover file: `.manuscript/build/paperback-cover.pdf`
+- If present, packaged copy: `.manuscript/output/kdp-package/cover.pdf`
 
-## Spine
-- Spine width: [spine_width]" (calculated: [page_count] pages x [paper_factor] + 0.06")
-- Spine text: [Yes/No] (minimum 79 pages required, this book has [page_count])
-
-## Full Cover Dimensions
-- Cover width: [cover_width]" (trim x 2 + spine + bleed x 2)
-- Cover height: [cover_height]" (trim height + bleed x 2)
-- Bleed: 0.125" on all sides
+## Delivery Contract
+- Format: PDF/X-1a:2001 preferred for print handoff
+- Resolution: 300 DPI minimum
+- Bleed: 0.125" outer edges
+- Surface: back + spine + front in one full-wrap PDF
+- Fonts embedded
+- Transparency flattened
 
 ## Notes
-- Cover file must be a single PDF at 300 DPI minimum
-- Use RGB color space for KDP covers
-- Safe zone: keep critical content 0.25" from trim edges
+- Generate exact wrap geometry from the current platform template tool using the real trim size, page count, and binding
+- Keep the ebook front cover separate at `.manuscript/build/ebook-cover.jpg`
+- Keep editable source files under `.manuscript/build/source/`
 ```
 
 **Generate `kdp-metadata.md`** with publishing metadata:
@@ -640,13 +613,13 @@ cp .manuscript/output/manuscript-print.pdf .manuscript/output/kdp-package/interi
 - **Page count:** [page_count] (estimated from word count)
 ```
 
-Output: `.manuscript/output/kdp-package/` containing `interior.pdf`, `cover-specs.md`, `kdp-metadata.md`
+Output: `.manuscript/output/kdp-package/` containing `interior.pdf`, `cover-specs.md`, `kdp-metadata.md`, and `cover.pdf` when `.manuscript/build/paperback-cover.pdf` exists
 
 ---
 
 #### FORMAT: ingram-package (EXP-11)
 
-Bundle an IngramSpark submission package with CMYK PDF/X-1a interior, cover specifications, and metadata.
+Bundle an IngramSpark submission package with CMYK PDF/X-1a interior, canonical print-cover handoff notes, and metadata.
 
 **Work type check:** Look up `ingram_package` in `CONSTRAINTS.json` under `exports`. Available for `prose`, `visual`, `poetry`, and `sacred` group work types. If the current work type's group is not in the `available` list, inform the writer and **stop**.
 
@@ -688,16 +661,20 @@ gs -dPDFX -dBATCH -dNOPAUSE \
 
 > **ICC Color Profile Warning:** CMYK conversion quality depends on ICC color profiles installed on your system. The converted PDF should be reviewed for color accuracy before submission to IngramSpark. Colors may shift during RGB-to-CMYK conversion, especially blues and greens.
 
-**Step 4: Calculate cover specs and metadata**
+**Step 4: Prepare cover brief and metadata**
 
-Use the same spine width formula as KDP (see FORMAT: kdp-package, Steps 2-3). IngramSpark uses the same paper thickness values and bleed requirements.
+Use the canonical print-cover asset at `.manuscript/build/paperback-cover.pdf`.
 
-**Generate `cover-specs.md`** and **`ingram-metadata.md`** in the package directory with the same dimension calculations as KDP, noting IngramSpark-specific requirements:
+If `.manuscript/build/paperback-cover.pdf` exists, copy it into the package as `cover.pdf`.
+
+**Generate `cover-specs.md`** and **`ingram-metadata.md`** in the package directory with the IngramSpark-specific handoff requirements:
 
 ```markdown
 # IngramSpark Cover Specifications
 
-[Same dimensions as KDP cover-specs.md]
+## Canonical Asset
+- Expected print cover file: `.manuscript/build/paperback-cover.pdf`
+- If present, packaged copy: `.manuscript/output/ingram-package/cover.pdf`
 
 ## IngramSpark-Specific Requirements
 - Cover file must be PDF/X-1a compliant (CMYK color space)
@@ -705,9 +682,11 @@ Use the same spine width formula as KDP (see FORMAT: kdp-package, Steps 2-3). In
 - Resolution: 300 DPI minimum
 - All fonts must be embedded
 - No transparency (flatten before submission)
+- Exact wrap width, spine width, and guide lines must come from the current IngramSpark Cover Template Generator
+- For hardcover/case wrap work, keep the separate case-wrap file at `.manuscript/build/hardcover-cover.pdf`
 ```
 
-Output: `.manuscript/output/ingram-package/` containing `manuscript-cmyk.pdf`, `cover-specs.md`, `ingram-metadata.md`
+Output: `.manuscript/output/ingram-package/` containing `manuscript-cmyk.pdf`, `cover-specs.md`, `ingram-metadata.md`, and `cover.pdf` when `.manuscript/build/paperback-cover.pdf` exists
 
 ---
 

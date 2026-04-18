@@ -1,5 +1,28 @@
 # Project Milestones: Scriven
 
+## v2.0 Publishing Cover Packaging (Shipped: 2026-04-18)
+
+**Delivered:** Turned Scriven's cover workflow into a truthful production contract by separating ebook, paperback, and hardcover deliverables, wiring them into the build/export surface, and aligning the publishing trust docs to the same live asset model.
+
+**Phases completed:** 42-44 (3 phases, 9 plans)
+
+**Key accomplishments:**
+
+- Defined one canonical cover build surface under `.manuscript/build/` for ebook raster fronts, paperback full-wrap PDFs, hardcover case-wrap PDFs, and editable source files
+- Reworked `cover-art`, `publish`, `build-ebook`, `build-print`, `export`, and publishing docs so they all point at the same canonical cover files
+- Locked ebook spec truth to `1600 x 2560`, RGB, front-only and locked paperback/hardcover print truth to PDF/X-1a:2001, CMYK, 300 DPI, bleed/board-wrap requirements
+- Removed stale hard-coded paper-factor cover math and replaced it with template-driven geometry language sourced from live platform cover template generators
+- Updated the command reference and shipped-asset inventory so release-facing trust docs no longer imply bundled cover templates or a generic one-file cover model
+- Added dedicated regression suites for cover asset paths, print-template truth, and build/trust-surface integration
+
+**Stats:**
+
+- 3 phases, 9 plans, 1590 regression tests in the current repo state
+- Zero new npm dependencies
+- Milestone completed 2026-04-18
+
+---
+
 ## v1.9 Workflow Contract Integrity (Shipped: 2026-04-18)
 
 **Delivered:** Closed the workflow-contract trust gaps so manuscript draft paths, save/undo checkpoint flows, and help/docs availability guidance now agree with each other and with the live constraints surface.

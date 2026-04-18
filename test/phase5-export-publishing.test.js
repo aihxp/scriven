@@ -252,9 +252,11 @@ describe('EXP-10: export kdp-package (D-05)', () => {
     assert.match(content, /kdp-package/i, 'should contain kdp-package section');
   });
 
-  it('contains spine width formula with paper factor 0.002252', () => {
+  it('points KDP cover handoff at the canonical paperback build asset', () => {
     const content = fs.readFileSync(filePath, 'utf8');
-    assert.match(content, /0\.002252/, 'should contain paper factor 0.002252');
+    assert.match(content, /\.manuscript\/build\/paperback-cover\.pdf/);
+    assert.match(content, /template generator/i);
+    assert.doesNotMatch(content, /0\.002252/);
   });
 });
 

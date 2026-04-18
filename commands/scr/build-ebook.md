@@ -311,7 +311,7 @@ Invoke Pandoc with the fixed-layout stylesheet:
 pandoc .manuscript/output/assembled-manuscript.md \
   -o .manuscript/output/ebook-fixed-layout.epub \
   --metadata-file=.manuscript/output/metadata.yaml \
-  --epub-cover-image=.manuscript/output/cover.jpg \
+  --epub-cover-image=.manuscript/build/ebook-cover.jpg \
   --css=data/export-templates/scriven-fixed-layout-epub.css \
   --toc \
   --toc-depth=2 \
@@ -331,15 +331,15 @@ Then proceed to STEP 5 (skip the standard Pandoc invocation below).
 pandoc .manuscript/output/assembled-manuscript.md \
   -o .manuscript/output/ebook.epub \
   --metadata-file=.manuscript/output/metadata.yaml \
-  --epub-cover-image=.manuscript/output/cover.jpg \
+  --epub-cover-image=.manuscript/build/ebook-cover.jpg \
   --css=data/export-templates/scriven-epub.css \
   --toc \
   --toc-depth=2 \
   --split-level=1
 ```
 
-If `.manuscript/output/cover.jpg` does not exist, omit the `--epub-cover-image` flag and note:
-> **Note:** No cover image found at `.manuscript/output/cover.jpg`. EPUB will be generated without a cover. To add a cover, place your cover image at `.manuscript/output/cover.jpg` and re-run this build command.
+If `.manuscript/build/ebook-cover.jpg` does not exist, check `.manuscript/build/ebook-cover.png`. If neither exists, omit the `--epub-cover-image` flag and note:
+> **Note:** No ebook cover found at `.manuscript/build/ebook-cover.jpg` or `.png`. EPUB will be generated without a cover. To add a cover, place your front-cover-only RGB file at `.manuscript/build/ebook-cover.jpg` (or `.png`) and re-run this build command.
 
 **4c — Semantic nav note:**
 

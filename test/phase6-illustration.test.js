@@ -133,36 +133,38 @@ describe('D-05: Storyboard camera direction', () => {
   });
 });
 
-// ── Cover art KDP specs (ILL-02) ────────────────────────────────
+// ── Cover art packaging specs (ILL-02) ──────────────────────────
 
-describe('Cover art KDP specs (ILL-02)', () => {
+describe('Cover art packaging specs (ILL-02)', () => {
   const filePath = path.join(commandsDir, 'cover-art.md');
 
-  it('cover-art.md contains spine width paper factor', () => {
+  it('cover-art.md contains canonical build asset paths', () => {
     const content = fs.readFileSync(filePath, 'utf8');
-    assert.ok(
-      /0\.002252|paper_factor|paper\.factor/i.test(content),
-      'cover-art.md should contain spine width calculation reference'
-    );
+    assert.match(content, /\.manuscript\/build\/ebook-cover\.(jpg|png)/i);
+    assert.match(content, /\.manuscript\/build\/paperback-cover\.pdf/i);
+    assert.match(content, /\.manuscript\/build\/hardcover-cover\.pdf/i);
   });
 
-  it('cover-art.md contains 300 DPI reference', () => {
+  it('cover-art.md contains ebook cover dimensions and RGB reference', () => {
     const content = fs.readFileSync(filePath, 'utf8');
-    assert.match(content, /300/, 'should contain 300');
-    assert.ok(
-      /DPI|dpi/.test(content),
-      'should contain DPI reference'
-    );
+    assert.match(content, /1600 x 2560/i);
+    assert.match(content, /RGB/i);
+    assert.match(content, /front cover only/i);
   });
 
-  it('cover-art.md contains bleed reference', () => {
+  it('cover-art.md contains print production requirements', () => {
     const content = fs.readFileSync(filePath, 'utf8');
+    assert.match(content, /PDF\/X-1a:2001/i);
+    assert.match(content, /CMYK/i);
+    assert.match(content, /300 DPI/i);
     assert.match(content, /bleed/i, 'should contain bleed reference');
   });
 
-  it('cover-art.md contains trim reference', () => {
+  it('cover-art.md treats exact print geometry as template-driven', () => {
     const content = fs.readFileSync(filePath, 'utf8');
     assert.match(content, /trim/i, 'should contain trim size reference');
+    assert.match(content, /template generator/i);
+    assert.doesNotMatch(content, /0\.002252|paper_factor/i);
   });
 });
 

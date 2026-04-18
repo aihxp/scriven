@@ -76,7 +76,21 @@ Output: `.manuscript/output/manuscript-print.pdf`. Uses the `scriven-book.typst`
 /scr:export --format epub
 ```
 
-Output: `.manuscript/output/manuscript.epub`. Includes table of contents, metadata, and custom CSS styling via `scriven-epub.css`. If a cover image exists at `.manuscript/output/cover.jpg`, it's embedded automatically.
+Output: `.manuscript/output/manuscript.epub`. Includes table of contents, metadata, and custom CSS styling via `scriven-epub.css`. If an ebook front cover exists at `.manuscript/build/ebook-cover.jpg` (or `.png`), it's embedded automatically.
+
+## Canonical Cover Deliverables
+
+Scriven treats cover files as a separate build contract under `.manuscript/build/`.
+
+| Deliverable | Canonical file | Requirements |
+|-------------|----------------|--------------|
+| Ebook cover | `.manuscript/build/ebook-cover.jpg` (PNG also accepted) | Front cover only, `1600 x 2560`, RGB, no spine, no back, no bleed |
+| Paperback cover | `.manuscript/build/paperback-cover.pdf` | Full wrap, PDF/X-1a:2001, CMYK, 300 DPI, embedded fonts, flattened transparency, `0.125"` bleed |
+| Hardcover cover | `.manuscript/build/hardcover-cover.pdf` | Full case wrap, PDF/X-1a:2001, CMYK, 300 DPI, embedded fonts, flattened transparency, board-wrap allowances |
+
+Keep editable source files under `.manuscript/build/source/`.
+
+For paperback and hardcover, treat exact wrap width, spine width, and guide lines as **template-driven** values from the current IngramSpark Cover Template Generator (or the current target-platform equivalent), not static math baked into Scriven docs.
 
 After export, consider validating with EPUBCheck if you have Java installed -- most retailers run their own validation and will reject non-compliant files.
 
@@ -126,7 +140,7 @@ Platform packages bundle everything a specific publishing platform needs into a 
 
 Use the standard EPUB export for KDP ebook submissions. The `scriven-epub.css` template is already KDP-compatible.
 
-**KDP Print** -- Complete paperback submission package with interior PDF, calculated cover dimensions, and metadata.
+**KDP Print** -- Paperback submission package with interior PDF, cover handoff brief, and metadata.
 
 ```
 /scr:export --format kdp-package
@@ -135,10 +149,10 @@ Use the standard EPUB export for KDP ebook submissions. The `scriven-epub.css` t
 Output: `.manuscript/output/kdp-package/` containing:
 
 - `interior.pdf` -- Print-ready interior with your chosen trim size
-- `cover-specs.md` -- Exact cover dimensions including spine width (calculated from page count and paper type), bleed allowances, and safe zones
+- `cover-specs.md` -- Canonical print-cover handoff brief pointing at `.manuscript/build/paperback-cover.pdf`
 - `kdp-metadata.md` -- Title, author, language, suggested categories and keywords
 
-**Spine width calculation:** Scriven calculates spine width from your page count and paper type (white: 0.002252"/page, cream: 0.0025"/page, color: 0.0032"/page) plus 0.06" for cover thickness. Books under 79 pages get no spine text -- the spine is too narrow.
+**Print-cover geometry:** Use the current platform template generator for exact wrap width, spine width, bleed, and safe zones. Scriven's package tells you which canonical build asset to supply; it does not treat hard-coded paper-factor math as the final source of truth for print covers.
 
 **Supported trim sizes:** 5" x 8", 5.25" x 8", 5.5" x 8.5", 6" x 9", and others. Set `trim_width` and `trim_height` in `.manuscript/config.json`.
 
@@ -153,10 +167,10 @@ Complete submission package with CMYK PDF/X-1a interior for offset printing.
 Output: `.manuscript/output/ingram-package/` containing:
 
 - `manuscript-cmyk.pdf` -- Interior converted to CMYK color space via Ghostscript
-- `cover-specs.md` -- Full-wrap cover dimensions (front + spine + back in a single PDF)
+- `cover-specs.md` -- Full-wrap cover handoff brief pointing at `.manuscript/build/paperback-cover.pdf`
 - `ingram-metadata.md` -- Publishing metadata for IngramSpark
 
-**IngramSpark-specific requirements:** PDF/X-1a compliance, CMYK color space, 300 DPI minimum, all fonts embedded, no transparency. Scriven handles the CMYK conversion automatically -- review the output for color accuracy, especially blues and greens which can shift during RGB-to-CMYK conversion.
+**IngramSpark-specific requirements:** PDF/X-1a compliance, CMYK color space, 300 DPI minimum, all fonts embedded, no transparency. Scriven handles the CMYK conversion automatically for the interior -- review the output for color accuracy, especially blues and greens which can shift during RGB-to-CMYK conversion. Exact print-cover geometry still comes from the IngramSpark Cover Template Generator.
 
 ### Submission and Query Packages
 

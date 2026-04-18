@@ -158,7 +158,7 @@ Errors:
 Next Steps:
   1. Review quality warnings in the reports above
   2. Review the interior PDF at .manuscript/output/manuscript-print.pdf
-  3. Create your cover using dimensions in .manuscript/output/kdp-package/cover-specs.md
+  3. Review `.manuscript/output/kdp-package/cover-specs.md` and place the finished print cover at `.manuscript/build/paperback-cover.pdf`
   4. Upload to https://kdp.amazon.com
 ```
 

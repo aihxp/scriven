@@ -153,7 +153,12 @@ Missing 3 prerequisites. Generate them now? (yes/no)
 | Back matter | `.manuscript/back-matter/` directory has files | `/scr:back-matter` |
 | Blurb | `.manuscript/output/blurb.md` exists | `/scr:blurb` |
 | Synopsis | Any `.manuscript/marketing/SYNOPSIS-*.md` file exists | `/scr:synopsis` |
-| Cover art | `.manuscript/output/cover.*` exists (any image format) | `/scr:cover-art` |
+| Cover art | `.manuscript/build/ebook-cover.jpg` or `.png`, plus `.manuscript/build/paperback-cover.pdf` for print presets | `/scr:cover-art` |
+
+**Canonical cover build surface:** Scriven's cover handoff contract lives under `.manuscript/build/`:
+- Ebook front cover: `.manuscript/build/ebook-cover.jpg` (or `.png`)
+- Paperback full wrap: `.manuscript/build/paperback-cover.pdf`
+- Hardcover case wrap: `.manuscript/build/hardcover-cover.pdf`
 
 **Critical prerequisite:** If the draft is not complete (missing body units), warn the writer:
 > Your draft is not complete. Missing units: [list]. Run `/scr:next` to continue drafting, or proceed anyway with incomplete manuscript.
@@ -285,8 +290,8 @@ Skipped:
 
 Next Steps:
   1. Review the interior PDF at .manuscript/output/manuscript-print.pdf
-  2. Create your cover using dimensions in .manuscript/output/kdp-package/cover-specs.md
-  3. Upload interior PDF and cover to https://kdp.amazon.com
+  2. Review `.manuscript/output/kdp-package/cover-specs.md` and place the finished print cover at `.manuscript/build/paperback-cover.pdf`
+  3. Upload the interior PDF and the final cover file to https://kdp.amazon.com
   4. Set pricing, categories, and keywords on KDP
 ```
 

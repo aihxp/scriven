@@ -117,8 +117,8 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 
 ## Current State
 
-**Latest shipped milestone:** v1.9 Workflow Contract Integrity (complete 2026-04-18)
-**Status:** Active milestone defined: v2.0 Publishing Cover Packaging. Scriven starts this milestone from the post-v1.9 hardened baseline locked by 1580 passing regression tests.
+**Latest shipped milestone:** v2.0 Publishing Cover Packaging (complete 2026-04-18)
+**Status:** No active milestone. Scriven's current shipped baseline includes the v2.0 cover-packaging contract and is locked by 1590 passing regression tests.
 
 **Current product surface:**
 - Installer writes are crash-safe via atomic temp-file-then-rename with orphan cleanup on startup
@@ -138,20 +138,27 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - Collaboration discovery and trust-facing docs now present `/scr:track` as the writer-facing entrypoint, with canon-branch-aware guidance instead of `main`-only assumptions
 - Public command references now match the live command contracts for `/scr:versions`, `/scr:undo --force`, and session-boundary behavior
 - Full export stack: EPUB (Pandoc, accessible), print PDF (Pandoc+Typst, KDP/Ingram trim sizes), academic LaTeX (.tex via 5 publisher wrapper templates), Smashwords DOCX, poetry submission DOCX
+- Canonical cover build contract now lives under `.manuscript/build/` with separate ebook, paperback, and hardcover deliverables
+- Publishing/build docs now treat print-cover geometry as template-driven from live platform tools rather than hard-coded spine math
+- Build, export, publish, command-reference, and shipped-asset surfaces now agree on the same cover workflow contract
 - Sacred tradition profiles for 10 traditions with book-order, approval-block, font stack, RTL, numbering
 - Cross-domain templates: stage play, picture book, fixed-layout EPUB, chapbook, poetry submission, academic (IEEE/ACM/LNCS/Elsevier/APA7)
-- 1580 regression tests lock all behavior with requirement-to-test traceability
+- 1590 regression tests lock all behavior with requirement-to-test traceability
 
-## Current Milestone: v2.0 Publishing Cover Packaging
+## Latest Milestone: v2.0 Publishing Cover Packaging
 
 **Goal:** Make Scriven's cover workflow production-ready by defining truthful ebook, paperback, and hardcover cover deliverables, wiring them into `.manuscript/build/`, and aligning publishing/build docs with real platform requirements.
 
-**Target features:**
+**Outcome shipped:**
 - Canonical cover asset contract under `.manuscript/build/` for ebook front covers, paperback full wraps, and hardcover case wraps
 - Truthful publishing/build guidance for RGB ebook covers, CMYK PDF/X-1a print wraps, bleed rules, and template-driven spine widths
-- Build/export integration and regression coverage so cover file expectations stay aligned across commands, docs, and shipped assets
+- Build/export/publish surfaces wired to the canonical cover files instead of legacy output paths
+- Release-facing trust docs now distinguish bundled export templates from project-specific cover assets
+- New regression suites now lock cover asset paths, print spec truth, and build/trust-surface alignment
 
-## Latest Milestone: v1.9 Workflow Contract Integrity
+**Stats:** 3 phases, 9 plans, 1590 regression tests in the current repo state, zero new dependencies
+
+## Previous Milestone: v1.9 Workflow Contract Integrity
 
 **Goal:** Restore internal workflow truth so Scriven's core commands agree on where drafts live, save/undo leave the manuscript state clean, and help surfaces only advertise commands the current project can actually run.
 
@@ -163,9 +170,9 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - New workflow-contract regression coverage now locks draft paths, save/undo sequencing, and constrained command visibility
 - Follow-on hardening after archive also locked save-history filtering, session-boundary markers, branch-agnostic canon resolution, and track/help trust surfaces without reopening the milestone scope
 
-**Stats:** 3 phases, 9 plans, 1580 regression tests in the current repo state, zero new dependencies
+**Stats:** 3 phases, 9 plans, 1580 regression tests in the then-current repo state, zero new dependencies
 
-## Previous Milestone: v1.8 Command Surface Coherence
+## Earlier Milestone: v1.8 Command Surface Coherence
 
 **Goal:** Make Scriven's command surface truthful and runtime-native so every documented command name is runnable in the host that advertises it.
 
@@ -180,9 +187,9 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 
 ## Next Milestone Goals
 
-- Deliver cover packaging from the stricter truth baseline shipped in v1.8 and v1.9 instead of reopening command-surface or workflow-contract fixes
-- Preserve the canonical draft-path, save/undo checkpoint, and constrained-availability contracts while extending the publishing surface
-- Keep platform-specific print geometry truthful by deferring exact wrap dimensions to template-generator inputs rather than static guesses
+- Choose the next product focus from the shipped v2.0 baseline instead of reopening already-shipped cover-contract work
+- Preserve the canonical draft-path, save-history, constrained-availability, and cover-packaging contracts while extending the product
+- Keep trust surfaces narrower and provable: do not claim bundled templates, runtime parity, or printer geometry Scriven does not actually ship
 
 <details>
 <summary>Archived milestone context: v1.4 Perplexity & Technical Writing</summary>
@@ -219,6 +226,8 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 | Silent installs must clean only Scriven-owned runtime outputs | Reliability gains are not worth risking user-managed host files | ✓ Good |
 | Runtime command names must only advertise installable surfaces | A guide that points at dead command names erodes trust faster than a missing feature | ✓ Good |
 | Claude Code should follow a flat `/scr-*` surface, mirroring GSD's runtime-native style | Flat slash commands are easier to discover and match the upstream host conventions Scriven now claims to support | ✓ Good |
+| Cover deliverables should live under `.manuscript/build/` as project assets | Writers need one canonical delivery surface that is separate from prompts, bundled templates, and staging output | ✓ Good |
+| Print-cover geometry must stay template-driven | Platform cover templates are the authoritative source for wrap width and spine measurements; static formulas would erode trust | ✓ Good |
 
 ## Evolution
 
@@ -238,4 +247,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-18 — v2.0 Publishing Cover Packaging defined from the post-v1.9 hardened baseline*
+*Last updated: 2026-04-18 — v2.0 Publishing Cover Packaging shipped and archived*

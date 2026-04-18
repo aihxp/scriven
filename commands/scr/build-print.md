@@ -553,6 +553,15 @@ Get file size with:
 ls -lh .manuscript/output/print-{platform}.pdf | awk '{print $5}'
 ```
 
+Then report the canonical cover file that pairs with this interior:
+
+- If `--hardcover` was passed: `.manuscript/build/hardcover-cover.pdf`
+- Otherwise: `.manuscript/build/paperback-cover.pdf`
+
+Include this note:
+
+> **Cover pairing:** Scriven expects the matching finished print cover in `.manuscript/build/`. Exact wrap width, spine width, and safety guides must come from the current IngramSpark cover template generator (paperback for perfect-bound, hardcover for case laminate). Scriven does not hard-code those final cover dimensions in this command.
+
 **If `--platform` IS one of `ieee`, `acm`, `lncs`, `elsevier`, `apa7`, show instead:**
 
 ```
