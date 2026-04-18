@@ -118,7 +118,7 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 ## Current State
 
 **Latest shipped milestone:** v1.9 Workflow Contract Integrity (complete 2026-04-18)
-**Status:** No active milestone currently defined. Post-v1.9 hardening has landed, and Scriven's current shipped surface is locked by 1576 passing regression tests.
+**Status:** Active milestone defined: v2.0 Publishing Cover Packaging. Scriven starts this milestone from the post-v1.9 hardened baseline locked by 1580 passing regression tests.
 
 **Current product surface:**
 - Installer writes are crash-safe via atomic temp-file-then-rename with orphan cleanup on startup
@@ -140,7 +140,16 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - Full export stack: EPUB (Pandoc, accessible), print PDF (Pandoc+Typst, KDP/Ingram trim sizes), academic LaTeX (.tex via 5 publisher wrapper templates), Smashwords DOCX, poetry submission DOCX
 - Sacred tradition profiles for 10 traditions with book-order, approval-block, font stack, RTL, numbering
 - Cross-domain templates: stage play, picture book, fixed-layout EPUB, chapbook, poetry submission, academic (IEEE/ACM/LNCS/Elsevier/APA7)
-- 1576 regression tests lock all behavior with requirement-to-test traceability
+- 1580 regression tests lock all behavior with requirement-to-test traceability
+
+## Current Milestone: v2.0 Publishing Cover Packaging
+
+**Goal:** Make Scriven's cover workflow production-ready by defining truthful ebook, paperback, and hardcover cover deliverables, wiring them into `.manuscript/build/`, and aligning publishing/build docs with real platform requirements.
+
+**Target features:**
+- Canonical cover asset contract under `.manuscript/build/` for ebook front covers, paperback full wraps, and hardcover case wraps
+- Truthful publishing/build guidance for RGB ebook covers, CMYK PDF/X-1a print wraps, bleed rules, and template-driven spine widths
+- Build/export integration and regression coverage so cover file expectations stay aligned across commands, docs, and shipped assets
 
 ## Latest Milestone: v1.9 Workflow Contract Integrity
 
@@ -154,7 +163,7 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - New workflow-contract regression coverage now locks draft paths, save/undo sequencing, and constrained command visibility
 - Follow-on hardening after archive also locked save-history filtering, session-boundary markers, branch-agnostic canon resolution, and track/help trust surfaces without reopening the milestone scope
 
-**Stats:** 3 phases, 9 plans, 1576 regression tests in the current repo state, zero new dependencies
+**Stats:** 3 phases, 9 plans, 1580 regression tests in the current repo state, zero new dependencies
 
 ## Previous Milestone: v1.8 Command Surface Coherence
 
@@ -171,9 +180,9 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 
 ## Next Milestone Goals
 
-- Define the next milestone without reopening the command-surface and workflow-contract truthfulness work now shipped in v1.8 and v1.9
-- Preserve the canonical draft-path, save/undo checkpoint, and constrained-availability contracts in future command edits
-- Extend product capability from this stricter trust baseline rather than broadening runtime or workflow claims first
+- Deliver cover packaging from the stricter truth baseline shipped in v1.8 and v1.9 instead of reopening command-surface or workflow-contract fixes
+- Preserve the canonical draft-path, save/undo checkpoint, and constrained-availability contracts while extending the publishing surface
+- Keep platform-specific print geometry truthful by deferring exact wrap dimensions to template-generator inputs rather than static guesses
 
 <details>
 <summary>Archived milestone context: v1.4 Perplexity & Technical Writing</summary>
@@ -229,4 +238,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-18 — post-v1.9 hardening merged; no active milestone*
+*Last updated: 2026-04-18 — v2.0 Publishing Cover Packaging defined from the post-v1.9 hardened baseline*

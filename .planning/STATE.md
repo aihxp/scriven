@@ -1,17 +1,17 @@
 ---
 gsd_state_version: 1.0
-milestone: v1.9
-milestone_name: Workflow Contract Integrity
-status: milestone_shipped
-stopped_at: Milestone archived after successful audit
-last_updated: "2026-04-18T20:30:00Z"
+milestone: v2.0
+milestone_name: Publishing Cover Packaging
+status: defining_requirements
+stopped_at: Milestone started; requirements and roadmap defined
+last_updated: "2026-04-18T23:00:00Z"
 last_activity: 2026-04-18
 progress:
   total_phases: 3
-  completed_phases: 3
-  total_plans: 9
-  completed_plans: 9
-  percent: 100
+  completed_phases: 0
+  total_plans: 0
+  completed_plans: 0
+  percent: 0
 ---
 
 # Project State
@@ -21,23 +21,23 @@ progress:
 See: .planning/PROJECT.md (updated 2026-04-18)
 
 **Core value:** Drafted prose sounds like the writer, not like AI -- Voice DNA system loaded into every agent invocation.
-**Current focus:** No active milestone defined
+**Current focus:** v2.0 Publishing Cover Packaging
 
 ## Current Position
 
-Phase: None
-Plan: None
-Status: Milestone shipped and archived
-Last activity: 2026-04-18 — Landed post-v1.9 session-boundary and trust-surface hardening; full suite green at 1576/1576
+Phase: Not started (defining requirements)
+Plan: —
+Status: Defining requirements
+Last activity: 2026-04-18 — Milestone v2.0 started for publishing cover packaging
 
-Progress: [##########] 100%
+Progress: [----------] 0%
 
 ## Performance Metrics
 
 **Velocity:**
 
 - Total plans completed: 113 (through v1.9)
-- Latest shipped milestone v1.9: 3 phases, 9 plans, 1576 regression tests in the current repo state, zero new dependencies
+- Latest shipped milestone v1.9: 3 phases, 9 plans, 1580 regression tests in the current repo state, zero new dependencies
 
 *Updated after each plan completion*
 
@@ -57,10 +57,12 @@ Recent decisions affecting current work:
 - [post-v1.9 session boundaries]: `pause-work` and `resume-work` must record explicit Last actions markers, and `resume-work` resets `Session metrics` so `session-report` can isolate the current session truthfully
 - [post-v1.9 save-history trust]: Public command references must describe save history as save history only, never as archived drafts or other broader versioning models
 - [post-v1.9 destructive flags]: Trust-facing docs for `/scr:undo --force` must match the command contract exactly — skip the unsaved-changes warning, but still require confirmation
+- [v2.0 framing]: Treat cover packaging as a production-contract milestone, not just a doc pass — asset paths, platform specs, and build integration must agree
+- [v2.0 print truth]: Paperback and hardcover wrap dimensions must stay template-driven from IngramSpark inputs instead of being hard-coded as universal constants
 
 ### Pending Todos
 
-- Define the next milestone
+- Plan Phase 42
 - Keep workflow-contract regression coverage aligned if later command edits touch draft paths, save/undo, availability filtering, or session-boundary handling
 
 ### Blockers/Concerns
@@ -70,5 +72,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-04-18T20:30:00Z
-Stopped at: Post-v1.9 hardening merged; no active milestone
+Stopped at: v2.0 defined; ready for Phase 42 planning
 Resume file: None
