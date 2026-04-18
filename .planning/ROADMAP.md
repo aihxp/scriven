@@ -4,6 +4,7 @@
 
 - Active milestone: **None**
 - Latest shipped milestone: **v1.9 Workflow Contract Integrity** (completed 2026-04-18)
+- Current repo state: **post-v1.9 hardening merged, 1576/1576 tests passing**
 - Next step: define the next milestone
 
 ## Milestones
@@ -24,3 +25,4 @@
 - Detailed milestone summaries live in [MILESTONES.md](MILESTONES.md).
 - Detailed archived roadmap snapshots live under `.planning/milestones/`.
 - Archived phase artifacts now live under `.planning/milestones/v1.7-phases/`, `.planning/milestones/v1.8-phases/`, and `.planning/milestones/v1.9-phases/`.
+- Additional post-archive hardening landed directly on the shipped v1.9 baseline; top-level planning docs track that current repo state even though no new milestone is active.

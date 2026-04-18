@@ -1,6 +1,6 @@
 # Requirements: Scriven v1.9 Workflow Contract Integrity
 
-**Status:** Implementation complete. All v1.9 phases completed 2026-04-18.
+**Status:** Implementation complete. All v1.9 phases completed 2026-04-18, and later hardening kept the shipped contracts aligned without reopening milestone scope.
 
 **Goal:** Restore internal workflow truth so Scriven's core commands agree on draft storage, save/undo flows leave state clean, and help surfaces only advertise commands the current project can actually run.
 
@@ -59,6 +59,11 @@ REQ-ID → planned phase mapping (v1.9 Workflow Contract Integrity, Phases 39-41
 | WCI-10 | Phase 41 | Completed |
 
 **Coverage:** 10/10 v1.9 requirements mapped. No orphans, no duplicates.
+
+## Post-Ship Notes
+
+- Post-archive fixes extended the same v1.9 integrity intent into save-history filtering, session-boundary markers, branch-agnostic track canon resolution, and trust-surface documentation alignment.
+- Those fixes did not add new milestone requirements; they preserved the shipped v1.9 contract as the codebase continued to evolve.
 
 ---
 

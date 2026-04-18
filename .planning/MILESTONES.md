@@ -13,10 +13,11 @@
 - Made undo target the explicit latest `.manuscript/` commit instead of assuming `HEAD`
 - Tightened `/scr:help`, work-type docs, and affected command files to respect narrower constraints like `nonfiction_only` and `comic_only`
 - Added regression suites for draft-path consistency, save/undo sequencing, and unsupported adapted-label visibility drift
+- Follow-on hardening on the shipped baseline tightened save-history filtering, session-boundary markers, track canon-branch resolution, and trust-surface docs/tests without opening a new milestone
 
 **Stats:**
 
-- 3 phases, 9 plans, 1550 regression tests
+- 3 phases, 9 plans, 1576 regression tests in the current repo state
 - Zero new npm dependencies
 - Milestone completed 2026-04-18
 

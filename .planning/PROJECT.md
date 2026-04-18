@@ -118,7 +118,7 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 ## Current State
 
 **Latest shipped milestone:** v1.9 Workflow Contract Integrity (complete 2026-04-18)
-**Status:** No active milestone currently defined. Scriven's latest shipped surface is locked by 1550 passing regression tests.
+**Status:** No active milestone currently defined. Post-v1.9 hardening has landed, and Scriven's current shipped surface is locked by 1576 passing regression tests.
 
 **Current product surface:**
 - Installer writes are crash-safe via atomic temp-file-then-rename with orphan cleanup on startup
@@ -133,10 +133,14 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - Active manuscript draft paths now converge on `.manuscript/drafts/body/` across drafting, import, export, translation, and review flows
 - Save and undo now describe clean git-backed checkpoints with `STATE.md` included in the same commit
 - Help and trust-facing docs now respect narrower availability constraints and never surface hidden adapted labels as runnable commands
+- Pause, resume, and session-report now share one explicit session-boundary contract through `Last actions` markers and `Session metrics`
+- Save history, compare, undo, versions, and session-report now resolve from filtered save checkpoints rather than raw `.manuscript/` commit ancestry
+- Collaboration discovery and trust-facing docs now present `/scr:track` as the writer-facing entrypoint, with canon-branch-aware guidance instead of `main`-only assumptions
+- Public command references now match the live command contracts for `/scr:versions`, `/scr:undo --force`, and session-boundary behavior
 - Full export stack: EPUB (Pandoc, accessible), print PDF (Pandoc+Typst, KDP/Ingram trim sizes), academic LaTeX (.tex via 5 publisher wrapper templates), Smashwords DOCX, poetry submission DOCX
 - Sacred tradition profiles for 10 traditions with book-order, approval-block, font stack, RTL, numbering
 - Cross-domain templates: stage play, picture book, fixed-layout EPUB, chapbook, poetry submission, academic (IEEE/ACM/LNCS/Elsevier/APA7)
-- 1550 regression tests lock all behavior with requirement-to-test traceability
+- 1576 regression tests lock all behavior with requirement-to-test traceability
 
 ## Latest Milestone: v1.9 Workflow Contract Integrity
 
@@ -148,8 +152,9 @@ The most visible gaps were in the export stack and launch proof layer. Phase 13 
 - Help and trust-facing docs now honor command-level constraints such as `nonfiction_only` and `comic_only`
 - Unsupported adapted labels no longer appear as surfaced command behavior when the base command is hidden for that group
 - New workflow-contract regression coverage now locks draft paths, save/undo sequencing, and constrained command visibility
+- Follow-on hardening after archive also locked save-history filtering, session-boundary markers, branch-agnostic canon resolution, and track/help trust surfaces without reopening the milestone scope
 
-**Stats:** 3 phases, 9 plans, 1550 total tests, zero new dependencies
+**Stats:** 3 phases, 9 plans, 1576 regression tests in the current repo state, zero new dependencies
 
 ## Previous Milestone: v1.8 Command Surface Coherence
 
@@ -224,4 +229,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-04-18 — v1.8 Command Surface Coherence shipped and archived*
+*Last updated: 2026-04-18 — post-v1.9 hardening merged; no active milestone*
