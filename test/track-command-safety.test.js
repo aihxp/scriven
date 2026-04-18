@@ -58,8 +58,18 @@ describe('track command safety', () => {
   it('resolves slug collisions before creating the revision-track branch', () => {
     assert.match(
       trackCommand,
-      /Check whether `track\/\{slug\}` already exists as a branch[\s\S]*?append `-2`, `-3`, and so on until you find an unused branch name[\s\S]*?Run `git checkout -b track\/\{slug\}`/,
+      /Generate the slug identifier: lowercase, spaces to hyphens, strip special chars\. Do not add the `track\/` prefix yet;/,
+      'track create should treat the slug as a bare identifier before branch-name prefixing'
+    );
+    assert.match(
+      trackCommand,
+      /Check whether `track\/\{slug\}` already exists as a branch[\s\S]*?append `-2`, `-3`, and so on to the slug identifier until you find an unused branch name[\s\S]*?Run `git checkout -b track\/\{slug\}`/,
       'track create should resolve branch-name collisions before running git checkout -b'
+    );
+    assert.doesNotMatch(
+      trackCommand,
+      /Generate the slugified branch name: lowercase, spaces to hyphens, strip special chars, prefix `track\/`\./,
+      'track create should not describe the slug itself as already prefixed with track/'
     );
   });
 

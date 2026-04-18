@@ -435,13 +435,14 @@ See what changed since your last save, described in plain language.
 **Prerequisites:** None
 
 **Flags:**
-- `--all` -- Show all versions including archived drafts
+- `--all` -- Remove the default 10-version limit and show the complete save-version list
 
 **Example:**
 ```
 /scr:versions
 ```
 See "Draft 1 (archived), Draft 2 (current), 12 saves."
+See your complete save timeline without the default 10-version cap.
 
 ---
 

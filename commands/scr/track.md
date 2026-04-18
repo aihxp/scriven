@@ -69,11 +69,11 @@ Any subcommand that needs the canon manuscript must resolve the canon branch in 
 **What to do:**
 
 1. Take the `<name>` argument as the writer-friendly label (e.g., "Second draft attempt", "Editor's suggestions").
-2. Generate the slugified branch name: lowercase, spaces to hyphens, strip special chars, prefix `track/`.
+2. Generate the slug identifier: lowercase, spaces to hyphens, strip special chars. Do not add the `track/` prefix yet; keep the raw slug available for collision handling and metadata.
 3. Check if a track with this label already exists in `tracks.json`. If so: "A revision track called '[name]' already exists. Use `/scr:track switch [name]` to work on it."
 4. Check for unsaved changes (`git status --porcelain .manuscript/`). If changes exist: "You have unsaved changes. Save them first with `/scr:save` before creating a new track."
 5. Resolve the canon branch using the Canon Branch Resolution rules above. On a first track in a fresh repo, this will usually be the current branch returned by `git branch --show-current`.
-6. Check whether `track/{slug}` already exists as a branch. If it does, append `-2`, `-3`, and so on until you find an unused branch name, then use that resolved slug for all remaining steps in this flow.
+6. Check whether `track/{slug}` already exists as a branch. If it does, append `-2`, `-3`, and so on to the slug identifier until you find an unused branch name, then use that resolved slug for all remaining steps in this flow.
 7. Run `git checkout -b track/{slug}` to create and switch to the new branch.
 8. If `.manuscript/tracks.json` does not exist, create it with an object containing `canon_branch` and an empty `tracks` array.
 9. Add the new track entry to `tracks.json`:

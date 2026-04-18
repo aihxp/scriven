@@ -33,6 +33,11 @@ describe('phase 19 technical-writing trust surfaces', () => {
     assert.match(architecture, /9 groups/);
   });
 
+  it('keeps secondary trust docs aligned on the live command inventory count', () => {
+    assert.match(architecture, /consistency across 108 commands/i);
+    assert.doesNotMatch(architecture, /consistency across 101 commands/i);
+  });
+
   it('keeps the README status section aligned to the shipped milestone state', () => {
     assert.match(readme, /All six roadmap milestones through `?v1\.5`? .* shipped in the repo/i);
     assert.doesNotMatch(readme, /v1\.5 .* in progress/i);

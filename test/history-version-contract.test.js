@@ -27,6 +27,7 @@ describe('history and versions command contracts', () => {
 
   it('versions enforces its default limit and excludes non-save manuscript commits', () => {
     const versions = read('commands/scr/versions.md');
+    const commandReference = read('docs/command-reference.md');
 
     assert.match(
       versions,
@@ -42,6 +43,16 @@ describe('history and versions command contracts', () => {
       versions,
       /exclude administrative manuscript commits such as revision-track creation, proposals, and merges/i,
       'versions.md should explicitly exclude non-save manuscript commits'
+    );
+    assert.match(
+      commandReference,
+      /- `--all` -- Remove the default 10-version limit and show the complete save-version list/,
+      'command-reference.md should describe versions --all as removing the default limit only'
+    );
+    assert.doesNotMatch(
+      commandReference,
+      /including archived drafts/i,
+      'command-reference.md should not promise archived-draft support for versions --all'
     );
   });
 
