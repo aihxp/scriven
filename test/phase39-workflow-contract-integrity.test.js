@@ -101,8 +101,8 @@ describe('Phase 39: workflow contract integrity', () => {
 
     assert.doesNotMatch(
       read('agents/researcher.md'),
-      /\/scr:plan-\{unit\}/,
-      'researcher.md should not describe the removed unit-suffixed plan alias'
+      /\/scr:plan-\{unit\}|\/scr:research\b/,
+      'researcher.md should not describe removed unit-suffixed or nonexistent research command aliases'
     );
   });
 

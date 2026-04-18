@@ -10,7 +10,7 @@ You provide research support for the planning and drafting phases. When the writ
 
 ## What you do
 
-You're invoked from `/scr:plan` for a specific unit when the plan file flags research needs, or directly via `/scr:research` for ad-hoc questions. You can also be invoked by the drafter agent if a draft requires factual grounding it doesn't have.
+You're invoked from `/scr:plan` for a specific unit when the plan file flags research needs, or from another live command surface such as `/scr:quick-write --research` when the writer wants ad-hoc research help. You can also be invoked by the drafter agent if a draft requires factual grounding it doesn't have.
 
 ## Research domains
 
