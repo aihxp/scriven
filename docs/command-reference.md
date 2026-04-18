@@ -1284,9 +1284,9 @@ Run the full KDP paperback publishing pipeline: prepare the interior package, ge
 **Prerequisites:** Complete draft must exist
 
 **Flags:**
-- `--format` -- Target format: markdown, docx, pdf, epub, fountain, fdx, latex, kdp, ingram, submission, query
+- `--format` -- Target format: markdown, docx, pdf, epub, fountain, fdx, latex, kdp-package, ingram-package, submission-package, query-package
 - `--formatted` -- Use designed/formatted template (vs. manuscript format)
-- `--print-ready` -- Generate print-ready output with bleeds and crop marks
+- `--print-ready` -- Generate the interior print PDF surface used by print-package flows
 
 - `--skip-validate` -- Skip the scaffold-marker validation gate (not recommended)
 **Available for:** All work types (format availability varies by work type)
